@@ -29,12 +29,10 @@
                         <p class="qt-event-desc">{{ ev.desc }}</p>
                     </div>
                     {%- for p in timeline.people %}
-                    {%- if ev.year > p.death %}
-                    <div class="qt-age is-dead" role="cell" data-person="{{ p.id }}">已故</div>
-                    {%- elif p.birth == null %}
-                    <div class="qt-age is-unknown" role="cell" data-person="{{ p.id }}">不详</div>
-                    {%- elif ev.year < p.birth %}
+                    {%- if ev.year < p.birth %}
                     <div class="qt-age is-unborn" role="cell" data-person="{{ p.id }}">未生</div>
+                    {%- elif ev.year > p.death %}
+                    <div class="qt-age is-dead" role="cell" data-person="{{ p.id }}">已故</div>
                     {%- else %}
                     <div class="qt-age" role="cell" data-person="{{ p.id }}">
                         <span class="qt-age-num">{{ ev.year - p.birth + 1 }}</span><span class="qt-age-unit">岁</span>

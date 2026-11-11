@@ -3,7 +3,7 @@
   "era": "秦二世三年",
   "axis": true,
   "key": true,
-  "figures": ["xiangyu", "yingbu"],
+  "figures": ["xiangyu"],
   "places": ["julu"],
   "title": "巨鹿之战",
   "desc": "项羽破釜沉舟，九战九捷，秦军主力尽丧"
