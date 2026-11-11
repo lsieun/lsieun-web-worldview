@@ -4,5 +4,282 @@
   "start": 25,
   "end": 220,
   "order": 90,
-  "summary": "光武中兴，宦官与外戚交替，黄巾起事后崩解。"
+  "summary": "光武中兴，明章之治，戚宦循环，黄巾起事后崩解。",
+  "rulers": [
+    {
+      "figure": "liuxiu",
+      "title": "汉光武帝",
+      "status": "formal",
+      "order": 1,
+      "note": "汉高祖九世孙，出自长沙定王刘发之后。先以绿林一支在昆阳之战中大败王莽主力（前 23 年，即位前），25 年称帝重建汉室，开启光武中兴。",
+      "terms": [
+        {
+          "start": 25,
+          "end": 57,
+          "events": [
+            "guangwu-dengji",
+            "guangwu-duotian",
+            "guangwu-jiaodu-zhuyi"
+          ]
+        }
+      ]
+    },
+    {
+      "figure": "liuzhuang-mingdi",
+      "title": "汉明帝",
+      "status": "formal",
+      "order": 2,
+      "note": "光武帝第四子。严明治国，推动佛教传入中国，班超重新打通西域。",
+      "terms": [
+        {
+          "start": 57,
+          "end": 75,
+          "events": [
+            "mingdi-baima-si",
+            "mingdi-yongping-dadun"
+          ]
+        }
+      ]
+    },
+    {
+      "figure": "liuda-zhangdi",
+      "title": "汉章帝",
+      "status": "formal",
+      "order": 3,
+      "note": "明帝第五子。延续明章之治，主持白虎观经学大会。窦氏外戚开始坐大。",
+      "terms": [
+        {
+          "start": 75,
+          "end": 88,
+          "events": [
+            "zhangdi-baihu-guanyi",
+            "zhangdi-simaziao-qiufu"
+          ]
+        }
+      ]
+    },
+    {
+      "figure": "lizhao-he",
+      "title": "汉和帝",
+      "status": "formal",
+      "order": 4,
+      "note": "章帝第四子。幼年即位，清除窦氏外戚，同时抬高宦官地位。蔡伦改进造纸术。",
+      "terms": [
+        {
+          "start": 88,
+          "end": 106,
+          "events": [
+            "hedi-cao-pao",
+            "hedi-jimiyuan-gongbu",
+            "hedi-yanrong-bingbu"
+          ]
+        }
+      ]
+    },
+    {
+      "figure": "lilong-shang",
+      "title": "汉殇帝",
+      "status": "formal",
+      "order": 5,
+      "note": "和帝少子，出生仅百余日即位，在位八个月夭折。邓太后临朝。",
+      "terms": [
+        {
+          "start": 106,
+          "end": 106,
+          "durationLabel": "不足一年",
+          "events": [
+            "shangdi-jixu"
+          ]
+        }
+      ]
+    },
+    {
+      "figure": "liuqi-andi",
+      "title": "汉安帝",
+      "status": "formal",
+      "order": 6,
+      "note": "章帝孙、清河孝王刘庆之子。邓太后迎立的旁支皇帝，亲政后东汉中期问题加深。",
+      "terms": [
+        {
+          "start": 106,
+          "end": 125,
+          "events": [
+            "andi-qiang-rebellion",
+            "andi-banjun-guizhou",
+            "andi-yanping"
+          ]
+        }
+      ]
+    },
+    {
+      "figure": "liuyi",
+      "title": "北乡侯",
+      "status": "formal",
+      "order": 7,
+      "note": "章帝孙、济北惠王刘寿之子。阎太后所立，在位七个月即病逝。",
+      "terms": [
+        {
+          "start": 125,
+          "end": 125,
+          "durationLabel": "七个月",
+          "events": [
+            "liuyi-shouliang"
+          ]
+        }
+      ]
+    },
+    {
+      "figure": "liubao-shun",
+      "title": "汉顺帝",
+      "status": "formal",
+      "order": 8,
+      "note": "安帝之子，原太子被废后又被宦官迎立复位。梁氏外戚与宦官交替掌权。",
+      "terms": [
+        {
+          "start": 125,
+          "end": 144,
+          "events": [
+            "shundi-yongjian-reform",
+            "shundi-liang-nairong"
+          ]
+        }
+      ]
+    },
+    {
+      "figure": "liubing-chong",
+      "title": "汉冲帝",
+      "status": "formal",
+      "order": 9,
+      "note": "顺帝少子，三岁即位。梁太后临朝，在位一年病逝。",
+      "terms": [
+        {
+          "start": 144,
+          "end": 145,
+          "durationLabel": "约一年",
+          "events": [
+            "shundi-chongdi-lihe",
+            "chongdi-zayu"
+          ]
+        }
+      ]
+    },
+    {
+      "figure": "liuzuan-zhi",
+      "title": "汉质帝",
+      "status": "formal",
+      "order": 10,
+      "note": "章帝玄孙、千乘王刘伉之后。梁冀迎立，八岁即位，九岁因不满梁冀跋扈被毒杀。",
+      "terms": [
+        {
+          "start": 145,
+          "end": 146,
+          "events": [
+            "zhidi-liangji-dudu"
+          ]
+        }
+      ]
+    },
+    {
+      "figure": "lizhi-huan",
+      "title": "汉桓帝",
+      "status": "formal",
+      "order": 11,
+      "note": "章帝曾孙、河间王刘开之后。梁冀迎立，诛梁冀后宦官崛起，两次党锢之祸。",
+      "terms": [
+        {
+          "start": 146,
+          "end": 168,
+          "events": [
+            "huandi-zhuliang",
+            "huandi-pengdang-huo",
+            "huandi-guangming-mingjiao"
+          ]
+        }
+      ]
+    },
+    {
+      "figure": "lihong-ling",
+      "title": "汉灵帝",
+      "status": "formal",
+      "order": 12,
+      "note": "章帝曾孙、解渎亭侯刘苌之子。旁支入继，宦官专权、西邸卖官，黄巾起义爆发。",
+      "terms": [
+        {
+          "start": 168,
+          "end": 189,
+          "events": [
+            "lingdi-danggu-er",
+            "lingdi-maiguannmaijue",
+            "lingdi-huangjin",
+            "lingdi-shi-changshi"
+          ]
+        }
+      ]
+    },
+    {
+      "figure": "liubian-shao",
+      "title": "汉少帝",
+      "status": "formal",
+      "order": 13,
+      "note": "灵帝之子，何皇后所生。何进事泄被杀后，董卓入京废其为弘农王。",
+      "terms": [
+        {
+          "start": 189,
+          "end": 189,
+          "events": [
+            "shaodi-dongzhuo-rujing"
+          ]
+        }
+      ]
+    },
+    {
+      "figure": "liuxie-xian",
+      "title": "汉献帝",
+      "status": "formal",
+      "order": 14,
+      "note": "灵帝之子，王美人所生。董卓所立，长期受军阀控制。220 年禅让，东汉终结。",
+      "terms": [
+        {
+          "start": 189,
+          "end": 220,
+          "events": [
+            "xiandi-xuchao-dongjing",
+            "xiandi-guandu",
+            "xiandi-chibi",
+            "xiandi-chanshan"
+          ]
+        }
+      ]
+    }
+  ],
+  "regencies": [
+    {
+      "figure": "dengtaihou",
+      "start": 105,
+      "end": 121,
+      "label": "临朝称制",
+      "note": "和帝去世后临朝，历经殇帝、安帝两朝，实际掌权约十六年。"
+    },
+    {
+      "figure": "liangji",
+      "start": 141,
+      "end": 159,
+      "label": "外戚专权",
+      "note": "以大将军身份总揽朝政，先后立冲帝、质帝、桓帝，毒杀质帝，跋扈十八年。"
+    },
+    {
+      "figure": "douxian",
+      "start": 88,
+      "end": 92,
+      "label": "外戚辅政",
+      "note": "以车骑将军身份出击匈奴、勒石燕然，随后因事败自杀。"
+    },
+    {
+      "figure": "dongzhuo",
+      "start": 189,
+      "end": 192,
+      "label": "军阀专权",
+      "note": "率兵入京废少帝立献帝，挟持汉献帝迁都长安，开启群雄割据。"
+    }
+  ]
 }

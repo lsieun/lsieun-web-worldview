@@ -15,6 +15,7 @@
     if (!panels.has('timeline') || !panels.has('kinship') || !buttons.length) return;
 
     const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const dynastyTitle = document.querySelector('h1')?.textContent?.trim() || '历代皇帝';
     let activeView = 'timeline';
 
     const kinshipPanel = panels.get('kinship');
@@ -156,10 +157,10 @@
             animation: forExport ? false : !reduceMotion(),
             aria: {
                 enabled: true,
-                description: '西汉血缘世系树。数字表示皇帝即位顺序，连线只表示父母与子女关系，未即位宗亲用于连接世系。'
+                description: `${dynastyTitle} 血缘世系树。数字表示皇帝即位顺序，连线只表示父母与子女关系，未即位宗亲用于连接世系。`
             },
             title: forExport ? {
-                text: '西汉历代皇帝 · 血缘世系',
+                text: `${dynastyTitle} · 血缘世系`,
                 subtext: '数字为帝序 · 连线仅表示亲属关系 · 未即位宗亲不计入帝序',
                 left: 36,
                 top: 26,
@@ -334,7 +335,7 @@
             const url = exportInstance.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: chartColors.bg });
             const link = document.createElement('a');
             link.href = url;
-            link.download = '西汉历代皇帝-血缘世系.png';
+            link.download = `${dynastyTitle}-血缘世系.png`;
             document.body.appendChild(link);
             link.click();
             link.remove();

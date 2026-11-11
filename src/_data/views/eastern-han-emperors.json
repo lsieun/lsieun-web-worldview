@@ -1,0 +1,43 @@
+{
+  "type": "dynasty-reigns",
+  "dynasty": "eastern-han",
+  "title": "东汉历代皇帝",
+  "href": "/history/eastern-han-emperors.html",
+  "topicMeta": "帝王世系",
+  "summary": "从光武到献帝，以十四位皇帝的在位纪年与血缘世系，观察外戚、宦官与旁支入继如何牵引东汉政治走向。",
+  "figures": [
+    "liuxiu",
+    "liuzhuang-mingdi",
+    "liuda-zhangdi",
+    "lizhao-he",
+    "lilong-shang",
+    "liuqing",
+    "liuqi-andi",
+    "liubao-shun",
+    "liubing-chong",
+    "liushou",
+    "liuyi",
+    "liukan-kang",
+    "liuchong-yuean",
+    "liuhong-bohai",
+    "liuzuan-zhi",
+    "liukai-hejian",
+    "liuyi-lizhi",
+    "lizhi-huan",
+    "liuchang",
+    "lihong-ling",
+    "liubian-shao",
+    "liuxie-xian"
+  ],
+  "meta": {
+    "watermark": "汉",
+    "subtitle": "同一位皇帝，在纪年中是一段统治，在世系中则是一个血缘节点。东汉的世系树比西汉更加枝繁叶茂：旁支入继频繁、外戚与宦官交替掌权，让帝统多次偏离父死子继的主轨。",
+    "tags": [
+      "东汉",
+      "14 帝",
+      "世系与纪年"
+    ],
+    "intro": "默认沿竖向时间线阅读每位皇帝的在位年段与任内大事；切换到世系树，则可追溯他的父系来源和入继路径。东汉中后期几乎所有皇帝都是章帝刘炟的后代，但旁支入继在桓帝、灵帝时期尤其显著。",
+    "note": "帝序采用『14 位正式即位皇帝』口径。北乡侯刘懿、少帝刘辩虽为短暂废立，仍按实际即位经历保留正式序号。邓太后、梁冀、窦宪、董卓等称制或专权者另列为权力背景。年份以年为精度。"
+  }
+}
