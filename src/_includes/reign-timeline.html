@@ -1,0 +1,76 @@
+<section class="reign-panel reign-timeline-panel" id="reign-timeline" data-reign-panel="timeline" aria-labelledby="reign-timeline-title">
+    <div class="reign-panel-head">
+        <div>
+            <p class="eyebrow">REIGN CHRONOLOGY</p>
+            <h3 id="reign-timeline-title">竖向在位时间线</h3>
+        </div>
+        <p>自上而下依帝位更替排列。数字只标记正式即位者，称制与辅政另列为同期权力背景。</p>
+    </div>
+
+    <ol class="rt-list">
+        {%- for ruler in reignView.rulers %}
+        <li class="rt-ruler{% if ruler.status == 'interim' %} is-interim{% endif %}"
+            id="timeline-{{ ruler.id }}" data-reign-person="{{ ruler.id }}" tabindex="-1">
+            <div class="rt-marker" aria-hidden="true">
+                {% if ruler.status == 'formal' %}<span>{{ ruler.order }}</span>{% else %}<span>◇</span>{% endif %}
+            </div>
+            <article class="rt-card">
+                <header class="rt-header">
+                    <div>
+                        <p class="rt-kicker">
+                            {% if ruler.status == 'formal' %}第 {{ ruler.order }} 位皇帝{% else %}西汉 · 政权过渡{% endif %}
+                        </p>
+                        <h4 class="rt-name">{{ ruler.title }}<span>{{ ruler.name }}</span></h4>
+                    </div>
+                    {% if ruler.treeIncluded %}
+                    <a class="rt-tree-link" href="#tree-{{ ruler.id }}" data-reign-link="kinship" data-person="{{ ruler.id }}">
+                        世系位置 <span aria-hidden="true">↗</span>
+                    </a>
+                    {% endif %}
+                </header>
+
+                {% if ruler.note %}<p class="rt-note">{{ ruler.note }}</p>{% endif %}
+
+                {%- for term in ruler.terms %}
+                <div class="rt-term">
+                    <div class="rt-reign-meta">
+                        <span>{{ term.startLabel }} — {{ term.endLabel }}</span>
+                        <span>在位 {{ term.durationLabel }}</span>
+                    </div>
+
+                    {% if term.regencies | length %}
+                    <div class="rt-regencies">
+                        <span class="rt-regency-label">同期权力背景</span>
+                        <ul>
+                            {%- for regency in term.regencies %}
+                            <li>
+                                <strong>{{ regency.name }} · {{ regency.label }}</strong>
+                                <span>{{ regency.startLabel }} — {{ regency.endLabel }}</span>
+                                {% if regency.note %}<p>{{ regency.note }}</p>{% endif %}
+                            </li>
+                            {%- endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+
+                    <ol class="rt-events">
+                        {%- for event in term.events %}
+                        <li class="rt-event" id="event-{{ event.id }}">
+                            <div class="rt-event-year">
+                                <span>{{ event.yearLabel }}</span>
+                                {% if event.era %}<small>{{ event.era }}</small>{% endif %}
+                            </div>
+                            <div class="rt-event-body">
+                                <p class="rt-event-title">{{ event.title }}</p>
+                                <p class="rt-event-desc">{{ event.desc }}</p>
+                            </div>
+                        </li>
+                        {%- endfor %}
+                    </ol>
+                </div>
+                {%- endfor %}
+            </article>
+        </li>
+        {%- endfor %}
+    </ol>
+</section>

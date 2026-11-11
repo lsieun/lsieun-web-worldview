@@ -1,0 +1,36 @@
+{
+  "type": "dynasty-reigns",
+  "dynasty": "western-han",
+  "title": "西汉历代皇帝",
+  "href": "/history/western-han-emperors.html",
+  "topicMeta": "帝王世系",
+  "summary": "从高祖到平帝，以十四位正式皇帝的在位纪年与血缘世系，观察外戚、辅政和旁支入继如何改变西汉政治。",
+  "figures": [
+    "liubang",
+    "liuying-huidi",
+    "liugong",
+    "liuhong",
+    "liuheng",
+    "liuqi",
+    "liuche",
+    "liufuling",
+    "liubo",
+    "liuhe",
+    "liuju",
+    "liujin",
+    "liuxun",
+    "liushi-yuandi",
+    "liuao",
+    "liukang",
+    "liuxin",
+    "liuxing-zhongshan",
+    "liukan"
+  ],
+  "meta": {
+    "watermark": "汉",
+    "subtitle": "同一位皇帝，在纪年中是一段统治，在世系中则是一个血缘节点。把两种顺序并置，才能看清父死子继之外的废立、旁支入继与实际掌权者。",
+    "tags": ["西汉", "14 帝＋过渡", "世系与纪年"],
+    "intro": "默认沿竖向时间线阅读每位皇帝的在位年段与任内大事；切换到世系树，则可追溯他的父系来源和入继路径。点击任一视图中的皇帝，另一视图会同步定位。",
+    "note": "帝序采用『14 位正式即位皇帝＋孺子婴过渡』口径：前少帝、后少帝、刘贺依实际即位经历保留序号；孺子婴仅为皇太子，未正式即位，故不编号，也不展开其远支宗谱。吕后、霍光、王莽等称制或辅政者另列为权力背景。年份以年为精度，负数在数据中对应公元前；跨公元前后的年长按无公元 0 年计算。"
+  }
+}

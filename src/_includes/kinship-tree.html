@@ -1,0 +1,61 @@
+{%- macro renderNode(node) %}
+<li class="kh-branch">
+    <article class="kh-node{% if node.status == 'formal' %} is-emperor{% elif node.status == 'interim' %} is-interim{% else %} is-kin{% endif %}"
+             id="tree-{{ node.id }}" data-tree-person="{{ node.id }}" data-parents="{{ node.parents | join(' ') }}" tabindex="-1">
+        <div class="kh-node-top">
+            {% if node.status == 'formal' %}
+            <span class="kh-order" aria-label="第 {{ node.order }} 位皇帝">{{ node.order }}</span>
+            {% elif node.status == 'interim' %}
+            <span class="kh-order is-transition">过渡</span>
+            {% else %}
+            <span class="kh-order is-kin" aria-hidden="true">宗</span>
+            {% endif %}
+            <div class="kh-identity">
+                {% if node.hasRuler %}<h4>{{ node.title }}</h4>{% else %}<h4>{{ node.name }}</h4>{% endif %}
+                {% if node.hasRuler %}<p>{{ node.name }}</p>{% else %}<p>未即位 · 世系连接</p>{% endif %}
+            </div>
+        </div>
+        <p class="kh-reign">{{ node.reignLabel }}</p>
+        {% if node.hasRuler %}
+        <a class="kh-timeline-link" href="#timeline-{{ node.id }}" data-reign-link="timeline" data-person="{{ node.id }}">
+            在位大事 <span aria-hidden="true">→</span>
+        </a>
+        {% else %}
+        <span class="kh-kin-note">不计入皇帝序号</span>
+        {% endif %}
+    </article>
+    {%- if node.children | length %}
+    <ul>
+        {%- for child in node.children %}
+        {{ renderNode(child) }}
+        {%- endfor %}
+    </ul>
+    {%- endif %}
+</li>
+{%- endmacro %}
+
+<section class="reign-panel reign-kinship-panel" id="reign-kinship" data-reign-panel="kinship" aria-labelledby="reign-kinship-title">
+    <div class="reign-panel-head">
+        <div>
+            <p class="eyebrow">KINSHIP &amp; SUCCESSION</p>
+            <h3 id="reign-kinship-title">血缘世系树</h3>
+        </div>
+        <p>连线只表示亲属关系，数字只表示即位顺序。点击皇帝节点，可回到其在位年段与任内大事。</p>
+    </div>
+
+    <div class="kh-legend" aria-label="世系图例">
+        <span><i class="kh-legend-mark is-emperor" aria-hidden="true">1</i>正式皇帝与帝序</span>
+        <span><i class="kh-legend-mark is-kin" aria-hidden="true">宗</i>未即位的连接宗亲</span>
+        <span><i class="kh-legend-line" aria-hidden="true"></i>父母与子女关系</span>
+    </div>
+
+    <div class="kh-tree-scroll bleed" data-tree-scroll tabindex="0" role="region" aria-label="西汉血缘世系，可横向滚动">
+        <div class="kh-tree-canvas">
+            <ul class="kh-roots">
+                {%- for root in reignView.treeRoots %}
+                {{ renderNode(root) }}
+                {%- endfor %}
+            </ul>
+        </div>
+    </div>
+</section>

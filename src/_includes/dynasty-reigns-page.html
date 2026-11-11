@@ -1,0 +1,59 @@
+{#
+  朝代帝系专题：竖向在位时间线 + 血缘世系树。
+  静态输出两个完整视图，JavaScript 只负责切换与双向定位。
+#}
+{% if reignView and reignView.rulers %}
+<link rel="stylesheet" href="/assets/css/dynasty-reigns.css">
+
+<div class="dynasty-reigns-page" data-reign-root>
+    <section class="page-hero reign-hero">
+        <span class="watermark" aria-hidden="true">{{ reignView.meta.watermark | default('史') }}</span>
+        <div class="container">
+            <p class="eyebrow">DYNASTY · SUCCESSION &amp; REIGNS</p>
+            <h1 class="page-title">{{ reignView.title }}</h1>
+            {% if reignView.meta.subtitle %}
+            <p class="page-lead">{{ reignView.meta.subtitle }}</p>
+            {% endif %}
+            <div class="page-meta">
+                {% for tag in (reignView.meta.tags or []) %}
+                <span>{{ tag }}</span>
+                {% endfor %}
+                <span>正式皇帝 <strong>{{ reignView.formalCount }} 位</strong></span>
+                <span>任内大事 <strong>{{ reignView.eventCount }} 件</strong></span>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section--tint reign-workspace">
+        <div class="container">
+            <div class="section-head" data-reveal>
+                <p class="eyebrow">01 · TWO VIEWS</p>
+                <h2 class="section-title">帝系与纪年，互相印证</h2>
+                {% if reignView.meta.intro %}
+                <p class="section-intro">{{ reignView.meta.intro }}</p>
+                {% endif %}
+            </div>
+
+            <div class="reign-switch" role="group" aria-label="切换帝系视图">
+                <button class="reign-switch-btn is-active" type="button" data-reign-switch="timeline" aria-pressed="true">
+                    <span>在位纪年</span><small>帝序 · 年段 · 大事</small>
+                </button>
+                <button class="reign-switch-btn" type="button" data-reign-switch="kinship" aria-pressed="false">
+                    <span>血缘世系</span><small>亲属 · 支系 · 入继</small>
+                </button>
+            </div>
+
+            <div class="reign-panels">
+                {% include "reign-timeline.html" %}
+                {% include "kinship-tree.html" %}
+            </div>
+
+            {% if reignView.meta.note %}
+            <p class="reign-method-note">{{ reignView.meta.note | safe }}</p>
+            {% endif %}
+        </div>
+    </section>
+</div>
+
+<script src="/assets/js/dynasty-reigns.js" defer></script>
+{% endif %}

@@ -61,6 +61,184 @@ function formatYear(year) {
     return year < 0 ? `前 ${Math.abs(year)}` : String(year);
 }
 
+function elapsedYears(start, end) {
+    // 公元前与公元之间没有公元 0 年。
+    return end - start - (start < 0 && end > 0 ? 1 : 0);
+}
+
+function buildReignView(view, dynasties, figures, events, dynastySources, figureSources) {
+    const dynasty = dynasties[view.dynasty];
+    const source = dynastySources[dynasty.id];
+    const treeIds = new Set(ensureArray(view.figures, `views/${view.id}.json`, "figures"));
+
+    const regencies = ensureArray(dynasty.regencies, source, "regencies").map((regency) => {
+        ensureRef(figures, "人物", source, "regencies", regency.figure);
+        const start = ensureNumber(regency.start, source, "regencies.start");
+        const end = ensureNumber(regency.end, source, "regencies.end");
+        if (start > end) throw new Error(`[world] ${source} 的摄政年段起止倒置`);
+        return {
+            id: regency.figure,
+            name: figures[regency.figure].name,
+            label: regency.label || "辅政",
+            note: regency.note || "",
+            start,
+            end,
+            startLabel: formatYear(start),
+            endLabel: formatYear(end)
+        };
+    });
+
+    const orders = new Set();
+    const rulerIds = new Set();
+    const eventIds = new Set();
+    let formalCount = 0;
+    let eventCount = 0;
+    const rulers = ensureArray(dynasty.rulers, source, "rulers").map((ruler) => {
+        ensureRef(figures, "人物", source, "rulers", ruler.figure);
+        if (rulerIds.has(ruler.figure)) {
+            throw new Error(`[world] ${source} 的 rulers 中「${ruler.figure}」重复，多段在位请写入 terms`);
+        }
+        rulerIds.add(ruler.figure);
+
+        const status = ruler.status || "formal";
+        if (!["formal", "interim"].includes(status)) {
+            throw new Error(`[world] ${source} 的 ${ruler.figure} 使用了未知 status「${status}」`);
+        }
+        if (status === "formal") {
+            if (!Number.isInteger(ruler.order) || ruler.order < 1) {
+                throw new Error(`[world] ${source} 的 ${ruler.figure} 缺少有效帝序`);
+            }
+            if (orders.has(ruler.order)) throw new Error(`[world] ${source} 的帝序 ${ruler.order} 重复`);
+            orders.add(ruler.order);
+            formalCount += 1;
+        } else if (ruler.order !== undefined) {
+            throw new Error(`[world] ${source} 的过渡人物 ${ruler.figure} 不应设置帝序`);
+        }
+
+        const terms = ensureArray(ruler.terms, source, `rulers.${ruler.figure}.terms`).map((term) => {
+            const start = ensureNumber(term.start, source, `rulers.${ruler.figure}.terms.start`);
+            const end = ensureNumber(term.end, source, `rulers.${ruler.figure}.terms.end`);
+            if (start > end) throw new Error(`[world] ${source} 的 ${ruler.figure} 在位年段起止倒置`);
+            const years = elapsedYears(start, end);
+            const termEvents = ensureArray(term.events, source, `rulers.${ruler.figure}.terms.events`).map((eventId) => {
+                ensureRef(events, "事件", source, `rulers.${ruler.figure}.terms.events`, eventId);
+                if (eventIds.has(eventId)) {
+                    throw new Error(`[world] ${source} 的事件「${eventId}」被重复分配到多个在位区块`);
+                }
+                eventIds.add(eventId);
+                const event = events[eventId];
+                if (event.year < start || event.year > end) {
+                    throw new Error(`[world] ${source} 的事件「${eventId}」不在 ${ruler.figure} 的在位年段内`);
+                }
+                eventCount += 1;
+                return {
+                    id: event.id,
+                    year: event.year,
+                    yearLabel: formatYear(event.year),
+                    era: event.era || "",
+                    title: event.title,
+                    desc: event.desc || ""
+                };
+            }).sort((a, b) => a.year - b.year);
+            const overlappingRegencies = regencies.filter((regency) => regency.start <= end && regency.end >= start);
+            return {
+                start,
+                end,
+                startLabel: formatYear(start),
+                endLabel: formatYear(end),
+                durationLabel: term.durationLabel || (years === 0 ? "不足一年" : `约 ${years} 年`),
+                events: termEvents,
+                regencies: overlappingRegencies
+            };
+        });
+        if (!terms.length) throw new Error(`[world] ${source} 的 ${ruler.figure} 至少需要一段 terms`);
+
+        const figure = figures[ruler.figure];
+        return {
+            id: figure.id,
+            name: figure.name,
+            summary: figure.summary || "",
+            title: ruler.title || figure.name,
+            status,
+            order: ruler.order,
+            note: ruler.note || "",
+            terms,
+            treeIncluded: treeIds.has(figure.id)
+        };
+    }).sort((a, b) => a.terms[0].start - b.terms[0].start || (a.order ?? 999) - (b.order ?? 999));
+
+    const rulerById = new Map(rulers.map((ruler) => [ruler.id, ruler]));
+    const nodes = new Map();
+    for (const id of treeIds) {
+        ensureRef(figures, "人物", `views/${view.id}.json`, "figures", id);
+        const figure = figures[id];
+        const parents = ensureArray(figure.parents, figureSources[id], "parents").filter((parentId) => treeIds.has(parentId));
+        if (parents.length > 1) {
+            throw new Error(`[world] views/${view.id}.json 的世系节点「${id}」目前只支持一个树内父节点`);
+        }
+        const ruler = rulerById.get(id);
+        nodes.set(id, {
+            id,
+            name: figure.name,
+            summary: figure.summary || "",
+            parents,
+            children: [],
+            hasRuler: Boolean(ruler),
+            order: ruler?.order,
+            title: ruler?.title || figure.name,
+            status: ruler?.status || "kin",
+            note: ruler?.note || "",
+            reignLabel: ruler ? ruler.terms.map((term) => `${term.startLabel} — ${term.endLabel}`).join("、") : "未即位 · 世系连接"
+        });
+    }
+
+    const generations = new Map();
+    function generationOf(id, trail = new Set()) {
+        if (generations.has(id)) return generations.get(id);
+        if (trail.has(id)) throw new Error(`[world] views/${view.id}.json 的世系关系存在环，涉及「${id}」`);
+        const node = nodes.get(id);
+        const parentId = node.parents[0];
+        if (!parentId) {
+            generations.set(id, 0);
+            return 0;
+        }
+        trail.add(id);
+        const generation = generationOf(parentId, trail) + 1;
+        trail.delete(id);
+        generations.set(id, generation);
+        return generation;
+    }
+
+    const treeRoots = [];
+    for (const node of nodes.values()) {
+        node.generation = generationOf(node.id);
+        const parentId = node.parents[0];
+        if (parentId) nodes.get(parentId).children.push(node);
+        else treeRoots.push(node);
+    }
+    const compareNodes = (a, b) => (a.order ?? 999) - (b.order ?? 999) || a.name.localeCompare(b.name, "zh-Hans-CN");
+    function sortTree(node) {
+        node.children.sort(compareNodes);
+        node.children.forEach(sortTree);
+    }
+    treeRoots.sort(compareNodes);
+    treeRoots.forEach(sortTree);
+
+    return {
+        id: view.id,
+        title: view.title,
+        href: view.href,
+        meta: { watermark: "史", ...view.meta },
+        dynasty: { id: dynasty.id, name: dynasty.name, start: dynasty.start, end: dynasty.end },
+        formalCount,
+        eventCount,
+        rulers,
+        regencies,
+        treeRoots,
+        treeCount: nodes.size
+    };
+}
+
 export default function () {
     const { entities: regions, sources: regionSources } = readEntities("regions");
     const { entities: places, sources: placeSources } = readEntities("places");
@@ -107,10 +285,14 @@ export default function () {
     for (const figure of Object.values(figures)) {
         const source = figureSources[figure.id];
         if (!figure.name) throw new Error(`[world] ${source} 缺少 name`);
-        const birth = ensureNumber(figure.birth, source, "birth");
-        const death = ensureNumber(figure.death, source, "death");
-        if (birth > death) {
+        if (figure.birth !== undefined) ensureNumber(figure.birth, source, "birth");
+        if (figure.death !== undefined) ensureNumber(figure.death, source, "death");
+        if (figure.birth !== undefined && figure.death !== undefined && figure.birth > figure.death) {
             throw new Error(`[world] ${source} 的 birth 晚于 death`);
+        }
+        for (const parentId of ensureArray(figure.parents, source, "parents")) {
+            ensureRef(figures, "人物", source, "parents", parentId);
+            if (parentId === figure.id) throw new Error(`[world] ${source} 的 parents 不能引用自身`);
         }
         if (figure.origin) ensureRef(places, "地点", source, "origin", figure.origin);
         for (const placeId of ensureArray(figure.activePlaces, source, "activePlaces")) {
@@ -137,6 +319,13 @@ export default function () {
     // ---------- 视图 ----------
     for (const view of Object.values(views)) {
         const source = `views/${view.id}.json`;
+        if (view.dynasty) ensureRef(dynasties, "朝代", source, "dynasty", view.dynasty);
+        if (view.type === "dynasty-reigns") {
+            for (const figureId of ensureArray(view.figures, source, "figures")) {
+                ensureRef(figures, "人物", source, "figures", figureId);
+            }
+            continue;
+        }
         const groupIds = new Set();
         for (const group of ensureArray(view.groups, source, "groups")) {
             if (!group.id || !group.name) throw new Error(`[world] ${source} 的 groups 每项都需要 id 与 name`);
@@ -146,12 +335,13 @@ export default function () {
         const castIds = new Set();
         for (const item of ensureArray(view.cast, source, "cast")) {
             ensureRef(figures, "人物", source, "cast", item.figure);
+            ensureNumber(figures[item.figure].birth, figureSources[item.figure], "birth");
+            ensureNumber(figures[item.figure].death, figureSources[item.figure], "death");
             if (!groupIds.has(item.group)) {
                 throw new Error(`[world] ${source} 的 cast 中「${item.figure}」归属了不存在的分组「${item.group}」`);
             }
             castIds.add(item.figure);
         }
-        if (view.dynasty) ensureRef(dynasties, "朝代", source, "dynasty", view.dynasty);
         for (const eventId of ensureArray(view.events, source, "events")) {
             ensureRef(events, "事件", source, "events", eventId);
         }
@@ -197,7 +387,7 @@ export default function () {
         dynasty.topics.push({
             title: view.title || view.meta?.title || view.id,
             href: view.href || `/figures/${view.id}.html`,
-            meta: "人物年龄",
+            meta: view.topicMeta || (view.type === "dynasty-reigns" ? "帝王世系" : "人物年龄"),
             summary: view.summary || view.meta?.subtitle || ""
         });
     }
@@ -206,7 +396,12 @@ export default function () {
 
     // ---------- 视图拼装 ----------
     const timelines = {};
+    const reignViews = {};
     for (const view of Object.values(views)) {
+        if (view.type === "dynasty-reigns") {
+            reignViews[view.id] = buildReignView(view, dynasties, figures, events, dynastySources, figureSources);
+            continue;
+        }
         const cast = ensureArray(view.cast, "", "cast");
         const castIds = new Set(cast.map((item) => item.figure));
 
@@ -269,5 +464,5 @@ export default function () {
         };
     }
 
-    return { figures, places, regions, views, dynasties: dynastyList, topicCount, timelines };
+    return { figures, places, regions, views, dynasties: dynastyList, topicCount, timelines, reignViews };
 }
