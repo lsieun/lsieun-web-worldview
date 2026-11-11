@@ -1,0 +1,20 @@
+<div class="qtg-card" data-qtg>
+    <div class="qtg-scroll" data-qtg-scroll>
+        <div class="qtg-head" data-qtg-head></div>
+        <div class="qtg-body" data-qtg-body></div>
+    </div>
+    <div class="qtg-tip" data-qtg-tip aria-hidden="true">
+        <p class="qtg-tip-title" data-qtg-tip-title>事件</p>
+        <p class="qtg-tip-meta" data-qtg-tip-meta>人物</p>
+        <p class="qtg-tip-desc" data-qtg-tip-desc></p>
+    </div>
+</div>
+
+<div class="qtg-legend">
+    <span class="qtg-legend-item"><i class="qtg-swatch is-node"></i>在世时经历的大事（数字为虚岁）</span>
+    <span class="qtg-legend-item"><i class="qtg-swatch is-node is-focus"></i>与其直接相关的事件</span>
+    <span class="qtg-legend-item"><i class="qtg-swatch is-line"></i>生命线（生卒区间）</span>
+</div>
+
+<script id="person-lifeline-data" type="application/json">{{ timeline | dump | safe }}</script>
+<script src="/assets/js/person-lifeline.js"></script>

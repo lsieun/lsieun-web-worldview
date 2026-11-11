@@ -1,0 +1,208 @@
+{
+  "start": 1840,
+  "end": 1912,
+  "meta": {
+    "key": "qing",
+    "title": "清朝大事与人物年龄",
+    "subtitle": "1840 鸦片战争 — 1912 清帝退位",
+    "tags": ["晚清七十二年"],
+    "intro": "纵向自上而下是时间。左侧竖轴只标战争、政变、条约这类大事；右侧每位人物一条生命线，走到大事那一年就落一个节点，写明当时的年龄（虚岁）。上面的过滤器支持按派系分组选择，也能只点两三个人做横向比较，状态会自动记住。",
+    "lifelineHint": "圆点为在世时经历的大事，实心圆点是与本人直接相关的事件——比如 1881 年慈安去世，在慈禧的生命线上同样是深色的一点。悬停可看事件与年龄。下方另附年龄明细表。",
+    "tableIntro": "同一批大事逐行列成表格，便于横向比较同一年各人的年龄。点击人物列头可单独聚焦其一列，再次点击取消。表格会跟随过滤器同步隐藏不在勾选里的人物列。",
+    "note": "年龄口径为<strong>虚岁</strong>（事件年份 − 出生年份 + 1），与史书常用的「时年若干」一致；「未生」表示尚未出生，「已故」表示事件发生时已去世。事件系年取通行说法，部分只精确到年份。人物列按生年排序，深色圆点标记的是转折性大事。"
+  },
+  "groups": [
+    { "id": "imperial", "name": "皇亲国戚", "desc": "皇帝、太后、皇后" },
+    { "id": "ministers", "name": "朝廷大臣", "desc": "封疆大吏、实权派" },
+    { "id": "reformers", "name": "维新派", "desc": "思想与变法推动者" },
+    { "id": "revolutionaries", "name": "革命派", "desc": "清末民初革命者" }
+  ],
+  "defaultPeople": ["linzexu", "zengguofan", "zuozongtang", "lihongzhang", "xianfeng", "cixi", "cian", "zhangzhidong", "tongzhi", "yuanshikai", "guangxu"],
+  "people": [
+    { "id": "linzexu",     "name": "林则徐", "birth": 1785, "death": 1850, "group": "ministers",        "role": "湖广总督 · 虎门销烟" },
+    { "id": "zengguofan", "name": "曾国藩", "birth": 1811, "death": 1872, "group": "ministers",        "role": "湘军统帅 · 两江总督" },
+    { "id": "zuozongtang","name": "左宗棠", "birth": 1812, "death": 1885, "group": "ministers",        "role": "陕甘总督 · 收复新疆" },
+    { "id": "lihongzhang","name": "李鸿章", "birth": 1823, "death": 1901, "group": "ministers",        "role": "直隶总督 · 北洋大臣" },
+    { "id": "xianfeng",   "name": "咸丰",   "birth": 1831, "death": 1861, "group": "imperial",         "role": "清文宗 · 在位 1850—1861" },
+    { "id": "cixi",       "name": "慈禧",   "birth": 1835, "death": 1908, "group": "imperial",         "role": "圣母皇太后（西太后）" },
+    { "id": "cian",       "name": "慈安",   "birth": 1837, "death": 1881, "group": "imperial",         "role": "母后皇太后（东太后）" },
+    { "id": "zhangzhidong","name": "张之洞","birth": 1837, "death": 1909, "group": "ministers",        "role": "湖广总督 · 洋务新政" },
+    { "id": "tongzhi",    "name": "同治",   "birth": 1856, "death": 1875, "group": "imperial",         "role": "清穆宗 · 在位 1861—1875" },
+    { "id": "kangyouwei", "name": "康有为", "birth": 1858, "death": 1927, "group": "reformers",        "role": "维新派领袖 · 公车上书" },
+    { "id": "yuanshikai", "name": "袁世凯", "birth": 1859, "death": 1916, "group": "ministers",        "role": "北洋新军 · 内阁总理大臣" },
+    { "id": "guangxu",    "name": "光绪",   "birth": 1871, "death": 1908, "group": "imperial",         "role": "清德宗 · 戊戌变法" },
+    { "id": "sunyatsen",  "name": "孙中山", "birth": 1866, "death": 1925, "group": "revolutionaries",  "role": "同盟会总理 · 辛亥革命" }
+  ],
+  "events": [
+    {
+      "year": 1840,
+      "era": "道光",
+      "key": true,
+      "axis": true,
+      "focus": ["linzexu"],
+      "title": "鸦片战争爆发",
+      "desc": "英舰封锁珠江口，炮火叩开国门"
+    },
+    {
+      "year": 1842,
+      "title": "《南京条约》签订",
+      "desc": "割香港岛，开五口通商，赔款二千一百万银元"
+    },
+    {
+      "year": 1850,
+      "axis": true,
+      "focus": ["xianfeng"],
+      "title": "咸丰即位",
+      "desc": "道光驾崩，奕詝继位，次年改元咸丰"
+    },
+    {
+      "year": 1851,
+      "era": "咸丰",
+      "axis": true,
+      "title": "太平天国起义",
+      "desc": "洪秀全金田起事，江南半壁震动"
+    },
+    {
+      "year": 1856,
+      "axis": true,
+      "title": "第二次鸦片战争",
+      "desc": "英法联军再犯，战火延及京津"
+    },
+    {
+      "year": 1860,
+      "key": true,
+      "axis": true,
+      "title": "火烧圆明园",
+      "desc": "咸丰北狩热河，圆明园被焚"
+    },
+    {
+      "year": 1861,
+      "axis": true,
+      "focus": ["xianfeng", "cixi"],
+      "title": "咸丰去世，辛酉政变",
+      "desc": "咸丰崩于热河，慈禧联合恭亲王夺权，两宫垂帘"
+    },
+    {
+      "year": 1864,
+      "era": "同治",
+      "axis": true,
+      "focus": ["zengguofan"],
+      "title": "天京陷落",
+      "desc": "太平天国覆亡，湘军功成"
+    },
+    {
+      "year": 1870,
+      "title": "天津教案",
+      "desc": "曾国藩办案失据，清议哗然"
+    },
+    {
+      "year": 1875,
+      "era": "光绪",
+      "axis": true,
+      "focus": ["guangxu"],
+      "title": "同治去世，光绪即位",
+      "desc": "同治驾崩，幼帝入继大统，两宫再度垂帘"
+    },
+    {
+      "year": 1881,
+      "axis": true,
+      "focus": ["cian", "cixi"],
+      "title": "慈安去世",
+      "desc": "东太后暴崩，慈禧独掌大权"
+    },
+    {
+      "year": 1884,
+      "axis": true,
+      "focus": ["zuozongtang"],
+      "title": "中法战争",
+      "desc": "马尾海战失利，不败而败"
+    },
+    {
+      "year": 1894,
+      "key": true,
+      "axis": true,
+      "focus": ["lihongzhang"],
+      "title": "甲午战争",
+      "desc": "北洋水师覆没，洋务运动破产"
+    },
+    {
+      "year": 1895,
+      "axis": true,
+      "focus": ["kangyouwei"],
+      "title": "《马关条约》签订 · 公车上书",
+      "desc": "割台湾赔银二亿两，康有为联合举人上书拒和"
+    },
+    {
+      "year": 1898,
+      "axis": true,
+      "focus": ["guangxu", "cixi", "kangyouwei"],
+      "title": "戊戌变法",
+      "desc": "百日维新，光绪被囚瀛台，康有为出逃"
+    },
+    {
+      "year": 1900,
+      "key": true,
+      "axis": true,
+      "focus": ["cixi", "guangxu"],
+      "title": "庚子事变",
+      "desc": "义和团起，八国联军入京"
+    },
+    {
+      "year": 1901,
+      "title": "《辛丑条约》签订",
+      "desc": "赔银四亿五千万两，李鸿章同年病卒"
+    },
+    {
+      "year": 1905,
+      "axis": true,
+      "focus": ["sunyatsen"],
+      "title": "废除科举 · 同盟会成立",
+      "desc": "千年科举停废；孙中山在东京组建中国同盟会"
+    },
+    {
+      "year": 1908,
+      "axis": true,
+      "title": "光绪、慈禧相继去世",
+      "desc": "光绪先一日崩，慈禧次日崩，宣统继位"
+    },
+    {
+      "year": 1911,
+      "era": "宣统",
+      "key": true,
+      "axis": true,
+      "focus": ["yuanshikai", "sunyatsen"],
+      "title": "辛亥革命",
+      "desc": "武昌起义，各省相继独立"
+    },
+    {
+      "year": 1912,
+      "key": true,
+      "axis": true,
+      "focus": ["yuanshikai", "sunyatsen"],
+      "title": "清帝退位",
+      "desc": "宣统逊位，清朝灭亡"
+    }
+  ],
+  "personalEvents": [
+    { "year": 1850, "person": "linzexu",      "title": "去世",     "desc": "奉旨赴广西途中病逝于潮州" },
+    { "year": 1852, "person": "cixi",          "title": "选秀入宫", "desc": "封兰贵人，那年她十八岁" },
+    { "year": 1852, "person": "cian",          "title": "册立为皇后", "desc": "咸丰二年，钮祜禄氏立为皇后" },
+    { "year": 1853, "person": "zengguofan",    "title": "创办湘军", "desc": "湖南办团练，组建湘军" },
+    { "year": 1861, "person": "tongzhi",       "title": "即位",     "desc": "以皇太子继位，年号同治" },
+    { "year": 1862, "person": "lihongzhang",   "title": "组建淮军", "desc": "率淮军援沪，自成体系" },
+    { "year": 1872, "person": "zengguofan",    "title": "去世",     "desc": "两江总督任上病逝于南京" },
+    { "year": 1875, "person": "tongzhi",       "title": "去世",     "desc": "崩于养心殿，年仅二十" },
+    { "year": 1876, "person": "zuozongtang",   "title": "西征收复新疆", "desc": "抬棺西征，收复新疆" },
+    { "year": 1885, "person": "zuozongtang",   "title": "去世",     "desc": "中法战争后病逝于福州" },
+    { "year": 1889, "person": "guangxu",       "title": "亲政",     "desc": "慈禧归政，光绪亲裁" },
+    { "year": 1895, "person": "kangyouwei",    "title": "公车上书", "desc": "联合十八省举人上书拒和" },
+    { "year": 1895, "person": "yuanshikai",    "title": "小站练兵", "desc": "督练新建陆军，北洋班底自此成形" },
+    { "year": 1898, "person": "kangyouwei",    "title": "戊戌变法", "desc": "参与策划维新，政变后逃亡海外" },
+    { "year": 1901, "person": "lihongzhang",   "title": "去世",     "desc": "《辛丑条约》后病逝于北京" },
+    { "year": 1908, "person": "guangxu",       "title": "去世",     "desc": "崩于瀛台，次日慈禧亦崩" },
+    { "year": 1908, "person": "cixi",          "title": "去世",     "desc": "崩于中南海仪鸾殿，享年七十四" },
+    { "year": 1909, "person": "zhangzhidong",  "title": "去世",     "desc": "宣统元年病逝于北京" },
+    { "year": 1912, "person": "sunyatsen",     "title": "就任临时大总统", "desc": "中华民国临时政府在南京成立" },
+    { "year": 1912, "person": "yuanshikai",    "title": "接任临时大总统", "desc": "南北议和，袁世凯接替孙中山" }
+  ]
+}

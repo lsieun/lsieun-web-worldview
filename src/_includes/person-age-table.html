@@ -1,0 +1,49 @@
+<div class="qt-card" data-qt-card>
+    <div class="qt-scroll">
+        <div class="qt-table" role="table" data-qt-table style="--qt-count: {{ timeline.people | length }}">
+            <div class="qt-head" role="row">
+                <div class="qt-head-corner">
+                    <span>年份</span>
+                    <span class="qt-corner-event">事件</span>
+                </div>
+                {%- for p in timeline.people %}
+                <button type="button" class="qt-person" role="columnheader"
+                        data-qt-person="{{ p.id }}" title="{{ p.role }}（{{ p.birth }}—{{ p.death }}）">
+                    <span class="qt-person-name">{{ p.name }}</span>
+                    <span class="qt-person-life">{{ p.birth }}–{{ p.death }}</span>
+                </button>
+                {%- endfor %}
+            </div>
+            <div class="qt-body" role="rowgroup">
+                {%- for ev in timeline.events %}
+                <div class="qt-row{% if ev.key %} is-key{% endif %}" role="row">
+                    <div class="qt-rail">
+                        <span class="qt-year">{{ ev.year }}</span>
+                        {%- if ev.era %}
+                        <span class="qt-era">{{ ev.era }}</span>
+                        {%- endif %}
+                    </div>
+                    <div class="qt-spine"></div>
+                    <div class="qt-event">
+                        <h3 class="qt-event-title">{{ ev.title }}</h3>
+                        <p class="qt-event-desc">{{ ev.desc }}</p>
+                    </div>
+                    {%- for p in timeline.people %}
+                    {%- if ev.year < p.birth %}
+                    <div class="qt-age is-unborn" role="cell" data-person="{{ p.id }}">未生</div>
+                    {%- elif ev.year > p.death %}
+                    <div class="qt-age is-dead" role="cell" data-person="{{ p.id }}">已故</div>
+                    {%- else %}
+                    <div class="qt-age" role="cell" data-person="{{ p.id }}">
+                        <span class="qt-age-num">{{ ev.year - p.birth + 1 }}</span><span class="qt-age-unit">岁</span>
+                    </div>
+                    {%- endif %}
+                    {%- endfor %}
+                </div>
+                {%- endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/assets/js/person-age-table.js"></script>

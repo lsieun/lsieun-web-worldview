@@ -124,6 +124,18 @@ button {
     min-height: 76px;
 }
 
+[data-lang-label="en"] {
+    display: none;
+}
+
+[data-language="en"] [data-lang-label="zh"] {
+    display: none;
+}
+
+[data-language="en"] [data-lang-label="en"] {
+    display: inline;
+}
+
 .brand {
     display: inline-flex;
     align-items: baseline;
@@ -147,7 +159,17 @@ button {
     color: var(--color-muted);
 }
 
-.brand:hover .brand-cn {
+.brand-en--primary {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: none;
+    color: var(--color-ink);
+}
+
+.brand:hover .brand-cn,
+.brand:hover .brand-en--primary {
     color: var(--color-brass);
 }
 
@@ -188,8 +210,9 @@ button {
     transform: scaleX(1);
 }
 
-/* 主题切换 */
-.theme-toggle-btn {
+/* 语言与主题切换 */
+.theme-toggle-btn,
+.language-toggle-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -208,6 +231,19 @@ button {
     color: var(--color-brass);
     border-color: var(--color-brass);
     transform: rotate(12deg);
+}
+
+.language-toggle-btn {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+}
+
+.language-toggle-btn:hover {
+    color: var(--color-brass);
+    border-color: var(--color-brass);
+    transform: translateY(-1px);
 }
 
 .theme-toggle-btn svg {
@@ -258,6 +294,10 @@ button {
 .footer-brand .brand-cn {
     font-size: 1.2rem;
     letter-spacing: 0.18em;
+}
+
+.footer-brand .brand-en--primary {
+    font-size: 1.2rem;
 }
 
 .footer-tagline {
@@ -375,7 +415,7 @@ button {
         letter-spacing: 0.06em;
     }
 
-    .brand-en {
+    .brand-en--secondary {
         display: none;
     }
 

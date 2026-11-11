@@ -1,7 +1,7 @@
 ---
 # @formatter:off
-title: "WorldView 天下"
-description: "WorldView 天下 —— 以图为经，以人为纬，在时间与山河之间漫游。历史、地理与人物档案。"
+title: "观世界"
+description: "观世界 —— 以图为经，以人为纬，在时间与山河之间漫游。历史、地理与人物档案。"
 layout: "default.html"
 # @formatter:on
 ---
@@ -90,7 +90,7 @@ layout: "default.html"
         <div class="section-head" data-reveal>
             <p class="eyebrow">03 · SELECTED</p>
             <h2 class="section-title">精选档案</h2>
-            <p class="section-intro">每个栏目各取一页，作为进入这座档案库的入口。</p>
+            <p class="section-intro">每个栏目各取一页，再沿一条时间轴，看人物与时代如何相逢。</p>
         </div>
 
         {% set featured = [collections.historyEntries[0], collections.geoEntries[0], collections.figureEntries[0]] %}
@@ -109,6 +109,18 @@ layout: "default.html"
             {% endif %}
             {% endfor %}
         </div>
+        <a class="feature-card feature-card--wide" href="/figures/qing.html" data-reveal>
+            <div class="feature-wide-main">
+                <span class="feature-cat">人物 · 多人对比专题</span>
+                <h3 class="feature-title">清朝大事与人物年龄</h3>
+            </div>
+            <p class="feature-lead">把晚清七十二年的大事与十三段生命叠合，筛选人物，比较他们在历史转折处的年纪与位置。</p>
+            <div class="feature-meta">
+                <span>1840—1912</span>
+                <span>13 人 · 21 件大事</span>
+                <span>展开时间轴 →</span>
+            </div>
+        </a>
     </div>
 </section>
 

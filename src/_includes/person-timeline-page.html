@@ -1,0 +1,71 @@
+{#
+  多人时间轴专题：人物筛选 + 生命线图 + 年龄明细表。
+  页面注入 timeline 数据即可复用，文案来自 timeline.meta。
+#}
+{% if timeline and timeline.people %}
+{% set pageKey = timeline.meta.key | default('') %}
+<link rel="stylesheet" href="/assets/css/person-timeline.css">
+
+<div class="person-timeline-page">
+    <section class="page-hero person-timeline-hero">
+        <span class="watermark" aria-hidden="true">清</span>
+        <div class="container">
+            <p class="eyebrow">FIGURES · COMPARATIVE TIMELINE</p>
+            <h1 class="page-title">{{ timeline.meta.title | default('大事与人物年龄') }}</h1>
+            {% if timeline.meta.subtitle %}
+            <p class="page-lead">{{ timeline.meta.subtitle }}。把时代的大事与个人的生命线叠合，重新看见每个人在历史转折处的年纪与位置。</p>
+            {% endif %}
+            <div class="page-meta">
+                {% for tag in (timeline.meta.tags or []) %}
+                <span>{{ tag }}</span>
+                {% endfor %}
+                <span>人物 <strong>{{ timeline.people | length }} 位</strong></span>
+                <span>大事 <strong>{{ timeline.events | length }} 件</strong></span>
+                <span>年龄口径 <strong>虚岁</strong></span>
+            </div>
+        </div>
+    </section>
+
+    <section class="section person-timeline-cast">
+        <div class="container">
+            <div class="section-head" data-reveal>
+                <p class="eyebrow">00 · CAST</p>
+                <h2 class="section-title">选择要比较的人物</h2>
+                {% if timeline.meta.intro %}
+                <p class="section-intro">{{ timeline.meta.intro }}</p>
+                {% endif %}
+            </div>
+            {% include "person-filter.html" %}
+        </div>
+    </section>
+
+    <section class="section section--tint person-timeline-lifelines">
+        <div class="container">
+            <div class="section-head" data-reveal>
+                <p class="eyebrow">01 · LIFELINES</p>
+                <h2 class="section-title">生命线图</h2>
+                {% if timeline.meta.lifelineHint %}
+                <p class="section-intro">{{ timeline.meta.lifelineHint }}</p>
+                {% endif %}
+            </div>
+            {% include "person-lifeline.html" %}
+        </div>
+    </section>
+
+    <section class="section person-timeline-ages">
+        <div class="container">
+            <div class="section-head" data-reveal>
+                <p class="eyebrow">02 · AGE MATRIX</p>
+                <h2 class="section-title">年龄明细表</h2>
+                {% if timeline.meta.tableIntro %}
+                <p class="section-intro">{{ timeline.meta.tableIntro }}</p>
+                {% endif %}
+            </div>
+            {% include "person-age-table.html" %}
+            {% if timeline.meta.note %}
+            <p class="qt-note">{{ timeline.meta.note | safe }}</p>
+            {% endif %}
+        </div>
+    </section>
+</div>
+{% endif %}

@@ -1,0 +1,54 @@
+{#
+  person-filter.html — 人物分组过滤器（复选框 + 分组全选 + localStorage 记忆）
+  使用：把 timeline 数据通过 {% set timeline = xxx %} 注入当前上下文，然后 include 本文件。
+  过滤状态通过 window.__personFilter 维护，两个视图（生命线图 / 明细表）订阅 change 事件自动重渲染。
+#}
+{% if timeline and timeline.people %}
+<div class="pf-card" data-pf>
+    <div class="pf-head">
+        <span class="pf-title">人物选择</span>
+        <div class="pf-quick">
+            <button type="button" class="pf-btn" data-pf-action="all">全选</button>
+            <button type="button" class="pf-btn" data-pf-action="none">清空</button>
+            <button type="button" class="pf-btn is-accent" data-pf-action="default">默认</button>
+        </div>
+        <span class="pf-count"><em data-pf-count>{{ timeline.people | length }}</em> / {{ timeline.people | length }}</span>
+    </div>
+    <div class="pf-groups">
+        {% for g in (timeline.groups or []) %}
+        <section class="pf-group" data-pf-group="{{ g.id }}">
+            <header class="pf-group-head">
+                <input type="checkbox" id="pf-group-{{ g.id }}" data-pf-group-check="{{ g.id }}" checked>
+                <label class="pf-group-check" for="pf-group-{{ g.id }}">
+                    <span>{{ g.name }}</span>
+                </label>
+                {% if g.desc %}<span class="pf-group-desc">{{ g.desc }}</span>{% endif %}
+            </header>
+            <div class="pf-group-body">
+                {% for p in timeline.people %}
+                {% if p.group == g.id %}
+                <div class="pf-person">
+                    <input type="checkbox" id="pf-person-{{ p.id }}" data-pf-person="{{ p.id }}" value="{{ p.id }}"
+                           title="{{ p.role }}（{{ p.birth }}—{{ p.death }}）">
+                    <label for="pf-person-{{ p.id }}">
+                        <span class="pf-person-name">{{ p.name }}</span>
+                        <span class="pf-person-life">{{ p.birth }}–{{ p.death }}</span>
+                    </label>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </section>
+        {% endfor %}
+    </div>
+</div>
+
+<script id="person-filter-data" type="application/json" data-page="{{ pageKey | default('') }}">
+{
+    "storageKey": "worldview-person-filter",
+    "allIds": [{% for p in timeline.people %}"{{ p.id }}"{% if not loop.last %}, {% endif %}{% endfor %}],
+    "defaults": {% if timeline.defaultPeople %}{{ timeline.defaultPeople | dump | safe }}{% else %}[]{% endif %}
+}
+</script>
+<script src="/assets/js/person-filter.js"></script>
+{% endif %}

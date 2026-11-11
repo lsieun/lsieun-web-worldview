@@ -1,6 +1,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{% if title and title != "WorldView 天下" %}{{ title }} · {% endif %}WorldView 天下</title>
+<title>{% if title and title != site.title %}{{ title }} · {% endif %}观世界</title>
 <meta name="description" content="{{ description | default(site.description) }}">
 <meta name="theme-color" content="#0a1512">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -10,3 +10,4 @@
 <link rel="stylesheet" href="/assets/css/components.css">
 <link rel="stylesheet" href="/assets/css/atlas.css">
 <script src="/assets/js/theme.js"></script>
+<script src="/assets/js/language.js"></script>

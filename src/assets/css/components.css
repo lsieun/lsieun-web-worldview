@@ -423,6 +423,47 @@
     color: var(--color-muted);
 }
 
+.feature-card--wide {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) auto;
+    align-items: center;
+    gap: 1.5rem 2.5rem;
+    margin-top: 1.25rem;
+    border-top: 2px solid var(--color-brass);
+}
+
+.feature-wide-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.feature-card--wide .feature-meta {
+    flex-direction: column;
+    gap: 0.45rem;
+    padding: 0 0 0 1.5rem;
+    border-top: 0;
+    border-left: 1px dashed var(--color-line);
+    white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+    .feature-card--wide {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1.2rem;
+    }
+
+    .feature-card--wide .feature-meta {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.6rem 1rem;
+        padding: 1rem 0 0;
+        border-top: 1px dashed var(--color-line);
+        border-left: 0;
+        white-space: normal;
+    }
+}
+
 /* ------------------------------------------------------------
    栏目页头
    ------------------------------------------------------------ */

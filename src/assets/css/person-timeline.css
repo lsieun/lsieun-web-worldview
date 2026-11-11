@@ -1,0 +1,790 @@
+/* ==========================================================================
+   person-timeline.css — WorldView 人物时间轴通用样式
+   包含：人物筛选器、生命线图、年龄明细表
+   ========================================================================== */
+
+.person-timeline-page {
+    --timeline-card-bg: color-mix(in srgb, var(--color-surface) 88%, transparent);
+}
+
+.person-timeline-hero .page-lead {
+    max-width: 46em;
+}
+
+.person-timeline-page .pf-card,
+.person-timeline-page .qtg-card,
+.person-timeline-page .qt-card {
+    background: var(--timeline-card-bg);
+    box-shadow: 0 1px 0 color-mix(in srgb, var(--color-brass) 8%, transparent);
+}
+
+.person-timeline-page .pf-card {
+    margin-bottom: 0;
+    border-top: 2px solid var(--color-brass);
+}
+
+.person-timeline-page .pf-groups {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.85rem 1rem;
+}
+
+.person-timeline-page .pf-group {
+    padding: 0.8rem 1rem;
+    background: color-mix(in srgb, var(--color-bg-base) 45%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-line) 72%, transparent);
+}
+
+.person-timeline-page .qtg-card,
+.person-timeline-page .qt-card {
+    margin: 0;
+}
+
+.person-timeline-page .qtg-legend {
+    margin: var(--space-sm) 0 0;
+}
+
+.person-timeline-page .qtg-tip {
+    background: var(--color-surface-raised);
+}
+
+.person-timeline-page .qtg-scroll,
+.person-timeline-page .qt-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line-strong) transparent;
+}
+
+/* ---------- 过滤器 ---------- */
+.pf-card {
+    margin: 0 0 var(--space-md);
+    padding: var(--space-md);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+}
+.pf-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 14px;
+    margin-bottom: var(--space-sm);
+}
+.pf-title {
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+}
+.pf-quick {
+    display: inline-flex;
+    gap: 6px;
+}
+.pf-btn {
+    padding: 3px 10px;
+    font-family: inherit;
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    background-color: transparent;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background-color 0.12s, color 0.12s, border-color 0.12s;
+}
+.pf-btn:hover {
+    color: var(--color-ink);
+    background-color: color-mix(in srgb, var(--color-brass) 5%, transparent);
+    border-color: color-mix(in srgb, var(--color-brass) 35%, var(--color-line));
+}
+.pf-btn.is-accent {
+    color: var(--color-brass);
+    border-color: color-mix(in srgb, var(--color-brass) 50%, var(--color-line));
+}
+.pf-count {
+    margin-left: auto;
+    color: var(--color-muted);
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+}
+.pf-count em {
+    color: var(--color-brass);
+    font-style: normal;
+    font-weight: 600;
+}
+
+.pf-groups {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.pf-group-head {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+.pf-group-check {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--color-ink);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+.pf-group-check input {
+    accent-color: var(--color-brass);
+}
+.pf-group-desc {
+    color: var(--color-muted);
+    font-size: 0.6875rem;
+}
+.pf-group-body {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 14px;
+    padding: 4px 0 0 0;
+}
+.pf-person {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 6px 3px 4px;
+    color: var(--color-ink-soft);
+    font-size: 0.8125rem;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: background-color 0.12s;
+}
+.pf-person:hover {
+    background-color: color-mix(in srgb, var(--color-brass) 6%, transparent);
+}
+.pf-person input {
+    accent-color: var(--color-brass);
+}
+.pf-person-name {
+    color: var(--color-ink);
+}
+.pf-person-life {
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.qtg-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--color-muted);
+    font-size: 0.875rem;
+    letter-spacing: 0.08em;
+}
+
+/* ---------- （原表格 / 生命线样式保持不变，下面省略） ---------- */
+
+.qt-intro {
+    color: var(--color-muted);
+    line-height: 1.9;
+    margin: var(--space-md) 0;
+}
+
+.qt-card {
+    position: relative;
+    margin: var(--space-lg) 0;
+    padding: var(--space-md);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+}
+
+/* 窄屏横向滚动；宽屏撤销滚动容器，保证列头吸顶相对视口生效 */
+.qt-scroll {
+    overflow-x: auto;
+}
+
+.qt-table {
+    --qt-rail: 66px;
+    --qt-spine: 16px;
+    --qt-event: 268px;
+    --qt-cols: var(--qt-rail) var(--qt-spine) var(--qt-event) repeat(var(--qt-count, 9), minmax(52px, 1fr));
+    min-width: 960px;
+}
+
+.qt-head,
+.qt-row {
+    display: grid;
+    grid-template-columns: var(--qt-cols);
+    align-items: stretch;
+}
+
+/* ---------- 列头（吸顶） ---------- */
+.qt-head {
+    position: sticky;
+    top: var(--qt-head-top, 0px);
+    z-index: 6;
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-line);
+}
+
+.qt-head-corner {
+    grid-column: 1 / span 3;
+    display: grid;
+    grid-template-columns: var(--qt-rail) var(--qt-spine) var(--qt-event);
+    align-items: end;
+    padding: 12px 0;
+    color: var(--color-muted);
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+}
+.qt-head-corner > span:first-child {
+    justify-self: end;
+    padding-right: 10px;
+}
+.qt-corner-event {
+    grid-column: 3;
+    padding-left: 18px;
+}
+
+.qt-person {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 2px;
+    padding: 12px 4px 10px;
+    background: transparent;
+    border: 0;
+    border-left: 1px solid color-mix(in srgb, var(--color-line) 45%, transparent);
+    color: var(--color-ink-soft);
+    font-family: inherit;
+    cursor: pointer;
+    transition: background-color 0.12s;
+}
+.qt-person:hover {
+    background-color: color-mix(in srgb, var(--color-brass) 6%, transparent);
+}
+.qt-person:focus-visible {
+    outline: 2px solid var(--color-brass);
+    outline-offset: -2px;
+}
+.qt-person-name {
+    font-family: var(--font-serif);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+.qt-person-life {
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+.qt-person.is-focus {
+    background-color: color-mix(in srgb, var(--color-brass) 12%, transparent);
+}
+.qt-person.is-focus .qt-person-name {
+    color: var(--color-brass);
+}
+
+/* ---------- 事件行 ---------- */
+.qt-body {
+    position: relative;
+}
+/* 贯穿全表的纵向时间轴 */
+.qt-body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(var(--qt-rail) + var(--qt-spine) / 2 - 1px);
+    width: 2px;
+    background-color: color-mix(in srgb, var(--color-line) 85%, transparent);
+}
+
+.qt-row {
+    position: relative;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-line) 40%, transparent);
+    transition: background-color 0.12s;
+}
+.qt-row:last-child {
+    border-bottom: 0;
+}
+.qt-row:hover {
+    background-color: color-mix(in srgb, var(--color-brass) 5%, transparent);
+}
+
+.qt-rail {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1px;
+    padding: 11px 10px 11px 0;
+}
+.qt-year {
+    color: var(--color-ink);
+    font-family: var(--font-mono);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.5;
+    font-variant-numeric: tabular-nums;
+}
+.qt-era {
+    color: var(--color-brass);
+    font-size: 0.625rem;
+    letter-spacing: 0.12em;
+    line-height: 1.4;
+}
+
+/* 时间轴节点：与年份首行对齐；转折性大事实心并带光晕 */
+.qt-spine {
+    position: relative;
+}
+.qt-spine::after {
+    content: "";
+    position: absolute;
+    top: 18px;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    box-sizing: border-box;
+    transform: translateX(-50%);
+    background-color: var(--color-surface);
+    border: 2px solid color-mix(in srgb, var(--color-line) 100%, transparent);
+    border-radius: 50%;
+    z-index: 1;
+}
+.is-key .qt-spine::after {
+    background-color: var(--color-brass);
+    border-color: var(--color-brass);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-brass) 18%, transparent);
+}
+
+.qt-event {
+    padding: 10px 16px 10px 18px;
+}
+.qt-event-title {
+    margin: 0;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.45;
+}
+.is-key .qt-event-title {
+    color: var(--color-brass);
+}
+.qt-event-desc {
+    margin: 2px 0 0;
+    color: var(--color-muted);
+    font-size: 0.75rem;
+    line-height: 1.55;
+}
+
+/* ---------- 年龄格 ---------- */
+.qt-age {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1px;
+    min-height: 58px;
+    border-left: 1px solid color-mix(in srgb, var(--color-line) 35%, transparent);
+    font-variant-numeric: tabular-nums;
+    transition: opacity 0.15s, background-color 0.15s;
+}
+/* 在世区间连成淡色竖带，一眼看出谁在场 */
+.qt-age:not(.is-unborn):not(.is-dead) {
+    background-color: color-mix(in srgb, var(--color-brass) 5%, transparent);
+}
+.qt-age-num {
+    color: var(--color-ink);
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    font-weight: 600;
+}
+.qt-age-unit {
+    color: var(--color-muted);
+    font-size: 0.625rem;
+}
+.qt-age.is-unborn,
+.qt-age.is-dead {
+    color: color-mix(in srgb, var(--color-muted) 55%, transparent);
+    font-size: 0.6875rem;
+    letter-spacing: 0.05em;
+}
+
+/* 聚焦某一人物的整列 */
+.qt-card[data-qt-focus] .qt-age {
+    opacity: 0.22;
+}
+.qt-card[data-qt-focus] .qt-age.is-focus {
+    opacity: 1;
+    background-color: color-mix(in srgb, var(--color-brass) 12%, transparent);
+}
+
+.qt-note {
+    margin: var(--space-md) 0 0;
+    color: var(--color-muted);
+    font-size: 0.8125rem;
+    line-height: 1.9;
+}
+.qt-note strong {
+    color: var(--color-ink);
+}
+
+/* ==========================================================================
+   生命线图：左竖轴大事 → 右侧人物生命线与年龄节点
+   ========================================================================== */
+.qtg-hint {
+    margin: 0 0 var(--space-md);
+    color: var(--color-muted);
+    font-size: 0.875rem;
+    line-height: 1.8;
+}
+
+.qtg-card {
+    position: relative;
+    margin: var(--space-md) 0 var(--space-sm);
+    padding: var(--space-md);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+}
+
+.qtg-scroll {
+    overflow-x: auto;
+}
+
+/* 列头吸顶（宽屏无横向滚动时相对视口生效） */
+.qtg-head {
+    position: sticky;
+    top: var(--qtg-head-top, 0px);
+    z-index: 6;
+    display: flex;
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-line);
+}
+.qtg-head-corner {
+    flex: 0 0 var(--qtg-axis, 200px);
+    padding: 12px 10px 10px 0;
+    text-align: right;
+    color: var(--color-muted);
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+}
+.qtg-head-person {
+    flex: 0 0 var(--qtg-col, 96px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+    padding: 12px 4px 8px;
+}
+.qtg-head-name {
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+.qtg-head-life {
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.qtg-body {
+    position: relative;
+    height: var(--qtg-h, 1330px);
+}
+
+/* 十年网格与年份刻度 */
+.qtg-grid-line {
+    position: absolute;
+    left: 48px;
+    right: 0;
+    height: 1px;
+    background-color: color-mix(in srgb, var(--color-line) 28%, transparent);
+}
+.qtg-tick {
+    position: absolute;
+    left: 42px;
+    width: 7px;
+    height: 1px;
+    background-color: color-mix(in srgb, var(--color-line) 90%, transparent);
+}
+.qtg-year-label {
+    position: absolute;
+    left: 0;
+    width: 38px;
+    text-align: right;
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    line-height: 14px;
+    font-variant-numeric: tabular-nums;
+}
+.qtg-axis-line {
+    position: absolute;
+    top: 0;
+    width: 2px;
+    transform: translateX(-1px);
+    background-color: color-mix(in srgb, var(--color-line) 95%, transparent);
+}
+
+/* 竖轴上的事件圆点与文字 */
+.qtg-ev-dot {
+    position: absolute;
+    left: 48px;
+    width: 9px;
+    height: 9px;
+    box-sizing: border-box;
+    transform: translate(-50%, -50%);
+    background-color: var(--color-surface);
+    border: 2px solid color-mix(in srgb, var(--color-line) 100%, transparent);
+    border-radius: 50%;
+    z-index: 1;
+}
+.qtg-ev-dot.is-key {
+    background-color: var(--color-brass);
+    border-color: var(--color-brass);
+}
+.qtg-ev-label {
+    position: absolute;
+    left: 60px;
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    white-space: nowrap;
+    color: var(--color-muted);
+    font-size: 0.75rem;
+    line-height: 18px;
+}
+.qtg-ev-year {
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+}
+.qtg-ev-label.is-key .qtg-ev-title {
+    color: var(--color-brass);
+    font-weight: 600;
+}
+
+/* 人物生命线 */
+.qtg-lane {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    transition: background-color 0.12s;
+}
+.qtg-lane:hover {
+    background-color: color-mix(in srgb, var(--color-brass) 4%, transparent);
+}
+.qtg-life {
+    position: absolute;
+    left: 50%;
+    width: 6px;
+    transform: translateX(-50%);
+    border-radius: 3px;
+    background-color: color-mix(in srgb, var(--color-line) 92%, transparent);
+}
+.qtg-life.is-cut-top {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+.qtg-life.is-cut-bottom {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+/* 年龄节点 */
+.qtg-node {
+    position: absolute;
+    left: 50%;
+    width: 22px;
+    height: 22px;
+    margin-left: -11px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-ink);
+    background-color: var(--color-surface);
+    border: 2px solid color-mix(in srgb, var(--color-brass) 45%, var(--color-line));
+    border-radius: 50%;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+    z-index: 2;
+    transition: transform 0.12s, box-shadow 0.12s;
+}
+.qtg-node:hover {
+    transform: scale(1.18);
+    box-shadow: var(--shadow-lift);
+    z-index: 3;
+}
+.qtg-node:focus-visible {
+    outline: 2px solid var(--color-brass);
+    outline-offset: 2px;
+}
+.qtg-node.is-focus {
+    color: var(--color-surface);
+    background-color: var(--color-brass);
+    border-color: var(--color-brass);
+}
+
+/* 悬浮提示 */
+.qtg-tip {
+    position: absolute;
+    z-index: 20;
+    max-width: 260px;
+    padding: 8px 10px;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-lift);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.12s;
+}
+.qtg-tip.is-show {
+    opacity: 1;
+}
+.qtg-tip-title {
+    margin: 0 0 3px;
+    color: var(--color-ink);
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+.qtg-tip-meta {
+    margin: 0 0 3px;
+    color: var(--color-brass);
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+.qtg-tip-desc {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 0.75rem;
+    line-height: 1.6;
+}
+
+/* 图例 */
+.qtg-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    margin: 0 0 var(--space-lg);
+    color: var(--color-muted);
+    font-size: 0.75rem;
+}
+.qtg-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.qtg-swatch {
+    display: inline-block;
+    font-style: normal;
+}
+.qtg-swatch.is-node {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background-color: var(--color-surface);
+    border: 2px solid color-mix(in srgb, var(--color-brass) 45%, var(--color-line));
+}
+.qtg-swatch.is-node.is-focus {
+    background-color: var(--color-brass);
+    border-color: var(--color-brass);
+}
+.qtg-swatch.is-line {
+    width: 6px;
+    height: 16px;
+    border-radius: 3px;
+    background-color: color-mix(in srgb, var(--color-line) 92%, transparent);
+}
+
+/* ---------- 响应式 ---------- */
+/* 窄屏滚动容器不参与页面纵向吸顶，避免站点页头高度被重复计算。 */
+@media (max-width: 1179px) {
+    .qtg-head,
+    .qt-head {
+        position: static;
+    }
+}
+
+@media (min-width: 1180px) {
+    .qt-scroll {
+        overflow-x: visible;
+    }
+    .qtg-scroll {
+        overflow-x: visible;
+    }
+    .qt-table {
+        min-width: 0;
+    }
+}
+
+@media (max-width: 720px) {
+    .qt-table {
+        --qt-rail: 54px;
+        --qt-event: 180px;
+        min-width: 720px;
+    }
+    .qt-head-corner {
+        font-size: 0.625rem;
+    }
+    .qt-corner-event {
+        padding-left: 12px;
+    }
+    .qt-event {
+        padding: 10px 12px 10px 12px;
+    }
+    .qt-event-desc {
+        font-size: 0.6875rem;
+    }
+    .qt-age-num {
+        font-size: 0.875rem;
+    }
+
+    .person-timeline-page .pf-card,
+    .person-timeline-page .qtg-card,
+    .person-timeline-page .qt-card {
+        padding: var(--space-sm);
+    }
+
+    .person-timeline-page .pf-groups {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .person-timeline-page .pf-group {
+        padding: 0.75rem;
+    }
+
+    .person-timeline-page .pf-group-head {
+        flex-wrap: wrap;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .person-timeline-page .pf-btn,
+    .person-timeline-page .pf-person,
+    .person-timeline-page .qt-person,
+    .person-timeline-page .qt-row,
+    .person-timeline-page .qt-age,
+    .person-timeline-page .qtg-lane,
+    .person-timeline-page .qtg-node,
+    .person-timeline-page .qtg-tip {
+        transition: none;
+    }
+}
