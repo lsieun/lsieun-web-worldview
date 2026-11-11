@@ -1,17 +1,17 @@
 {
   "title": "楚汉人物与年龄",
   "dynasty": "western-han",
-  "range": { "start": -277, "end": -186 },
+  "range": { "start": -260, "end": -186 },
   "meta": {
     "key": "chu-han",
     "watermark": "楚",
     "title": "楚汉人物与年龄",
-    "subtitle": "前 277 范增出生 — 前 186 张良去世",
+    "subtitle": "前 221 秦统一六国 — 前 186 张良去世",
     "tags": ["楚汉相争", "六人对比"],
     "intro": "纵向自上而下是时间。左侧竖轴只标战事与立国这类大事；右侧六位人物各一条生命线，走到大事那一年就落一个节点，写明当时的年龄（虚岁）。",
     "lifelineHint": "圆点为在世时经历的大事，实心圆点是与本人直接相关的事件。悬停可看事件与年龄。下方另附年龄明细表。",
     "tableIntro": "同一批大事逐行列成表格，便于横向比较同一年六人的年龄。点击人物列头可单独聚焦其一列，再次点击取消。",
-    "note": "年龄口径为<strong>虚岁</strong>（事件年份 − 出生年份 + 1）；「未生」表示尚未出生，「已故」表示事件发生时已去世。楚汉之际系年取通行说法；刘邦生年有前 256、前 247 两说，此处从前 256。韩信、张良、范增生年取通行约年。"
+    "note": "年龄口径为<strong>虚岁</strong>（事件年份 − 出生年份 + 1）；「未生」表示尚未出生，「已故」表示事件发生时已去世。视窗自前 260 年起，范增生年约前 277，其生命线上端在窗口之外故按截断显示。楚汉之际系年取通行说法；刘邦生年有前 256、前 247 两说，此处从前 256。韩信、张良、范增生年取通行约年。"
   },
   "groups": [
     { "id": "chu", "name": "楚", "desc": "项羽阵营" },
@@ -25,7 +25,7 @@
     { "figure": "xiaohe", "group": "han", "role": "汉相国 · 收秦图籍" },
     { "figure": "zhangliang", "group": "han", "role": "留侯 · 运筹帷幄" }
   ],
-  "events": ["dazexiang", "julu", "xianyang-entry", "hongmen", "pengcheng", "gaixia", "emperor"],
+  "events": ["qin-unification", "dazexiang", "julu", "xianyang-entry", "hongmen", "pengcheng", "gaixia", "emperor"],
   "personalEvents": [
     "peixian-uprising",
     "kuaiji-uprising",
