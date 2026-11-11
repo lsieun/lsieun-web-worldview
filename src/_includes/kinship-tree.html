@@ -49,6 +49,21 @@
         <span><i class="kh-legend-line" aria-hidden="true"></i>父母与子女关系</span>
     </div>
 
+    <div class="kh-chart-shell bleed" data-tree-chart-shell hidden>
+        <div class="kh-chart-toolbar" role="group" aria-label="世系树查看工具">
+            <div class="kh-chart-actions">
+                <button type="button" data-tree-action="zoom-out" aria-label="缩小世系树">缩小</button>
+                <button type="button" data-tree-action="zoom-in" aria-label="放大世系树">放大</button>
+                <button type="button" data-tree-action="reset">复位</button>
+                <button type="button" data-tree-action="fullscreen" aria-pressed="false">全屏</button>
+                <button type="button" data-tree-action="export">导出 PNG</button>
+            </div>
+            <p>拖动平移 · 滚轮缩放 · 点击皇帝查看在位大事</p>
+        </div>
+        <div class="kh-chart-stage" data-tree-chart tabindex="0" role="img" aria-label="西汉血缘世系树。可拖动、缩放，也可使用上方按钮操作。"></div>
+        <p class="kh-chart-status" data-tree-status role="status" aria-live="polite"></p>
+    </div>
+
     <div class="kh-tree-scroll bleed" data-tree-scroll tabindex="0" role="region" aria-label="西汉血缘世系，可横向滚动">
         <div class="kh-tree-canvas">
             <ul class="kh-roots">

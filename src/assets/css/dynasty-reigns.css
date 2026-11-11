@@ -633,6 +633,127 @@
     font-size: 0.6875rem;
 }
 
+/* ---------- ECharts 世系画布（无 JS 时保留上方语义化树） ---------- */
+.kh-chart-shell {
+    min-width: 0;
+    overflow: hidden;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+}
+
+.kh-chart-shell[hidden] {
+    display: none;
+}
+
+.reign-kinship-panel.is-chart-enhanced > .kh-tree-scroll {
+    display: none;
+}
+
+.kh-chart-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--color-line);
+}
+
+.kh-chart-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.kh-chart-actions button {
+    padding: 6px 10px;
+    color: var(--color-ink-soft);
+    font-family: inherit;
+    font-size: 0.6875rem;
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+
+.kh-chart-actions button:hover {
+    color: var(--color-brass);
+    border-color: var(--color-brass);
+}
+
+.kh-chart-actions button:focus-visible,
+.kh-chart-stage:focus-visible {
+    outline: 2px solid var(--color-brass);
+    outline-offset: 2px;
+}
+
+.kh-chart-actions button[aria-pressed="true"] {
+    color: var(--color-brass);
+    border-color: var(--color-brass);
+}
+
+.kh-chart-toolbar > p {
+    flex: none;
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 0.6875rem;
+}
+
+.kh-chart-stage {
+    width: 100%;
+    height: clamp(560px, 68vh, 740px);
+    cursor: grab;
+    touch-action: none;
+}
+
+.kh-chart-stage:active {
+    cursor: grabbing;
+}
+
+.kh-chart-status {
+    min-height: 1.5em;
+    margin: 0;
+    padding: 0 14px 10px;
+    color: var(--color-muted);
+    font-size: 0.6875rem;
+}
+
+.kh-chart-shell:fullscreen,
+.kh-chart-shell.is-expanded {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    max-width: none;
+    height: 100vh;
+    margin: 0;
+    box-sizing: border-box;
+    background: var(--color-bg-base);
+    border: 0;
+    border-radius: 0;
+}
+
+.kh-chart-shell.is-expanded {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+}
+
+.kh-chart-shell:fullscreen .kh-chart-stage,
+.kh-chart-shell.is-expanded .kh-chart-stage {
+    flex: 1;
+    min-height: 0;
+    height: auto;
+}
+
+.kh-chart-shell:fullscreen .kh-chart-status,
+.kh-chart-shell.is-expanded .kh-chart-status {
+    padding-bottom: 14px;
+}
+
+body.kh-fullscreen-fallback {
+    overflow: hidden;
+}
+
 .reign-method-note {
     max-width: 76em;
     margin: var(--space-md) 0 0;
@@ -698,6 +819,20 @@
 
     .kh-tree-canvas {
         padding: var(--space-sm);
+    }
+
+    .kh-chart-toolbar {
+        align-items: start;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .kh-chart-toolbar > p {
+        white-space: normal;
+    }
+
+    .kh-chart-stage {
+        height: 600px;
     }
 }
 
