@@ -1,0 +1,10 @@
+{
+  "name": "刘邦",
+  "en": "Liu Bang",
+  "birth": -256,
+  "death": -195,
+  "origin": "peixian",
+  "activePlaces": ["peixian", "xianyang", "hongmen", "pengcheng", "changan"],
+  "summary": "沛县亭长起兵，先入关中，垓下灭楚，建立汉朝。",
+  "milestones": ["xianyang-entry", "hongmen", "emperor", "liubang-death"]
+}

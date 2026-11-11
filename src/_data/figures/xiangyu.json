@@ -1,0 +1,10 @@
+{
+  "name": "项羽",
+  "en": "Xiang Yu",
+  "birth": -232,
+  "death": -202,
+  "origin": "xiaxiang",
+  "activePlaces": ["kuaiji", "julu", "xianyang", "hongmen", "pengcheng", "gaixia", "wujiang"],
+  "summary": "楚国名将之后，巨鹿破秦，号西楚霸王，垓下败亡。",
+  "milestones": ["kuaiji-uprising", "julu", "hongmen", "gaixia", "wujiang-death"]
+}

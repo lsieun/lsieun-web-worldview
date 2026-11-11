@@ -8,7 +8,7 @@
 
 <div class="person-timeline-page">
     <section class="page-hero person-timeline-hero">
-        <span class="watermark" aria-hidden="true">清</span>
+        <span class="watermark" aria-hidden="true">{{ timeline.meta.watermark | default('史') }}</span>
         <div class="container">
             <p class="eyebrow">FIGURES · COMPARATIVE TIMELINE</p>
             <h1 class="page-title">{{ timeline.meta.title | default('大事与人物年龄') }}</h1>
