@@ -1,5 +1,6 @@
 {
   "title": "楚汉人物与年龄",
+  "dynasty": "western-han",
   "range": { "start": -256, "end": -195 },
   "meta": {
     "key": "chu-han",

@@ -63,6 +63,22 @@ export default function () {
     const { entities: figures, sources: figureSources } = readEntities("figures");
     const { entities: events, sources: eventSources } = readEntities("events");
     const { entities: views } = readEntities("views");
+    const { entities: dynasties, sources: dynastySources } = readEntities("dynasties");
+
+    // ---------- 朝代 ----------
+    for (const dynasty of Object.values(dynasties)) {
+        const source = dynastySources[dynasty.id];
+        if (!dynasty.name) throw new Error(`[world] ${source} 缺少 name`);
+        const start = ensureNumber(dynasty.start, source, "start");
+        const end = ensureNumber(dynasty.end, source, "end");
+        ensureNumber(dynasty.order, source, "order");
+        if (start > end) throw new Error(`[world] ${source} 的 start 晚于 end`);
+        for (const topic of ensureArray(dynasty.topics, source, "topics")) {
+            if (!topic.title || !topic.href) {
+                throw new Error(`[world] ${source} 的 topics 每项都需要 title 与 href`);
+            }
+        }
+    }
 
     // ---------- 区域 ----------
     for (const region of Object.values(regions)) {
@@ -131,6 +147,7 @@ export default function () {
             }
             castIds.add(item.figure);
         }
+        if (view.dynasty) ensureRef(dynasties, "朝代", source, "dynasty", view.dynasty);
         for (const eventId of ensureArray(view.events, source, "events")) {
             ensureRef(events, "事件", source, "events", eventId);
         }
@@ -164,6 +181,24 @@ export default function () {
         place.events = related.map((event) => event.id);
         place.figures = [...new Set(related.flatMap((event) => ensureArray(event.figures, "", "figures")))];
     }
+
+    // ---------- 朝代与专题索引 ----------
+    const dynastyList = Object.values(dynasties)
+        .map((dynasty) => ({ ...dynasty, topics: [...ensureArray(dynasty.topics, "", "topics")] }))
+        .sort((a, b) => a.order - b.order);
+
+    for (const view of Object.values(views)) {
+        if (!view.dynasty) continue;
+        const dynasty = dynastyList.find((item) => item.id === view.dynasty);
+        dynasty.topics.push({
+            title: view.title || view.meta?.title || view.id,
+            href: view.href || `/figures/${view.id}.html`,
+            meta: "人物年龄",
+            summary: view.summary || view.meta?.subtitle || ""
+        });
+    }
+
+    const topicCount = dynastyList.reduce((total, dynasty) => total + dynasty.topics.length, 0);
 
     // ---------- 视图拼装 ----------
     const timelines = {};
@@ -228,5 +263,5 @@ export default function () {
         };
     }
 
-    return { figures, places, regions, views, timelines };
+    return { figures, places, regions, views, dynasties: dynastyList, topicCount, timelines };
 }

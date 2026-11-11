@@ -538,16 +538,29 @@
 /* ------------------------------------------------------------
    史册：纪年带 + 条目行
    ------------------------------------------------------------ */
-.era-ribbon {
-    display: flex;
-    gap: 2px;
-    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+.era-ribbon-wrap {
+    position: sticky;
+    top: 76px;
+    z-index: 20;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+    background: color-mix(in srgb, var(--color-bg-base) 92%, transparent);
+    backdrop-filter: blur(12px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
     border-bottom: 1px solid var(--color-line);
 }
 
+.era-ribbon {
+    display: flex;
+    gap: 2px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    scroll-behavior: smooth;
+}
+
 .era-seg {
-    flex-basis: 0;
-    padding: 1.1rem 0.5rem 1rem;
+    flex: 1 0 5.2rem;
+    padding: 0.8rem 0.35rem 0.65rem;
     border-top: 2px solid var(--color-line-strong);
     text-align: center;
     transition: border-color 0.3s, background 0.3s;
@@ -558,22 +571,201 @@
     background: color-mix(in srgb, var(--color-surface) 60%, transparent);
 }
 
+.era-seg.is-active {
+    border-top-color: var(--color-brass);
+    background: color-mix(in srgb, var(--color-brass) 8%, transparent);
+}
+
 .era-name {
     display: block;
     font-family: var(--font-serif);
     font-size: 0.95rem;
     font-weight: 600;
     white-space: nowrap;
+    transition: color 0.3s;
+}
+
+.era-seg.is-active .era-name {
+    color: var(--color-brass);
 }
 
 .era-span {
     display: block;
-    margin-top: 0.25rem;
+    margin-top: 0.2rem;
     font-family: var(--font-mono);
-    font-size: 0.58rem;
-    letter-spacing: 0.08em;
+    font-size: 0.54rem;
+    letter-spacing: 0.04em;
     color: var(--color-muted);
     white-space: nowrap;
+}
+
+/* ------------------------------------------------------------
+   史册：按朝代分组的专题表
+   ------------------------------------------------------------ */
+.chronicle {
+    border-top: 1px solid var(--color-line-strong);
+}
+
+.chronicle-head {
+    display: grid;
+    grid-template-columns: 16rem minmax(0, 1fr);
+    gap: 2rem;
+    padding: 0.7rem 0.5rem;
+    border-bottom: 1px solid var(--color-line);
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.24em;
+    color: var(--color-muted);
+}
+
+.chr-group {
+    display: grid;
+    grid-template-columns: 16rem minmax(0, 1fr);
+    gap: 2rem;
+    padding: 2.2rem 0.5rem;
+    border-bottom: 1px solid var(--color-line);
+    scroll-margin-top: calc(76px + 4.4rem);
+}
+
+.chr-group-head {
+    align-self: start;
+    position: sticky;
+    top: calc(76px + 3.6rem);
+}
+
+.chr-name {
+    font-family: var(--font-serif);
+    font-size: 1.45rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+}
+
+.chr-years {
+    display: block;
+    margin-top: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.06em;
+    color: var(--color-brass);
+}
+
+.chr-summary {
+    margin-top: 0.7rem;
+    max-width: 15em;
+    font-size: 0.78rem;
+    line-height: 1.8;
+    color: var(--color-muted);
+}
+
+.chr-group-body {
+    min-width: 0;
+}
+
+.chr-row {
+    display: grid;
+    grid-template-columns: minmax(9rem, 13rem) minmax(0, 1fr) auto 1.2rem;
+    gap: 1.25rem;
+    align-items: baseline;
+    padding: 1rem 0.25rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-line) 60%, transparent);
+    color: inherit;
+    transition: padding 0.3s, background 0.3s;
+}
+
+.chr-row:last-child {
+    border-bottom: none;
+}
+
+.chr-row:hover {
+    padding-left: 0.75rem;
+    background: color-mix(in srgb, var(--color-surface) 65%, transparent);
+}
+
+.chr-row-title {
+    font-size: 1rem;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.chr-row:hover .chr-row-title {
+    color: var(--color-brass);
+}
+
+.chr-row-note {
+    font-size: 0.82rem;
+    line-height: 1.8;
+    color: var(--color-muted);
+}
+
+.chr-row-meta {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.06em;
+    color: var(--color-brass);
+    white-space: nowrap;
+}
+
+.chr-row-arrow {
+    color: var(--color-muted);
+    transition: transform 0.3s, color 0.3s;
+}
+
+.chr-row:hover .chr-row-arrow {
+    transform: translateX(4px);
+    color: var(--color-brass);
+}
+
+.chr-empty {
+    padding: 1rem 0.25rem;
+    font-size: 0.82rem;
+    color: var(--color-muted);
+}
+
+.chr-row ~ .chr-empty {
+    display: none;
+}
+
+@media (max-width: 760px) {
+    .chronicle-head {
+        display: none;
+    }
+
+    .chr-group {
+        grid-template-columns: 1fr;
+        gap: 0.9rem;
+        padding: 1.6rem 0;
+    }
+
+    .chr-group-head {
+        position: static;
+    }
+
+    .chr-name {
+        font-size: 1.25rem;
+    }
+
+    .chr-summary {
+        max-width: none;
+    }
+
+    .chr-row {
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 0.35rem 1rem;
+        padding: 0.85rem 0;
+    }
+
+    .chr-row-note {
+        grid-column: 1 / -1;
+        order: 3;
+    }
+
+    .chr-row-meta {
+        order: 2;
+    }
+
+    .chr-row-arrow {
+        display: none;
+    }
 }
 
 .entry-list {

@@ -5,6 +5,8 @@ description: "沿着时间追踪制度、战争与交换的转折点。"
 layout: "default.html"
 # @formatter:on
 ---
+{% set totalTopics = world.topicCount + (collections.historyEntries | length) %}
+
 <section class="page-hero">
     <span class="watermark" aria-hidden="true">史</span>
     <div class="container">
@@ -12,38 +14,67 @@ layout: "default.html"
         <h1 class="page-title">史册</h1>
         <p class="page-lead">
             历史不是年号的堆叠，而是一连串结构性的选择：谁掌握粮道，谁拥有合法性，谁能在关键时刻把不同的人组织起来。
-            这里按时间收录那些改变了走向的节点。
+            上面是朝代总览，下面按朝代分列已经写成的专题。
         </p>
         <div class="page-meta">
-            <span>收录 <strong>{{ collections.historyEntries | length }}</strong> 篇</span>
-            <span>跨度 <strong>前 209 — 1522</strong></span>
-            <span>体例 <strong>纪事本末</strong></span>
+            <span>朝代 <strong>{{ world.dynasties | length }}</strong> 段</span>
+            <span>专题 <strong>{{ totalTopics }}</strong> 篇</span>
+            <span>跨度 <strong>前 2070 — 1912</strong></span>
         </div>
     </div>
 </section>
 
 <section class="section">
     <div class="container">
-        <div class="era-ribbon" data-reveal aria-label="中国历史纪年带">
-            {% for era in eras %}
-            <div class="era-seg" style="flex-grow: {{ era.end - era.start }}">
-                <span class="era-name">{{ era.name }}</span>
-                <span class="era-span">{{ era.start | cnYear }} — {{ era.end | cnYear }}</span>
-            </div>
-            {% endfor %}
+        <div class="era-ribbon-wrap">
+            <nav class="era-ribbon" data-chr-ribbon aria-label="中国历史纪年带">
+                {%- for d in world.dynasties %}
+                <a class="era-seg" href="#dynasty-{{ d.id }}" data-chr-link="{{ d.id }}"
+                   title="{{ d.name }} {{ d.start | cnYear }} — {{ d.end | cnYear }}">
+                    <span class="era-name">{{ d.name }}</span>
+                    <span class="era-span">{{ d.start | cnYear }}</span>
+                </a>
+                {%- endfor %}
+            </nav>
         </div>
 
-        <div class="entry-list" data-reveal>
-            {% for entry in collections.historyEntries %}
-            <a class="entry-row" href="{{ entry.url }}">
-                <span class="entry-row-time">{{ entry.data.span }}</span>
-                <div>
-                    <h3 class="entry-row-title">{{ entry.data.title }}</h3>
-                    <p class="entry-row-lead">{{ entry.data.lead }}</p>
+        <div class="chronicle" data-chr-root>
+            <div class="chronicle-head" aria-hidden="true">
+                <span>朝代</span>
+                <span>专题</span>
+            </div>
+            {%- for d in world.dynasties %}
+            <section class="chr-group" id="dynasty-{{ d.id }}" data-chr-group="{{ d.id }}">
+                <div class="chr-group-head">
+                    <h2 class="chr-name">{{ d.name }}</h2>
+                    <span class="chr-years">{{ d.start | cnYear }} — {{ d.end | cnYear }}</span>
+                    {% if d.summary %}<p class="chr-summary">{{ d.summary }}</p>{% endif %}
                 </div>
-                <span class="entry-row-arrow" aria-hidden="true">→</span>
-            </a>
-            {% endfor %}
+                <div class="chr-group-body">
+                    {%- for t in d.topics %}
+                    <a class="chr-row" href="{{ t.href }}">
+                        <span class="chr-row-title">{{ t.title }}</span>
+                        <span class="chr-row-note">{{ t.summary }}</span>
+                        <span class="chr-row-meta">{{ t.meta }}</span>
+                        <span class="chr-row-arrow" aria-hidden="true">→</span>
+                    </a>
+                    {%- endfor %}
+                    {%- for entry in collections.historyEntries %}
+                    {%- if entry.data.dynasty == d.id %}
+                    <a class="chr-row" href="{{ entry.url }}">
+                        <span class="chr-row-title">{{ entry.data.title }}</span>
+                        <span class="chr-row-note">{{ entry.data.lead }}</span>
+                        <span class="chr-row-meta">{{ entry.data.span }}</span>
+                        <span class="chr-row-arrow" aria-hidden="true">→</span>
+                    </a>
+                    {%- endif %}
+                    {%- endfor %}
+                    <p class="chr-empty">专题待补</p>
+                </div>
+            </section>
+            {%- endfor %}
         </div>
     </div>
 </section>
+
+<script src="/assets/js/chronicle.js" defer></script>
