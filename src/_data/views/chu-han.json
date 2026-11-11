@@ -7,17 +7,19 @@
     "watermark": "楚",
     "title": "楚汉人物与年龄",
     "subtitle": "前 221 秦统一六国 — 前 186 张良去世",
-    "tags": ["楚汉相争", "六人对比"],
-    "intro": "纵向自上而下是时间。左侧竖轴只标战事与立国这类大事；右侧六位人物各一条生命线，走到大事那一年就落一个节点，写明当时的年龄（虚岁）。",
+    "tags": ["楚汉相争", "七人对比"],
+    "intro": "纵向自上而下是时间。左侧竖轴只标战事与立国这类大事；右侧七位人物各一条生命线，走到大事那一年就落一个节点，写明当时的年龄（虚岁）。",
     "lifelineHint": "圆点为在世时经历的大事，实心圆点是与本人直接相关的事件。悬停可看事件与年龄。下方另附年龄明细表。",
-    "tableIntro": "同一批大事逐行列成表格，便于横向比较同一年六人的年龄。点击人物列头可单独聚焦其一列，再次点击取消。",
-    "note": "年龄口径为<strong>虚岁</strong>（事件年份 − 出生年份 + 1）；「未生」表示尚未出生，「已故」表示事件发生时已去世。视窗自前 260 年起，范增生年约前 277，其生命线上端在窗口之外故按截断显示。楚汉之际系年取通行说法；刘邦生年有前 256、前 247 两说，此处从前 256。韩信、张良、范增生年取通行约年。"
+    "tableIntro": "同一批大事逐行列成表格，便于横向比较同一年七人的年龄。点击人物列头可单独聚焦其一列，再次点击取消。",
+    "note": "年龄口径为<strong>虚岁</strong>（事件年份 − 出生年份 + 1）；「未生」表示尚未出生，「已故」表示事件发生时已去世。视窗自前 260 年起，范增生年约前 277，其生命线上端在窗口之外故按截断显示。楚汉之际系年取通行说法；刘邦生年有前 256、前 247 两说，此处从前 256。韩信、张良、范增生年取通行约年。秦始皇单列为「秦」组：《史记·高祖本纪》记刘邦见秦皇帝而叹「大丈夫当如此也」，《史记·项羽本纪》记项羽观秦始皇而言「彼可取而代也」；两种回应不同，但都以秦始皇为参照。"
   },
   "groups": [
+    { "id": "qin", "name": "秦", "desc": "楚汉人物的共同参照" },
     { "id": "chu", "name": "楚", "desc": "项羽阵营" },
     { "id": "han", "name": "汉", "desc": "刘邦阵营" }
   ],
   "cast": [
+    { "figure": "qinshihuang", "group": "qin", "role": "秦始皇帝 · 帝业参照" },
     { "figure": "xiangyu", "group": "chu", "role": "西楚霸王 · 起兵会稽" },
     { "figure": "fanzeng", "group": "chu", "role": "项羽谋主 · 亚父" },
     { "figure": "liubang", "group": "han", "role": "汉高祖 · 沛县起兵" },
@@ -27,6 +29,7 @@
   ],
   "events": ["qin-unification", "dazexiang", "julu", "xianyang-entry", "hongmen", "pengcheng", "gaixia", "emperor"],
   "personalEvents": [
+    "qinshihuang-death",
     "peixian-uprising",
     "kuaiji-uprising",
     "hanxin-appointed-general",
@@ -38,5 +41,5 @@
     "xiaohe-death",
     "zhangliang-death"
   ],
-  "defaults": ["liubang", "xiangyu", "hanxin", "xiaohe", "zhangliang", "fanzeng"]
+  "defaults": ["qinshihuang", "liubang", "xiangyu", "hanxin", "xiaohe", "zhangliang", "fanzeng"]
 }

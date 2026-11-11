@@ -1,0 +1,8 @@
+{
+  "name": "秦始皇",
+  "en": "Qin Shi Huang",
+  "birth": -259,
+  "death": -210,
+  "summary": "秦王政于前 221 年完成统一并称始皇帝。刘邦、项羽曾分别以「大丈夫当如此也」「彼可取而代也」回应其威仪。",
+  "milestones": ["qin-unification", "qinshihuang-death"]
+}

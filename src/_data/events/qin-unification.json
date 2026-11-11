@@ -3,7 +3,7 @@
   "era": "秦始皇二十六年",
   "axis": true,
   "key": true,
-  "figures": [],
+  "figures": ["qinshihuang"],
   "places": [],
   "title": "秦统一六国",
   "desc": "秦灭齐，六国尽并，秦王政称始皇帝，分天下为三十六郡"

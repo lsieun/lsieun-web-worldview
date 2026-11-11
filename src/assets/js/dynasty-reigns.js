@@ -395,7 +395,10 @@
             chartData = Array.from(kinshipPanel.querySelectorAll('.kh-roots > .kh-branch')).map((branch) => readChartNode(branch));
             chartMetrics = measureChartTree(chartData);
             chartColors = readChartColors();
-            chart = window.echarts.init(chartEl, null, { renderer: 'canvas' });
+            chart = window.echarts.init(chartEl, null, {
+                renderer: 'canvas',
+                devicePixelRatio: Math.max(window.devicePixelRatio || 1, 2)
+            });
             initialZoom = calculateInitialZoom();
             chart.setOption(buildChartOption(styledChartData(''), { center: initialCenter, zoom: initialZoom }));
             chartShell.hidden = false;
