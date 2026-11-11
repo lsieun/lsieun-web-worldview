@@ -1,0 +1,9 @@
+{
+  "name": "项梁",
+  "en": "Xiang Liang",
+  "birth": null,
+  "death": -208,
+  "activePlaces": ["kuaiji"],
+  "summary": "楚将项燕之子，与项羽起兵会稽，拥立楚怀王，后战死于定陶。",
+  "milestones": ["kuaiji-uprising", "xiangliang-death"]
+}

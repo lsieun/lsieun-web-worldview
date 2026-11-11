@@ -53,7 +53,9 @@
         return (base || []).filter((id) => valid.has(id));
     })();
 
-    const START = Number(data.start) || Math.min(...allPeople.map((p) => p.birth));
+    const knownBirths = allPeople.map((p) => p.birth).filter(Number.isFinite);
+    const firstYear = knownBirths.length ? Math.min(...knownBirths) : Math.min(...allPeople.map((p) => p.death));
+    const START = Number(data.start) || firstYear;
     const END = Number(data.end) || Math.max(...allPeople.map((p) => p.death));
     const TOP = 14;
     const PPY = Number(data.pixelsPerYear) || 18;
@@ -76,7 +78,10 @@
     const tipDesc = card.querySelector('[data-qtg-tip-desc]');
 
     const yOf = (year) => TOP + (year - START) * PPY;
-    const ageOf = (p, year) => year - p.birth + 1;
+    const hasKnownBirth = (p) => Number.isFinite(p.birth);
+    const birthText = (p) => p.birthLabel || (hasKnownBirth(p) ? String(p.birth) : '不详');
+    const lifeText = (p) => `${birthText(p)}–${p.deathLabel || p.death}`;
+    const ageOf = (p, year) => hasKnownBirth(p) ? year - p.birth + 1 : null;
 
     function el(tag, className, text) {
         const node = document.createElement(tag);
@@ -100,7 +105,9 @@
 
     function showTip(node, person, item, age) {
         tipTitle.textContent = `${item.year} ${item.title}`;
-        tipMeta.textContent = `${person.name} · ${age} 岁（虚岁）`;
+        tipMeta.textContent = age === null
+            ? `${person.name} · 生年不详，无法计算虚岁`
+            : `${person.name} · ${age} 岁（虚岁）`;
         tipDesc.textContent = item.desc || '';
         tipDesc.hidden = !item.desc;
         tip.classList.add('is-show');
@@ -142,9 +149,9 @@
         head.appendChild(el('div', 'qtg-head-corner', data.axisLabel || '时间轴'));
         people.forEach((p) => {
             const item = el('div', 'qtg-head-person');
-            item.title = `${p.role}（${p.birth}—${p.death}）`;
+            item.title = `${p.role}（${lifeText(p)}）`;
             item.appendChild(el('span', 'qtg-head-name', p.name));
-            item.appendChild(el('span', 'qtg-head-life', `${p.birth}–${p.death}`));
+            item.appendChild(el('span', 'qtg-head-life', lifeText(p)));
             head.appendChild(item);
         });
 
@@ -197,18 +204,19 @@
             lane.style.left = `${AXIS_W + index * colW}px`;
             lane.style.width = `${colW}px`;
 
-            const birthY = yOf(p.birth);
+            const lifeStart = hasKnownBirth(p) ? p.birth : START;
+            const birthY = yOf(lifeStart);
             const deathY = yOf(p.death);
             const limit = height - BOTTOM + 6;
             const lifeTop = Math.max(0, birthY);
             const lifeBottom = Math.min(limit, deathY);
 
             const life = el('div', 'qtg-life');
-            if (birthY < 0) life.classList.add('is-cut-top');
+            if (!hasKnownBirth(p) || birthY < 0) life.classList.add('is-cut-top');
             if (deathY > limit) life.classList.add('is-cut-bottom');
             life.style.top = `${lifeTop}px`;
             life.style.height = `${Math.max(lifeBottom - lifeTop, 6)}px`;
-            life.title = `${p.name}：${p.birth}—${p.death}`;
+            life.title = `${p.name}：${lifeText(p)}`;
             lane.appendChild(life);
 
             const personal = allPersonal.filter((ev) => ev.person === p.id);
@@ -216,7 +224,7 @@
             const nodes = [];
 
             axisEvents.forEach((ev) => {
-                if (ev.year >= p.birth && ev.year <= p.death && !personalYears.has(ev.year)) {
+                if (ev.year >= lifeStart && ev.year <= p.death && !personalYears.has(ev.year)) {
                     nodes.push({
                         year: ev.year,
                         title: ev.title,
@@ -238,10 +246,11 @@
                 lastBottom = top + 22;
 
                 const age = ageOf(p, item.year);
-                const node = el('button', `qtg-node${item.focus ? ' is-focus' : ''}`, String(age));
+                const node = el('button', `qtg-node${item.focus ? ' is-focus' : ''}`, age === null ? '?' : String(age));
                 node.type = 'button';
                 node.style.top = `${top}px`;
-                node.setAttribute('aria-label', `${item.year} ${item.title}，${p.name} ${age} 岁`);
+                const ageLabel = age === null ? '年龄不详' : `${age} 岁`;
+                node.setAttribute('aria-label', `${item.year} ${item.title}，${p.name} ${ageLabel}`);
 
                 node.addEventListener('pointerenter', () => showTip(node, p, item, age));
                 node.addEventListener('pointermove', (e) => positionTip(e.clientX, e.clientY));

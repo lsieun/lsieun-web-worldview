@@ -1,0 +1,9 @@
+{
+  "name": "韩信",
+  "en": "Han Xin",
+  "birth": -231,
+  "death": -196,
+  "activePlaces": ["gaixia", "changan"],
+  "summary": "由萧何举荐拜为大将军，平定魏、代、赵、齐，会师垓下，后为淮阴侯。",
+  "milestones": ["hanxin-appointed-general", "gaixia", "hanxin-death"]
+}

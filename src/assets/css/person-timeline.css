@@ -409,7 +409,8 @@
     font-size: 0.625rem;
 }
 .qt-age.is-unborn,
-.qt-age.is-dead {
+.qt-age.is-dead,
+.qt-age.is-unknown {
     color: color-mix(in srgb, var(--color-muted) 55%, transparent);
     font-size: 0.6875rem;
     letter-spacing: 0.05em;

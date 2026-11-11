@@ -8,9 +8,9 @@
                 </div>
                 {%- for p in timeline.people %}
                 <button type="button" class="qt-person" role="columnheader"
-                        data-qt-person="{{ p.id }}" title="{{ p.role }}（{{ p.birth }}—{{ p.death }}）">
+                        data-qt-person="{{ p.id }}" title="{{ p.role }}（{{ p.birthLabel | default(p.birth) }}—{{ p.deathLabel | default(p.death) }}）">
                     <span class="qt-person-name">{{ p.name }}</span>
-                    <span class="qt-person-life">{{ p.birth }}–{{ p.death }}</span>
+                    <span class="qt-person-life">{{ p.birthLabel | default(p.birth) }}–{{ p.deathLabel | default(p.death) }}</span>
                 </button>
                 {%- endfor %}
             </div>
@@ -29,10 +29,12 @@
                         <p class="qt-event-desc">{{ ev.desc }}</p>
                     </div>
                     {%- for p in timeline.people %}
-                    {%- if ev.year < p.birth %}
-                    <div class="qt-age is-unborn" role="cell" data-person="{{ p.id }}">未生</div>
-                    {%- elif ev.year > p.death %}
+                    {%- if ev.year > p.death %}
                     <div class="qt-age is-dead" role="cell" data-person="{{ p.id }}">已故</div>
+                    {%- elif p.birth == null %}
+                    <div class="qt-age is-unknown" role="cell" data-person="{{ p.id }}">不详</div>
+                    {%- elif ev.year < p.birth %}
+                    <div class="qt-age is-unborn" role="cell" data-person="{{ p.id }}">未生</div>
                     {%- else %}
                     <div class="qt-age" role="cell" data-person="{{ p.id }}">
                         <span class="qt-age-num">{{ ev.year - p.birth + 1 }}</span><span class="qt-age-unit">岁</span>

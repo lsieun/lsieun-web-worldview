@@ -1,0 +1,9 @@
+{
+  "name": "英布",
+  "en": "Ying Bu",
+  "birth": null,
+  "death": -195,
+  "activePlaces": ["julu", "gaixia"],
+  "summary": "先随项梁、项羽作战，受封九江王；后归汉封淮南王，晚年反汉败亡。",
+  "milestones": ["julu", "fenfeng", "gaixia", "yingbu-death"]
+}

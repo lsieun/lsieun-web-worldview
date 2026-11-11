@@ -57,6 +57,11 @@ function ensureNumber(value, source, field) {
     return value;
 }
 
+function formatYear(year) {
+    if (year === null) return "不详";
+    return year < 0 ? `前 ${Math.abs(year)}` : String(year);
+}
+
 export default function () {
     const { entities: regions, sources: regionSources } = readEntities("regions");
     const { entities: places, sources: placeSources } = readEntities("places");
@@ -103,9 +108,9 @@ export default function () {
     for (const figure of Object.values(figures)) {
         const source = figureSources[figure.id];
         if (!figure.name) throw new Error(`[world] ${source} 缺少 name`);
-        const birth = ensureNumber(figure.birth, source, "birth");
+        const birth = figure.birth === null ? null : ensureNumber(figure.birth, source, "birth");
         const death = ensureNumber(figure.death, source, "death");
-        if (birth > death) {
+        if (birth !== null && birth > death) {
             throw new Error(`[world] ${source} 的 birth 晚于 death`);
         }
         if (figure.origin) ensureRef(places, "地点", source, "origin", figure.origin);
@@ -214,11 +219,13 @@ export default function () {
                     name: figure.name,
                     birth: figure.birth,
                     death: figure.death,
+                    birthLabel: formatYear(figure.birth),
+                    deathLabel: formatYear(figure.death),
                     group: item.group,
                     role: item.role || ""
                 };
             })
-            .sort((a, b) => a.birth - b.birth);
+            .sort((a, b) => (a.birth ?? Infinity) - (b.birth ?? Infinity) || a.death - b.death);
 
         const axisEvents = ensureArray(view.events, "", "events")
             .map((eventId) => events[eventId])
@@ -248,7 +255,9 @@ export default function () {
             .sort((a, b) => a.year - b.year);
 
         const range = view.range || {};
-        const start = range.start ?? Math.min(...people.map((p) => p.birth));
+        const knownBirths = people.map((p) => p.birth).filter((year) => year !== null);
+        const firstYear = knownBirths.length ? Math.min(...knownBirths) : Math.min(...people.map((p) => p.death));
+        const start = range.start ?? firstYear;
         const end = range.end ?? Math.max(...people.map((p) => p.death));
 
         timelines[view.id] = {

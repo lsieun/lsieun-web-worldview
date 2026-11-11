@@ -29,10 +29,10 @@
                 {% if p.group == g.id %}
                 <div class="pf-person">
                     <input type="checkbox" id="pf-person-{{ p.id }}" data-pf-person="{{ p.id }}" value="{{ p.id }}"
-                           title="{{ p.role }}（{{ p.birth }}—{{ p.death }}）">
+                           title="{{ p.role }}（{{ p.birthLabel | default(p.birth) }}—{{ p.deathLabel | default(p.death) }}）">
                     <label for="pf-person-{{ p.id }}">
                         <span class="pf-person-name">{{ p.name }}</span>
-                        <span class="pf-person-life">{{ p.birth }}–{{ p.death }}</span>
+                        <span class="pf-person-life">{{ p.birthLabel | default(p.birth) }}–{{ p.deathLabel | default(p.death) }}</span>
                     </label>
                 </div>
                 {% endif %}

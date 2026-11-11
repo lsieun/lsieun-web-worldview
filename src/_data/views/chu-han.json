@@ -1,27 +1,49 @@
 {
   "title": "楚汉人物与年龄",
   "dynasty": "western-han",
-  "range": { "start": -256, "end": -195 },
+  "range": { "start": -277, "end": -178 },
   "meta": {
     "key": "chu-han",
     "watermark": "楚",
     "title": "楚汉人物与年龄",
-    "subtitle": "前 256 刘邦出生 — 前 195 刘邦去世",
-    "tags": ["楚汉相争"],
-    "intro": "纵向自上而下是时间。左侧竖轴只标战事与立国这类大事；右侧刘邦、项羽各一条生命线，走到大事那一年就落一个节点，写明当时的年龄（虚岁）。",
-    "lifelineHint": "圆点为在世时经历的大事，实心圆点是与本人直接相关的事件。悬停可看事件与年龄。下方另附年龄明细表。",
-    "tableIntro": "同一批大事逐行列成表格，便于横向比较同一年两人的年龄。点击人物列头可单独聚焦其一列，再次点击取消。",
-    "note": "年龄口径为<strong>虚岁</strong>（事件年份 − 出生年份 + 1）；「未生」表示尚未出生，「已故」表示事件发生时已去世。楚汉之际系年取通行说法，部分只精确到年份；刘邦生年有前 256、前 247 两说，此处从前 256。"
+    "subtitle": "前 277 范增出生 — 前 178 陈平去世",
+    "tags": ["楚汉相争", "九人对比"],
+    "intro": "纵向自上而下是时间。左侧竖轴只标战事与立国这类大事；右侧九位人物各一条生命线，走到大事那一年就落一个节点，有确切生年者写明当时的年龄（虚岁）。",
+    "lifelineHint": "圆点为生卒区间内的大事，实心圆点是与本人直接相关的事件；生年不详者以「?」表示，生命线上端从视窗起点起画。悬停可看事件与年龄。",
+    "tableIntro": "同一批大事逐行列成表格，便于横向比较同一年九人的年龄。点击人物列头可单独聚焦其一列，再次点击取消。",
+    "note": "年龄口径为<strong>虚岁</strong>（事件年份 − 出生年份 + 1）；「未生」表示尚未出生，「已故」表示事件发生时已去世。生年不详者不计算虚岁，以「?／不详」表示，其生命线从视窗上端起画不代表出生时间。楚汉之际系年取通行说法；刘邦生年有前 256、前 247 两说，此处从前 256；韩信、张良生年取通行约年。"
   },
   "groups": [
-    { "id": "chu", "name": "楚", "desc": "项羽一方" },
-    { "id": "han", "name": "汉", "desc": "刘邦一方" }
+    { "id": "chu", "name": "楚", "desc": "项梁、项羽阵营" },
+    { "id": "han", "name": "汉", "desc": "刘邦阵营及后来归汉者" }
   ],
   "cast": [
+    { "figure": "xiangliang", "group": "chu", "role": "楚军统帅 · 起兵会稽" },
     { "figure": "xiangyu", "group": "chu", "role": "西楚霸王 · 起兵会稽" },
-    { "figure": "liubang", "group": "han", "role": "汉高祖 · 沛县起兵" }
+    { "figure": "fanzeng", "group": "chu", "role": "项羽谋主 · 亚父" },
+    { "figure": "liubang", "group": "han", "role": "汉高祖 · 沛县起兵" },
+    { "figure": "hanxin", "group": "han", "role": "大将军 · 淮阴侯" },
+    { "figure": "xiaohe", "group": "han", "role": "汉相国 · 收秦图籍" },
+    { "figure": "zhangliang", "group": "han", "role": "留侯 · 运筹帷幄" },
+    { "figure": "yingbu", "group": "han", "role": "九江王、淮南王 · 先楚后汉" },
+    { "figure": "chenping", "group": "han", "role": "汉丞相 · 曲逆侯" }
   ],
   "events": ["dazexiang", "julu", "xianyang-entry", "hongmen", "pengcheng", "gaixia", "emperor"],
-  "personalEvents": ["peixian-uprising", "kuaiji-uprising", "fenfeng", "wujiang-death", "liubang-death"],
-  "defaults": ["xiangyu", "liubang"]
+  "personalEvents": [
+    "peixian-uprising",
+    "kuaiji-uprising",
+    "xiangliang-death",
+    "hanxin-appointed-general",
+    "fenfeng",
+    "chenping-joins-liubang",
+    "fanzeng-death",
+    "wujiang-death",
+    "hanxin-death",
+    "liubang-death",
+    "yingbu-death",
+    "xiaohe-death",
+    "zhangliang-death",
+    "chenping-death"
+  ],
+  "defaults": ["liubang", "xiangyu", "hanxin", "xiaohe", "zhangliang", "yingbu", "xiangliang", "fanzeng", "chenping"]
 }

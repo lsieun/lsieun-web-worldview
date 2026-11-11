@@ -3,7 +3,7 @@
   "era": "汉元年",
   "axis": true,
   "key": true,
-  "figures": ["liubang", "xiangyu"],
+  "figures": ["liubang", "xiangyu", "fanzeng", "zhangliang"],
   "places": ["hongmen"],
   "title": "鸿门宴",
   "desc": "项羽四十万军驻鸿门，刘邦卑辞请罪，范增举玦不决"
