@@ -1,0 +1,53 @@
+---
+# @formatter:off
+title: "舆图"
+description: "走廊、内海、绿洲与港口——地理是历史发生的条件。"
+layout: "default.html"
+# @formatter:on
+---
+<section class="page-hero">
+    <span class="watermark" aria-hidden="true">地</span>
+    <div class="container">
+        <p class="eyebrow">02 · Geography</p>
+        <h1 class="page-title">舆图</h1>
+        <p class="page-lead">
+            山脉决定风向，河流决定粮道，海峡决定贸易。地理从不只是背景板，它规定了哪些道路可行、哪些城市必然兴起。
+            这里以坐标为单位，阅读地形的长期作用。
+        </p>
+        <div class="page-meta">
+            <span>坐标 <strong>{{ hubs.places | length }}</strong> 处</span>
+            <span>通道 <strong>3</strong> 条</span>
+            <span>视角 <strong>长时段</strong></span>
+        </div>
+    </div>
+</section>
+
+{% set atlasEyebrow = "ATLAS · 寰宇" %}
+{% set atlasTitle = "把历史放回地图" %}
+{% set atlasIntro = "这十三处坐标并非“名胜”，而是不同文明彼此接驳的节点。点击任意光点，看它在商路与帝国之间的位置。" %}
+{% include "atlas.html" %}
+
+<section class="section">
+    <div class="container">
+        <div class="section-head" data-reveal>
+            <p class="eyebrow">GEOGRAPHIES</p>
+            <h2 class="section-title">地形档案</h2>
+            <p class="section-intro">走廊、内海与绿洲，是三种最典型的历史地理单元。它们各自塑造了不同的交通、政权与生活方式。</p>
+        </div>
+
+        <div class="card-grid" data-reveal>
+            {% for item in collections.geoEntries %}
+            <a class="place-card" href="{{ item.url }}">
+                <span class="place-coord">{{ item.data.coords }}</span>
+                <h3 class="place-title">{{ item.data.title }}</h3>
+                <p class="place-en">{{ item.data.en }}</p>
+                <p class="place-desc">{{ item.data.lead }}</p>
+                <div class="place-foot">
+                    <span>{{ item.data.region }}</span>
+                    <span>阅读档案 →</span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>

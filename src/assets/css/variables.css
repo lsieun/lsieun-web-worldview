@@ -1,0 +1,87 @@
+/* ============================================================
+   WorldView 天下 — 设计令牌
+   基调：山河舆图（素纸 · 墨青 · 铜金 · 青瓷）
+   全部颜色、间距、字体、圆角均以变量驱动，禁止页面硬编码色值。
+   ============================================================ */
+
+:root {
+    /* 1. 纸面与墨色（浅色：素图） */
+    --color-bg-base: #f4f0e6;
+    --color-bg-tint: #ece5d6;
+    --color-surface: #fbf8f0;
+    --color-surface-raised: #fffdf7;
+
+    --color-ink: #16231f;
+    --color-ink-soft: #35463f;
+    --color-muted: #6d7c74;
+
+    --color-line: #ddd4c1;
+    --color-line-strong: #c6b99f;
+
+    /* 2. 品牌色 */
+    --color-brass: #96652a;
+    --color-brass-soft: #bf9755;
+    --color-celadon: #4d7568;
+    --color-seal: #a6402e;
+
+    /* 3. 舆图专用（明暗主题下保持一致，形成“图版”质感） */
+    --atlas-bg: #0a1512;
+    --atlas-bg-2: #0d1e19;
+    --atlas-land: #163029;
+    --atlas-land-hi: #214539;
+    --atlas-border: #2c4a40;
+    --atlas-grid: rgba(216, 179, 107, 0.09);
+    --atlas-gold: #d8b36b;
+    --atlas-gold-dim: #9c7c43;
+    --atlas-text: #e6e1d2;
+    --atlas-muted: #93ab9f;
+    --atlas-route-land: #d8b36b;
+    --atlas-route-sea: #6fa192;
+    --atlas-route-med: #b56a4a;
+
+    /* 4. 字体 */
+    --font-body: 'Inter Variable', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+    --font-display: 'Outfit Variable', 'Songti SC', 'Source Han Serif SC', 'Noto Serif CJK SC', 'SimSun', serif;
+    --font-serif: 'Songti SC', 'Source Han Serif SC', 'Noto Serif CJK SC', 'SimSun', serif;
+    --font-mono: 'JetBrains Mono Variable', ui-monospace, 'Cascadia Code', monospace;
+
+    /* 5. 尺度 */
+    --radius-sm: 2px;
+    --radius-md: 4px;
+    --radius-lg: 8px;
+
+    --space-xs: 0.5rem;
+    --space-sm: 1rem;
+    --space-md: 1.75rem;
+    --space-lg: 3rem;
+    --space-xl: 5rem;
+
+    --container: 1180px;
+
+    --shadow-lift: 0 18px 40px -24px rgba(22, 35, 31, 0.45);
+    --shadow-plate: 0 30px 70px -40px rgba(0, 0, 0, 0.8);
+
+    --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+[data-theme="dark"] {
+    /* 夜航 */
+    --color-bg-base: #0a1311;
+    --color-bg-tint: #0d1916;
+    --color-surface: #101d19;
+    --color-surface-raised: #14241f;
+
+    --color-ink: #ece7d8;
+    --color-ink-soft: #c6c3b4;
+    --color-muted: #8d9a92;
+
+    --color-line: #22312b;
+    --color-line-strong: #344a40;
+
+    --color-brass: #d2ac66;
+    --color-brass-soft: #9d7c3f;
+    --color-celadon: #6fa192;
+    --color-seal: #c25a42;
+
+    --shadow-lift: 0 18px 40px -24px rgba(0, 0, 0, 0.75);
+}

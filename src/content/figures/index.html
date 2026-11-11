@@ -1,0 +1,59 @@
+---
+# @formatter:off
+title: "人物"
+description: "把生命线放回时代，看人物何时登场、如何改变方向。"
+layout: "default.html"
+# @formatter:on
+---
+<section class="page-hero">
+    <span class="watermark" aria-hidden="true">人</span>
+    <div class="container">
+        <p class="eyebrow">03 · Figures</p>
+        <h1 class="page-title">人物</h1>
+        <p class="page-lead">
+            同一条时间轴上，有人二十四岁称霸，有人六十岁才登上帝位。
+            把生卒、登场与关键抉择放回同一尺度，人物的选择才显出重量。
+        </p>
+        <div class="page-meta">
+            <span>收录 <strong>{{ collections.figureEntries | length }}</strong> 位</span>
+            <span>时间尺度 <strong>前 400 — 公元 200</strong></span>
+            <span>体例 <strong>生命线档案</strong></span>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="section-head" data-reveal>
+            <p class="eyebrow">LIFELINES</p>
+            <h2 class="section-title">同一把尺子上的生命</h2>
+            <p class="section-intro">每条金线代表一段生命，长度即寿数。横向位置对应统一的年代刻度，可直接比较登场先后与活跃区间。</p>
+        </div>
+
+        <div class="axis-legend" aria-hidden="true">
+            {% for label in site.axis.labels %}
+            <span>{{ label }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="card-grid" data-reveal>
+            {% for item in collections.figureEntries %}
+            <a class="figure-card" href="{{ item.url }}">
+                <div class="figure-head">
+                    <h3 class="figure-name">{{ item.data.title }}</h3>
+                    <span class="figure-en">{{ item.data.en }}</span>
+                </div>
+                <p class="figure-years">{{ item.data.birth | cnYear }} — {{ item.data.death | cnYear }}</p>
+                <div class="figure-line">
+                    <span style="left: {{ item.data.birth | pct(site.axis.start, site.axis.end) }}%; width: {{ ((item.data.death - item.data.birth) / (site.axis.end - site.axis.start) * 100) | round(2) }}%"></span>
+                </div>
+                <p class="figure-desc">{{ item.data.lead }}</p>
+                <div class="figure-foot">
+                    <span>{{ item.data.region }}</span>
+                    <span>{{ item.data.death - item.data.birth }} 年生命跨度</span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>

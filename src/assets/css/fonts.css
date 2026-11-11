@@ -1,0 +1,25 @@
+/* 本地自托管字体：西文排版由 Inter / Outfit 承担，中文标题回落到系统宋体 */
+
+@font-face {
+    font-family: 'Inter Variable';
+    src: url('/assets/fonts/inter/files/inter-latin-wght-normal.woff2') format('woff2-variations');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Outfit Variable';
+    src: url('/assets/fonts/outfit/files/outfit-latin-wght-normal.woff2') format('woff2-variations');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'JetBrains Mono Variable';
+    src: url('/assets/fonts/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2') format('woff2-variations');
+    font-weight: 100 800;
+    font-style: normal;
+    font-display: swap;
+}

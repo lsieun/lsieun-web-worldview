@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    {% include "head.html" %}
+</head>
+<body>
+<a class="skip-link" href="#main">跳到正文</a>
+{% include "header.html" %}
+
+{% if category == "史册" %}
+{% set backUrl = "/history/index.html" %}
+{% set backName = "史册" %}
+{% set mark = "史" %}
+{% elif category == "舆图" %}
+{% set backUrl = "/geo/index.html" %}
+{% set backName = "舆图" %}
+{% set mark = "地" %}
+{% else %}
+{% set backUrl = "/figures/index.html" %}
+{% set backName = "人物" %}
+{% set mark = "人" %}
+{% endif %}
+
+<main id="main">
+    <article>
+        <header class="entry-hero">
+            <span class="watermark" aria-hidden="true">{{ mark }}</span>
+            <div class="container">
+                <p class="eyebrow">{{ category }} · {{ era }}</p>
+                <h1 class="entry-title">{{ title }}</h1>
+                {% if lead %}
+                <p class="entry-lead">{{ lead }}</p>
+                {% endif %}
+                <div class="entry-meta">
+                    <span class="chip chip--accent">{{ span }}</span>
+                    {% if region %}
+                    <span class="chip">{{ region }}</span>
+                    {% endif %}
+                    {% if coords %}
+                    <span class="chip">{{ coords }}</span>
+                    {% endif %}
+                    {% for keyword in keywords %}
+                    <span class="chip"># {{ keyword }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </header>
+
+        <div class="container entry-body">
+            <div>
+                {% if birth is defined and death is defined and milestones %}
+                <div class="life-strip" data-reveal>
+                    <div class="life-strip-head">
+                        <strong>{{ title }}</strong>
+                        <span>{{ birth | cnYear }} — {{ death | cnYear }}</span>
+                    </div>
+                    <div class="life-track">
+                        {% for milestone in milestones %}
+                        <span class="life-dot" style="left: {{ milestone.year | pct(birth, death) }}%" title="{{ milestone.year | cnYear }} · {{ milestone.label }}"></span>
+                        {% endfor %}
+                    </div>
+                    <ul class="life-events">
+                        {% for milestone in milestones %}
+                        <li><time>{{ milestone.year | cnYear }}</time>{{ milestone.label }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <div class="prose">
+                    {{ content | safe }}
+                </div>
+
+                <nav class="entry-foot" aria-label="继续浏览">
+                    <a href="{{ backUrl }}">← 返回{{ backName }}</a>
+                    <a href="/">回到首页 ↗</a>
+                </nav>
+            </div>
+
+            <aside class="entry-aside" aria-label="档案信息">
+                <p class="aside-label">ARCHIVE FILE</p>
+                <dl>
+                    <div class="aside-row">
+                        <dt>类目</dt>
+                        <dd>{{ category }}</dd>
+                    </div>
+                    <div class="aside-row">
+                        <dt>年代</dt>
+                        <dd>{{ span }}</dd>
+                    </div>
+                    {% if region %}
+                    <div class="aside-row">
+                        <dt>地域</dt>
+                        <dd>{{ region }}</dd>
+                    </div>
+                    {% endif %}
+                    {% if coords %}
+                    <div class="aside-row">
+                        <dt>坐标</dt>
+                        <dd>{{ coords }}</dd>
+                    </div>
+                    {% endif %}
+                    <div class="aside-row">
+                        <dt>编号</dt>
+                        <dd>WV · {{ page.fileSlug | upper }}</dd>
+                    </div>
+                </dl>
+                <a class="aside-back" href="{{ backUrl }}">← {{ backName }}索引</a>
+            </aside>
+        </div>
+    </article>
+</main>
+
+{% include "footer.html" %}
+<script src="/assets/js/reveal.js" defer></script>
+</body>
+</html>

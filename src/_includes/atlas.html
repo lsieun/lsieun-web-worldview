@@ -1,0 +1,73 @@
+{#
+  atlas.html — 全球舆图区块（首页与 /geo/ 共用）
+  可选变量：atlasEyebrow / atlasTitle / atlasIntro
+#}
+{% set firstPlace = hubs.places[0] %}
+<section class="atlas-section" id="atlas">
+    <div class="container">
+        <div class="section-head section-head--invert" data-reveal>
+            <p class="eyebrow eyebrow--invert">{{ atlasEyebrow | default("ATLAS · 寰宇") }}</p>
+            <h2 class="section-title">{{ atlasTitle | default("十三座坐标，三条通道") }}</h2>
+            <p class="section-intro">{{ atlasIntro | default("从长安出发，沿绿洲与海岸向西。点击图上的光点，查看这座城在时间里的身份。") }}</p>
+        </div>
+
+        <div class="atlas-wrap" data-reveal>
+            <div class="atlas-plate">
+                <div class="atlas-chart" id="atlas-chart">
+                    <div class="atlas-loading">正在展开舆图…</div>
+                </div>
+                <div class="atlas-legend">
+                    <span class="legend-item legend-item--land">陆上丝路</span>
+                    <span class="legend-item legend-item--sea">海上丝路</span>
+                    <span class="legend-item legend-item--med">地中海航线</span>
+                    <span class="legend-item">拖动平移 · 滚轮缩放</span>
+                </div>
+            </div>
+
+            <aside class="atlas-panel" aria-live="polite">
+                <div class="atlas-panel-label">
+                    <span>PLACE FILE</span>
+                    <span>地点档案</span>
+                </div>
+                <div id="atlas-panel-body">
+                    <h3 class="panel-name">{{ firstPlace.name }}</h3>
+                    <p class="panel-en">{{ firstPlace.en }}</p>
+                    <div class="panel-meta">
+                        <span class="panel-chip">{{ firstPlace.era }}</span>
+                        <span class="panel-chip">{{ firstPlace.region }}</span>
+                        <span class="panel-chip">{{ firstPlace.lat }}°N · {{ firstPlace.lon }}°E</span>
+                    </div>
+                    <p class="panel-desc">{{ firstPlace.summary }}</p>
+                    <div class="panel-block">
+                        <p class="panel-block-title">相关人物 / FIGURES</p>
+                        <ul class="panel-list">
+                            {% for person in firstPlace.figures %}
+                            <li>{{ person }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="panel-block">
+                        <p class="panel-block-title">历史节点 / EVENTS</p>
+                        <ul class="panel-list">
+                            {% for event in firstPlace.events %}
+                            <li>{{ event }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <p class="panel-foot">点击光点或下方地名切换档案</p>
+            </aside>
+        </div>
+
+        <div class="atlas-hubs" data-reveal>
+            {% for place in hubs.places %}
+            <button class="hub-btn{% if loop.first %} is-active{% endif %}" type="button" data-hub-id="{{ place.id }}" aria-pressed="{% if loop.first %}true{% else %}false{% endif %}">{{ place.name }}</button>
+            {% endfor %}
+        </div>
+        <p class="atlas-hint">BASE MAP · 世界政区简图 · 本地自托管，无外部请求</p>
+    </div>
+</section>
+
+<script id="atlas-data" type="application/json">{{ hubs | dump | safe }}</script>
+<script src="/assets/js/echarts.min.js" defer></script>
+<script src="/assets/js/atlas.js" defer></script>

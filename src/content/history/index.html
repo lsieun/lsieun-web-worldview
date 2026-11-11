@@ -1,0 +1,49 @@
+---
+# @formatter:off
+title: "史册"
+description: "沿着时间追踪制度、战争与交换的转折点。"
+layout: "default.html"
+# @formatter:on
+---
+<section class="page-hero">
+    <span class="watermark" aria-hidden="true">史</span>
+    <div class="container">
+        <p class="eyebrow">01 · History</p>
+        <h1 class="page-title">史册</h1>
+        <p class="page-lead">
+            历史不是年号的堆叠，而是一连串结构性的选择：谁掌握粮道，谁拥有合法性，谁能在关键时刻把不同的人组织起来。
+            这里按时间收录那些改变了走向的节点。
+        </p>
+        <div class="page-meta">
+            <span>收录 <strong>{{ collections.historyEntries | length }}</strong> 篇</span>
+            <span>跨度 <strong>前 209 — 1522</strong></span>
+            <span>体例 <strong>纪事本末</strong></span>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="era-ribbon" data-reveal aria-label="中国历史纪年带">
+            {% for era in eras %}
+            <div class="era-seg" style="flex-grow: {{ era.end - era.start }}">
+                <span class="era-name">{{ era.name }}</span>
+                <span class="era-span">{{ era.start | cnYear }} — {{ era.end | cnYear }}</span>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="entry-list" data-reveal>
+            {% for entry in collections.historyEntries %}
+            <a class="entry-row" href="{{ entry.url }}">
+                <span class="entry-row-time">{{ entry.data.span }}</span>
+                <div>
+                    <h3 class="entry-row-title">{{ entry.data.title }}</h3>
+                    <p class="entry-row-lead">{{ entry.data.lead }}</p>
+                </div>
+                <span class="entry-row-arrow" aria-hidden="true">→</span>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>

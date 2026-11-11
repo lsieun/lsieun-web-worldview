@@ -1,0 +1,120 @@
+---
+# @formatter:off
+title: "WorldView 天下"
+description: "WorldView 天下 —— 以图为经，以人为纬，在时间与山河之间漫游。历史、地理与人物档案。"
+layout: "default.html"
+# @formatter:on
+---
+<section class="hero">
+    <svg class="compass" viewBox="0 0 600 600" aria-hidden="true" focusable="false">
+        <g class="compass-rotor" fill="none" stroke="currentColor">
+            <circle cx="300" cy="300" r="286" stroke-width="0.7" opacity="0.45"></circle>
+            <circle cx="300" cy="300" r="244" stroke-width="16" stroke-dasharray="1 24" opacity="0.45"></circle>
+            <circle cx="300" cy="300" r="230" stroke-width="0.6" opacity="0.3"></circle>
+            <circle cx="300" cy="300" r="174" stroke-width="0.6" opacity="0.22"></circle>
+            <circle cx="300" cy="300" r="118" stroke-width="9" stroke-dasharray="1 18" opacity="0.32"></circle>
+            <path d="M300 82 L309 300 L300 518 L291 300 Z" fill="currentColor" opacity="0.26" stroke="none"></path>
+            <path d="M82 300 L300 291 L518 300 L300 309 Z" fill="currentColor" opacity="0.14" stroke="none"></path>
+        </g>
+        <g fill="none" stroke="currentColor" opacity="0.32">
+            <line x1="18" y1="300" x2="110" y2="300" stroke-width="0.6"></line>
+            <line x1="490" y1="300" x2="582" y2="300" stroke-width="0.6"></line>
+            <line x1="300" y1="18" x2="300" y2="110" stroke-width="0.6"></line>
+            <line x1="300" y1="490" x2="300" y2="582" stroke-width="0.6"></line>
+            <circle cx="300" cy="300" r="4" fill="currentColor" stroke="none"></circle>
+        </g>
+    </svg>
+
+    <div class="container hero-inner">
+        <p class="eyebrow hero-eyebrow">History · Geography · Figures</p>
+        <h1 class="hero-title">在时间与<em>山河</em>之间</h1>
+        <p class="hero-lead">
+            以图为经，以人为纬。把王朝的兴替放回地理的尺度，把人物的抉择放回时代的现场——
+            这是一部可以漫游的世界史。
+        </p>
+        <div class="hero-actions">
+            <a class="btn btn-primary" href="#atlas">展开舆图 →</a>
+            <a class="btn btn-ghost" href="/history/index.html">翻开史册</a>
+        </div>
+        <div class="hero-meta">
+            <span>N 34°16′</span>
+            <span>E 108°56′</span>
+            <span><strong>长安</strong> · 一切旅程的起点</span>
+        </div>
+    </div>
+
+    <a class="hero-scroll" href="#atlas">SCROLL</a>
+</section>
+
+{% set atlasEyebrow = "01 · ATLAS" %}
+{% set atlasTitle = "十三座坐标，三条通道" %}
+{% set atlasIntro = "从长安出发，沿绿洲与海岸向西。点击图上的光点，查看这座城在时间里的身份——它连接了谁，又见证了哪些转折。" %}
+{% include "atlas.html" %}
+
+<section class="section">
+    <div class="container">
+        <div class="section-head" data-reveal>
+            <p class="eyebrow">02 · ARCHIVE</p>
+            <h2 class="section-title">三条进入世界的方式</h2>
+            <p class="section-intro">史册回答“发生了什么”，舆图回答“在哪里发生”，人物回答“谁做了选择”。三者互为坐标。</p>
+        </div>
+
+        <div class="doors" data-reveal>
+            <a class="door" href="/history/index.html">
+                <span class="door-index">01</span>
+                <h3 class="door-title">史册</h3>
+                <p class="door-en">History</p>
+                <p class="door-desc">从楚汉之争到地理大发现，沿着时间追踪制度、战争与交换的转折点。</p>
+                <span class="door-arrow">→</span>
+            </a>
+            <a class="door" href="/geo/index.html">
+                <span class="door-index">02</span>
+                <h3 class="door-title">舆图</h3>
+                <p class="door-en">Geography</p>
+                <p class="door-desc">走廊、内海、绿洲与港口。地理不是背景，而是历史得以发生的条件。</p>
+                <span class="door-arrow">→</span>
+            </a>
+            <a class="door" href="/figures/index.html">
+                <span class="door-index">03</span>
+                <h3 class="door-title">人物</h3>
+                <p class="door-en">Figures</p>
+                <p class="door-desc">把生命线放回时代：他们活了多久，何时登场，又在什么时刻改变了方向。</p>
+                <span class="door-arrow">→</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="section section--tint">
+    <div class="container">
+        <div class="section-head" data-reveal>
+            <p class="eyebrow">03 · SELECTED</p>
+            <h2 class="section-title">精选档案</h2>
+            <p class="section-intro">每个栏目各取一页，作为进入这座档案库的入口。</p>
+        </div>
+
+        {% set featured = [collections.historyEntries[0], collections.geoEntries[0], collections.figureEntries[0]] %}
+        <div class="feature-grid" data-reveal>
+            {% for item in featured %}
+            {% if item %}
+            <a class="feature-card" href="{{ item.url }}">
+                <span class="feature-cat">{{ item.data.category }}</span>
+                <h3 class="feature-title">{{ item.data.title }}</h3>
+                <p class="feature-lead">{{ item.data.lead }}</p>
+                <div class="feature-meta">
+                    <span>{{ item.data.span }}</span>
+                    <span>{{ item.data.era }}</span>
+                </div>
+            </a>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="coda">
+    <div class="container">
+        <p class="coda-quote">“究天人之际，通古今之变，成一家之言。”</p>
+        <p class="coda-cite">司马迁 · 《报任安书》</p>
+    </div>
+</section>

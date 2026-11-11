@@ -1,0 +1,10 @@
+[
+  { "name": "三代", "en": "ANTIQUITY", "start": -2070, "end": -771 },
+  { "name": "春秋战国", "en": "ZHOU & WARRING STATES", "start": -770, "end": -221 },
+  { "name": "秦汉", "en": "QIN & HAN", "start": -221, "end": 220 },
+  { "name": "魏晋南北朝", "en": "DIVISION", "start": 220, "end": 589 },
+  { "name": "隋唐", "en": "SUI & TANG", "start": 581, "end": 907 },
+  { "name": "宋元", "en": "SONG & YUAN", "start": 960, "end": 1368 },
+  { "name": "明清", "en": "MING & QING", "start": 1368, "end": 1840 },
+  { "name": "近世", "en": "MODERN", "start": 1840, "end": 1949 }
+]
