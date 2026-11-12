@@ -1,0 +1,41 @@
+{
+  "type": "reign-crowd",
+  "dynasty": "western-han",
+  "title": "西汉名臣",
+  "href": "/history/western-han-ministers.html",
+  "topicMeta": "帝系与群臣",
+  "summary": "以帝系为经、十八位臣工的生卒为纬，看谁在谁的朝里活着、做事。",
+  "range": { "start": -202, "end": 8 },
+  "meta": {
+    "watermark": "汉",
+    "subtitle": "前 202 — 公元 8 ｜ 18 位臣工 · 13 道",
+    "tags": ["西汉", "帝系与群臣", "生卒可考"],
+    "intro": "纵向是时间。左侧一列是帝系更替，右侧每一道细线是一位臣工的生卒区间。线位于横向只表示避让：同一年重叠的人各占一道，先后错开的人挤在同一道。悬停可看其人，点击右侧索引可固定高亮，并同时点亮他历仕的帝王。",
+    "note": "只收生卒年可考的十八人；卫青、霍光、张汤等生年无载者暂不入图。帝王条内单字为简称，极短在位（如刘贺二十七日）以细标表示。年份取通行系年，负数对应公元前；跨公元前后的年长按无公元 0 年计算。"
+  },
+  "groups": [
+    { "id": "civil", "name": "文臣", "desc": "经术、政务与财政" },
+    { "id": "military", "name": "武将", "desc": "边事与征伐" },
+    { "id": "kin", "name": "宗室外戚", "desc": "宗室与和亲" }
+  ],
+  "cast": [
+    { "figure": "jiayi", "group": "civil", "role": "长沙王太傅 · 治安策" },
+    { "figure": "chaocuo", "group": "civil", "role": "御史大夫 · 削藩" },
+    { "figure": "gongsun-hong", "group": "civil", "role": "丞相 · 布衣拜相" },
+    { "figure": "dong-zhong-shu", "group": "civil", "role": "江都相 · 天人三策" },
+    { "figure": "sang-hongyang", "group": "civil", "role": "大司农 · 盐铁官营" },
+    { "figure": "sima-qian", "group": "civil", "role": "太史令 · 《史记》" },
+    { "figure": "wei-xian", "group": "civil", "role": "丞相 · 诗学传家" },
+    { "figure": "gong-yu", "group": "civil", "role": "御史大夫 · 节俭之议" },
+    { "figure": "jing-fang", "group": "civil", "role": "郎官 · 考功课吏" },
+    { "figure": "kong-guang", "group": "civil", "role": "丞相 · 三朝枢机" },
+    { "figure": "zhai-fangjin", "group": "civil", "role": "丞相 · 经术起家" },
+    { "figure": "bao-xuan", "group": "civil", "role": "谏大夫 · 七亡七死" },
+    { "figure": "huo-qubing", "group": "military", "role": "骠骑将军 · 河西之战" },
+    { "figure": "zhao-chongguo", "group": "military", "role": "后将军 · 湟中屯田" },
+    { "figure": "duan-huizong", "group": "military", "role": "西域都护 · 安辑乌孙" },
+    { "figure": "jin-midi", "group": "military", "role": "车骑将军 · 托孤辅政" },
+    { "figure": "liu-xiang", "group": "kin", "role": "光禄大夫 · 校书天禄阁" },
+    { "figure": "jieyou", "group": "kin", "role": "和亲乌孙 · 三嫁昆莫" }
+  ]
+}

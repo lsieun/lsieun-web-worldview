@@ -1,0 +1,378 @@
+/* ==========================================================================
+   reign-crowd.css — 帝系与群臣
+   左侧年份轴与帝系条，右侧按生卒重叠打包的臣工生命线
+   ========================================================================== */
+
+.crowd-hero .page-lead {
+    max-width: 48em;
+}
+
+.rc-workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: clamp(1.2rem, 2.5vw, 2.4rem);
+    align-items: start;
+}
+
+@media (max-width: 980px) {
+    .rc-workspace {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+.rc-chart {
+    min-width: 0;
+}
+
+.rc-card {
+    position: relative;
+    padding: var(--space-sm);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+}
+
+.rc-scroll {
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line-strong) transparent;
+}
+
+.rc-plot {
+    display: block;
+    width: auto;
+    max-width: none;
+    height: auto;
+    margin-inline: auto;
+}
+
+/* ---------- SVG 基础 ---------- */
+.rc-head {
+    fill: var(--color-muted);
+    font-family: var(--font-body);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+}
+.rc-rule {
+    stroke: var(--color-line);
+    stroke-width: 1;
+}
+.rc-grid {
+    stroke: color-mix(in srgb, var(--color-line) 55%, transparent);
+    stroke-width: 1;
+    stroke-dasharray: 2 6;
+}
+.rc-year {
+    fill: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+}
+.rc-end {
+    stroke: var(--color-line-strong);
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+}
+.rc-end-label {
+    fill: var(--color-muted);
+    font-family: var(--font-body);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+}
+
+/* ---------- 分组底色 ---------- */
+.rc-group-bg {
+    opacity: 0.55;
+}
+.rc-group-bg.is-civil {
+    fill: color-mix(in srgb, var(--color-brass) 6%, transparent);
+}
+.rc-group-bg.is-military {
+    fill: color-mix(in srgb, var(--color-celadon) 7%, transparent);
+}
+.rc-group-bg.is-kin {
+    fill: color-mix(in srgb, var(--color-seal) 6%, transparent);
+}
+
+/* ---------- 帝系条 ---------- */
+.rc-ruler {
+    cursor: default;
+}
+.rc-band {
+    fill: var(--color-surface-raised);
+    stroke: var(--color-line-strong);
+    stroke-width: 1;
+    transition: fill 0.12s, stroke 0.12s;
+}
+.rc-ruler.is-interim .rc-band {
+    stroke-dasharray: 3 3;
+}
+.rc-band.is-tiny {
+    fill: var(--color-brass);
+    stroke: var(--color-brass);
+}
+.rc-band-hit {
+    fill: transparent;
+    cursor: pointer;
+}
+.rc-band-label {
+    fill: var(--color-ink-soft);
+    font-family: var(--font-serif);
+    font-size: 12px;
+    font-weight: 600;
+    pointer-events: none;
+}
+.rc-ruler.is-hit .rc-band {
+    fill: color-mix(in srgb, var(--color-brass) 16%, var(--color-surface));
+    stroke: var(--color-brass);
+}
+.rc-ruler.is-hit .rc-band-label {
+    fill: var(--color-brass);
+}
+
+/* ---------- 臣工生命线 ---------- */
+.rc-person.is-civil {
+    --rc-color: var(--color-brass);
+}
+.rc-person.is-military {
+    --rc-color: var(--color-celadon);
+}
+.rc-person.is-kin {
+    --rc-color: var(--color-seal);
+}
+.rc-person .rc-hit {
+    fill: transparent;
+    cursor: pointer;
+}
+.rc-person .rc-halo {
+    fill: var(--rc-color);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.12s;
+}
+.rc-person .rc-bar {
+    fill: var(--rc-color);
+    opacity: 0.72;
+    pointer-events: none;
+    transition: opacity 0.12s;
+}
+.rc-plot.is-focused .rc-person:not(.is-active) .rc-bar {
+    opacity: 0.14;
+}
+.rc-person.is-active .rc-bar {
+    opacity: 1;
+}
+.rc-person.is-active .rc-halo {
+    opacity: 0.22;
+}
+.rc-person.is-pinned .rc-halo {
+    opacity: 0.3;
+}
+
+/* ---------- 悬浮提示 ---------- */
+.rc-tip {
+    position: absolute;
+    z-index: 10;
+    display: none;
+    max-width: 280px;
+    padding: 0.7rem 0.85rem;
+    background-color: var(--color-surface-raised);
+    border: 1px solid var(--color-line-strong);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lift);
+    pointer-events: none;
+}
+.rc-tip.is-show {
+    display: block;
+}
+.rc-tip-title {
+    margin: 0;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+}
+.rc-tip-meta {
+    margin: 0.2rem 0 0;
+    color: var(--color-brass);
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+}
+.rc-tip-desc {
+    margin: 0.35rem 0 0;
+    color: var(--color-muted);
+    font-size: 0.75rem;
+    line-height: 1.6;
+}
+.rc-tip-desc[hidden] {
+    display: none;
+}
+
+/* ---------- 图例 ---------- */
+.rc-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.2rem;
+    margin: 0.8rem 0 0;
+    padding: 0;
+    list-style: none;
+    color: var(--color-muted);
+    font-size: 0.72rem;
+}
+.rc-legend li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+.rc-legend span {
+    opacity: 0.75;
+}
+.rc-swatch {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 1px;
+}
+.rc-swatch.is-civil {
+    background-color: var(--color-brass);
+}
+.rc-swatch.is-military {
+    background-color: var(--color-celadon);
+}
+.rc-swatch.is-kin {
+    background-color: var(--color-seal);
+}
+.rc-swatch.is-ruler {
+    background-color: var(--color-surface-raised);
+    border: 1px solid var(--color-line-strong);
+}
+
+/* ---------- 人物索引 ---------- */
+.rc-roster {
+    padding: var(--space-sm);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+}
+.rc-roster-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--color-line);
+}
+.rc-roster-head h3 {
+    margin: 0;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+}
+.rc-roster-head span {
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+}
+.rc-roster-hint {
+    margin: 0.55rem 0 0.8rem;
+    color: var(--color-muted);
+    font-size: 0.7rem;
+}
+.rc-roster-group + .rc-roster-group {
+    margin-top: 0.95rem;
+}
+.rc-roster-group-head {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-bottom: 0.4rem;
+}
+.rc-roster-group-head h4 {
+    margin: 0;
+    color: var(--color-ink-soft);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+}
+.rc-roster-group-head span {
+    margin-left: auto;
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+}
+.rc-roster ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.rc-roster-item {
+    display: grid;
+    grid-template-columns: 3.2em 5.8em minmax(0, 1fr);
+    align-items: baseline;
+    gap: 0.35rem;
+    width: 100%;
+    padding: 0.34rem 0.35rem;
+    color: inherit;
+    font-family: inherit;
+    text-align: left;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background-color 0.12s, border-color 0.12s;
+}
+.rc-roster-item:hover,
+.rc-roster-item:focus-visible {
+    background-color: color-mix(in srgb, var(--color-brass) 7%, transparent);
+    border-color: color-mix(in srgb, var(--color-brass) 25%, var(--color-line));
+    outline: none;
+}
+.rc-roster-item.is-pinned {
+    background-color: color-mix(in srgb, var(--color-brass) 12%, transparent);
+    border-color: color-mix(in srgb, var(--color-brass) 42%, var(--color-line));
+}
+.rc-roster-name {
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+.rc-roster-life {
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+.rc-roster-role {
+    color: var(--color-muted);
+    font-size: 0.66rem;
+    line-height: 1.4;
+}
+.rc-clear {
+    width: 100%;
+    margin-top: 0.9rem;
+    padding: 0.4rem;
+    color: var(--color-muted);
+    font-family: inherit;
+    font-size: 0.7rem;
+    background: transparent;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+.rc-clear:hover {
+    color: var(--color-ink);
+    border-color: var(--color-line-strong);
+}
+
+/* ---------- 页脚说明 ---------- */
+.rc-note {
+    margin: var(--space-md) 0 0;
+    color: var(--color-muted);
+    font-size: 0.78rem;
+    line-height: 1.9;
+}

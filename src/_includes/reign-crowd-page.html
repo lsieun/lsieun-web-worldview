@@ -1,0 +1,157 @@
+{#
+  帝系与群臣：左侧年份轴 + 帝系条，右侧按生卒重叠打包的臣工生命线。
+  版面在 world.js 构建期算好，脚本只负责高亮、提示与索引联动。
+#}
+{% if crowdView and crowdView.people %}
+{% set plot = crowdView.plot %}
+<link rel="stylesheet" href="/assets/css/reign-crowd.css">
+
+<div class="reign-crowd-page" data-rc-root>
+    <section class="page-hero crowd-hero">
+        <span class="watermark" aria-hidden="true">{{ crowdView.meta.watermark | default('史') }}</span>
+        <div class="container">
+            <p class="eyebrow">DYNASTY · REIGNS &amp; MINISTERS</p>
+            <h1 class="page-title">{{ crowdView.title }}</h1>
+            {% if crowdView.meta.subtitle %}
+            <p class="page-lead">{{ crowdView.meta.subtitle }}</p>
+            {% endif %}
+            <div class="page-meta">
+                {% for tag in (crowdView.meta.tags or []) %}
+                <span>{{ tag }}</span>
+                {% endfor %}
+                <span>臣工 <strong>{{ crowdView.people | length }} 位</strong></span>
+                <span>泳道 <strong>{{ crowdView.totalLanes }} 道</strong></span>
+                <span>帝王 <strong>{{ crowdView.rulers | length }} 段</strong></span>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section--tint">
+        <div class="container">
+            <div class="section-head" data-reveal>
+                <p class="eyebrow">01 · REIGNS × LIFELINES</p>
+                <h2 class="section-title">谁在谁的朝里</h2>
+                {% if crowdView.meta.intro %}
+                <p class="section-intro">{{ crowdView.meta.intro }}</p>
+                {% endif %}
+            </div>
+
+            <div class="rc-workspace">
+                <div class="rc-chart">
+                    <div class="rc-card">
+                        <div class="rc-scroll">
+                            <svg class="rc-plot" width="{{ plot.width }}" height="{{ plot.height }}"
+                                 viewBox="0 0 {{ plot.width }} {{ plot.height }}"
+                                 role="img" aria-label="{{ crowdView.title }}：帝系更替与臣工生命线">
+                                <g>
+                                    <text class="rc-head" x="{{ plot.axisX }}" y="24" text-anchor="end">年份</text>
+                                    <text class="rc-head" x="{{ plot.bandX + plot.bandW / 2 }}" y="24" text-anchor="middle">帝系</text>
+                                    <text class="rc-head" x="{{ plot.laneCenter }}" y="24" text-anchor="middle">臣工 · {{ crowdView.totalLanes }} 道</text>
+                                    <line class="rc-rule" x1="{{ plot.axisX + 8 }}" y1="36" x2="{{ plot.width - 20 }}" y2="36"/>
+                                </g>
+
+                                {% for g in crowdView.groups %}
+                                <rect class="rc-group-bg is-{{ g.id }}" x="{{ g.x }}" y="{{ plot.top }}"
+                                      width="{{ g.width }}" height="{{ plot.endY - plot.top }}"/>
+                                {% endfor %}
+
+                                {% for t in crowdView.ticks %}
+                                <line class="rc-grid" x1="{{ plot.axisX }}" y1="{{ t.y }}"
+                                      x2="{{ plot.width - 20 }}" y2="{{ t.y }}"/>
+                                <text class="rc-year" x="{{ plot.axisX }}" y="{{ t.y + 4 }}" text-anchor="end">{{ t.label }}</text>
+                                {% endfor %}
+
+                                {% for r in crowdView.rulers %}
+                                <g class="rc-ruler{% if r.status == 'interim' %} is-interim{% endif %}"
+                                   data-ruler="{{ r.id }}" data-name="{{ r.title }}" data-life="{{ r.lifeLabel }}"
+                                   data-reign="{{ r.reignLabel }}" data-alive="{{ r.alive | join('、') }}"
+                                   data-start="{{ r.start }}" data-end="{{ r.end }}">
+                                    <rect class="rc-band" x="{{ plot.bandX }}" y="{{ r.y }}"
+                                          width="{{ plot.bandW }}" height="{{ r.h }}" rx="2"/>
+                                    {% if r.isTiny %}
+                                    <rect class="rc-band-hit" x="{{ plot.bandX }}" y="{{ r.y - 4 }}"
+                                          width="{{ plot.bandW }}" height="10"/>
+                                    {% endif %}
+                                    {% if r.showLabel %}
+                                    <text class="rc-band-label" x="{{ plot.bandX + plot.bandW / 2 }}"
+                                          y="{{ r.y + r.h / 2 + 4 }}" text-anchor="middle">{{ r.short }}</text>
+                                    {% endif %}
+                                </g>
+                                {% endfor %}
+
+                                {% for p in crowdView.people %}
+                                <g class="rc-person is-{{ p.group }}" data-person="{{ p.id }}"
+                                   data-name="{{ p.name }}" data-life="{{ p.birthLabel }} — {{ p.deathLabel }}"
+                                   data-role="{{ p.role }}" data-summary="{{ p.summary }}"
+                                   data-birth="{{ p.birth }}" data-death="{{ p.death }}">
+                                    <rect class="rc-halo" x="{{ p.x - 6 }}" y="{{ p.y }}"
+                                          width="{{ plot.barWidth + 12 }}" height="{{ p.h }}" rx="5"/>
+                                    <rect class="rc-hit" x="{{ p.x - 10 }}" y="{{ p.y }}"
+                                          width="{{ plot.lanePitch }}" height="{{ p.h }}"/>
+                                    <rect class="rc-bar" x="{{ p.x }}" y="{{ p.y }}"
+                                          width="{{ plot.barWidth }}" height="{{ p.h }}" rx="2"/>
+                                </g>
+                                {% endfor %}
+
+                                <line class="rc-end" x1="{{ plot.bandX }}" y1="{{ plot.endY }}"
+                                      x2="{{ plot.width - 20 }}" y2="{{ plot.endY }}"/>
+                                <text class="rc-end-label" x="{{ plot.width - 20 }}" y="{{ plot.endY - 8 }}"
+                                      text-anchor="end">公元 8 · 王莽代汉</text>
+                            </svg>
+                        </div>
+
+                        <div class="rc-tip" data-rc-tip aria-hidden="true">
+                            <p class="rc-tip-title" data-rc-tip-title></p>
+                            <p class="rc-tip-meta" data-rc-tip-meta></p>
+                            <p class="rc-tip-desc" data-rc-tip-desc></p>
+                        </div>
+                    </div>
+
+                    <ul class="rc-legend">
+                        {% for g in crowdView.groups %}
+                        <li><i class="rc-swatch is-{{ g.id }}"></i>{{ g.name }}<span>{{ g.people | length }} 位</span></li>
+                        {% endfor %}
+                        <li><i class="rc-swatch is-ruler"></i>帝系年段</li>
+                    </ul>
+                </div>
+
+                <aside class="rc-roster" aria-label="人物索引">
+                    <header class="rc-roster-head">
+                        <h3>人物索引</h3>
+                        <span>{{ crowdView.people | length }} 位</span>
+                    </header>
+                    <p class="rc-roster-hint">悬停预览，点击固定高亮</p>
+                    {% for g in crowdView.groups %}
+                    <section class="rc-roster-group">
+                        <header class="rc-roster-group-head">
+                            <i class="rc-swatch is-{{ g.id }}"></i>
+                            <h4>{{ g.name }}</h4>
+                            <span>{{ g.people | length }}</span>
+                        </header>
+                        <ul>
+                            {% for p in g.people %}
+                            <li>
+                                <button type="button" class="rc-roster-item" data-person="{{ p.id }}"
+                                        aria-pressed="false" title="{{ p.role }}">
+                                    <span class="rc-roster-name">{{ p.name }}</span>
+                                    <span class="rc-roster-life">{{ p.birthLabel }}–{{ p.deathLabel }}</span>
+                                    <span class="rc-roster-role">{{ p.role }}</span>
+                                </button>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </section>
+                    {% endfor %}
+                    <button type="button" class="rc-clear" data-rc-clear>清除固定</button>
+                </aside>
+            </div>
+
+            {% if crowdView.meta.note %}
+            <p class="rc-note">{{ crowdView.meta.note | safe }}</p>
+            {% endif %}
+        </div>
+    </section>
+</div>
+
+<script src="/assets/js/reign-crowd.js" defer></script>
+{% endif %}

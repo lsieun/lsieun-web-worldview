@@ -239,6 +239,200 @@ function buildReignView(view, dynasties, figures, events, dynastySources, figure
     };
 }
 
+/* ---------- 帝系与群臣：按生卒重叠打包的泳道 ---------- */
+const CROWD = {
+    ppy: 3.6,          // 纵向像素 / 年
+    top: 56,           // 绘图区顶部留白
+    axisX: 76,         // 年份标签右对齐基线
+    bandX: 88,         // 帝系条左缘
+    bandW: 60,         // 帝系条宽度
+    laneX0: 172,       // 第一条泳道左缘
+    lanePitch: 24,     // 泳道间距
+    barWidth: 4,       // 生命线宽度
+    bottomPad: 28,
+    minRulerHeight: 3, // 极短在位的最小可见高度
+    labelMinHeight: 14 // 低于此高度不写单字
+};
+
+function round1(value) {
+    return Math.round(value * 10) / 10;
+}
+
+function shortTitle(title) {
+    return String(title || "").replace(/^西汉/, "").replace(/^汉/, "").slice(0, 1);
+}
+
+function buildCrowdView(view, dynasties, figures, figureSources, dynastySources) {
+    const viewSource = `views/${view.id}.json`;
+    const dynasty = dynasties[view.dynasty];
+    if (!dynasty) throw new Error(`[world] ${viewSource} 缺少有效 dynasty`);
+    const dynastySource = dynastySources[dynasty.id];
+
+    const groups = ensureArray(view.groups, viewSource, "groups").map((group) => {
+        if (!group.id || !group.name) throw new Error(`[world] ${viewSource} 的 groups 每项都需要 id 与 name`);
+        return {
+            id: group.id,
+            name: group.name,
+            desc: group.desc || "",
+            people: [],
+            laneStart: 0,
+            laneCount: 0,
+            x: 0,
+            width: 0
+        };
+    });
+    const groupById = new Map(groups.map((group) => [group.id, group]));
+    if (groupById.size !== groups.length) throw new Error(`[world] ${viewSource} 的 groups 存在重复 id`);
+
+    const range = view.range || { start: dynasty.start, end: dynasty.end };
+    const start = ensureNumber(range.start, viewSource, "range.start");
+    const end = ensureNumber(range.end, viewSource, "range.end");
+    if (start > end) throw new Error(`[world] ${viewSource} 的 range 起止倒置`);
+
+    const seen = new Set();
+    const people = ensureArray(view.cast, viewSource, "cast").map((item) => {
+        ensureRef(figures, "人物", viewSource, "cast", item.figure);
+        const figure = figures[item.figure];
+        if (seen.has(figure.id)) throw new Error(`[world] ${viewSource} 的 cast 中「${figure.id}」重复`);
+        seen.add(figure.id);
+        ensureNumber(figure.birth, figureSources[figure.id], "birth");
+        ensureNumber(figure.death, figureSources[figure.id], "death");
+        const group = groupById.get(item.group);
+        if (!group) throw new Error(`[world] ${viewSource} 的 cast 中「${figure.id}」归属了不存在的分组「${item.group}」`);
+        if (figure.birth < start || figure.death > end) {
+            throw new Error(`[world] ${viewSource} 的「${figure.id}」生卒超出视图时间范围`);
+        }
+        return {
+            id: figure.id,
+            name: figure.name,
+            summary: figure.summary || "",
+            birth: figure.birth,
+            death: figure.death,
+            birthLabel: formatYear(figure.birth),
+            deathLabel: formatYear(figure.death),
+            role: item.role || "",
+            group: group.id,
+            groupName: group.name,
+            lane: 0,
+            x: 0,
+            y: 0,
+            h: 0
+        };
+    });
+    if (!people.length) throw new Error(`[world] ${viewSource} 的 cast 为空`);
+
+    // 泳道打包：组内按生年排序，逐个放入第一条「上一位已去世」的泳道
+    let nextLane = 0;
+    for (const group of groups) {
+        group.people = people
+            .filter((person) => person.group === group.id)
+            .sort((a, b) => a.birth - b.birth || a.death - b.death);
+        const laneEnds = [];
+        for (const person of group.people) {
+            let lane = laneEnds.findIndex((lastDeath) => lastDeath < person.birth);
+            if (lane === -1) {
+                laneEnds.push(person.death);
+                lane = laneEnds.length - 1;
+            } else {
+                laneEnds[lane] = person.death;
+            }
+            person.lane = nextLane + lane;
+        }
+        group.laneStart = nextLane;
+        group.laneCount = laneEnds.length;
+        nextLane += laneEnds.length + 1; // 组间留一道空隙
+    }
+    const totalLanes = Math.max(...people.map((person) => person.lane)) + 1;
+
+    const yOf = (year) => round1(CROWD.top + (year - start) * CROWD.ppy);
+    for (const person of people) {
+        person.y = yOf(person.birth);
+        person.h = round1((person.death - person.birth) * CROWD.ppy);
+        person.x = round1(CROWD.laneX0 + person.lane * CROWD.lanePitch + (CROWD.lanePitch - CROWD.barWidth) / 2);
+    }
+    for (const group of groups) {
+        group.x = CROWD.laneX0 + group.laneStart * CROWD.lanePitch;
+        group.width = group.laneCount * CROWD.lanePitch;
+    }
+
+    // 帝王年段（一个 ruler 可有多段 terms）
+    const rulers = [];
+    for (const ruler of ensureArray(dynasty.rulers, dynastySource, "rulers")) {
+        const rulerSource = `${dynastySource} rulers.${ruler.figure}`;
+        const figure = figures[ruler.figure];
+        for (const term of ensureArray(ruler.terms, rulerSource, "terms")) {
+            const termStart = Math.max(ensureNumber(term.start, rulerSource, "terms.start"), start);
+            const termEnd = Math.min(ensureNumber(term.end, rulerSource, "terms.end"), end);
+            if (termEnd < termStart) continue;
+            const height = Math.max(round1((termEnd - termStart) * CROWD.ppy), CROWD.minRulerHeight);
+            const years = elapsedYears(termStart, termEnd);
+            rulers.push({
+                id: `${ruler.figure}-${term.start}`,
+                figure: ruler.figure,
+                name: figure.name,
+                title: ruler.title || figure.name,
+                short: shortTitle(ruler.title || figure.name),
+                status: ruler.status || "formal",
+                order: ruler.order,
+                start: termStart,
+                end: termEnd,
+                y: yOf(termStart),
+                h: height,
+                isTiny: height < CROWD.labelMinHeight,
+                showLabel: height >= CROWD.labelMinHeight,
+                lifeLabel: termEnd === termStart
+                    ? formatYear(termStart)
+                    : `${formatYear(termStart)} — ${formatYear(termEnd)}`,
+                reignLabel: `在位 ${term.durationLabel || (years === 0 ? "不足一年" : `${years} 年`)}`,
+                alive: people
+                    .filter((person) => person.death >= termStart && person.birth <= termEnd)
+                    .map((person) => person.name)
+            });
+        }
+    }
+    // 极短在位的细标最后绘制，避免被相邻年段覆盖
+    rulers.sort((a, b) => Number(a.isTiny) - Number(b.isTiny) || a.start - b.start);
+
+    const ticks = [];
+    for (let year = Math.ceil(start / 50) * 50; year < end; year += 50) {
+        ticks.push({
+            year,
+            label: year === 0 ? "公元" : formatYear(year),
+            y: yOf(year)
+        });
+    }
+
+    const plotWidth = CROWD.laneX0 + totalLanes * CROWD.lanePitch + 20;
+    const plotHeight = CROWD.top + (end - start) * CROWD.ppy + CROWD.bottomPad;
+
+    return {
+        id: view.id,
+        title: view.title || "帝系与群臣",
+        href: view.href,
+        meta: { watermark: "汉", ...view.meta },
+        dynasty: { id: dynasty.id, name: dynasty.name, start: dynasty.start, end: dynasty.end },
+        range: { start, end },
+        groups,
+        people,
+        rulers,
+        ticks,
+        totalLanes,
+        plot: {
+            width: Math.round(plotWidth),
+            height: Math.round(plotHeight),
+            top: CROWD.top,
+            axisX: CROWD.axisX,
+            bandX: CROWD.bandX,
+            bandW: CROWD.bandW,
+            laneX0: CROWD.laneX0,
+            lanePitch: CROWD.lanePitch,
+            barWidth: CROWD.barWidth,
+            laneCenter: Math.round(CROWD.laneX0 + (totalLanes * CROWD.lanePitch) / 2),
+            endY: yOf(end)
+        }
+    };
+}
+
 export default function () {
     const { entities: regions, sources: regionSources } = readEntities("regions");
     const { entities: places, sources: placeSources } = readEntities("places");
@@ -320,6 +514,18 @@ export default function () {
     for (const view of Object.values(views)) {
         const source = `views/${view.id}.json`;
         if (view.dynasty) ensureRef(dynasties, "朝代", source, "dynasty", view.dynasty);
+        if (view.type === "reign-crowd") {
+            if (!view.dynasty) throw new Error(`[world] ${source} 缺少 dynasty`);
+            for (const group of ensureArray(view.groups, source, "groups")) {
+                if (!group.id || !group.name) throw new Error(`[world] ${source} 的 groups 每项都需要 id 与 name`);
+            }
+            for (const item of ensureArray(view.cast, source, "cast")) {
+                ensureRef(figures, "人物", source, "cast", item.figure);
+                ensureNumber(figures[item.figure].birth, figureSources[item.figure], "birth");
+                ensureNumber(figures[item.figure].death, figureSources[item.figure], "death");
+            }
+            continue;
+        }
         if (view.type === "dynasty-reigns") {
             for (const figureId of ensureArray(view.figures, source, "figures")) {
                 ensureRef(figures, "人物", source, "figures", figureId);
@@ -397,7 +603,12 @@ export default function () {
     // ---------- 视图拼装 ----------
     const timelines = {};
     const reignViews = {};
+    const crowdViews = {};
     for (const view of Object.values(views)) {
+        if (view.type === "reign-crowd") {
+            crowdViews[view.id] = buildCrowdView(view, dynasties, figures, figureSources, dynastySources);
+            continue;
+        }
         if (view.type === "dynasty-reigns") {
             reignViews[view.id] = buildReignView(view, dynasties, figures, events, dynastySources, figureSources);
             continue;
@@ -464,5 +675,5 @@ export default function () {
         };
     }
 
-    return { figures, places, regions, views, dynasties: dynastyList, topicCount, timelines, reignViews };
+    return { figures, places, regions, views, dynasties: dynastyList, topicCount, timelines, reignViews, crowdViews };
 }
