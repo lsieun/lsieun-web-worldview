@@ -33,4 +33,4 @@ src/
 
 - 史册 / 舆图 / 人物详情页：在对应 `content/` 目录新增 HTML，按 `specs/01-website-c-structure.md` 填写 Front Matter。
 - 舆图坐标：编辑 `src/_data/hubs.json`。
-- 样式与路由约定：见 `specs/` 与 `ai-instructions.md`。
+- 样式与路由约定：见 `specs/` 与 `AGENTS.md`；模板与版式取舍见 `docs/design/README.md`。

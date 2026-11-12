@@ -10,6 +10,7 @@
 | 排查构建问题 / 修改 `eleventy.config.js` | `specs/02-build-a-eleventy.md` |
 | 修改部署配置（仅可改 `name`） | `specs/03-deploy-a-cloudflare.md` |
 | 撰写栏目内容 / 新增舆图坐标 | `specs/05-content-a-style.md` |
+| 新增页面模板 / 查阅版式与模板共识 | `docs/design/README.md` |
 | 通用建站决策 | `specs/00-general-website-framework.md` |
 
 ## 铁律
