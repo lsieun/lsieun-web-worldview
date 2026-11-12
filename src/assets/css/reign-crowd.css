@@ -386,6 +386,22 @@
     pointer-events: auto;
     user-select: text;
 }
+.rc-tip-pin {
+    position: absolute;
+    top: 6px;
+    right: 9px;
+    color: var(--color-brass);
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    opacity: 0.9;
+    pointer-events: none;
+}
+.rc-tip.is-pinned .rc-tip-pin {
+    display: none;
+}
+.rc-tip-title {
+    padding-right: 3.2rem;
+}
 .rc-tip-hint {
     display: none;
     margin: 0.5rem 0 0;

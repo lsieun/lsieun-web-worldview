@@ -385,6 +385,9 @@
     function unpinTip() {
         if (!pinnedNode) return;
         pinnedNode = null;
+        hoverPerson = null;
+        hoverRuler = null;
+        hoverRegency = null;
         tip.classList.remove('is-pinned');
         hideTip();
         refresh();
@@ -396,14 +399,29 @@
             return;
         }
         pinnedNode = node;
+        hoverPerson = node.classList.contains('rc-person') ? node.dataset.person : null;
+        hoverRuler = node.classList.contains('rc-ruler') ? node : null;
+        hoverRegency = node.classList.contains('rc-regency') ? node : null;
+        var box = node.getBoundingClientRect();
+        if (node.classList.contains('rc-ruler') || node.classList.contains('rc-regency')) {
+            // 贴在被点的条右侧，避免固定后挡住相邻的帝王条
+            pointer.x = box.right - 2;
+            pointer.y = box.top;
+        } else {
+            pointer.x = box.left + box.width / 2;
+            pointer.y = box.top + box.height / 2;
+        }
         if (node.classList.contains('rc-person')) showPerson(node);
         else if (node.classList.contains('rc-ruler')) showRuler(node);
         else if (node.classList.contains('rc-regency')) showRegency(node);
         else showEvent(node);
         tip.classList.add('is-pinned');
+        refresh();
     }
 
     plot.addEventListener('click', function (event) {
+        pointer.x = event.clientX;
+        pointer.y = event.clientY;
         var node = event.target.closest
             ? event.target.closest('.rc-event, .rc-person, .rc-ruler, .rc-regency')
             : null;
