@@ -1550,7 +1550,7 @@
 }
 
 .posthumous-pinyin {
-    font-family: var(--font-mono);
+    font-family: 'Inter Variable', var(--font-mono);
     font-size: 0.7rem;
     letter-spacing: 0.06em;
     color: var(--color-brass);

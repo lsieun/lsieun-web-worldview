@@ -336,7 +336,7 @@
 .rc-tip-title {
     margin: 0;
     color: var(--color-ink);
-    font-family: var(--font-serif);
+    font-family: 'Inter Variable', var(--font-serif);
     font-size: 0.95rem;
     font-weight: 600;
     letter-spacing: 0.04em;
@@ -400,7 +400,7 @@
     display: none;
 }
 .rc-tip-title {
-    padding-right: 3.2rem;
+    padding-right: 4.2rem;
 }
 .rc-tip-hint {
     display: none;

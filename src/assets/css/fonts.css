@@ -8,6 +8,25 @@
     font-display: swap;
 }
 
+/* 拼音声调字母（ǎ ě ǐ ǒ ǔ ǖ 等）在 latin 分片之外，需显式补上扩展分片 */
+@font-face {
+    font-family: 'Inter Variable';
+    src: url('/assets/fonts/inter/files/inter-latin-ext-wght-normal.woff2') format('woff2-variations');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0100-024F, U+1E00-1EFF;
+}
+
+@font-face {
+    font-family: 'Inter Variable';
+    src: url('/assets/fonts/inter/files/inter-vietnamese-wght-normal.woff2') format('woff2-variations');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+1EA0-1EF9, U+20AB;
+}
+
 @font-face {
     font-family: 'Outfit Variable';
     src: url('/assets/fonts/outfit/files/outfit-latin-wght-normal.woff2') format('woff2-variations');
