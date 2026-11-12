@@ -1,0 +1,106 @@
+/* china-map.css — 通用中国地图容器与图例 */
+
+.china-map-block {
+    --cm-height: 520px;
+    margin: 0 auto;
+    max-width: 1180px;
+    padding: 0;
+}
+
+.china-map-wrap {
+    position: relative;
+    height: var(--cm-height);
+    width: 100%;
+    background: var(--cm-bg, transparent);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.china-map-chart {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.china-map-chart:not([data-chart-id])::before {
+    content: "正在展开舆图…";
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: var(--text-muted);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+}
+
+.cm-error {
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--color-accent);
+    font-size: 13px;
+}
+
+/* ------------------------------------------------------------------
+ * 图例（可选放在图下方）
+ * ------------------------------------------------------------------ */
+.china-map-legend {
+    margin-top: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 22px;
+    padding: 12px 16px;
+    border-radius: 6px;
+    background: var(--cm-legend-bg, var(--surface-muted));
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.china-map-legend li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    list-style: none;
+}
+
+.china-map-legend .cm-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    border: 1px solid var(--cm-swatch-border, var(--map-border));
+    flex: none;
+}
+
+.china-map-legend .cm-swatch--line {
+    background: transparent;
+    height: 3px;
+    border: none;
+    border-top: 2px solid currentColor;
+}
+
+.china-map-caption {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    font-style: normal;
+}
+
+.china-map-caption code {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    background: var(--cm-caption-bg, var(--surface-muted));
+    padding: 1px 6px;
+    border-radius: 3px;
+}
+
+/* 窄屏：降低高度 */
+@media (max-width: 760px) {
+    .china-map-block {
+        --cm-height: 420px;
+    }
+    .china-map-legend {
+        gap: 10px 16px;
+        padding: 10px 12px;
+        font-size: 12px;
+    }
+}

@@ -1,0 +1,46 @@
+{#
+  china-map.html — 通用中国地图区块
+  使用：先在页面 set 好下列变量，再 include 本文件。
+    chartId      容器 id（默认 china-map-1 / 2 / 3 ... 按页面计数）
+    scheme       { title, provinces, legend, lines, labels, center, zoom, showTooltip, geojsonUrl }
+    height       CSS 自定义属性 --cm-height（默认 520px）
+    eyebrow / sectionTitle / intro  区块头；不传时省略
+  自动引入 echarts.min.js、china-map.js、china-map.css。
+#}
+{% set globalIdx = globalIdx | default(0) + 1 %}
+{% set chartId = chartId | default('china-map-' + globalIdx) %}
+{% set height = height | default(520) %}
+{% set scheme = scheme | default({}) %}
+
+<section class="china-map-block" {% if eyebrow or sectionTitle %}aria-label="{{ sectionTitle | default('中国地图') }}"{% endif %}
+         style="--cm-height: {{ height }}px;">
+    {% if eyebrow or sectionTitle %}
+    <div class="container">
+        <div class="section-head" data-reveal>
+            {% if eyebrow %}<p class="eyebrow">{{ eyebrow }}</p>{% endif %}
+            {% if sectionTitle %}<h2 class="section-title">{{ sectionTitle }}</h2>{% endif %}
+            {% if intro %}<p class="section-intro">{{ intro }}</p>{% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="china-map-wrap">
+        <div id="{{ chartId }}" class="china-map-chart" data-china-map></div>
+    </div>
+
+    {% if scheme.legend %}
+    <ul class="china-map-legend" aria-label="图例">
+        {% for item in scheme.legend %}
+        <li>
+            <span class="cm-swatch" style="background: {% if item.colorDark %}{{ item.colorDark }}{% else %}{{ item.color }}{% endif %};"></span>
+            <span>{{ item.name }}{% if item.note %} · {{ item.note }}{% endif %}</span>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</section>
+
+<script id="{{ chartId }}-data" type="application/json">{{ scheme | dump | safe }}</script>
+<script src="/assets/js/echarts.min.js" defer></script>
+<script src="/assets/js/china-map.js" defer></script>
+<link rel="stylesheet" href="/assets/css/china-map.css">

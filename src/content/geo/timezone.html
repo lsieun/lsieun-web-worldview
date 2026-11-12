@@ -1,0 +1,60 @@
+---
+# @formatter:off
+title: "时区划分"
+description: "中国领土横跨经度 73°E — 135°E，理论上占 5 个时区，实际统一采用东八区。"
+layout: default.html
+tags: ["geo"]
+era: "现代"
+span: "国土经度 73°E — 135°E"
+order: 55
+# @formatter:on
+---
+
+{% set chartId = "tz-chart" %}
+{% set scheme = chinaMaps.timezone %}
+{% set height = 560 %}
+{% set eyebrow = "SECTION 02 / 地图 · 时区" %}
+{% set sectionTitle = "中国的五个时区" %}
+{% set intro = "从阿尔泰到长白，国境横跨六十个经度。理论上分为五个时区，实际全部采用东八区（UTC+8），只有新疆在民间仍保留北京时间与乌鲁木齐时间（UTC+6）的双轨。" %}
+{% include "china-map.html" %}
+
+<div class="container">
+    <div class="china-map-caption" style="margin-top: 12px;">
+        底图：DataV.GeoAtlas 省级边界（自托管） · 分界线为近似示意位置，各省按主体所在时区填色
+    </div>
+
+    <div class="prose" style="margin-top: 40px;">
+        <h2>五个时区一条政令</h2>
+        <p>
+            中国东西两端相差约 62 度经度，按每 15 度一个时区计算，应覆盖 <strong>东五区至东九区</strong>。
+            1949 年之后，全国统一采用东八区标准时间（<strong>北京时间</strong>），这在大国中是罕见的做法——
+            俄罗斯横跨 11 个时区，美国本土 + 阿拉斯加 + 夏威夷覆盖 6 个。
+        </p>
+        <p>
+            统一时区的好处是政令通行、铁路运输时刻统一、广播电台只需一套报时；代价是新疆西部在夏季
+            太阳落山常常在北京时间 22:00 之后，东北黑瞎子岛在冬季北京时间 16:00 左右就已天昏地暗。
+        </p>
+
+        <div class="callout callout-label">
+            <strong>民间双轨</strong>
+            <p>
+                新疆部分机构（如铁路、民航）同时使用两套时间。乌鲁木齐时间（UTC+6）比北京时间晚两小时，
+                用于当地作息的安排。这种"一套国家时间 + 一套地方时间"的习惯，在喀什、伊犁等地延续至今。
+            </p>
+        </div>
+
+        <h2>原时区名称</h2>
+        <table style="margin-top: 12px;">
+            <thead>
+                <tr><th>时区</th><th>经度范围</th><th>旧称</th><th>主要覆盖</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>东五区 UTC+5</td><td>75° — 90° E</td><td>昆仑时区</td><td>新疆最西端（实际与东六区合并）</td></tr>
+                <tr><td>东六区 UTC+6</td><td>90° — 105° E</td><td>新藏时区</td><td>新疆、西藏、青海</td></tr>
+                <tr><td>东七区 UTC+7</td><td>105° — 120° E</td><td>中原时区</td><td>内蒙古、陕甘宁、川渝、云贵</td></tr>
+                <tr><td>东八区 UTC+8</td><td>120° — 135° E</td><td>陇蜀时区</td><td>华北、华东、华中、华南（<strong>全国实际采用</strong>）</td></tr>
+                <tr><td>东九区 UTC+9</td><td>135° — 150° E</td><td>长白时区</td><td>吉林东部、黑龙江东部（长白山以东）</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>

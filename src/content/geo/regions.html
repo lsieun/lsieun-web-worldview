@@ -1,0 +1,58 @@
+---
+# @formatter:off
+title: "四大地理区域"
+description: "按气候、地形与人文，中国常被划分为北方、南方、西北、青藏四大区域。"
+layout: default.html
+tags: ["geo"]
+era: "现代"
+span: "气候—地形复合分区"
+order: 56
+# @formatter:on
+---
+
+{% set chartId = "regions-chart" %}
+{% set scheme = chinaMaps.regions %}
+{% set height = 560 %}
+{% set eyebrow = "SECTION 01 / 地图 · 分区" %}
+{% set sectionTitle = "四大地理区域" %}
+{% set intro = "北方与南方以秦岭—淮河为界；西北以大兴安岭—贺兰山—祁连山与东部季风区相隔；青藏则横亘西南，海拔平均四千米以上。" %}
+{% include "china-map.html" %}
+
+<div class="container">
+    <div class="china-map-caption" style="margin-top: 12px;">
+        底图：DataV.GeoAtlas 省级边界（自托管） · 按省份主体区域归属填色，重叠地带在正文说明
+    </div>
+
+    <div class="prose" style="margin-top: 40px;">
+        <h2>分区的依据</h2>
+        <p>
+            四大区域不是行政划分，而是气候、地形、植被和人文风俗长期作用下的自然分区。两条主要分界线：
+        </p>
+        <ul>
+            <li><strong>秦岭 — 淮河线</strong>（约 32°N—34°N）：南北方的气候、植被、耕作方式分界线。线北年降水量 800mm 以下，暖温带落叶阔叶林，旱地种植小麦；线南年降水量 800mm 以上，亚热带常绿阔叶林，水田种植水稻。</li>
+            <li><strong>大兴安岭 — 贺兰山 — 祁连山</strong>：东部季风区与西北干旱区的界山。山线以西降水骤降，草原与荒漠替代森林。</li>
+        </ul>
+
+        <h2>各区域速览</h2>
+        <table>
+            <thead>
+                <tr><th>区域</th><th>核心地形</th><th>典型气候</th><th>代表省份</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>北方地区</td><td>华北平原、东北平原、黄土高原</td><td>温带季风</td><td>北京、河北、山东、山西、东北三省</td></tr>
+                <tr><td>南方地区</td><td>长江中下游平原、四川盆地、云贵高原、东南丘陵</td><td>亚热带 / 热带季风</td><td>上海、江苏、浙江、广东、四川、云南</td></tr>
+                <tr><td>西北地区</td><td>内蒙古高原、准噶尔盆地、塔里木盆地、黄土高原西部</td><td>温带大陆性（干旱）</td><td>新疆、内蒙古、甘肃、宁夏</td></tr>
+                <tr><td>青藏地区</td><td>青藏高原、柴达木盆地</td><td>高原山地（高海拔）</td><td>西藏、青海</td></tr>
+            </tbody>
+        </table>
+
+        <div class="callout callout-label">
+            <strong>重叠地带</strong>
+            <p>
+                陕西、甘肃、内蒙古的界线恰好穿过几条分界线，省内同时覆盖两个区域。陕西被秦岭劈成南北两半：
+                陕南属南方、陕北属北方；甘肃东部属西北、南部山区则是青藏边缘。这些过渡地带正是地理分界线
+                穿过的结果。
+            </p>
+        </div>
+    </div>
+</div>
