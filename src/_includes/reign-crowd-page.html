@@ -85,8 +85,10 @@
 
                                 {% for r in crowdView.rulers %}
                                 <g class="rc-ruler{% if r.status == 'interim' %} is-interim{% endif %}"
-                                   data-ruler="{{ r.id }}" data-name="{{ r.title }}" data-life="{{ r.lifeLabel }}"
+                                   data-ruler="{{ r.id }}" data-name="{{ r.fullName }}" data-life="{{ r.lifeLabel }}"
                                    data-reign="{{ r.reignLabel }}" data-alive="{{ r.alive | join('、') }}"
+                                   data-posthumous-label="{{ r.posthumousLabel }}" data-posthumous="{{ r.posthumous }}"
+                                   data-dynasty-year="{{ r.dynastyYearLabel }}"
                                    data-start="{{ r.start }}" data-end="{{ r.end }}">
                                     <rect class="rc-band" x="{{ plot.bandX }}" y="{{ r.y }}"
                                           width="{{ plot.bandW }}" height="{{ r.h }}" rx="2"/>
@@ -96,7 +98,7 @@
                                     {% endif %}
                                     <text class="rc-band-label" x="{{ plot.bandX + plot.bandW / 2 }}"
                                           y="{{ r.y + r.h / 2 + 4 }}" text-anchor="middle"
-                                          {% if not r.showLabel %}style="display:none"{% endif %}>{{ r.short }}</text>
+                                          {% if not r.showLabel %}style="display:none"{% endif %}>{{ r.displayTitle }}</text>
                                 </g>
                                 {% endfor %}
 
@@ -154,6 +156,7 @@
                             <p class="rc-tip-title" data-rc-tip-title></p>
                             <p class="rc-tip-meta" data-rc-tip-meta></p>
                             <p class="rc-tip-desc" data-rc-tip-desc></p>
+                            <div class="rc-tip-sections" data-rc-tip-sections></div>
                         </div>
                     </div>
 

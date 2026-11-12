@@ -279,8 +279,48 @@ function yearPos(year, start) {
     return year - start - (start < 0 && year > 0 ? 1 : 0);
 }
 
-function shortTitle(title) {
-    return String(title || "").replace(/^西汉/, "").replace(/^汉/, "").slice(0, 1);
+function bandTitle(title) {
+    // 页内已限定西汉，「西汉前少帝」省作「前少帝」
+    return String(title || "").replace(/^西汉/, "");
+}
+
+/* 谥法释义：出自《逸周书·谥法解》一系，说明这个字凭什么给、适用于什么样的一生 */
+const POSTHUMOUS = {
+    "高": "德覆万物曰高；功最高曰高。刘邦扫平群雄、再成一统，故谥高皇帝。",
+    "惠": "柔质慈民曰惠；爱民好与曰惠。惠帝在位宽仁，与民休息。",
+    "文": "经天纬地曰文；道德博闻曰文。文帝轻徭薄赋、废除肉刑，以文德治天下。",
+    "景": "布义行刚曰景；由义而济曰景。景帝平七国之乱，守成而不失刚断。",
+    "武": "威强睿德曰武；克定祸乱曰武。武帝开边改制，以武功著称，亦耗损民力。",
+    "昭": "昭德有劳曰昭；圣闻周达曰昭。昭帝幼年即位，委政霍光，守成安民。",
+    "宣": "圣善周闻曰宣。宣帝起于民间，亲理政务，史称中兴。",
+    "元": "能思辩众曰元；行义说民曰元。元帝好儒，优柔少断。",
+    "成": "安民立政曰成。成帝承平，政渐移于外戚。",
+    "哀": "蚤孤短折曰哀；恭仁短折曰哀。哀帝在位短促，政不出外戚。",
+    "平": "执事有制曰平；治而无眚曰平。平帝幼年即位，为王莽所制。"
+};
+
+function posthumousOf(title) {
+    const clean = bandTitle(title);
+    if (clean === "汉高祖") {
+        return { label: "谥法 · 高", text: `${POSTHUMOUS["高"]}庙号太祖，「高祖」是后世习称。` };
+    }
+    const match = clean.match(/^汉(.)帝$/);
+    if (match && POSTHUMOUS[match[1]]) {
+        return {
+            label: `谥法 · ${match[1]}`,
+            text: `${POSTHUMOUS[match[1]]}谥号是对一生的总结，取其一世最著之德业。`
+        };
+    }
+    if (clean === "汉废帝") {
+        return { label: "称号", text: "「废帝」为史称，非谥号；在位二十七日即被霍光废黜，无谥法可释。" };
+    }
+    if (clean === "前少帝" || clean === "后少帝") {
+        return { label: "称号", text: `「${clean}」为史称，非谥号；幼年即位、由吕后临朝，未及议谥。` };
+    }
+    if (clean === "孺子婴") {
+        return { label: "称号", text: "「孺子婴」为史称，非谥号；即位未及改元即为王莽所废。" };
+    }
+    return { label: "称号", text: `「${clean}」为史称。` };
 }
 
 function yearLabel(year, approx) {
@@ -468,12 +508,21 @@ function buildCrowdView(view, dynasties, figures, figureSources, events, eventSo
             if (termEnd < termStart) continue;
             const height = Math.max(round1((termEnd - termStart) * CROWD.ppy), CROWD.minRulerHeight);
             const years = elapsedYears(termStart, termEnd);
+            const title = ruler.title || figure.name;
+            const displayTitle = bandTitle(title);
+            const posthumous = posthumousOf(title);
             rulers.push({
                 id: `${ruler.figure}-${term.start}`,
                 figure: ruler.figure,
                 name: figure.name,
-                title: ruler.title || figure.name,
-                short: shortTitle(ruler.title || figure.name),
+                title,
+                displayTitle,
+                fullName: displayTitle.includes(figure.name) || displayTitle.includes(figure.name.slice(-1))
+                    ? displayTitle
+                    : `${displayTitle} ${figure.name}`,
+                posthumousLabel: posthumous.label,
+                posthumous: posthumous.text,
+                dynastyYearLabel: `汉兴第 ${elapsedYears(dynasty.start, termStart) + 1} 年`,
                 status: ruler.status || "formal",
                 order: ruler.order,
                 start: termStart,
@@ -481,7 +530,7 @@ function buildCrowdView(view, dynasties, figures, figureSources, events, eventSo
                 y: yOf(termStart),
                 h: height,
                 isTiny: height < CROWD.labelMinHeight,
-                showLabel: height >= CROWD.labelMinHeight,
+                showLabel: height >= CROWD.labelMinHeight && displayTitle.length <= 5,
                 lifeLabel: termEnd === termStart
                     ? eraLabel(termStart)
                     : `${eraLabel(termStart)} — ${eraLabel(termEnd)}`,

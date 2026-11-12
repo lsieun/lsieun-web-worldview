@@ -18,6 +18,7 @@
     var tipTitle = tip.querySelector('[data-rc-tip-title]');
     var tipMeta = tip.querySelector('[data-rc-tip-meta]');
     var tipDesc = tip.querySelector('[data-rc-tip-desc]');
+    var tipSections = tip.querySelector('[data-rc-tip-sections]');
 
     var people = Array.prototype.slice.call(plot.querySelectorAll('.rc-person'));
     var rulers = Array.prototype.slice.call(plot.querySelectorAll('.rc-ruler'));
@@ -260,11 +261,34 @@
         tip.style.top = y + 'px';
     }
 
-    function showTip(title, meta, desc) {
+    function renderSections(items) {
+        tipSections.textContent = '';
+        if (!items.length) {
+            tipSections.classList.remove('is-show');
+            return;
+        }
+        items.forEach(function (item) {
+            var section = document.createElement('div');
+            section.className = 'rc-tip-section';
+            var label = document.createElement('p');
+            label.className = 'rc-tip-section-label';
+            label.textContent = item.label;
+            var text = document.createElement('p');
+            text.className = 'rc-tip-section-text';
+            text.textContent = item.text;
+            section.appendChild(label);
+            section.appendChild(text);
+            tipSections.appendChild(section);
+        });
+        tipSections.classList.add('is-show');
+    }
+
+    function showTip(title, meta, desc, sections) {
         tipTitle.textContent = title;
         tipMeta.textContent = meta;
         tipDesc.textContent = desc || '';
         tipDesc.hidden = !desc;
+        renderSections(sections || []);
         tip.classList.add('is-show');
         tip.setAttribute('aria-hidden', 'false');
         placeTip();
@@ -286,10 +310,20 @@
 
     function showRuler(el) {
         var alive = el.dataset.alive ? el.dataset.alive.split('、') : [];
-        var desc = alive.length
-            ? '在位期间在世 ' + alive.length + ' 人：' + alive.join('、')
-            : '在位期间无图中人物在世';
-        showTip(el.dataset.name, el.dataset.life + ' · ' + el.dataset.reign, desc);
+        var aliveText = alive.length
+            ? '在世 ' + alive.length + ' 人：' + alive.join('、')
+            : '图中无人物在世';
+        var sections = [];
+        if (el.dataset.posthumous) {
+            sections.push({ label: el.dataset.posthumousLabel || '称号', text: el.dataset.posthumous });
+        }
+        sections.push({ label: '在位臣工', text: aliveText });
+        showTip(
+            el.dataset.name,
+            el.dataset.life + ' · ' + el.dataset.reign + ' · ' + el.dataset.dynastyYear,
+            '',
+            sections
+        );
     }
 
     function showEvent(dot) {
