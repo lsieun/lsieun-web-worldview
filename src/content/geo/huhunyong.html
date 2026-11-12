@@ -1,0 +1,73 @@
+---
+# @formatter:off
+title: "胡焕庸线"
+description: "中国人口地理分界线。1935 年由地理学家胡焕庸提出，黑河 — 腾冲一线东南 43% 国土承载 94% 人口。"
+layout: default.html
+tags: ["geo"]
+era: "现代"
+span: "黑河（黑龙江） — 腾冲（云南）"
+order: 59
+# @formatter:on
+---
+
+{% set chartId = "huhunyong-chart" %}
+{% set scheme = chinaMaps.huhunyong %}
+{% set height = 560 %}
+{% set eyebrow = "SECTION 05 / 地图 · 人口" %}
+{% set sectionTitle = "胡焕庸线" %}
+{% set intro = "1935 年被胡焕庸绘出的这条斜线，八十多年过去了，人口比例几乎没有变。" %}
+{% include "china-map.html" %}
+
+<div class="container">
+    <div class="china-map-caption" style="margin-top: 12px;">
+        分界线拐点取真实地理坐标：
+        黑河（127.5°E, 50.2°N）→ 经内蒙、宁夏、甘肃、四川 → 腾冲（99.2°E, 25.5°N）。
+        省份色块为整体归属近似。
+    </div>
+
+    <div class="prose" style="margin-top: 40px;">
+        <h2>一条斜线，两个世界</h2>
+        <p>
+            胡焕庸线（<code>1935</code>）把中国切成两半：
+            <strong>东南半壁</strong>约占国土 <strong>43%</strong>，却承载 <strong>94%</strong> 以上的人口；
+            <strong>西北半壁</strong>占国土 <strong>57%</strong>，只有 <strong>6%</strong> 的人口。
+            这个比例在随后的三次人口普查（1982 / 2000 / 2020）中几乎没有变化。
+        </p>
+
+        <h2>线为什么刚好在这里</h2>
+        <p>
+            这条线与中国的 <strong>400mm 年降水量等压线</strong>高度重合，也大致沿着
+            <strong>大兴安岭 — 太行山 — 秦岭 — 大巴山 — 横断山</strong>的地形过渡带。
+            线西北是草原、戈壁和雪山，年降水量低于 400mm，难以支撑大规模定居农业；
+            线东南是森林、平原和丘陵，年降水量普遍高于 400mm，适合农耕和定居。
+        </p>
+
+        <div class="callout callout-label">
+            <strong>省份归属的近似</strong>
+            <p>
+                甘肃省被胡焕庸线穿过（定西、天水一带），整体归为东南侧；
+                宁夏、内蒙、黑龙江则整体归为西北或东南。
+                精确分界线由折线承担，省份色块只是示意归属。
+            </p>
+        </div>
+
+        <h2>沿线的重要节点</h2>
+        <ul>
+            <li><strong>黑河</strong>（黑龙江，<code>127.5°E, 50.2°N</code>）：线的北端起点。当年胡焕庸在这里开始统计。</li>
+            <li><strong>呼和浩特</strong>（内蒙古）：线穿过市区以北约 100 公里。</li>
+            <li><strong>银川</strong>（宁夏）：线穿过市区西北侧。</li>
+            <li><strong>兰州</strong>（甘肃）：线穿过市区东侧。</li>
+            <li><strong>阿坝</strong>（四川）：线进入横断山区。</li>
+            <li><strong>腾冲</strong>（云南，<code>99.2°E, 25.5°N</code>）：线的南端终点。</li>
+        </ul>
+
+        <h2>八十年来没变的事</h2>
+        <p>
+            1935 年：东南 36% 国土 · 96% 人口；
+            1982 年：东南 42.9% 国土 · 94.4% 人口；
+            2020 年：东南 43.8% 国土 · 93.7% 人口。
+            <strong>这条线惊人地稳定</strong>，即使经过了三线建设、西部大开发、城市化浪潮，也没能改变基本格局。
+            背后是自然条件——气候与地形——决定的定居可能性。
+        </p>
+    </div>
+</div>

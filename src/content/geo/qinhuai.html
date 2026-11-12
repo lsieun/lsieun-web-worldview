@@ -1,0 +1,74 @@
+---
+# @formatter:off
+title: "秦岭 — 淮河线"
+description: "中国南北方的自然分界线，西起甘肃岷山，经陕南秦岭，东至江苏淮河。"
+layout: default.html
+tags: ["geo"]
+era: "现代"
+span: "西 103.8°E — 东 120.5°E"
+order: 57
+# @formatter:on
+---
+
+{% set chartId = "qinhuai-chart" %}
+{% set scheme = chinaMaps.qinhuai %}
+{% set height = 560 %}
+{% set eyebrow = "SECTION 03 / 地图 · 分界线" %}
+{% set sectionTitle = "秦岭 — 淮河线" %}
+{% set intro = "一条看不见的线，把中国分成了南方和北方。它不是行政边界，而是气候、植被、耕作方式和生活习惯的分水岭。" %}
+{% include "china-map.html" %}
+
+<div class="container">
+    <div class="china-map-caption" style="margin-top: 12px;">
+        分界线：采用山脉与河流的真实地理拐点（岷山 → 秦岭 → 淮河），精确经纬度坐标。
+        省份色块为 <strong>整体归属近似</strong>——ECharts 无法按省内多边形裁切，因此陕西整体归北方、安徽整体归南方等。
+        精确分界线 + 近似色块 = 既有真实位置，又有区域示意。
+    </div>
+
+    <div class="prose" style="margin-top: 40px;">
+        <h2>一条线，两个世界</h2>
+        <p>
+            秦岭 — 淮河线是中国地理上最重要的分界线。它经过的地方，年降水量从 800 毫米跳到 1000 毫米以上，
+            一月份平均气温从 0℃ 以上掉到 0℃ 以下；线北种小麦、住四合院、说普通话；线南种水稻、住水乡、方言繁多。
+        </p>
+
+        <h2>线本身走哪里</h2>
+        <p>
+            西起甘肃南部岷山山脉（<code>103.8°E, 33.2°N</code>），经陕南汉中、安康，进入河南南阳盆地，
+            然后沿淮河干流向东，穿过安徽北部，在江苏北部与运河交汇，最后在 <code>120.5°E</code> 附近入长江。
+            总长约 1700 公里。
+        </p>
+
+        <div class="callout callout-label">
+            <strong>为什么省份色块是近似</strong>
+            <p>
+                陕西省被秦岭彻底劈成两半：陕南汉中、安康属南方亚热带，陕北属北方暖温带。
+                ECharts 的 <code>geo.regions</code> 只能给整个省上色，做不了省内多边形裁切。
+                所以我们把陕西整体归为北方，把精确的分界线叠加上去——
+                读者看的是精确的线条位置，不是色块的行政归属。
+            </p>
+        </div>
+
+        <h2>两侧的关键差异</h2>
+        <table>
+            <thead>
+                <tr><th>指标</th><th>线北</th><th>线南</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>年降水量</td><td>≤ 800 mm</td><td>≥ 1000 mm</td></tr>
+                <tr><td>一月均温</td><td>&lt; 0℃</td><td>&gt; 0℃</td></tr>
+                <tr><td>植被</td><td>暖温带落叶阔叶林</td><td>亚热带常绿阔叶林</td></tr>
+                <tr><td>耕作</td><td>旱地 · 冬小麦</td><td>水田 · 水稻</td></tr>
+                <tr><td>主食</td><td>面食</td><td>米饭</td></tr>
+                <tr><td>民居</td><td>四合院 · 窑洞</td><td>徽派 · 水乡</td></tr>
+            </tbody>
+        </table>
+
+        <h2>三个被线穿过的省份</h2>
+        <ul>
+            <li><strong>陕西</strong>：秦岭横贯中部。陕南汉中、安康三市属南方亚热带气候；陕北榆林、延安属北方暖温带。西安恰好卡在秦岭北麓，是典型北方城市。</li>
+            <li><strong>安徽</strong>：淮河横贯北部。淮河以北（阜阳、亳州）是北方旱地，以南（安庆、黄山）是南方水田。</li>
+            <li><strong>江苏</strong>：淮河大致沿灌溉总渠走向。徐州在北，淮安、扬州、南京在南。</li>
+        </ul>
+    </div>
+</div>

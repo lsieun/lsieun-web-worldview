@@ -1,0 +1,70 @@
+---
+# @formatter:off
+title: "三大阶梯地形"
+description: "中国地势西高东低，呈三级阶梯下降。第一阶梯青藏高原平均海拔 4000 米以上，第三阶梯东部平原多在 500 米以下。"
+layout: default.html
+tags: ["geo"]
+era: "现代"
+span: "青藏高原 → 东部平原"
+order: 58
+# @formatter:on
+---
+
+{% set chartId = "stepped-chart" %}
+{% set scheme = chinaMaps.steppedTerrain %}
+{% set height = 580 %}
+{% set eyebrow = "SECTION 04 / 地图 · 地形" %}
+{% set sectionTitle = "三大阶梯地形" %}
+{% set intro = "从 4000 米的雪原到海拔几十米的平原，中国地势像阶梯一样从西向东逐级下降。两条山脉把它切成三段。" %}
+{% include "china-map.html" %}
+
+<div class="container">
+    <div class="china-map-caption" style="margin-top: 12px;">
+        分界线拐点均取自真实地理坐标：
+        昆仑 — 祁连 — 横断山脉为第一/二级界；
+        大兴安岭 — 太行 — 巫山 — 雪峰山为第二/三级界。
+        省份色块为整体归属近似。
+    </div>
+
+    <div class="prose" style="margin-top: 40px;">
+        <h2>西高东低，像楼梯</h2>
+        <p>
+            平均海拔：第一阶梯 4000 米以上 → 第二阶梯 1000-2000 米 → 第三阶梯 500 米以下。
+            这种三级下降结构，决定了中国主要河流的流向——几乎所有大河都自西向东入海。
+        </p>
+
+        <h2>两条界山</h2>
+        <h3>第一 / 第二阶梯界</h3>
+        <p>
+            西起新疆帕米尔高原，沿<strong>昆仑山</strong>向东，经<strong>祁连山</strong>北麓，向南绕过青海湖，
+            再沿<strong>横断山脉</strong>纵列南下，止于云南境内。全长约 3000 公里，海拔 4000-6000 米。
+        </p>
+
+        <h3>第二 / 第三阶梯界</h3>
+        <p>
+            北起黑龙江<strong>大兴安岭</strong>，向南经<strong>太行山</strong>、<strong>巫山</strong>、<strong>雪峰山</strong>，
+            直抵广西北部湾。全长约 3500 公里。这条线也是中国季风区与非季风区的东部边界。
+        </p>
+
+        <div class="callout callout-label">
+            <strong>省份整体归属的说明</strong>
+            <p>
+                界线穿过陕西（陕北在第二阶梯、陕南在第三阶梯）、四川（川西高原在第一/二阶梯、川中盆地在第三阶梯）、
+                云南（滇西高原在第二阶梯、滇中在第三阶梯）。
+                地图上这些省份的色块只能整体给一个颜色，精确分界由金色折线承担。
+            </p>
+        </div>
+
+        <h2>每级阶梯里有什么</h2>
+        <table>
+            <thead>
+                <tr><th>阶梯</th><th>平均海拔</th><th>核心地形</th><th>主要省份</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>第一阶梯</td><td>4000 m+</td><td>青藏高原、柴达木盆地</td><td>西藏、青海</td></tr>
+                <tr><td>第二阶梯</td><td>1000–2000 m</td><td>内蒙古高原、黄土高原、云贵高原、准噶尔 / 塔里木 / 四川盆地</td><td>新疆、内蒙古、甘肃、宁夏、陕西、四川、重庆、云南</td></tr>
+                <tr><td>第三阶梯</td><td>&lt; 500 m</td><td>东北平原、华北平原、长江中下游平原、东南丘陵</td><td>东部和中部所有省份</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
