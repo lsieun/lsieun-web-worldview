@@ -38,6 +38,35 @@
     scrollbar-color: var(--color-line-strong) transparent;
 }
 
+/* ---------- 纵向比例滑条 ---------- */
+.rc-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.8rem;
+    margin-bottom: 0.6rem;
+    padding: 0 0.4rem 0.7rem;
+    border-bottom: 1px solid var(--color-line);
+}
+.rc-toolbar label {
+    color: var(--color-muted);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+}
+.rc-toolbar input[type="range"] {
+    flex: 1 1 140px;
+    max-width: 320px;
+    accent-color: var(--color-brass);
+}
+.rc-toolbar output {
+    color: var(--color-ink-soft);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    min-width: 10.5em;
+    text-align: right;
+}
+
 .rc-plot {
     display: block;
     width: auto;
@@ -68,6 +97,17 @@
     font-size: 11px;
     font-variant-numeric: tabular-nums;
 }
+.rc-spine {
+    stroke: var(--color-line-strong);
+    stroke-width: 1;
+}
+.rc-tick {
+    stroke: var(--color-line);
+    stroke-width: 1;
+}
+.rc-tick.is-major {
+    stroke: var(--color-line-strong);
+}
 .rc-end {
     stroke: var(--color-line-strong);
     stroke-width: 1;
@@ -92,6 +132,9 @@
 }
 .rc-group-bg.is-kin {
     fill: color-mix(in srgb, var(--color-seal) 6%, transparent);
+}
+.rc-group-bg.is-heqin {
+    fill: color-mix(in srgb, var(--color-celadon) 6%, transparent);
 }
 
 /* ---------- 帝系条 ---------- */
@@ -140,6 +183,9 @@
 .rc-person.is-kin {
     --rc-color: var(--color-seal);
 }
+.rc-person.is-heqin {
+    --rc-color: color-mix(in srgb, var(--color-celadon) 60%, var(--color-brass));
+}
 .rc-person .rc-hit {
     fill: transparent;
     cursor: pointer;
@@ -167,6 +213,56 @@
 }
 .rc-person.is-pinned .rc-halo {
     opacity: 0.3;
+}
+.rc-person .rc-pre {
+    fill: var(--rc-color);
+    opacity: 0.22;
+    pointer-events: none;
+    transition: opacity 0.12s;
+}
+.rc-person .rc-pre.is-unknown {
+    fill: none;
+    stroke: var(--rc-color);
+    stroke-width: 1;
+    opacity: 0.3;
+}
+.rc-person .rc-career {
+    fill: var(--color-surface);
+    stroke: var(--rc-color);
+    stroke-width: 1.5;
+    pointer-events: none;
+}
+.rc-person .rc-event {
+    fill: var(--color-brass);
+    stroke: var(--color-surface);
+    stroke-width: 1;
+    pointer-events: none;
+    transition: opacity 0.12s;
+}
+.rc-event-hit {
+    fill: transparent;
+    cursor: pointer;
+    pointer-events: all;
+}
+.rc-plot.is-focused .rc-person:not(.is-active) .rc-event,
+.rc-plot.is-focused .rc-person:not(.is-active) .rc-pre,
+.rc-plot.is-focused .rc-person:not(.is-active) .rc-career {
+    opacity: 0.16;
+}
+.rc-event-label {
+    fill: var(--color-ink-soft);
+    font-family: var(--font-body);
+    font-size: 11px;
+    opacity: 0;
+    paint-order: stroke;
+    stroke: var(--color-surface);
+    stroke-width: 3px;
+    stroke-linejoin: round;
+    pointer-events: none;
+    transition: opacity 0.12s;
+}
+.rc-event-label.is-show {
+    opacity: 1;
 }
 
 /* ---------- 悬浮提示 ---------- */
@@ -244,9 +340,24 @@
 .rc-swatch.is-kin {
     background-color: var(--color-seal);
 }
+.rc-swatch.is-heqin {
+    background-color: color-mix(in srgb, var(--color-celadon) 60%, var(--color-brass));
+}
 .rc-swatch.is-ruler {
     background-color: var(--color-surface-raised);
     border: 1px solid var(--color-line-strong);
+}
+.rc-swatch.is-pre {
+    width: 2px;
+    margin-inline: 4px;
+    background-color: color-mix(in srgb, var(--color-ink) 35%, transparent);
+}
+.rc-swatch.is-event {
+    width: 7px;
+    height: 7px;
+    margin-inline: 1.5px;
+    border-radius: 50%;
+    background-color: var(--color-brass);
 }
 
 /* ---------- 人物索引 ---------- */

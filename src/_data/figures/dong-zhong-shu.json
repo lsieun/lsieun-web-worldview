@@ -3,5 +3,7 @@
   "en": "Dong Zhongshu",
   "birth": -179,
   "death": -104,
+  "careerStart": -140,
+  "careerApprox": true,
   "summary": "广川人，武帝初举贤良，对策倡「罢黜百家，表章六经」，后为江都相。"
 }

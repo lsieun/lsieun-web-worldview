@@ -39,9 +39,18 @@
             <div class="rc-workspace">
                 <div class="rc-chart">
                     <div class="rc-card">
+                        <div class="rc-toolbar">
+                            <label for="rc-zoom">纵向比例</label>
+                            <input id="rc-zoom" type="range" min="2" max="8" step="0.2" value="{{ plot.ppy }}"
+                                   data-rc-zoom aria-label="调整每年所占的像素，改变整体长度">
+                            <output data-rc-zoom-out>{{ plot.ppy }} px / 年</output>
+                        </div>
                         <div class="rc-scroll">
                             <svg class="rc-plot" width="{{ plot.width }}" height="{{ plot.height }}"
                                  viewBox="0 0 {{ plot.width }} {{ plot.height }}"
+                                 data-start="{{ crowdView.range.start }}" data-end="{{ crowdView.range.end }}"
+                                 data-top="{{ plot.top }}" data-bottom="{{ plot.bottom }}" data-ppy="{{ plot.ppy }}"
+                                 data-axis-x="{{ plot.axisX }}" data-axis-line="{{ plot.axisLine }}"
                                  role="img" aria-label="{{ crowdView.title }}：帝系更替与臣工生命线">
                                 <g>
                                     <text class="rc-head" x="{{ plot.axisX }}" y="24" text-anchor="end">年份</text>
@@ -55,11 +64,23 @@
                                       width="{{ g.width }}" height="{{ plot.endY - plot.top }}"/>
                                 {% endfor %}
 
-                                {% for t in crowdView.ticks %}
-                                <line class="rc-grid" x1="{{ plot.axisX }}" y1="{{ t.y }}"
-                                      x2="{{ plot.width - 20 }}" y2="{{ t.y }}"/>
-                                <text class="rc-year" x="{{ plot.axisX }}" y="{{ t.y + 4 }}" text-anchor="end">{{ t.label }}</text>
-                                {% endfor %}
+                                <g data-rc-axis>
+                                    <line class="rc-spine" x1="{{ plot.axisLine }}" y1="{{ plot.top }}"
+                                          x2="{{ plot.axisLine }}" y2="{{ plot.endY }}"/>
+                                    {% for t in crowdView.ticks %}
+                                    {% if t.major %}
+                                    <line class="rc-grid" x1="{{ plot.axisX }}" y1="{{ t.y }}"
+                                          x2="{{ plot.width - 20 }}" y2="{{ t.y }}"/>
+                                    {% endif %}
+                                    <line class="rc-tick{% if t.major %} is-major{% endif %}"
+                                          x1="{{ plot.axisLine - (t.major and 7 or 3) }}" y1="{{ t.y }}"
+                                          x2="{{ plot.axisLine }}" y2="{{ t.y }}"/>
+                                    {% if t.major %}
+                                    <text class="rc-year" x="{{ plot.axisX }}" y="{{ t.y + 4 }}"
+                                          text-anchor="end">{{ t.label }}</text>
+                                    {% endif %}
+                                    {% endfor %}
+                                </g>
 
                                 {% for r in crowdView.rulers %}
                                 <g class="rc-ruler{% if r.status == 'interim' %} is-interim{% endif %}"
@@ -72,10 +93,9 @@
                                     <rect class="rc-band-hit" x="{{ plot.bandX }}" y="{{ r.y - 4 }}"
                                           width="{{ plot.bandW }}" height="10"/>
                                     {% endif %}
-                                    {% if r.showLabel %}
                                     <text class="rc-band-label" x="{{ plot.bandX + plot.bandW / 2 }}"
-                                          y="{{ r.y + r.h / 2 + 4 }}" text-anchor="middle">{{ r.short }}</text>
-                                    {% endif %}
+                                          y="{{ r.y + r.h / 2 + 4 }}" text-anchor="middle"
+                                          {% if not r.showLabel %}style="display:none"{% endif %}>{{ r.short }}</text>
                                 </g>
                                 {% endfor %}
 
@@ -83,15 +103,46 @@
                                 <g class="rc-person is-{{ p.group }}" data-person="{{ p.id }}"
                                    data-name="{{ p.name }}" data-life="{{ p.birthLabel }} — {{ p.deathLabel }}"
                                    data-role="{{ p.role }}" data-summary="{{ p.summary }}"
-                                   data-birth="{{ p.birth }}" data-death="{{ p.death }}">
+                                   data-career="{{ p.careerLabel }}"
+                                   data-birth="{{ p.birth }}" data-death="{{ p.death }}"
+                                   data-career-start="{{ p.careerStart }}">
                                     <rect class="rc-halo" x="{{ p.x - 6 }}" y="{{ p.y }}"
                                           width="{{ plot.barWidth + 12 }}" height="{{ p.h }}" rx="5"/>
                                     <rect class="rc-hit" x="{{ p.x - 10 }}" y="{{ p.y }}"
                                           width="{{ plot.lanePitch }}" height="{{ p.h }}"/>
-                                    <rect class="rc-bar" x="{{ p.x }}" y="{{ p.y }}"
-                                          width="{{ plot.barWidth }}" height="{{ p.h }}" rx="2"/>
+                                    {% if p.careerY !== null %}
+                                    <rect class="rc-pre" x="{{ p.x + plot.barWidth / 2 - 1 }}" y="{{ p.y }}"
+                                          width="2" height="{{ p.preH }}" rx="1"/>
+                                    <rect class="rc-bar" x="{{ p.x }}" y="{{ p.postY }}"
+                                          width="{{ plot.barWidth }}" height="{{ p.postH }}" rx="2"/>
+                                    <circle class="rc-career" cx="{{ p.x + plot.barWidth / 2 }}" cy="{{ p.careerY }}" r="3"/>
+                                    {% else %}
+                                    <rect class="rc-pre is-unknown" x="{{ p.x + plot.barWidth / 2 - 1 }}" y="{{ p.y }}"
+                                          width="2" height="{{ p.h }}" rx="1"/>
+                                    {% endif %}
+                                    {% for e in p.events %}
+                                    <circle class="rc-event" cx="{{ p.x + plot.barWidth / 2 }}" cy="{{ e.y }}" r="3.4"
+                                            data-person="{{ p.id }}" data-person-name="{{ p.name }}"
+                                            data-year="{{ e.year }}" data-year-label="{{ e.yearLabel }}"
+                                            data-age="{{ e.age }}" data-age-label="{{ e.ageLabel }}"
+                                            data-event-title="{{ e.title }}" data-desc="{{ e.desc }}"/>
+                                    <circle class="rc-event-hit" cx="{{ p.x + plot.barWidth / 2 }}" cy="{{ e.y }}" r="7"
+                                            data-person="{{ p.id }}" data-person-name="{{ p.name }}"
+                                            data-year="{{ e.year }}" data-year-label="{{ e.yearLabel }}"
+                                            data-age="{{ e.age }}" data-age-label="{{ e.ageLabel }}"
+                                            data-event-title="{{ e.title }}" data-desc="{{ e.desc }}"/>
+                                    {% endfor %}
                                 </g>
                                 {% endfor %}
+
+                                <g class="rc-event-labels">
+                                    {% for p in crowdView.people %}
+                                    {% for e in p.events %}
+                                    <text class="rc-event-label" data-for="{{ p.id }}" data-year="{{ e.year }}"
+                                          x="{{ e.labelX }}" y="{{ e.y + 4 }}" text-anchor="{{ e.labelAnchor }}">{{ e.title }} · {{ e.ageLabel }}</text>
+                                    {% endfor %}
+                                    {% endfor %}
+                                </g>
 
                                 <line class="rc-end" x1="{{ plot.bandX }}" y1="{{ plot.endY }}"
                                       x2="{{ plot.width - 20 }}" y2="{{ plot.endY }}"/>
@@ -112,6 +163,9 @@
                         <li><i class="rc-swatch is-{{ g.id }}"></i>{{ g.name }}<span>{{ g.people | length }} 位</span></li>
                         {% endfor %}
                         <li><i class="rc-swatch is-ruler"></i>帝系年段</li>
+                        <li><i class="rc-swatch is-pre"></i>未仕</li>
+                        <li><i class="rc-swatch is-civil"></i>在官</li>
+                        <li><i class="rc-swatch is-event"></i>事件</li>
                     </ul>
                 </div>
 
