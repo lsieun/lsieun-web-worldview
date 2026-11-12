@@ -10,19 +10,19 @@ order: 59
 # @formatter:on
 ---
 
-{% set chartId = "huhunyong-chart" %}
+{% set chartId = "huhunyong-lf-chart" %}
 {% set scheme = chinaMaps.huhunyong %}
-{% set height = 560 %}
-{% set eyebrow = "SECTION 05 / 地图 · 人口" %}
-{% set sectionTitle = "胡焕庸线" %}
-{% set intro = "1935 年被胡焕庸绘出的这条斜线，八十多年过去了，人口比例几乎没有变。" %}
-{% include "china-map.html" %}
+{% set height = 600 %}
+{% set eyebrow = "SECTION 05 / 地图 · 人口 · 精确切省" %}
+{% set sectionTitle = "胡焕庸线（Leaflet + Turf.js）" %}
+{% set intro = "1935 年被胡焕庸绘出的这条斜线，八十多年过去了，人口比例几乎没有变。被线穿过的甘肃、内蒙、四川、陕西自动切成两半分别着色。" %}
+{% include "leaflet-china-map.html" %}
 
 <div class="container">
-    <div class="china-map-caption" style="margin-top: 12px;">
+    <div class="leaflet-map-caption" style="margin-top: 12px;">
         分界线拐点取真实地理坐标：
         黑河（127.5°E, 50.2°N）→ 经内蒙、宁夏、甘肃、四川 → 腾冲（99.2°E, 25.5°N）。
-        省份色块为整体归属近似。
+        使用 Turf.js 精确切省：甘肃被切成两半，线西北属人口稀疏区（棕色），线东南属人口密集区（橙红）。
     </div>
 
     <div class="prose" style="margin-top: 40px;">

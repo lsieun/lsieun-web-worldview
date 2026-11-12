@@ -1,7 +1,7 @@
 ---
 # @formatter:off
 title: "秦岭 — 淮河线"
-description: "中国南北方的自然分界线，西起甘肃岷山，经陕南秦岭，东至江苏淮河。"
+description: "中国南北方的自然分界线，西起甘肃岷山，经陕南秦岭，东至江苏淮河。本页用 Leaflet + Turf.js 精确切省：被线穿过的陕西、河南、安徽、江苏，自动切成两半分别着色。"
 layout: default.html
 tags: ["geo"]
 era: "现代"
@@ -10,27 +10,52 @@ order: 57
 # @formatter:on
 ---
 
-{% set chartId = "qinhuai-chart" %}
+{% set chartId = "qinhuai-lf-chart" %}
 {% set scheme = chinaMaps.qinhuai %}
-{% set height = 560 %}
-{% set eyebrow = "SECTION 03 / 地图 · 分界线" %}
-{% set sectionTitle = "秦岭 — 淮河线" %}
-{% set intro = "一条看不见的线，把中国分成了南方和北方。它不是行政边界，而是气候、植被、耕作方式和生活习惯的分水岭。" %}
-{% include "china-map.html" %}
+{% set height = 600 %}
+{% set eyebrow = "SECTION 03 / 地图 · 分界线 · 精确切省" %}
+{% set sectionTitle = "秦岭 — 淮河线（Leaflet + Turf.js）" %}
+{% set intro = "一条看不见的线，把中国分成了南方和北方。本页使用 Leaflet 渲染 + Turf.js 精确切省算法——被线穿过的省份自动切成两半，秦岭以南自动上色为南方、以北为北方。" %}
+{% include "leaflet-china-map.html" %}
 
 <div class="container">
-    <div class="china-map-caption" style="margin-top: 12px;">
-        分界线：采用山脉与河流的真实地理拐点（岷山 → 秦岭 → 淮河），精确经纬度坐标。
-        省份色块为 <strong>整体归属近似</strong>——ECharts 无法按省内多边形裁切，因此陕西整体归北方、安徽整体归南方等。
-        精确分界线 + 近似色块 = 既有真实位置，又有区域示意。
+    <div class="leaflet-map-caption" style="margin-top: 12px;">
+        <strong>精确切省原理</strong>：用 Turf.js 把秦岭-淮河线 buffer 成约 100 米宽的窄 polygon，
+        然后对被线穿过的省份（陕西、甘肃、河南、安徽、江苏）执行 difference 操作切成两半，
+        再用 centroid + cross-product 判断每个碎片在线的哪一侧，归属对应的颜色。
+        未被线穿过的省份直接按整体归属上色。
     </div>
 
     <div class="prose" style="margin-top: 40px;">
-        <h2>一条线，两个世界</h2>
+        <h2>这张图和之前 ECharts 版的区别</h2>
         <p>
-            秦岭 — 淮河线是中国地理上最重要的分界线。它经过的地方，年降水量从 800 毫米跳到 1000 毫米以上，
-            一月份平均气温从 0℃ 以上掉到 0℃ 以下；线北种小麦、住四合院、说普通话；线南种水稻、住水乡、方言繁多。
+            之前的 ECharts 版只能给整个省上色——陕西整体归北方、江苏整体归南方，
+            再叠加一条精确的分界线。读者看到的是"精确界线 + 近似色块"。
         </p>
+        <p>
+            现在的 Leaflet + Turf 版，陕西被真正切成两半：<strong>秦岭以南是绿色（南方）、以北是黄色（北方）</strong>，
+            中间的那条橙色线是分界线本身。江苏、安徽、河南也是同理。
+            这就是你之前说的"理想中按线切省份精确归属"——现在做到了。
+        </p>
+
+        <h2>具体被切了哪些省</h2>
+        <ul>
+            <li><strong>陕西</strong>：被秦岭（线西段）切成两半。陕南汉中、安康、商洛三市属南方（绿），陕北榆林、延安、关中属北方（黄）。西安恰好卡在秦岭北麓，完全属北方。</li>
+            <li><strong>甘肃</strong>：岷山段切过甘肃南部。</li>
+            <li><strong>河南</strong>：南阳盆地 + 信阳属南方（绿），其余属北方（黄）。</li>
+            <li><strong>安徽</strong>：淮河切过安徽北部。蚌埠、阜阳、亳州属北方（黄），安庆、黄山、宣城属南方（绿）。</li>
+            <li><strong>江苏</strong>：淮河大致沿灌溉总渠走向切过江苏。徐州属北方（黄），淮安、扬州、南京属南方（绿）。</li>
+        </ul>
+
+        <div class="callout callout-label">
+            <strong>精度说明</strong>
+            <p>
+                buffer 宽度约 100 米（0.001°），相对于省区尺度可忽略。
+                切分后 centroid 判断归属时，用 cross product 算方向——
+                东西向的秦岭-淮河线，左侧（cross product ≥ 0）= 北，右侧 = 南。
+                切分碎片小于 50 km² 的噪声已自动过滤。
+            </p>
+        </div>
 
         <h2>线本身走哪里</h2>
         <p>
@@ -39,20 +64,10 @@ order: 57
             总长约 1700 公里。
         </p>
 
-        <div class="callout callout-label">
-            <strong>为什么省份色块是近似</strong>
-            <p>
-                陕西省被秦岭彻底劈成两半：陕南汉中、安康属南方亚热带，陕北属北方暖温带。
-                ECharts 的 <code>geo.regions</code> 只能给整个省上色，做不了省内多边形裁切。
-                所以我们把陕西整体归为北方，把精确的分界线叠加上去——
-                读者看的是精确的线条位置，不是色块的行政归属。
-            </p>
-        </div>
-
         <h2>两侧的关键差异</h2>
         <table>
             <thead>
-                <tr><th>指标</th><th>线北</th><th>线南</th></tr>
+                <tr><th>指标</th><th>线北（黄色区域）</th><th>线南（绿色区域）</th></tr>
             </thead>
             <tbody>
                 <tr><td>年降水量</td><td>≤ 800 mm</td><td>≥ 1000 mm</td></tr>
@@ -63,12 +78,5 @@ order: 57
                 <tr><td>民居</td><td>四合院 · 窑洞</td><td>徽派 · 水乡</td></tr>
             </tbody>
         </table>
-
-        <h2>三个被线穿过的省份</h2>
-        <ul>
-            <li><strong>陕西</strong>：秦岭横贯中部。陕南汉中、安康三市属南方亚热带气候；陕北榆林、延安属北方暖温带。西安恰好卡在秦岭北麓，是典型北方城市。</li>
-            <li><strong>安徽</strong>：淮河横贯北部。淮河以北（阜阳、亳州）是北方旱地，以南（安庆、黄山）是南方水田。</li>
-            <li><strong>江苏</strong>：淮河大致沿灌溉总渠走向。徐州在北，淮安、扬州、南京在南。</li>
-        </ul>
     </div>
 </div>

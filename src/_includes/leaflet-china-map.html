@@ -1,0 +1,47 @@
+{#
+  leaflet-china-map.html — 通用中国地图区块（Leaflet 版）
+  使用：先 set 变量，再 include。
+    chartId      容器 id
+    scheme       chinaMaps.xxx
+    height       --lm-height（默认 520）
+    eyebrow / sectionTitle / intro  区块头
+#}
+{% set globalIdx = globalIdx | default(0) + 1 %}
+{% set chartId = chartId | default('leaflet-map-' + globalIdx) %}
+{% set height = height | default(520) %}
+{% set scheme = scheme | default({}) %}
+
+<section class="leaflet-map-block" {% if eyebrow or sectionTitle %}aria-label="{{ sectionTitle | default('中国地图') }}"{% endif %}
+         style="--lm-height: {{ height }}px;">
+    {% if eyebrow or sectionTitle %}
+    <div class="container">
+        <div class="section-head" data-reveal>
+            {% if eyebrow %}<p class="eyebrow">{{ eyebrow }}</p>{% endif %}
+            {% if sectionTitle %}<h2 class="section-title">{{ sectionTitle }}</h2>{% endif %}
+            {% if intro %}<p class="section-intro">{{ intro }}</p>{% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="leaflet-map-wrap">
+        <div id="{{ chartId }}" data-leaflet-china></div>
+    </div>
+
+    {% if scheme.legend %}
+    <ul class="leaflet-map-legend" aria-label="图例">
+        {% for item in scheme.legend %}
+        <li>
+            <span class="cm-swatch" style="background: {% if item.colorDark %}{{ item.colorDark }}{% else %}{{ item.color }}{% endif %};"></span>
+            <span>{{ item.name }}{% if item.note %} · {{ item.note }}{% endif %}</span>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</section>
+
+<script id="{{ chartId }}-data" type="application/json">{{ scheme | dump | safe }}</script>
+<script src="/assets/vendor/leaflet/leaflet.js" defer></script>
+<script src="/assets/vendor/turf.min.js" defer></script>
+<script src="/assets/js/leaflet-china.js" defer></script>
+<link rel="stylesheet" href="/assets/vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="/assets/css/leaflet-china.css">

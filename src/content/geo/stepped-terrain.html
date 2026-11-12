@@ -10,20 +10,20 @@ order: 58
 # @formatter:on
 ---
 
-{% set chartId = "stepped-chart" %}
+{% set chartId = "stepped-lf-chart" %}
 {% set scheme = chinaMaps.steppedTerrain %}
-{% set height = 580 %}
-{% set eyebrow = "SECTION 04 / 地图 · 地形" %}
-{% set sectionTitle = "三大阶梯地形" %}
-{% set intro = "从 4000 米的雪原到海拔几十米的平原，中国地势像阶梯一样从西向东逐级下降。两条山脉把它切成三段。" %}
-{% include "china-map.html" %}
+{% set height = 600 %}
+{% set eyebrow = "SECTION 04 / 地图 · 地形 · 精确切省" %}
+{% set sectionTitle = "三大阶梯地形（Leaflet + Turf.js）" %}
+{% set intro = "从 4000 米的雪原到海拔几十米的平原，中国地势像阶梯一样从西向东逐级下降。两条山脉把它切成三段，被界山穿过的省份精确切成两半分别着色。" %}
+{% include "leaflet-china-map.html" %}
 
 <div class="container">
-    <div class="china-map-caption" style="margin-top: 12px;">
+    <div class="leaflet-map-caption" style="margin-top: 12px;">
         分界线拐点均取自真实地理坐标：
         昆仑 — 祁连 — 横断山脉为第一/二级界；
         大兴安岭 — 太行 — 巫山 — 雪峰山为第二/三级界。
-        省份色块为整体归属近似。
+        四川、云南、陕西被界山精确切分。
     </div>
 
     <div class="prose" style="margin-top: 40px;">

@@ -10,23 +10,18 @@ order: 60
 # @formatter:on
 ---
 
-{% set chartId = "belt-chart" %}
+{% set chartId = "belt-lf-chart" %}
 {% set scheme = chinaMaps.temperatureBelt %}
-{% set height = 580 %}
-{% set eyebrow = "SECTION 06 / 地图 · 气候" %}
-{% set sectionTitle = "温度气候带" %}
-{% set intro = "纬度、地形和季风共同作用，让中国的温度气候带呈东西延伸的带状分布。" %}
-{% include "china-map.html" %}
+{% set height = 600 %}
+{% set eyebrow = "SECTION 06 / 地图 · 气候 · 精确切省" %}
+{% set sectionTitle = "温度气候带（Leaflet + Turf.js）" %}
+{% set intro = "纬度、地形和季风共同作用，让中国的温度气候带呈东西延伸的带状分布。被温度带界线穿过的省份自动切成两半分别着色。" %}
+{% include "leaflet-china-map.html" %}
 
 <div class="container">
-    <div class="china-map-caption" style="margin-top: 12px;">
-        分界线拐点取自温度带的标准地理划分：
-        寒温带/中温带沿大兴安岭中段；
-        中温带/暖温带沿长城外侧和天山北麓；
-        暖温带/亚热带沿秦岭-淮河；
-        亚热带/热带沿广东、广西、云南南部边境；
-        高原山地气候区按青藏高原边界绘制闭合多边形。
-        省份色块为整体归属近似。
+    <div class="leaflet-map-caption" style="margin-top: 12px;">
+        五条水平分界线（寒温/中温、中温/暖温、暖温/亚热、亚热/热带）均用 Turf.js 精确切省；
+        紫色闭合 polygon 是高原山地气候区边界（视觉渲染，西藏、青海直接归为高原带）。
     </div>
 
     <div class="prose" style="margin-top: 40px;">
