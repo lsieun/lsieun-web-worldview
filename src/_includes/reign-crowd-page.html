@@ -107,11 +107,33 @@
                                 </g>
                                 {% endfor %}
 
+                                {% if plot.gutterHead %}
+                                <rect class="rc-gutter" x="{{ plot.axisLine }}" y="{{ plot.gutterHead.y }}"
+                                      width="{{ plot.laneX0 - plot.axisLine - 4 }}" height="{{ plot.gutterHead.h }}"/>
+                                <text class="rc-gutter-label" x="{{ plot.bandX + plot.bandW / 2 }}"
+                                      y="{{ plot.gutterHead.y + plot.gutterHead.h / 2 + 4 }}"
+                                      text-anchor="middle">{{ plot.gutterHead.label }}</text>
+                                {% endif %}
+                                {% if plot.gutterTail %}
+                                <rect class="rc-gutter" x="{{ plot.axisLine }}" y="{{ plot.gutterTail.y }}"
+                                      width="{{ plot.laneX0 - plot.axisLine - 4 }}" height="{{ plot.gutterTail.h }}"/>
+                                <text class="rc-gutter-label" x="{{ plot.bandX + plot.bandW / 2 }}"
+                                      y="{{ plot.gutterTail.y + 14 }}"
+                                      text-anchor="middle">{{ plot.gutterTail.label }}</text>
+                                {% endif %}
+
                                 {% for g in crowdView.regencies %}
                                 <g class="rc-regency" data-regency="{{ g.id }}" data-name="{{ g.name }}"
                                    data-pinyin="{{ g.pinyin }}" data-label="{{ g.label }}"
                                    data-life="{{ g.lifeLabel }}" data-note="{{ g.note }}"
-                                   data-start="{{ g.start }}" data-end="{{ g.end }}">
+                                   data-life-full="{{ g.birthLabel }} — {{ g.deathLabel }}"
+                                   data-fate="{{ g.fate }}"
+                                   data-start="{{ g.start }}" data-end="{{ g.end }}"
+                                   data-life-from="{{ g.lifeFrom }}" data-life-to="{{ g.lifeTo }}">
+                                    {% if g.lifeY !== null %}
+                                    <rect class="rc-reg-life" x="{{ plot.regX + plot.regW / 2 - 1 }}" y="{{ g.lifeY }}"
+                                          width="2" height="{{ g.lifeH }}" rx="1"/>
+                                    {% endif %}
                                     <rect class="rc-reg-band" x="{{ plot.regX }}" y="{{ g.y }}"
                                           width="{{ plot.regW }}" height="{{ g.h }}" rx="2"/>
                                     <rect class="rc-reg-hit" x="{{ plot.regX - 2 }}" y="{{ g.y - 2 }}"
@@ -119,6 +141,16 @@
                                     <text class="rc-reg-label" x="{{ plot.regX + plot.regW / 2 }}"
                                           y="{{ g.y + g.h / 2 + 4 }}" text-anchor="middle"
                                           {% if not g.showLabel %}style="display:none"{% endif %}>{{ g.name }}</text>
+                                    {% for e in g.events %}
+                                    <circle class="rc-event rc-reg-event" cx="{{ plot.regX + plot.regW / 2 }}"
+                                            cy="{{ e.y }}" r="3.4" data-key="{{ g.id }}-{{ e.year }}"
+                                            data-person="{{ g.id }}" data-person-name="{{ g.name }}"
+                                            data-year="{{ e.year }}" data-year-label="{{ e.yearLabel }}"
+                                            data-age="" data-age-label=""
+                                            data-event-title="{{ e.title }}" data-desc="{{ e.desc }}"/>
+                                    <circle class="rc-event-ripple" cx="{{ plot.regX + plot.regW / 2 }}"
+                                            cy="{{ e.y }}" r="3.4" data-key="{{ g.id }}-{{ e.year }}"/>
+                                    {% endfor %}
                                 </g>
                                 {% endfor %}
 
@@ -184,6 +216,7 @@
                             <p class="rc-tip-meta" data-rc-tip-meta></p>
                             <p class="rc-tip-desc" data-rc-tip-desc></p>
                             <div class="rc-tip-sections" data-rc-tip-sections></div>
+                            <p class="rc-tip-hint" data-rc-tip-hint>已固定 · 可选中复制，按 Esc 或点击空白处关闭</p>
                         </div>
                     </div>
 

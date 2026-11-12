@@ -46,6 +46,7 @@
     var hoverPerson = null;
     var hoverRuler = null;
     var hoverRegency = null;
+    var pinnedNode = null;
     var hotDot = null;
     var pointer = { x: 0, y: 0 };
     // 公元前 1 年之后即公元 1 年，没有公元 0 年
@@ -190,6 +191,14 @@
             var h = Math.max((to - from) * ppy, 3);
             var band = group.querySelector('.rc-reg-band');
             var label = group.querySelector('.rc-reg-label');
+            var life = group.querySelector('.rc-reg-life');
+            if (life) {
+                var lifeFrom = Number(group.dataset.lifeFrom);
+                var lifeTo = Number(group.dataset.lifeTo);
+                var lifeY = yOf(lifeFrom, ppy);
+                life.setAttribute('y', lifeY);
+                life.setAttribute('height', Math.max((lifeTo - lifeFrom) * ppy, 2));
+            }
             if (band) {
                 band.setAttribute('y', y);
                 band.setAttribute('height', h);
@@ -198,6 +207,9 @@
                 label.setAttribute('y', y + h / 2 + 4);
                 label.style.display = h >= 14 ? '' : 'none';
             }
+            Array.prototype.forEach.call(group.querySelectorAll('.rc-event, .rc-event-ripple'), function (dot) {
+                dot.setAttribute('cy', yOf(Number(dot.dataset.year), ppy));
+            });
         });
 
         eventLabels.forEach(function (label) {
@@ -240,8 +252,10 @@
         plot.classList.toggle('is-focused', focused);
 
         rulers.forEach(function (el) {
-            var hit = el === hoverRuler;
-            if (!hit) {
+            var hit;
+            if (hoverRuler) {
+                hit = el === hoverRuler;
+            } else {
                 var s = Number(el.dataset.start);
                 var e = Number(el.dataset.end);
                 hit = people.some(function (person) {
@@ -360,19 +374,55 @@
     }
 
     function showRegency(el) {
+        var fate = el.dataset.fate ? '结局：' + el.dataset.fate : '';
         showTip(
             withPinyin(el.dataset.name, el.dataset.pinyin),
-            el.dataset.life + ' · ' + el.dataset.label,
-            el.dataset.note || ''
+            el.dataset.lifeFull + ' · ' + el.dataset.label + ' ' + el.dataset.life,
+            (el.dataset.note || '') + (fate ? ' ' + fate : '')
         );
     }
 
+    function unpinTip() {
+        if (!pinnedNode) return;
+        pinnedNode = null;
+        tip.classList.remove('is-pinned');
+        hideTip();
+        refresh();
+    }
+
+    function pinTip(node) {
+        if (pinnedNode === node) {
+            unpinTip();
+            return;
+        }
+        pinnedNode = node;
+        if (node.classList.contains('rc-person')) showPerson(node);
+        else if (node.classList.contains('rc-ruler')) showRuler(node);
+        else if (node.classList.contains('rc-regency')) showRegency(node);
+        else showEvent(node);
+        tip.classList.add('is-pinned');
+    }
+
+    plot.addEventListener('click', function (event) {
+        var node = event.target.closest
+            ? event.target.closest('.rc-event, .rc-person, .rc-ruler, .rc-regency')
+            : null;
+        if (!node) {
+            unpinTip();
+            return;
+        }
+        pinTip(node);
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') unpinTip();
+    });
+
     function showEvent(dot) {
-        showTip(
-            dot.dataset.eventTitle,
-            dot.dataset.yearLabel + ' · ' + dot.dataset.personName + ' · ' + dot.dataset.ageLabel,
-            dot.dataset.desc
-        );
+        var meta = [dot.dataset.yearLabel, dot.dataset.personName, dot.dataset.ageLabel]
+            .filter(Boolean)
+            .join(' · ');
+        showTip(dot.dataset.eventTitle, meta, dot.dataset.desc);
     }
 
     // ---------- 图内交互 ----------
@@ -437,6 +487,7 @@
     }
 
     plot.addEventListener('pointermove', function (event) {
+        if (pinnedNode) return;
         pointer.x = event.clientX;
         pointer.y = event.clientY;
         if (tip.classList.contains('is-show')) placeTip();
@@ -445,6 +496,7 @@
     });
 
     plot.addEventListener('pointerover', function (event) {
+        if (pinnedNode) return;
         var node = event.target.closest ? event.target.closest('.rc-person, .rc-ruler, .rc-regency') : null;
         if (!node) return;
         if (node.classList.contains('rc-person')) {
@@ -472,6 +524,7 @@
     });
 
     plot.addEventListener('pointerout', function (event) {
+        if (pinnedNode) return;
         var node = event.target.closest ? event.target.closest('.rc-person, .rc-ruler, .rc-regency') : null;
         if (!node) return;
         if (event.relatedTarget && node.contains(event.relatedTarget)) return;
@@ -488,6 +541,7 @@
     });
 
     plot.addEventListener('pointerleave', function () {
+        if (pinnedNode) return;
         if (hotDot) hotDot.classList.remove('is-hot');
         hotDot = null;
         hoverPerson = null;

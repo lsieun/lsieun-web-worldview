@@ -382,6 +382,38 @@
     font-size: 0.75rem;
     line-height: 1.7;
 }
+.rc-tip.is-pinned {
+    pointer-events: auto;
+    user-select: text;
+}
+.rc-tip-hint {
+    display: none;
+    margin: 0.5rem 0 0;
+    padding-top: 0.4rem;
+    border-top: 1px dashed var(--color-line);
+    color: var(--color-muted);
+    font-size: 0.65rem;
+    letter-spacing: 0.04em;
+}
+.rc-tip.is-pinned .rc-tip-hint {
+    display: block;
+}
+.rc-reg-life {
+    fill: var(--color-muted);
+    opacity: 0.3;
+    pointer-events: none;
+}
+.rc-gutter {
+    fill: color-mix(in srgb, var(--color-ink) 4%, transparent);
+    pointer-events: none;
+}
+.rc-gutter-label {
+    fill: var(--color-muted);
+    font-family: var(--font-serif);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    pointer-events: none;
+}
 
 /* ---------- 图例 ---------- */
 .rc-legend {

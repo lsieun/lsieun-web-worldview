@@ -417,6 +417,8 @@ function buildCrowdView(view, dynasties, figures, figureSources, events, eventSo
     // 事件：只收本视图显式点名的事件，逐年挂到对应人物身上
     const personById = new Map(people.map((person) => [person.id, person]));
     const usedEvents = new Set();
+    const regencyRawIds = new Set(ensureArray(dynasty.regencies, dynastySource, "regencies").map((item) => item.figure));
+    const regencyEvents = new Map();
     for (const eventId of ensureArray(view.events, viewSource, "events")) {
         ensureRef(events, "事件", viewSource, "events", eventId);
         if (usedEvents.has(eventId)) throw new Error(`[world] ${viewSource} 的事件「${eventId}」重复`);
@@ -427,9 +429,12 @@ function buildCrowdView(view, dynasties, figures, figureSources, events, eventSo
         if (year < start || year > end) {
             throw new Error(`[world] ${eventSource} 的年份不在视图时间范围内`);
         }
-        const matched = ensureArray(event.figures, eventSource, "figures")
-            .filter((figureId) => personById.has(figureId));
-        if (!matched.length) throw new Error(`[world] ${eventSource} 未关联本视图中的任何人物`);
+        const allFigures = ensureArray(event.figures, eventSource, "figures");
+        const matched = allFigures.filter((figureId) => personById.has(figureId));
+        const matchedRegencies = allFigures.filter((figureId) => regencyRawIds.has(figureId));
+        if (!matched.length && !matchedRegencies.length) {
+            throw new Error(`[world] ${eventSource} 未关联本视图中的任何人物`);
+        }
         for (const personId of matched) {
             const person = personById.get(personId);
             if (year < person.birth || year > person.death) {
@@ -441,6 +446,15 @@ function buildCrowdView(view, dynasties, figures, figureSources, events, eventSo
                 yearLabel: eraLabel(year),
                 age: year - person.birth,
                 ageLabel: ageLabel(year, person.birth),
+                title: event.title,
+                desc: event.desc || ""
+            });
+        }
+        for (const figureId of matchedRegencies) {
+            if (!regencyEvents.has(figureId)) regencyEvents.set(figureId, []);
+            regencyEvents.get(figureId).push({
+                year,
+                yearLabel: eraLabel(year),
                 title: event.title,
                 desc: event.desc || ""
             });
@@ -566,12 +580,24 @@ function buildCrowdView(view, dynasties, figures, figureSources, events, eventSo
         const to = Math.min(ensureNumber(regency.end, dynastySource, "regencies.end"), end);
         if (to <= from) return null;
         const height = Math.max(round1((to - from) * CROWD.ppy), CROWD.minRulerHeight);
+        const hasLife = Number.isFinite(figure.birth) && Number.isFinite(figure.death);
         return {
             id: `regency-${regency.figure}`,
             name: figure.name,
             pinyin: figure.pinyin || "",
             label: regency.label || "临朝",
             note: regency.note || "",
+            fate: regency.fate || "",
+            figureId: regency.figure,
+            events: (regencyEvents.get(regency.figure) || [])
+                .sort((a, b) => a.year - b.year)
+                .map((event) => Object.assign({}, event, { y: yOf(event.year) })),
+            birthLabel: hasLife ? yearLabel(figure.birth, figure.birthApprox) : "生年不详",
+            deathLabel: yearLabel(figure.death, figure.deathApprox),
+            lifeY: hasLife ? yOf(Math.max(figure.birth, start)) : null,
+            lifeH: hasLife ? round1((Math.min(figure.death, end) - Math.max(figure.birth, start)) * CROWD.ppy) : 0,
+            lifeFrom: hasLife ? Math.max(figure.birth, start) : start,
+            lifeTo: hasLife ? Math.min(figure.death, end) : end,
             start: from,
             end: to,
             y: yOf(from),
@@ -624,6 +650,18 @@ function buildCrowdView(view, dynasties, figures, figureSources, events, eventSo
             regX: CROWD.regX,
             regW: CROWD.regW,
             hasRegency: regencies.length > 0,
+            gutterHead: dynasty.start > start ? {
+                y: CROWD.top,
+                h: round1(yOf(dynasty.start) - CROWD.top),
+                label: "秦末",
+                rangeLabel: `${eraLabel(start)} — ${eraLabel(dynasty.start)}`
+            } : null,
+            gutterTail: dynasty.end < end ? {
+                y: yOf(dynasty.end),
+                h: round1(yOf(end) - yOf(dynasty.end)),
+                label: "新莽",
+                rangeLabel: `${eraLabel(dynasty.end)} — ${eraLabel(end)}`
+            } : null,
             laneX0: CROWD.laneX0,
             lanePitch: CROWD.lanePitch,
             barWidth: CROWD.barWidth,
