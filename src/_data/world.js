@@ -61,6 +61,13 @@ function formatYear(year) {
     return year < 0 ? `前 ${Math.abs(year)}` : String(year);
 }
 
+/* 帝系年表里跨公元前后的年份必须带「公元」，否则「5」会被读成公元前后不明 */
+function eraLabel(year) {
+    if (year < 0) return `前 ${Math.abs(year)}`;
+    if (year === 0) return "公元";
+    return `公元 ${year}`;
+}
+
 function elapsedYears(start, end) {
     // 公元前与公元之间没有公元 0 年。
     return end - start - (start < 0 && end > 0 ? 1 : 0);
@@ -267,12 +274,17 @@ function round1(value) {
     return Math.round(value * 10) / 10;
 }
 
+/* 公元前 1 年之后即公元 1 年，没有公元 0 年，坐标据此压缩一格 */
+function yearPos(year, start) {
+    return year - start - (start < 0 && year > 0 ? 1 : 0);
+}
+
 function shortTitle(title) {
     return String(title || "").replace(/^西汉/, "").replace(/^汉/, "").slice(0, 1);
 }
 
 function yearLabel(year, approx) {
-    return (approx ? "约" : "") + formatYear(year);
+    return (approx ? "约" : "") + eraLabel(year);
 }
 
 function ageLabel(year, birth) {
@@ -378,7 +390,7 @@ function buildCrowdView(view, dynasties, figures, figureSources, events, eventSo
             person.events.push({
                 id: event.id,
                 year,
-                yearLabel: formatYear(year),
+                yearLabel: eraLabel(year),
                 age: year - person.birth,
                 ageLabel: ageLabel(year, person.birth),
                 title: event.title,
@@ -411,7 +423,8 @@ function buildCrowdView(view, dynasties, figures, figureSources, events, eventSo
     }
     const totalLanes = Math.max(...people.map((person) => person.lane)) + 1;
 
-    const yOf = (year) => round1(CROWD.top + (year - start) * CROWD.ppy);
+    // 纵坐标：公元前 1 年之后直接接公元 1 年，不留空位
+    const yOf = (year) => round1(CROWD.top + yearPos(year, start) * CROWD.ppy);
     for (const person of people) {
         person.y = yOf(person.birth);
         person.h = round1((person.death - person.birth) * CROWD.ppy);
@@ -470,8 +483,8 @@ function buildCrowdView(view, dynasties, figures, figureSources, events, eventSo
                 isTiny: height < CROWD.labelMinHeight,
                 showLabel: height >= CROWD.labelMinHeight,
                 lifeLabel: termEnd === termStart
-                    ? formatYear(termStart)
-                    : `${formatYear(termStart)} — ${formatYear(termEnd)}`,
+                    ? eraLabel(termStart)
+                    : `${eraLabel(termStart)} — ${eraLabel(termEnd)}`,
                 reignLabel: `在位 ${term.durationLabel || (years === 0 ? "不足一年" : `${years} 年`)}`,
                 alive: people
                     .filter((person) => person.death >= termStart && person.birth <= termEnd)
@@ -486,17 +499,18 @@ function buildCrowdView(view, dynasties, figures, figureSources, events, eventSo
     const minorInterval = tickInterval === 10 ? 5 : 10;
     const ticks = [];
     for (let year = Math.ceil(start / minorInterval) * minorInterval; year <= end; year += minorInterval) {
+        if (year === 0) continue;
         const major = year % tickInterval === 0;
         ticks.push({
             year,
             major,
-            label: major ? (year === 0 ? "公元" : formatYear(year)) : "",
+            label: major ? eraLabel(year) : "",
             y: yOf(year)
         });
     }
 
     const plotWidth = CROWD.laneX0 + totalLanes * CROWD.lanePitch + 20;
-    const plotHeight = CROWD.top + (end - start) * CROWD.ppy + CROWD.bottomPad;
+    const plotHeight = yOf(end) + CROWD.bottomPad;
 
     return {
         id: view.id,
@@ -504,7 +518,7 @@ function buildCrowdView(view, dynasties, figures, figureSources, events, eventSo
         href: view.href,
         meta: { watermark: "汉", ...view.meta },
         dynasty: { id: dynasty.id, name: dynasty.name, start: dynasty.start, end: dynasty.end },
-        range: { start, end },
+        range: { start, end, startLabel: eraLabel(start), endLabel: eraLabel(end), years: elapsedYears(start, end) },
         groups,
         people,
         rulers,

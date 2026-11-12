@@ -43,7 +43,7 @@
                             <label for="rc-zoom">纵向比例</label>
                             <input id="rc-zoom" type="range" min="2" max="8" step="0.2" value="{{ plot.ppy }}"
                                    data-rc-zoom aria-label="调整每年所占的像素，改变整体长度">
-                            <output data-rc-zoom-out>{{ plot.ppy }} px / 年</output>
+                            <output data-rc-zoom-out>{{ crowdView.range.startLabel }} — {{ crowdView.range.endLabel }} · 跨度 {{ crowdView.range.years }} 年 × {{ plot.ppy }} px/年 = {{ (crowdView.range.years * plot.ppy) | round }} px</output>
                         </div>
                         <div class="rc-scroll">
                             <svg class="rc-plot" width="{{ plot.width }}" height="{{ plot.height }}"
@@ -57,6 +57,7 @@
                                     <text class="rc-head" x="{{ plot.bandX + plot.bandW / 2 }}" y="24" text-anchor="middle">帝系</text>
                                     <text class="rc-head" x="{{ plot.laneCenter }}" y="24" text-anchor="middle">臣工 · {{ crowdView.totalLanes }} 道</text>
                                     <line class="rc-rule" x1="{{ plot.axisX + 8 }}" y1="36" x2="{{ plot.width - 20 }}" y2="36"/>
+                                    <text class="rc-range-note" x="{{ plot.laneX0 }}" y="50">起 {{ crowdView.range.startLabel }}{% if crowdView.meta.startNote %} · {{ crowdView.meta.startNote }}{% endif %}</text>
                                 </g>
 
                                 {% for g in crowdView.groups %}
@@ -122,15 +123,13 @@
                                     {% endif %}
                                     {% for e in p.events %}
                                     <circle class="rc-event" cx="{{ p.x + plot.barWidth / 2 }}" cy="{{ e.y }}" r="3.4"
+                                            data-key="{{ p.id }}-{{ e.year }}"
                                             data-person="{{ p.id }}" data-person-name="{{ p.name }}"
                                             data-year="{{ e.year }}" data-year-label="{{ e.yearLabel }}"
                                             data-age="{{ e.age }}" data-age-label="{{ e.ageLabel }}"
                                             data-event-title="{{ e.title }}" data-desc="{{ e.desc }}"/>
-                                    <circle class="rc-event-hit" cx="{{ p.x + plot.barWidth / 2 }}" cy="{{ e.y }}" r="7"
-                                            data-person="{{ p.id }}" data-person-name="{{ p.name }}"
-                                            data-year="{{ e.year }}" data-year-label="{{ e.yearLabel }}"
-                                            data-age="{{ e.age }}" data-age-label="{{ e.ageLabel }}"
-                                            data-event-title="{{ e.title }}" data-desc="{{ e.desc }}"/>
+                                    <circle class="rc-event-ripple" cx="{{ p.x + plot.barWidth / 2 }}" cy="{{ e.y }}" r="3.4"
+                                            data-key="{{ p.id }}-{{ e.year }}"/>
                                     {% endfor %}
                                 </g>
                                 {% endfor %}
@@ -147,7 +146,7 @@
                                 <line class="rc-end" x1="{{ plot.bandX }}" y1="{{ plot.endY }}"
                                       x2="{{ plot.width - 20 }}" y2="{{ plot.endY }}"/>
                                 <text class="rc-end-label" x="{{ plot.width - 20 }}" y="{{ plot.endY - 8 }}"
-                                      text-anchor="end">公元 8 · 王莽代汉</text>
+                                      text-anchor="end">讫 {{ crowdView.range.endLabel }}{% if crowdView.meta.endNote %} · {{ crowdView.meta.endNote }}{% endif %}</text>
                             </svg>
                         </div>
 

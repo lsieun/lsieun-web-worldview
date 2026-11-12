@@ -113,7 +113,8 @@
     stroke-width: 1;
     stroke-dasharray: 4 4;
 }
-.rc-end-label {
+.rc-end-label,
+.rc-range-note {
     fill: var(--color-muted);
     font-family: var(--font-body);
     font-size: 10px;
@@ -237,12 +238,34 @@
     stroke: var(--color-surface);
     stroke-width: 1;
     pointer-events: none;
-    transition: opacity 0.12s;
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: transform 0.12s, opacity 0.12s;
 }
-.rc-event-hit {
-    fill: transparent;
-    cursor: pointer;
-    pointer-events: all;
+.rc-person .rc-event.is-hot {
+    transform: scale(1.75);
+}
+.rc-event-ripple {
+    fill: none;
+    stroke: var(--color-brass);
+    stroke-width: 1.2;
+    opacity: 0;
+    pointer-events: none;
+    transform-box: fill-box;
+    transform-origin: center;
+}
+.rc-event-ripple.is-pulse {
+    animation: rc-ripple 620ms ease-out;
+}
+@keyframes rc-ripple {
+    0% { opacity: 0.75; transform: scale(1); }
+    70% { opacity: 0.25; }
+    100% { opacity: 0; transform: scale(3.4); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .rc-event-ripple.is-pulse {
+        animation: none;
+    }
 }
 .rc-plot.is-focused .rc-person:not(.is-active) .rc-event,
 .rc-plot.is-focused .rc-person:not(.is-active) .rc-pre,

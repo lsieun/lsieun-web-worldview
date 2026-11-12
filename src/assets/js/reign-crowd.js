@@ -23,6 +23,7 @@
     var rulers = Array.prototype.slice.call(plot.querySelectorAll('.rc-ruler'));
     var rosterItems = Array.prototype.slice.call(root.querySelectorAll('.rc-roster-item'));
     var eventLabels = Array.prototype.slice.call(plot.querySelectorAll('.rc-event-label'));
+    var dots = Array.prototype.slice.call(plot.querySelectorAll('.rc-event'));
     var groupBands = Array.prototype.slice.call(plot.querySelectorAll('.rc-group-bg'));
     var axis = plot.querySelector('[data-rc-axis]');
     var endLine = plot.querySelector('.rc-end');
@@ -43,16 +44,21 @@
     var pinned = new Set();
     var hoverPerson = null;
     var hoverRuler = null;
+    var hotDot = null;
     var pointer = { x: 0, y: 0 };
+    // 公元前 1 年之后即公元 1 年，没有公元 0 年
+    var spanYears = end - start - (start < 0 && end > 0 ? 1 : 0);
 
     // ---------- 坐标 ----------
     function yOf(year, ppy) {
-        return top + (year - start) * ppy;
+        var offset = year - start - (start < 0 && year > 0 ? 1 : 0);
+        return top + offset * ppy;
     }
 
     function yearLabel(year) {
+        if (year < 0) return '前 ' + Math.abs(year);
         if (year === 0) return '公元';
-        return year < 0 ? '前 ' + Math.abs(year) : String(year);
+        return '公元 ' + year;
     }
 
     function chooseInterval(ppy) {
@@ -81,6 +87,7 @@
         var major = chooseInterval(ppy);
         var minor = major === 10 ? 5 : 10;
         for (var year = Math.ceil(start / minor) * minor; year <= end; year += minor) {
+            if (year === 0) continue;
             var y = yOf(year, ppy);
             var isMajor = year % major === 0;
             if (isMajor) {
@@ -164,7 +171,7 @@
             var mark = group.querySelector('.rc-career');
             if (mark && careerY !== null) mark.setAttribute('cy', careerY);
 
-            Array.prototype.forEach.call(group.querySelectorAll('.rc-event, .rc-event-hit'), function (dot) {
+            Array.prototype.forEach.call(group.querySelectorAll('.rc-event, .rc-event-ripple'), function (dot) {
                 dot.setAttribute('cy', yOf(Number(dot.dataset.year), ppy));
             });
         });
@@ -182,7 +189,9 @@
         renderAxis(ppy, endY);
 
         if (zoomOut) {
-            zoomOut.textContent = ppy.toFixed(1) + ' px / 年 · 全朝 ' + Math.round((end - start) * ppy) + ' px';
+            zoomOut.textContent = yearLabel(start) + ' — ' + yearLabel(end) +
+                ' · 跨度 ' + spanYears + ' 年 × ' + ppy.toFixed(1) + ' px/年 = ' +
+                Math.round(spanYears * ppy) + ' px';
         }
     }
 
@@ -222,7 +231,11 @@
 
         eventLabels.forEach(function (label) {
             var id = label.dataset.for;
-            label.classList.toggle('is-show', id === hoverPerson || pinned.has(id));
+            var showForPin = pinned.has(id);
+            var showForHot = hotDot &&
+                id === hotDot.dataset.person &&
+                label.dataset.year === hotDot.dataset.year;
+            label.classList.toggle('is-show', Boolean(showForPin || showForHot));
         });
 
         rosterItems.forEach(function (btn) {
@@ -288,48 +301,97 @@
     }
 
     // ---------- 图内交互 ----------
+    function toPlotPoint(event) {
+        var ctm = plot.getScreenCTM();
+        if (!ctm) return null;
+        var point = plot.createSVGPoint();
+        point.x = event.clientX;
+        point.y = event.clientY;
+        return point.matrixTransform(ctm.inverse());
+    }
+
+    function rippleOf(dot) {
+        return dot.parentNode.querySelector('.rc-event-ripple[data-key="' + dot.dataset.key + '"]');
+    }
+
+    // 只有鼠标靠近事件点 12px 以内才响应，离得远不显示事件信息
+    function nearestDot(point) {
+        var best = null;
+        var bestDistance = 12;
+        dots.forEach(function (dot) {
+            var dx = Math.abs(Number(dot.getAttribute('cx')) - point.x);
+            var dy = Math.abs(Number(dot.getAttribute('cy')) - point.y);
+            if (dx > bestDistance || dy > bestDistance) return;
+            var distance = Math.max(dx, dy);
+            if (distance < bestDistance) {
+                bestDistance = distance;
+                best = dot;
+            }
+        });
+        return best;
+    }
+
+    function setHotDot(dot) {
+        if (hotDot === dot) return;
+        if (hotDot) hotDot.classList.remove('is-hot');
+        hotDot = dot;
+        if (!dot) {
+            if (hoverPerson) {
+                var personEl = plot.querySelector('.rc-person[data-person="' + hoverPerson + '"]');
+                if (personEl) {
+                    showPerson(personEl);
+                    refresh();
+                    return;
+                }
+            }
+            if (!hoverRuler) hideTip();
+            refresh();
+            return;
+        }
+        dot.classList.add('is-hot');
+        var ripple = rippleOf(dot);
+        if (ripple) {
+            ripple.classList.remove('is-pulse');
+            void ripple.getBoundingClientRect();
+            ripple.classList.add('is-pulse');
+        }
+        hoverPerson = dot.dataset.person;
+        hoverRuler = null;
+        showEvent(dot);
+        refresh();
+    }
+
     plot.addEventListener('pointermove', function (event) {
         pointer.x = event.clientX;
         pointer.y = event.clientY;
         if (tip.classList.contains('is-show')) placeTip();
+        var point = toPlotPoint(event);
+        setHotDot(point ? nearestDot(point) : null);
     });
 
     plot.addEventListener('pointerover', function (event) {
-        var dot = event.target.closest ? event.target.closest('.rc-event-hit, .rc-event') : null;
-        if (dot) {
-            hoverPerson = dot.dataset.person;
+        var node = event.target.closest ? event.target.closest('.rc-person, .rc-ruler') : null;
+        if (!node) return;
+        if (node.classList.contains('rc-person')) {
+            if (hotDot) return;
+            hoverPerson = node.dataset.person;
             hoverRuler = null;
-            showEvent(dot);
+            showPerson(node);
             refresh();
             return;
         }
-
-        var person = event.target.closest ? event.target.closest('.rc-person') : null;
-        if (person) {
-            hoverPerson = person.dataset.person;
-            hoverRuler = null;
-            showPerson(person);
-            refresh();
-            return;
-        }
-
-        var ruler = event.target.closest ? event.target.closest('.rc-ruler') : null;
-        if (ruler) {
-            hoverRuler = ruler;
-            hoverPerson = null;
-            showRuler(ruler);
-            refresh();
-        }
+        hoverRuler = node;
+        hoverPerson = null;
+        showRuler(node);
+        refresh();
     });
 
     plot.addEventListener('pointerout', function (event) {
-        var target = event.target.closest ? event.target.closest('.rc-event-hit, .rc-event, .rc-person, .rc-ruler') : null;
-        if (!target) return;
-        if (event.relatedTarget && target.contains(event.relatedTarget)) return;
-
-        if (target.classList.contains('rc-event-hit') || target.classList.contains('rc-event')) {
-            hoverPerson = null;
-        } else if (target.classList.contains('rc-person')) {
+        var node = event.target.closest ? event.target.closest('.rc-person, .rc-ruler') : null;
+        if (!node) return;
+        if (event.relatedTarget && node.contains(event.relatedTarget)) return;
+        if (node.classList.contains('rc-person')) {
+            if (hotDot && hotDot.dataset.person === node.dataset.person) return;
             hoverPerson = null;
         } else {
             hoverRuler = null;
@@ -339,6 +401,8 @@
     });
 
     plot.addEventListener('pointerleave', function () {
+        if (hotDot) hotDot.classList.remove('is-hot');
+        hotDot = null;
         hoverPerson = null;
         hoverRuler = null;
         hideTip();
