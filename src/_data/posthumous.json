@@ -1,0 +1,124 @@
+{
+  "intro": "谥号是身后之评：帝王、诸侯、卿大夫死后，依其一生行事议定一个称号。议谥取「一生最著之处」，或褒或贬，故有美谥、平谥、恶谥之别。下列诸字按拼音排序，释义取《逸周书·谥法解》一系的通行说法。",
+  "groups": [
+    {
+      "initial": "a",
+      "entries": [
+        { "char": "哀", "pinyin": "āi", "meaning": "蚤孤短折曰哀；恭仁短折曰哀。", "scope": "早逝、未享寿之君", "case": "汉哀帝" }
+      ]
+    },
+    {
+      "initial": "c",
+      "entries": [
+        { "char": "成", "pinyin": "chéng", "meaning": "安民立政曰成。", "scope": "守成安民、政有纲纪者", "case": "汉成帝" }
+      ]
+    },
+    {
+      "initial": "d",
+      "entries": [
+        { "char": "戴", "pinyin": "dài", "meaning": "爱民好治曰戴；典礼不愆曰戴。", "scope": "爱民修礼者", "case": "—" },
+        { "char": "悼", "pinyin": "dào", "meaning": "中年早夭曰悼；恐惧从处曰悼。", "scope": "中年而卒或处境危惧者", "case": "—" },
+        { "char": "定", "pinyin": "dìng", "meaning": "纯行不爽曰定；安民大虑曰定。", "scope": "德行专一、能定大局者", "case": "—" }
+      ]
+    },
+    {
+      "initial": "g",
+      "entries": [
+        { "char": "恭", "pinyin": "gōng", "meaning": "执事坚固曰恭；执礼御宾曰恭。", "scope": "持事谨严、守礼者", "case": "—" },
+        { "char": "光", "pinyin": "guāng", "meaning": "功烈耿著曰光。", "scope": "功业显明者", "case": "东汉光武帝" }
+      ]
+    },
+    {
+      "initial": "h",
+      "entries": [
+        { "char": "怀", "pinyin": "huái", "meaning": "慈仁短折曰怀；执义扬善曰怀。", "scope": "仁厚而早卒者", "case": "—" },
+        { "char": "惠", "pinyin": "huì", "meaning": "柔质慈民曰惠；爱民好与曰惠。", "scope": "宽仁爱民者", "case": "汉惠帝" }
+      ]
+    },
+    {
+      "initial": "j",
+      "entries": [
+        { "char": "简", "pinyin": "jiǎn", "meaning": "一德不懈曰简。", "scope": "德行专一、始终不渝者", "case": "—" },
+        { "char": "景", "pinyin": "jǐng", "meaning": "布义行刚曰景；由义而济曰景。", "scope": "行义而能刚断者", "case": "汉景帝" },
+        { "char": "敬", "pinyin": "jìng", "meaning": "夙夜警戒曰敬；合善典法曰敬。", "scope": "勤慎守法者", "case": "—" }
+      ]
+    },
+    {
+      "initial": "k",
+      "entries": [
+        { "char": "康", "pinyin": "kāng", "meaning": "安乐抚民曰康；温柔好乐曰康。", "scope": "使民安乐者", "case": "—" }
+      ]
+    },
+    {
+      "initial": "l",
+      "entries": [
+        { "char": "厉", "pinyin": "lì", "meaning": "杀戮无辜曰厉；暴虐无亲曰厉。", "scope": "暴虐失德者", "case": "—" },
+        { "char": "烈", "pinyin": "liè", "meaning": "有功安民曰烈；秉德遵业曰烈。", "scope": "有功于国、能承业者", "case": "—" },
+        { "char": "灵", "pinyin": "líng", "meaning": "乱而不损曰灵；好祭鬼神曰灵。", "scope": "政乱而未至亡国者", "case": "—" }
+      ]
+    },
+    {
+      "initial": "m",
+      "entries": [
+        { "char": "明", "pinyin": "míng", "meaning": "照临四方曰明；思虑果远曰明。", "scope": "明察有远见者", "case": "—" },
+        { "char": "穆", "pinyin": "mù", "meaning": "布德执义曰穆；中情见貌曰穆。", "scope": "布德守义者", "case": "—" }
+      ]
+    },
+    {
+      "initial": "p",
+      "entries": [
+        { "char": "平", "pinyin": "píng", "meaning": "执事有制曰平；治而无眚曰平。", "scope": "治事有法、无所失者", "case": "汉平帝" }
+      ]
+    },
+    {
+      "initial": "q",
+      "entries": [
+        { "char": "顷", "pinyin": "qǐng", "meaning": "甄心动惧曰顷；敏以敬慎曰顷。", "scope": "谨慎而多惧者", "case": "—" }
+      ]
+    },
+    {
+      "initial": "s",
+      "entries": [
+        { "char": "殇", "pinyin": "shāng", "meaning": "未家短折曰殇；短折不成曰殇。", "scope": "未成年而卒者", "case": "—" },
+        { "char": "顺", "pinyin": "shùn", "meaning": "慈和遍服曰顺。", "scope": "和顺而使众服者", "case": "—" },
+        { "char": "思", "pinyin": "sī", "meaning": "追悔前过曰思；大省兆民曰思。", "scope": "有过而能悔者", "case": "—" },
+        { "char": "肃", "pinyin": "sù", "meaning": "刚德克就曰肃；执心决断曰肃。", "scope": "刚毅能断者", "case": "—" }
+      ]
+    },
+    {
+      "initial": "w",
+      "entries": [
+        { "char": "文", "pinyin": "wén", "meaning": "经天纬地曰文；道德博闻曰文。", "scope": "文治、教化、学养出众者", "case": "汉文帝" },
+        { "char": "武", "pinyin": "wǔ", "meaning": "威强睿德曰武；克定祸乱曰武。", "scope": "开疆定乱、以武功著称者", "case": "汉武帝" }
+      ]
+    },
+    {
+      "initial": "x",
+      "entries": [
+        { "char": "献", "pinyin": "xiàn", "meaning": "聪明睿哲曰献；知质有圣曰献。", "scope": "聪慧有识者", "case": "—" },
+        { "char": "襄", "pinyin": "xiāng", "meaning": "辟地有德曰襄；甲胄有劳曰襄。", "scope": "开地有功者", "case": "—" },
+        { "char": "孝", "pinyin": "xiào", "meaning": "慈惠爱亲曰孝；协时肇享曰孝。", "scope": "能尽孝道、承继宗庙者", "case": "汉代诸帝通谥" },
+        { "char": "宣", "pinyin": "xuān", "meaning": "圣善周闻曰宣；施而不成曰宣。", "scope": "善行广闻者", "case": "汉宣帝" }
+      ]
+    },
+    {
+      "initial": "y",
+      "entries": [
+        { "char": "炀", "pinyin": "yáng", "meaning": "好内远礼曰炀；去礼远众曰炀。", "scope": "违礼失众者", "case": "隋炀帝" },
+        { "char": "懿", "pinyin": "yì", "meaning": "温柔贤善曰懿。", "scope": "温厚贤良者", "case": "—" },
+        { "char": "隐", "pinyin": "yǐn", "meaning": "隐拂不成曰隐；不显尸国曰隐。", "scope": "志不得伸者", "case": "—" },
+        { "char": "幽", "pinyin": "yōu", "meaning": "壅遏不通曰幽；动静乱常曰幽。", "scope": "闭塞失常者", "case": "—" },
+        { "char": "元", "pinyin": "yuán", "meaning": "能思辩众曰元；行义说民曰元。", "scope": "善思辨、能服众者", "case": "汉元帝" }
+      ]
+    },
+    {
+      "initial": "z",
+      "entries": [
+        { "char": "昭", "pinyin": "zhāo", "meaning": "昭德有劳曰昭；圣闻周达曰昭。", "scope": "有德劳、声闻通达者", "case": "汉昭帝" },
+        { "char": "质", "pinyin": "zhì", "meaning": "名实不爽曰质；忠正无邪曰质。", "scope": "名实相副、忠正者", "case": "—" },
+        { "char": "庄", "pinyin": "zhuāng", "meaning": "兵甲亟作曰庄；睿圉克服曰庄。", "scope": "屡兴兵事而能胜者", "case": "—" }
+      ]
+    }
+  ],
+  "note": "释义属通说，异文颇多（如「文」或作「经纬天地」）。西汉诸帝另有一字之差：汉高祖为庙号，其余多称「汉某帝」；少帝、废帝、孺子婴并非谥号，见名臣页帝系卡片中的「称号」段。"
+}

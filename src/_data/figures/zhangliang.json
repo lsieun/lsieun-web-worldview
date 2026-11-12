@@ -3,6 +3,8 @@
   "en": "Zhang Liang",
   "birth": -250,
   "death": -186,
+  "careerStart": -208,
+  "careerApprox": true,
   "activePlaces": ["hongmen"],
   "summary": "辅佐刘邦入关、赴鸿门宴，以谋略佐汉，后封留侯。",
   "milestones": ["hongmen", "zhangliang-death"]

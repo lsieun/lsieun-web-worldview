@@ -55,6 +55,9 @@
                                 <g>
                                     <text class="rc-head" x="{{ plot.axisX }}" y="24" text-anchor="end">年份</text>
                                     <text class="rc-head" x="{{ plot.bandX + plot.bandW / 2 }}" y="24" text-anchor="middle">帝系</text>
+                                    {% if plot.hasRegency %}
+                                    <text class="rc-head" x="{{ plot.regX + plot.regW / 2 }}" y="24" text-anchor="middle">临朝</text>
+                                    {% endif %}
                                     <text class="rc-head" x="{{ plot.laneCenter }}" y="24" text-anchor="middle">臣工 · {{ crowdView.totalLanes }} 道</text>
                                     <line class="rc-rule" x1="{{ plot.axisX + 8 }}" y1="36" x2="{{ plot.width - 20 }}" y2="36"/>
                                     <text class="rc-range-note" x="{{ plot.laneX0 }}" y="50">起 {{ crowdView.range.startLabel }}{% if crowdView.meta.startNote %} · {{ crowdView.meta.startNote }}{% endif %}</text>
@@ -87,7 +90,9 @@
                                 <g class="rc-ruler{% if r.status == 'interim' %} is-interim{% endif %}"
                                    data-ruler="{{ r.id }}" data-name="{{ r.fullName }}" data-life="{{ r.lifeLabel }}"
                                    data-reign="{{ r.reignLabel }}" data-alive="{{ r.alive | join('、') }}"
+                                   data-pinyin="{{ r.pinyin }}"
                                    data-posthumous-label="{{ r.posthumousLabel }}" data-posthumous="{{ r.posthumous }}"
+                                   data-serving="{{ r.serving | join('、') }}"
                                    data-dynasty-year="{{ r.dynastyYearLabel }}"
                                    data-start="{{ r.start }}" data-end="{{ r.end }}">
                                     <rect class="rc-band" x="{{ plot.bandX }}" y="{{ r.y }}"
@@ -102,17 +107,39 @@
                                 </g>
                                 {% endfor %}
 
+                                {% for g in crowdView.regencies %}
+                                <g class="rc-regency" data-regency="{{ g.id }}" data-name="{{ g.name }}"
+                                   data-pinyin="{{ g.pinyin }}" data-label="{{ g.label }}"
+                                   data-life="{{ g.lifeLabel }}" data-note="{{ g.note }}"
+                                   data-start="{{ g.start }}" data-end="{{ g.end }}">
+                                    <rect class="rc-reg-band" x="{{ plot.regX }}" y="{{ g.y }}"
+                                          width="{{ plot.regW }}" height="{{ g.h }}" rx="2"/>
+                                    <rect class="rc-reg-hit" x="{{ plot.regX - 2 }}" y="{{ g.y - 2 }}"
+                                          width="{{ plot.regW + 6 }}" height="{{ g.h + 4 }}"/>
+                                    <text class="rc-reg-label" x="{{ plot.regX + plot.regW / 2 }}"
+                                          y="{{ g.y + g.h / 2 + 4 }}" text-anchor="middle"
+                                          {% if not g.showLabel %}style="display:none"{% endif %}>{{ g.name }}</text>
+                                </g>
+                                {% endfor %}
+
                                 {% for p in crowdView.people %}
                                 <g class="rc-person is-{{ p.group }}" data-person="{{ p.id }}"
-                                   data-name="{{ p.name }}" data-life="{{ p.birthLabel }} — {{ p.deathLabel }}"
+                                   data-name="{{ p.name }}" data-pinyin="{{ p.pinyin }}"
+                                   data-open="{{ p.openStart }}"
+                                   data-life="{{ p.birthLabel }} — {{ p.deathLabel }}"
                                    data-role="{{ p.role }}" data-summary="{{ p.summary }}"
                                    data-career="{{ p.careerLabel }}"
                                    data-birth="{{ p.birth }}" data-death="{{ p.death }}"
+                                   data-line-from="{{ p.lineFrom }}"
                                    data-career-start="{{ p.careerStart }}">
                                     <rect class="rc-halo" x="{{ p.x - 6 }}" y="{{ p.y }}"
                                           width="{{ plot.barWidth + 12 }}" height="{{ p.h }}" rx="5"/>
                                     <rect class="rc-hit" x="{{ p.x - 10 }}" y="{{ p.y }}"
                                           width="{{ plot.lanePitch }}" height="{{ p.h }}"/>
+                                    {% if p.openStart %}
+                                    <line class="rc-open-mark" x1="{{ p.x - 5 }}" x2="{{ p.x + plot.barWidth + 5 }}"
+                                          y1="{{ p.y }}" y2="{{ p.y }}"/>
+                                    {% endif %}
                                     {% if p.careerY !== null %}
                                     <rect class="rc-pre" x="{{ p.x + plot.barWidth / 2 - 1 }}" y="{{ p.y }}"
                                           width="2" height="{{ p.preH }}" rx="1"/>

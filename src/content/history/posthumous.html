@@ -1,0 +1,45 @@
+---
+# @formatter:off
+title: "谥法"
+description: "按拼音排列的谥号释义与适用。"
+layout: "default.html"
+# @formatter:on
+---
+
+<section class="page-hero">
+    <span class="watermark" aria-hidden="true">谥</span>
+    <div class="container">
+        <p class="eyebrow">02 · Posthumous Names</p>
+        <h1 class="page-title">谥法</h1>
+        <p class="page-lead">{{ posthumous.intro }}</p>
+        <div class="page-meta">
+            <span>字母 <strong>{{ posthumous.groups | length }}</strong> 组</span>
+            <span>排序 <strong>拼音</strong></span>
+            <span>释义 <strong>《逸周书·谥法解》</strong></span>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        {% for group in posthumous.groups %}
+        <div class="posthumous-group">
+            <h2 class="posthumous-letter">{{ group.initial | upper }}</h2>
+            <div class="posthumous-grid">
+                {% for entry in group.entries %}
+                <article class="posthumous-item">
+                    <p class="posthumous-head">
+                        <span class="posthumous-char">{{ entry.char }}</span>
+                        <span class="posthumous-pinyin">{{ entry.pinyin }}</span>
+                    </p>
+                    <p class="posthumous-meaning">{{ entry.meaning }}</p>
+                    <p class="posthumous-scope">适用 · {{ entry.scope }}</p>
+                    <p class="posthumous-case">用例 · {{ entry.case }}</p>
+                </article>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+        <p class="posthumous-note">{{ posthumous.note }}</p>
+    </div>
+</section>

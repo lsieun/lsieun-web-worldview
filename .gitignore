@@ -20,7 +20,7 @@
 input/
 
 # 参赛资料目录 (本地记录，不参与 Git 跟踪与网页生成)
-doc/
+doc/competition/
 
 # Eleventy 缓存与编译输出目录
 .cache/

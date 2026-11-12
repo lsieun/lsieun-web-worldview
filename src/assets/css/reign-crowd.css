@@ -159,6 +159,34 @@
     fill: transparent;
     cursor: pointer;
 }
+.rc-reg-band {
+    fill: color-mix(in srgb, var(--color-brass) 12%, transparent);
+    stroke: var(--color-brass);
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+    pointer-events: none;
+}
+.rc-reg-hit {
+    fill: transparent;
+    cursor: pointer;
+}
+.rc-reg-label {
+    fill: var(--color-ink-soft);
+    font-family: var(--font-serif);
+    font-size: 10px;
+    font-weight: 600;
+    pointer-events: none;
+}
+.rc-regency:hover .rc-reg-band,
+.rc-regency.is-active .rc-reg-band {
+    fill: color-mix(in srgb, var(--color-brass) 22%, transparent);
+}
+.rc-open-mark {
+    stroke: var(--color-muted);
+    stroke-width: 1;
+    stroke-dasharray: 2 2;
+    pointer-events: none;
+}
 .rc-band-label {
     fill: var(--color-ink-soft);
     font-family: var(--font-serif);

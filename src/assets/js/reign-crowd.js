@@ -45,6 +45,7 @@
     var pinned = new Set();
     var hoverPerson = null;
     var hoverRuler = null;
+    var hoverRegency = null;
     var hotDot = null;
     var pointer = { x: 0, y: 0 };
     // 公元前 1 年之后即公元 1 年，没有公元 0 年
@@ -144,7 +145,7 @@
         });
 
         people.forEach(function (group) {
-            var birth = Number(group.dataset.birth);
+            var birth = Number(group.dataset.lineFrom);
             var death = Number(group.dataset.death);
             var careerRaw = group.dataset.careerStart;
             var career = careerRaw === '' || careerRaw === 'null' ? null : Number(careerRaw);
@@ -175,6 +176,28 @@
             Array.prototype.forEach.call(group.querySelectorAll('.rc-event, .rc-event-ripple'), function (dot) {
                 dot.setAttribute('cy', yOf(Number(dot.dataset.year), ppy));
             });
+            var openMark = group.querySelector('.rc-open-mark');
+            if (openMark) {
+                openMark.setAttribute('y1', y);
+                openMark.setAttribute('y2', y);
+            }
+        });
+
+        Array.prototype.forEach.call(plot.querySelectorAll('.rc-regency'), function (group) {
+            var from = Number(group.dataset.start);
+            var to = Number(group.dataset.end);
+            var y = yOf(from, ppy);
+            var h = Math.max((to - from) * ppy, 3);
+            var band = group.querySelector('.rc-reg-band');
+            var label = group.querySelector('.rc-reg-label');
+            if (band) {
+                band.setAttribute('y', y);
+                band.setAttribute('height', h);
+            }
+            if (label) {
+                label.setAttribute('y', y + h / 2 + 4);
+                label.style.display = h >= 14 ? '' : 'none';
+            }
         });
 
         eventLabels.forEach(function (label) {
@@ -299,30 +322,48 @@
         tip.setAttribute('aria-hidden', 'true');
     }
 
+    function withPinyin(name, pinyin) {
+        return pinyin ? name + '（' + pinyin + '）' : name;
+    }
+
     function showPerson(el) {
         var career = el.dataset.career || '';
+        var open = el.dataset.open === 'true' ? '生年早于本图起点，线段自起点画起。' : '';
         showTip(
-            el.dataset.name,
+            withPinyin(el.dataset.name, el.dataset.pinyin),
             el.dataset.life + ' · ' + el.dataset.role,
-            career + '。' + (el.dataset.summary || '')
+            open + career + '。' + (el.dataset.summary || '')
         );
     }
 
     function showRuler(el) {
         var alive = el.dataset.alive ? el.dataset.alive.split('、') : [];
-        var aliveText = alive.length
-            ? '在世 ' + alive.length + ' 人：' + alive.join('、')
-            : '图中无人物在世';
+        var serving = el.dataset.serving ? el.dataset.serving.split('、') : [];
         var sections = [];
         if (el.dataset.posthumous) {
             sections.push({ label: el.dataset.posthumousLabel || '称号', text: el.dataset.posthumous });
         }
-        sections.push({ label: '在位臣工', text: aliveText });
+        sections.push({
+            label: '在世（未必已仕）',
+            text: alive.length ? alive.length + ' 人：' + alive.join('、') : '图中无人物在世'
+        });
+        sections.push({
+            label: '此时在官',
+            text: serving.length ? serving.length + ' 人：' + serving.join('、') : '图中无人物在官'
+        });
         showTip(
-            el.dataset.name,
+            withPinyin(el.dataset.name, el.dataset.pinyin),
             el.dataset.life + ' · ' + el.dataset.reign + ' · ' + el.dataset.dynastyYear,
             '',
             sections
+        );
+    }
+
+    function showRegency(el) {
+        showTip(
+            withPinyin(el.dataset.name, el.dataset.pinyin),
+            el.dataset.life + ' · ' + el.dataset.label,
+            el.dataset.note || ''
         );
     }
 
@@ -404,29 +445,41 @@
     });
 
     plot.addEventListener('pointerover', function (event) {
-        var node = event.target.closest ? event.target.closest('.rc-person, .rc-ruler') : null;
+        var node = event.target.closest ? event.target.closest('.rc-person, .rc-ruler, .rc-regency') : null;
         if (!node) return;
         if (node.classList.contains('rc-person')) {
             if (hotDot) return;
             hoverPerson = node.dataset.person;
             hoverRuler = null;
+            hoverRegency = null;
             showPerson(node);
+            refresh();
+            return;
+        }
+        if (node.classList.contains('rc-regency')) {
+            hoverRegency = node;
+            hoverPerson = null;
+            hoverRuler = null;
+            showRegency(node);
             refresh();
             return;
         }
         hoverRuler = node;
         hoverPerson = null;
+        hoverRegency = null;
         showRuler(node);
         refresh();
     });
 
     plot.addEventListener('pointerout', function (event) {
-        var node = event.target.closest ? event.target.closest('.rc-person, .rc-ruler') : null;
+        var node = event.target.closest ? event.target.closest('.rc-person, .rc-ruler, .rc-regency') : null;
         if (!node) return;
         if (event.relatedTarget && node.contains(event.relatedTarget)) return;
         if (node.classList.contains('rc-person')) {
             if (hotDot && hotDot.dataset.person === node.dataset.person) return;
             hoverPerson = null;
+        } else if (node.classList.contains('rc-regency')) {
+            hoverRegency = null;
         } else {
             hoverRuler = null;
         }
@@ -439,6 +492,7 @@
         hotDot = null;
         hoverPerson = null;
         hoverRuler = null;
+        hoverRegency = null;
         hideTip();
         refresh();
     });

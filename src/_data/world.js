@@ -254,7 +254,9 @@ const CROWD = {
     axisLine: 82,      // 年份轴脊线
     bandX: 92,         // 帝系条左缘
     bandW: 60,         // 帝系条宽度
-    laneX0: 172,       // 第一条泳道左缘
+    regX: 160,         // 临朝/辅政轨左缘
+    regW: 36,          // 临朝/辅政轨宽度
+    laneX0: 212,       // 第一条泳道左缘
     lanePitch: 24,     // 泳道间距
     barWidth: 4,       // 生命线宽度
     bottomPad: 28,
@@ -368,9 +370,11 @@ function buildCrowdView(view, dynasties, figures, figureSources, events, eventSo
         ensureNumber(figure.death, figureSources[figure.id], "death");
         const group = groupById.get(item.group);
         if (!group) throw new Error(`[world] ${viewSource} 的 cast 中「${figure.id}」归属了不存在的分组「${item.group}」`);
-        if (figure.birth < start || figure.death > end) {
-            throw new Error(`[world] ${viewSource} 的「${figure.id}」生卒超出视图时间范围`);
+        if (figure.death > end) {
+            throw new Error(`[world] ${viewSource} 的「${figure.id}」卒年超出视图时间范围`);
         }
+        // 生年早于本图起点时，线自起点画起并加开放端点标记
+        const lineFrom = Math.max(figure.birth, start);
         const careerStart = figure.careerStart === undefined || figure.careerStart === null
             ? null
             : ensureNumber(figure.careerStart, figureSources[figure.id], "careerStart");
@@ -380,16 +384,20 @@ function buildCrowdView(view, dynasties, figures, figureSources, events, eventSo
         return {
             id: figure.id,
             name: figure.name,
+            pinyin: figure.pinyin || "",
             summary: figure.summary || "",
             birth: figure.birth,
             death: figure.death,
+            lineFrom,
+            openStart: figure.birth < start,
             birthLabel: yearLabel(figure.birth, figure.birthApprox),
             deathLabel: yearLabel(figure.death, figure.deathApprox),
             careerStart,
             careerApprox: Boolean(figure.careerApprox),
+            careerOpen: careerStart !== null && careerStart < start,
             careerLabel: careerStart === null
                 ? "起家年份无载"
-                : `起家 ${yearLabel(careerStart, figure.careerApprox)}`,
+                : `起家 ${yearLabel(careerStart, figure.careerApprox)}${careerStart < start ? "（早于本图起点）" : ""}`,
             role: item.role || "",
             group: group.id,
             groupName: group.name,
@@ -466,11 +474,11 @@ function buildCrowdView(view, dynasties, figures, figureSources, events, eventSo
     // 纵坐标：公元前 1 年之后直接接公元 1 年，不留空位
     const yOf = (year) => round1(CROWD.top + yearPos(year, start) * CROWD.ppy);
     for (const person of people) {
-        person.y = yOf(person.birth);
-        person.h = round1((person.death - person.birth) * CROWD.ppy);
+        person.y = yOf(person.lineFrom);
+        person.h = round1((person.death - person.lineFrom) * CROWD.ppy);
         person.x = round1(CROWD.laneX0 + person.lane * CROWD.lanePitch + (CROWD.lanePitch - CROWD.barWidth) / 2);
-        // 仕宦线：起家前用细淡线，起家后为实线
-        if (person.careerStart === null) {
+        // 仕宦线：起家前用细淡线，起家后为实线；起家早于图起点则整条为实线
+        if (person.careerStart === null || person.careerOpen) {
             person.careerY = null;
             person.preH = person.h;
             person.postY = person.y;
@@ -515,6 +523,7 @@ function buildCrowdView(view, dynasties, figures, figureSources, events, eventSo
                 id: `${ruler.figure}-${term.start}`,
                 figure: ruler.figure,
                 name: figure.name,
+                pinyin: figure.pinyin || "",
                 title,
                 displayTitle,
                 fullName: displayTitle.includes(figure.name) || displayTitle.includes(figure.name.slice(-1))
@@ -537,12 +546,40 @@ function buildCrowdView(view, dynasties, figures, figureSources, events, eventSo
                 reignLabel: `在位 ${term.durationLabel || (years === 0 ? "不足一年" : `${years} 年`)}`,
                 alive: people
                     .filter((person) => person.death >= termStart && person.birth <= termEnd)
+                    .map((person) => person.name),
+                serving: people
+                    .filter((person) => person.careerStart !== null &&
+                        person.careerStart <= termEnd &&
+                        person.death >= termStart)
                     .map((person) => person.name)
             });
         }
     }
     // 极短在位的细标最后绘制，避免被相邻年段覆盖
     rulers.sort((a, b) => Number(a.isTiny) - Number(b.isTiny) || a.start - b.start);
+
+    // 临朝 / 辅政轨：吕后、霍光、王莽，与帝系并列，但不是臣工
+    const regencies = ensureArray(dynasty.regencies, dynastySource, "regencies").map((regency) => {
+        const figure = figures[regency.figure];
+        if (!figure) throw new Error(`[world] ${dynastySource} 的 regencies 中「${regency.figure}」不存在`);
+        const from = Math.max(ensureNumber(regency.start, dynastySource, "regencies.start"), start);
+        const to = Math.min(ensureNumber(regency.end, dynastySource, "regencies.end"), end);
+        if (to <= from) return null;
+        const height = Math.max(round1((to - from) * CROWD.ppy), CROWD.minRulerHeight);
+        return {
+            id: `regency-${regency.figure}`,
+            name: figure.name,
+            pinyin: figure.pinyin || "",
+            label: regency.label || "临朝",
+            note: regency.note || "",
+            start: from,
+            end: to,
+            y: yOf(from),
+            h: height,
+            showLabel: height >= CROWD.labelMinHeight,
+            lifeLabel: `${eraLabel(from)} — ${eraLabel(to)}`
+        };
+    }).filter(Boolean).sort((a, b) => a.start - b.start);
 
     const tickInterval = chooseTickInterval(CROWD.ppy);
     const minorInterval = tickInterval === 10 ? 5 : 10;
@@ -571,6 +608,7 @@ function buildCrowdView(view, dynasties, figures, figureSources, events, eventSo
         groups,
         people,
         rulers,
+        regencies,
         ticks,
         totalLanes,
         plot: {
@@ -583,6 +621,9 @@ function buildCrowdView(view, dynasties, figures, figureSources, events, eventSo
             axisLine: CROWD.axisLine,
             bandX: CROWD.bandX,
             bandW: CROWD.bandW,
+            regX: CROWD.regX,
+            regW: CROWD.regW,
+            hasRegency: regencies.length > 0,
             laneX0: CROWD.laneX0,
             lanePitch: CROWD.lanePitch,
             barWidth: CROWD.barWidth,
