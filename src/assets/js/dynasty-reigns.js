@@ -33,8 +33,8 @@
     let roamLabelTimer = null;
     let chartNodeById = new Map();
     let controlsReady = false;
-    const LABEL_HIDE_ZOOM = 1;
-    const LABEL_SHOW_ZOOM = 1.08;
+    const LABEL_HIDE_ZOOM = 0.7;
+    const LABEL_SHOW_ZOOM = 0.75;
 
     function directChild(element, className) {
         return Array.from(element.children).find((child) => child.classList.contains(className));
@@ -105,14 +105,17 @@
         return lineage;
     }
 
-    function styledChartData(person) {
+    function styledChartData(person, zoom = 1) {
         const lineage = person ? lineageFor(person) : new Set();
+        /* symbolSize 随 zoom 微调：放大时稍大以利阅读，缩小时随比例缩小避免重叠 */
+        const scale = Math.max(0.55, Math.min(1.15, zoom));
         function styleNode(node) {
             const isTarget = node.person === person;
             const inLineage = lineage.has(node.person);
+            const baseSize = node.hasRuler ? [150, 58] : [120, 42];
             return {
                 ...node,
-                symbolSize: node.hasRuler ? [192, 76] : [176, 62],
+                symbolSize: [baseSize[0] * scale, baseSize[1] * scale],
                 itemStyle: {
                     color: node.hasRuler ? chartColors.surfaceRaised : chartColors.surface,
                     borderColor: inLineage ? chartColors.brass : (node.hasRuler ? chartColors.line : chartColors.lineStrong),
@@ -124,7 +127,7 @@
                     color: inLineage ? chartColors.brass : chartColors.lineStrong,
                     width: inLineage ? 2 : 1
                 },
-                children: node.children.map(styleNode)
+                children: node.children.map((child) => styleNode(child))
             };
         }
         return chartData.map(styleNode);
@@ -133,11 +136,12 @@
     function chartLabel(params) {
         const data = params.data;
         if (!data.hasRuler) {
-            const detail = data.detail && data.detail !== data.reign ? `\n{name|${data.detail}}` : '';
-            const reign = data.reign ? `\n{reign|${data.reign}}` : '';
-            return `{kin|宗}{title|${data.title}}${detail}${reign}`;
+            /* 宗亲节点：1 行（宗标 + 姓名/身份） */
+            return `{kin|宗}{title|${data.title}}`;
         }
-        return `{order|${data.order || '◇'}}{title|${data.title}}\n{name|${data.detail}}\n{reign|${data.reign}}`;
+        /* 皇帝节点：2 行（帝序圆 + 谥号 / 真实姓名）。
+           砍掉在位年段和副标题，留给 tooltip 展示，避免缩小时重叠 */
+        return `{order|${data.order || '◇'}}{title|${data.title}}\n{name|${data.detail}}`;
     }
 
     function escapeHtml(value) {
@@ -197,7 +201,7 @@
                 top: forExport ? 120 : 24,
                 bottom: forExport ? 60 : 24,
                 symbol: 'roundRect',
-                symbolSize: [192, 76],
+                symbolSize: [150, 58],
                 roam: !forExport,
                 center: settings.center || initialCenter,
                 zoom: settings.zoom || initialZoom,
@@ -207,57 +211,55 @@
                 expandAndCollapse: false,
                 edgeShape: 'polyline',
                 edgeForkPosition: '50%',
+                /* 显式设置间距，让 ECharts 在 symbolSize 基础上额外留出空间，
+                   避免兄弟节点或父子节点间因 label 溢出而重叠 */
+                nodeGap: 46,
+                levelGap: 80,
                 lineStyle: { color: chartColors.lineStrong, width: 1 },
                 label: {
                     show: !settings.overview,
                     position: 'inside',
                     formatter: chartLabel,
+                    /* 节点整体缩小后，内部 rich text 也等比缩小 */
                     rich: {
-                        rank: {
-                            color: chartColors.brass,
-                            fontFamily: chartColors.fontMono,
-                            fontSize: 12,
-                            fontWeight: 600,
-                            padding: [0, 5, 0, 0]
-                        },
-                        crown: {
-                            color: chartColors.brass,
-                            fontSize: 13,
-                            padding: [0, 2, 0, 0]
-                        },
                         order: {
                             color: chartColors.surfaceRaised,
                             backgroundColor: chartColors.brass,
-                            borderRadius: 11,
-                            width: 22,
-                            height: 22,
+                            borderRadius: 10,
+                            width: 20,
+                            height: 20,
                             align: 'center',
                             fontFamily: chartColors.fontMono,
-                            fontSize: 11,
+                            fontSize: 10,
                             fontWeight: 600,
-                            lineHeight: 22
+                            lineHeight: 20
                         },
                         kin: {
                             color: chartColors.muted,
                             borderColor: chartColors.lineStrong,
                             borderWidth: 1,
                             borderRadius: 3,
-                            width: 22,
-                            height: 22,
+                            width: 20,
+                            height: 20,
                             align: 'center',
-                            fontSize: 10,
-                            lineHeight: 22
+                            fontSize: 9,
+                            lineHeight: 20
                         },
                         title: {
                             color: chartColors.ink,
                             fontFamily: chartColors.fontSerif,
-                            fontSize: 15,
+                            fontSize: 13,
                             fontWeight: 600,
-                            lineHeight: 24,
-                            padding: [0, 0, 0, 6]
+                            lineHeight: 18,
+                            padding: [0, 0, 0, 4]
                         },
-                        name: { color: chartColors.muted, fontFamily: chartColors.fontBody, fontSize: 11, lineHeight: 18 },
-                        reign: { color: chartColors.muted, fontFamily: chartColors.fontMono, fontSize: 10, lineHeight: 16 }
+                        name: {
+                            color: chartColors.muted,
+                            fontFamily: chartColors.fontBody,
+                            fontSize: 10,
+                            lineHeight: 14,
+                            padding: [1, 0, 0, 0]
+                        }
                     }
                 },
                 emphasis: {
@@ -307,7 +309,8 @@
 
     function applyChartView({ center, zoom, overview = overviewMode }) {
         overviewMode = overview;
-        chart.setOption(buildChartOption(styledChartData(chartTarget), { center, zoom, overview }));
+        /* zoom 同时传给 styledChartData 让节点 symbolSize 随缩放动态调整，避免缩小时重叠 */
+        chart.setOption(buildChartOption(styledChartData(chartTarget, zoom), { center, zoom, overview }));
     }
 
     function centerChartPerson(person) {
@@ -453,7 +456,7 @@
                 devicePixelRatio: Math.max(window.devicePixelRatio || 1, 2)
             });
             initialZoom = calculateInitialZoom();
-            chart.setOption(buildChartOption(styledChartData(''), { center: initialCenter, zoom: initialZoom }));
+            chart.setOption(buildChartOption(styledChartData('', initialZoom), { center: initialCenter, zoom: initialZoom }));
             chartShell.hidden = false;
             kinshipPanel.classList.add('is-chart-enhanced');
             setupChartControls();
