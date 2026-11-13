@@ -1,0 +1,39 @@
+{
+  "type": "dynasty-reigns",
+  "dynasty": "tang",
+  "title": "唐朝历代皇帝",
+  "href": "/history/tang-emperors.html",
+  "topicMeta": "帝王世系",
+  "summary": "从高祖李渊到哀帝李柷，二十四位皇帝、两次兄终弟及、数次废立与旁支入继。安史之乱后宦官专权，昭宗被弑而唐亡。",
+  "figures": [
+    "liyuan",
+    "lishimin",
+    "lizhi",
+    "lixian",
+    "lidan",
+    "wuzetian",
+    "lichongmao",
+    "longji",
+    "liheng-suzong",
+    "liyu-daizong",
+    "likuo",
+    "lisun-shunzong",
+    "lichun-xianzong",
+    "limuheng",
+    "lizhan-jingzong",
+    "liang-wenzong",
+    "liyan-wuzong",
+    "lichen-xuanzong",
+    "licui-yizong",
+    "lixuan-xizong",
+    "liye-zhaozong",
+    "lizhu-aidi"
+  ],
+  "meta": {
+    "watermark": "唐",
+    "subtitle": "同一位皇帝，在纪年中是一段统治，在世系中则是一个血缘节点。把两种顺序并置，才能看清父死子继之外的废立、禅让、旁支入继与实际掌权者。",
+    "tags": ["唐朝", "24 帝", "世系与纪年"],
+    "intro": "默认沿竖向时间线阅读每位皇帝的在位年段；切换到世系树，则可追溯他的父系来源和入继路径。点击任一视图中的皇帝，另一视图会同步定位。",
+    "note": "帝序采用『24 位正式皇帝』口径：武则天（武曌）虽改国号周，仍列入唐朝帝王世系。中宗李显、睿宗李旦各有两段在位（684 年前后与 705—710 / 710—712），图中按第二段的帝序编号（中宗 4→7、睿宗 5→9）。顺宗李诵因中风仅在位八月，哀帝李柷为朱温所立傀儡，三年后被废唐亡。年份以年为精度。"
+  }
+}

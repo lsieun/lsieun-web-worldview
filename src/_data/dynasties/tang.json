@@ -4,5 +4,207 @@
   "start": 618,
   "end": 907,
   "order": 150,
-  "summary": "贞观至开元，制度与文化的鼎盛期。"
+  "summary": "贞观至开元，制度与文化的鼎盛期。安史之乱后藩镇坐大，宦官专权，终亡于朱温。",
+  "rulers": [
+    {
+      "figure": "liyuan",
+      "title": "唐高祖",
+      "status": "formal",
+      "order": 1,
+      "note": "隋朝太原留守，大业十三年（617）起兵，次年称帝，国号唐。武德九年（626）玄武门之变后退位为太上皇。",
+      "terms": [{ "start": 618, "end": 626, "durationLabel": "8 年" }]
+    },
+    {
+      "figure": "lishimin",
+      "title": "唐太宗",
+      "status": "formal",
+      "order": 2,
+      "note": "高祖次子，秦王。武德九年发动玄武门之变，诛太子建成、齐王元吉，旋即被立为太子，同年即位。在位二十三年，开创贞观之治。",
+      "terms": [{ "start": 626, "end": 649, "durationLabel": "23 年" }]
+    },
+    {
+      "figure": "lizhi",
+      "title": "唐高宗",
+      "status": "formal",
+      "order": 3,
+      "note": "太宗第九子，母长孙皇后。贞观二十三年即位。初期朝政清明，史称永徽之治。中后期武则天权势渐增，出现『二圣临朝』局面。",
+      "terms": [{ "start": 649, "end": 683, "durationLabel": "34 年" }]
+    },
+    {
+      "figure": "lixian",
+      "title": "唐中宗",
+      "status": "formal",
+      "order": 4,
+      "note": "高宗第七子，母武则天。一生两度即位：嗣圣元年（684）首次即位，仅两个月即被武后废为庐陵王，幽禁房州十四年。神龙元年（705）张柬之政变后复位，景龙四年（710）被韦皇后毒杀。",
+      "terms": [
+        { "start": 684, "end": 684, "durationLabel": "2 个月" },
+        { "start": 705, "end": 710, "durationLabel": "5 年" }
+      ]
+    },
+    {
+      "figure": "lidan",
+      "title": "唐睿宗",
+      "status": "formal",
+      "order": 5,
+      "note": "高宗第八子，母武则天。一生两度即位：文明元年（684）被立为傀儡皇帝，天授元年（690）武曌称帝后降为皇嗣。景云元年（710）唐隆政变后复位，先天元年（712）禅位于太子李隆基。",
+      "terms": [
+        { "start": 684, "end": 690, "durationLabel": "6 年" },
+        { "start": 710, "end": 712, "durationLabel": "2 年" }
+      ]
+    },
+    {
+      "figure": "wuzetian",
+      "title": "则天大圣皇帝",
+      "status": "formal",
+      "order": 6,
+      "note": "高宗皇后。临朝称制六年后，天授元年（690）正式称帝，改国号周。是中国历史上唯一的女皇帝。神龙元年（705）政变后退位。",
+      "terms": [{ "start": 690, "end": 705, "durationLabel": "15 年" }]
+    },
+    {
+      "figure": "lichongmao",
+      "title": "唐殇帝",
+      "status": "formal",
+      "order": 7,
+      "note": "中宗第四子。景龙四年韦皇后立为帝，改元唐隆。在位仅十七天，即被李隆基、太平公主发动政变所废，后被害。",
+      "terms": [{ "start": 710, "end": 710, "durationLabel": "17 日" }]
+    },
+    {
+      "figure": "longji",
+      "title": "唐玄宗",
+      "status": "formal",
+      "order": 8,
+      "note": "睿宗第三子。先天元年受禅即位，同年杀太平公主巩固皇权。前期开创开元盛世，天宝年间昏聩。天宝十四载（755）安史之乱爆发，次年被迫传位肃宗。",
+      "terms": [{ "start": 712, "end": 756, "durationLabel": "44 年" }]
+    },
+    {
+      "figure": "liheng-suzong",
+      "title": "唐肃宗",
+      "status": "formal",
+      "order": 9,
+      "note": "玄宗第三子。安史之乱中于灵武即位，改元至德，尊玄宗为太上皇。在位期间依托郭子仪、李光弼平叛，但宦官李辅国权势渐大。",
+      "terms": [{ "start": 756, "end": 762, "durationLabel": "6 年" }]
+    },
+    {
+      "figure": "liyu-daizong",
+      "title": "唐代宗",
+      "status": "formal",
+      "order": 10,
+      "note": "肃宗长子。宝应元年即位，同年史朝义自缢，安史之乱平定。但藩镇格局已成，朝廷无力回天。",
+      "terms": [{ "start": 762, "end": 779, "durationLabel": "17 年" }]
+    },
+    {
+      "figure": "likuo",
+      "title": "唐德宗",
+      "status": "formal",
+      "order": 11,
+      "note": "代宗长子。大历十四年即位。建中元年（780）颁行两税法，后因藩镇叛乱不断，泾原兵变一度流亡奉天。后期猜忌功臣，朝政渐弛。",
+      "terms": [{ "start": 779, "end": 805, "durationLabel": "26 年" }]
+    },
+    {
+      "figure": "lisun-shunzong",
+      "title": "唐顺宗",
+      "status": "formal",
+      "order": 12,
+      "note": "德宗长子。贞元二十年（804）中风瘫痪，永贞元年（805）正月即位，仅八个月后禅位太子，自称太上皇，同年去世。",
+      "terms": [{ "start": 805, "end": 805, "durationLabel": "8 个月" }]
+    },
+    {
+      "figure": "lichun-xianzong",
+      "title": "唐宪宗",
+      "status": "formal",
+      "order": 13,
+      "note": "顺宗长子。永贞元年即位。元和年间削藩成效显著，称元和中兴。元和十五年（820）遇弑，凶手疑为宦官陈弘志。",
+      "terms": [{ "start": 805, "end": 820, "durationLabel": "15 年" }]
+    },
+    {
+      "figure": "limuheng",
+      "title": "唐穆宗",
+      "status": "formal",
+      "order": 14,
+      "note": "宪宗第三子。元和十五年即位。穆宗朝沉迷游宴，朝政懈怠，藩镇复乱。长庆四年因服丹药暴卒。",
+      "terms": [{ "start": 820, "end": 824, "durationLabel": "4 年" }]
+    },
+    {
+      "figure": "lizhan-jingzong",
+      "title": "唐敬宗",
+      "status": "formal",
+      "order": 15,
+      "note": "穆宗长子。长庆四年即位，年方十五，好击球角抵。宝历二年（826）夜观击球，为宦官所弑，年仅十八岁。",
+      "terms": [{ "start": 824, "end": 826, "durationLabel": "2 年" }]
+    },
+    {
+      "figure": "liang-wenzong",
+      "title": "唐文宗",
+      "status": "formal",
+      "order": 16,
+      "note": "穆宗第二子。敬宗被弑后即位。文宗有志图治，曾谋诛宦官（甘露之变），然受制于宦官势力。开成五年（840）忧郁而终。",
+      "terms": [{ "start": 826, "end": 840, "durationLabel": "14 年" }]
+    },
+    {
+      "figure": "liyan-wuzong",
+      "title": "唐武宗",
+      "status": "formal",
+      "order": 17,
+      "note": "穆宗第五子。文宗卒后被宦官迎立。重用李德裕，打击佛教，称会昌中兴。会昌六年（846）因服丹药去世。",
+      "terms": [{ "start": 840, "end": 846, "durationLabel": "6 年" }]
+    },
+    {
+      "figure": "lichen-xuanzong",
+      "title": "唐宣宗",
+      "status": "formal",
+      "order": 18,
+      "note": "宪宗第十三子，穆宗之弟，武宗之叔。武宗卒后被宦官立为帝，是典型的旁支入继。宣宗朝政治清明，称大中之治。",
+      "terms": [{ "start": 846, "end": 859, "durationLabel": "13 年" }]
+    },
+    {
+      "figure": "licui-yizong",
+      "title": "唐懿宗",
+      "status": "formal",
+      "order": 19,
+      "note": "宣宗长子。大中十三年即位。懿宗朝奢侈无度，政治腐败，庞勋起义、裘甫起义相继爆发，唐已呈现末世之象。",
+      "terms": [{ "start": 859, "end": 873, "durationLabel": "14 年" }]
+    },
+    {
+      "figure": "lixuan-xizong",
+      "title": "唐僖宗",
+      "status": "formal",
+      "order": 20,
+      "note": "懿宗第五子。咸通十四年即位，年仅十二岁，宠信宦官田令孜。黄巢起义期间逃奔蜀地，文德元年（888）去世。",
+      "terms": [{ "start": 873, "end": 888, "durationLabel": "15 年" }]
+    },
+    {
+      "figure": "liye-zhaozong",
+      "title": "唐昭宗",
+      "status": "formal",
+      "order": 21,
+      "note": "懿宗第七子。僖宗卒后被宦官迎立。昭宗有意中兴，然受制于宦官与藩镇。天祐元年（904）被朱温所弑。",
+      "terms": [{ "start": 888, "end": 904, "durationLabel": "16 年" }]
+    },
+    {
+      "figure": "lizhu-aidi",
+      "title": "唐哀帝",
+      "status": "formal",
+      "order": 22,
+      "note": "昭宗第九子。天祐元年被朱温立为傀儡皇帝，年仅十三岁。三年后（907）朱温废之自立，唐亡。次年朱温鸩杀哀帝。",
+      "terms": [{ "start": 904, "end": 907, "durationLabel": "3 年" }]
+    }
+  ],
+  "regencies": [
+    {
+      "figure": "wuzetian",
+      "start": 664,
+      "end": 690,
+      "label": "临朝称制",
+      "note": "高宗麟德元年（664）后武则天逐步掌权，与高宗并称『二圣』。高宗死后，先后废立中宗、睿宗，实际执掌朝政二十六年。",
+      "fate": "天授元年（690）正式称帝，改国号周，成为中国历史上唯一的女皇帝。"
+    },
+    {
+      "figure": "longji",
+      "start": 756,
+      "end": 762,
+      "label": "太上皇",
+      "note": "安史之乱中玄宗被肃宗尊为太上皇，先后被迁居长安、太极宫甘露殿、兴庆宫，实际失去政治权力。",
+      "fate": "宝应元年（762）与肃宗相继去世，相隔仅十三日。"
+    }
+  ]
 }
