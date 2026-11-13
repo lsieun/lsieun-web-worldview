@@ -1,0 +1,42 @@
+{
+  "type": "family-tree",
+  "dynasty": "cao-wei",
+  "title": "荀氏家谱",
+  "href": "/history/xun-family.html",
+  "topicMeta": "宗族世系",
+  "summary": "颍川荀氏两支并列：淑八子号八龙，绲生彧以王佐定中原，昙孙攸为谋主之首——曹魏文胆武略半出此门。",
+  "figures": [
+    "xunshu",
+    "xunkun",
+    "xunyu",
+    "xunchen",
+    "xuntan",
+    "xunyi",
+    "xunyou"
+  ],
+  "roles": {
+    "xunshu": "汉 · 朗陵侯相 · 八龙之父",
+    "xunkun": "汉 · 济南相 · 彧之父",
+    "xunchen": "汉 · 绍谋主 · 说冀州归绍",
+    "xuntan": "汉 · 广陵太守 · 攸之祖",
+    "xunyi": "汉 · 攸之父 · 早卒",
+    "xunyou": "魏 · 尚书令 · 谋主之首"
+  },
+  "orders": {
+    "xunyu": 10,
+    "xunchen": 20,
+    "xunyou": 10
+  },
+  "meta": {
+    "watermark": "荀",
+    "subtitle": "颍川颍阴荀氏：八龙之门，王佐与谋主并出。",
+    "tags": [
+      "颍川荀氏",
+      "八龙",
+      "王佐之才"
+    ],
+    "sectionTitle": "两支并列，颍川名族",
+    "intro": "谱牒长卷两支并列：淑支出绲、谌与彧，昙支出彝与攸——叔侄两代同为曹操谋主，年辈交错而各有传。悬停卡片可读小传。",
+    "note": "谱系以《三国志·魏书·荀彧荀攸贾诩传》及裴注为主。淑八子号八龙，本图取绲支；攸为彧从子而年长五岁，行辈与名分之错位即本页趣味所在；昙与淑的行辈史有异说，两支平列；婚姻不画。"
+  }
+}

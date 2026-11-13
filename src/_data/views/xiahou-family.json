@@ -4,20 +4,40 @@
   "title": "夏侯氏家谱",
   "href": "/history/xiahou-family.html",
   "topicMeta": "宗族世系",
-  "summary": "夏侯惇、夏侯渊两主干撑起曹魏军中半壁：惇镇内、渊征西，霸入蜀、玄死司马氏之手。",
+  "summary": "谱称夏侯婴远祖，至汉末惇、渊两主干并列：一家分掌曹魏兵权，霸亡入蜀，尚之孙玄死于司马氏之手。",
+  "branchRoots": [
+    "xiahou-dun",
+    "xiahou-yuan",
+    "xiahou-shang",
+    "xiahou-shi"
+  ],
   "figures": [
+    "xiahou-ying",
+    "xiahou-shizai",
+    "xiahou-xianzu",
+    "xiahou-dun-fu",
     "xiahou-dun",
     "xiahou-chong",
     "xiahou-mao",
+    "xiahou-yuan-fu",
     "xiahou-yuan",
     "xiahou-heng",
     "xiahou-ba",
     "xiahou-cheng",
     "xiahou-wei",
+    "xiahou-shang-fu",
+    "xiahou-shi-fu",
     "xiahou-shang",
-    "xiahou-xuan"
+    "xiahou-xuan",
+    "xiahou-shi"
   ],
   "roles": {
+    "xiahou-ying": "汉 · 太仆 · 汝阴文侯 · 谱称远祖",
+    "xiahou-shizai": "谱牒权标 · 世数失载",
+    "xiahou-xianzu": "谱牒权标 · 惇渊共祖，名号失载",
+    "xiahou-dun-fu": "谱牒权标 · 惇之父",
+    "xiahou-yuan-fu": "谱牒权标 · 渊之父",
+    "xiahou-shang-fu": "谱牒权标 · 尚之父",
     "xiahou-dun": "魏 · 大将军 · 元从之首",
     "xiahou-chong": "魏 · 嗣忠侯",
     "xiahou-mao": "魏 · 镇东将军 · 尚清河公主",
@@ -26,10 +46,14 @@
     "xiahou-ba": "魏右将军 → 蜀车骑将军 · 249 年亡入蜀",
     "xiahou-cheng": "魏 · 渊子 · 年十八卒",
     "xiahou-wei": "魏 · 兖州刺史",
-    "xiahou-shang": "魏 · 征南大将军 · 渊从子，父名失载",
-    "xiahou-xuan": "魏 · 太常 · 谋诛司马师，事泄夷族"
+    "xiahou-shang": "魏 · 征南大将军 · 渊从子",
+    "xiahou-xuan": "魏 · 太常 · 谋诛司马师，事泄夷族",
+    "xiahou-shi": "适张飞 · 生女为蜀汉敬哀皇后"
   },
   "orders": {
+    "xiahou-dun-fu": 10,
+    "xiahou-yuan-fu": 20,
+    "xiahou-shang-fu": 30,
     "xiahou-chong": 10,
     "xiahou-mao": 20,
     "xiahou-heng": 10,
@@ -46,8 +70,8 @@
       "谯沛元从",
       "惇渊两支"
     ],
-    "intro": "谱牒长卷并列惇、渊两主干与尚一支：先看两代人如何分担曹魏的军权，再看高平陵之后这支元从之族如何被司马氏拆散。悬停卡片可读小传。",
-    "note": "谱系以《三国志·魏书·诸夏侯曹传》及裴注为准。夏侯惇、夏侯渊为族兄弟，共同先祖名号失载，两支平列为根；夏侯尚为渊从子，其父失载，独立成根；婚姻不画（楙尚清河公主、衡尚曹操弟女、霸女适羊祜，皆以卡片身份注明）；渊诸子字尾带「权」、惇诸子字尾带「子」，可据此快速定位辈分；霸一支入晋后的续枝（《晋书》所记）不入图。",
-    "sectionTitle": "三支并列，两代成谱"
+    "sectionTitle": "六世四支，谯沛元从",
+    "intro": "谱牒长卷自谱称远祖夏侯婴起，经世数失载与失讳先祖两枚权标，落下惇、渊、尚、飞妻四支：叔侄辈分由此对齐，谁是谁的儿孙一目了然。悬停卡片可读小传。",
+    "note": "谱系以《三国志·魏书·诸夏侯曹传》及裴注为准。夏侯婴为谱称远祖，婴至惇、渊之间世数失载；惇、渊为族弟，共祖名号失载；惇父、渊父、尚父、飞妻之父皆名无载（四人平列为失讳兄弟行），以失讳权标定位、不冒入他支——尚为渊从子，低于惇、渊一辈；飞妻为霸从妹，与霸同辈，其女即刘禅敬哀皇后。婚姻不画（楙尚清河公主、衡尚曹操弟女、霸女适羊祜），霸一支入晋后续枝（《晋书》所记）不入图。"
   }
 }

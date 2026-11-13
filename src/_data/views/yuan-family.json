@@ -1,0 +1,45 @@
+{
+  "type": "family-tree",
+  "dynasty": "eastern-han",
+  "title": "袁氏家谱",
+  "href": "/history/yuan-family.html",
+  "topicMeta": "宗族世系",
+  "summary": "汝南汝阳袁氏四世五公：逢之下绍、术兄弟分立，官渡之后三子相攻，末帝之梦随袁尚首级同送许都。",
+  "branchRoots": [
+    "yuanshao",
+    "yuanshu"
+  ],
+  "figures": [
+    "yuanfeng",
+    "yuanshao",
+    "yuanshu",
+    "yuantan",
+    "yuanxi",
+    "yuanshang"
+  ],
+  "roles": {
+    "yuanfeng": "汉 · 司空 · 四世五公",
+    "yuantan": "汉 · 青州刺史 · 兄弟阋墙",
+    "yuanxi": "汉 · 幽州刺史 · 甄后故夫",
+    "yuanshang": "汉 · 冀州牧 · 绍属意之嗣"
+  },
+  "orders": {
+    "yuanshao": 10,
+    "yuanshu": 20,
+    "yuantan": 10,
+    "yuanxi": 20,
+    "yuanshang": 30
+  },
+  "meta": {
+    "watermark": "袁",
+    "subtitle": "汝南汝阳袁氏：门生故吏遍天下，也败在自己人手里。",
+    "tags": [
+      "汝南袁氏",
+      "四世五公",
+      "汉末群雄"
+    ],
+    "sectionTitle": "三世两支，兄弟阋墙",
+    "intro": "谱牒长卷自袁逢起三世两支：绍、术从兄弟各霸一方，绍三子的内斗把四世三公的家底全部输光。悬停卡片可读小传。",
+    "note": "谱系以《三国志·魏书·袁绍传》及裴注为主。绍本逢之子、出继伯父成，过继不画血缘线；谭、熙、尚三子之乱始于废长立幼；熙妻甄氏后归曹丕，婚姻不画；袁氏与董卓、公孙瓒诸纠葛见人物页与年龄对比页。"
+  }
+}

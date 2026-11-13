@@ -1,0 +1,51 @@
+{
+  "type": "family-tree",
+  "dynasty": "cao-wei",
+  "title": "五子良将家系",
+  "href": "/history/wuzi-family.html",
+  "topicMeta": "宗族世系",
+  "summary": "张辽、乐进、于禁、张郃、徐晃五支并列：陈寿谓太祖建兹武功、时之良将五子为先，其子皆得嗣爵，唯于禁以厉谥终局。",
+  "figures": [
+    "zhangliao",
+    "zhanghu",
+    "yuejin",
+    "yuelin",
+    "yujin",
+    "yugui",
+    "zhanghe",
+    "zhangxiong",
+    "xuhuang",
+    "xugai"
+  ],
+  "roles": {
+    "zhangliao": "魏 · 前将军 · 威震逍遥津",
+    "zhanghu": "魏 · 嗣晋阳侯",
+    "yuejin": "魏 · 右将军 · 每战先登",
+    "yuelin": "魏 · 扬州刺史 · 为诸葛诞所杀",
+    "yujin": "魏 · 左将军 · 七军皆没",
+    "yugui": "魏 · 嗣益寿亭侯",
+    "zhanghe": "魏 · 征西车骑将军 · 木门中矢",
+    "zhangxiong": "魏 · 嗣鄚侯",
+    "xuhuang": "魏 · 右将军 · 有周亚夫之风",
+    "xugai": "魏 · 嗣阳平侯"
+  },
+  "orders": {
+    "zhanghu": 10,
+    "yuelin": 10,
+    "yugui": 10,
+    "zhangxiong": 10,
+    "xugai": 10
+  },
+  "meta": {
+    "watermark": "武",
+    "subtitle": "曹魏五子良将：五支并列，嗣爵相承。",
+    "tags": [
+      "曹魏",
+      "五子良将",
+      "将门家系"
+    ],
+    "sectionTitle": "五支并列，嗣爵相承",
+    "intro": "谱牒长卷五支并列：辽、进、禁、郃、晃各成一支持其嗣子。五人皆异姓独立成根，不以血缘相连，同页并列取陈寿合传之意。悬停卡片可读小传。",
+    "note": "谱系以《三国志·魏书·张乐于张徐传》为主。「五子良将」出自陈寿评语「太祖建兹武功，而时之良将，五子为先」，本页从俗为题。五人无同族之谊，并列取合传体例；乐綝为诸葛诞所袭杀、于禁谥厉，荣枯各注于卡片；婚姻不画。"
+  }
+}

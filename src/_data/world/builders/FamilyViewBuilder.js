@@ -107,7 +107,7 @@ export class FamilyViewBuilder extends ViewBuilder {
         for (const node of nodes.values()) node.branch = branchOf(node);
 
         /* ---------- 3.5 分支图例与配色索引（调色板 8 色，超出循环取用） ---------- */
-        const BRANCH_PALETTE = 8;
+        const BRANCH_PALETTE = 10;
         const branches = [];
         const branchIndexOf = new Map();
         const registerBranch = (node) => {

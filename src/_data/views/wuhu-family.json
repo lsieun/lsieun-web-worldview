@@ -1,0 +1,83 @@
+{
+  "type": "family-tree",
+  "dynasty": "shu-han",
+  "title": "五虎将家系",
+  "href": "/history/wuhu-family.html",
+  "topicMeta": "宗族世系",
+  "summary": "关张赵马黄五支并列：关氏一门两代殉国而终遭灭门，张氏子孙一半死节一半降魏，五虎的家系就是蜀汉命运的缩影。",
+  "branchRoots": [
+    "guanyu",
+    "zhangfei",
+    "zhaoyun",
+    "mateng",
+    "madai",
+    "huangzhong"
+  ],
+  "figures": [
+    "guanyu",
+    "guanping",
+    "guanxing",
+    "guantong",
+    "guanyi",
+    "zhangfei",
+    "zhangbao",
+    "zhangshao",
+    "zhangzun",
+    "zhaoyun",
+    "zhaotong",
+    "zhaoguang",
+    "mateng",
+    "machao",
+    "macheng",
+    "madai",
+    "madai-fu",
+    "huangzhong",
+    "huangxu"
+  ],
+  "roles": {
+    "guanyu": "蜀 · 前将军 · 汉寿亭侯",
+    "guanping": "蜀 · 羽长子 · 临沮同殉",
+    "guanxing": "蜀 · 侍中 · 中监军",
+    "guantong": "蜀 · 虎贲中郎将 · 嗣爵",
+    "guanyi": "蜀 · 嗣汉寿亭侯 · 庞会灭门",
+    "zhangfei": "蜀 · 车骑将军 · 西乡侯",
+    "zhangbao": "蜀 · 早卒",
+    "zhangshao": "蜀 · 侍中 · 降魏",
+    "zhangzun": "蜀 · 尚书 · 绵竹殉国",
+    "zhang-shi": "蜀 · 敬哀皇后 · 飞长女",
+    "zhaoyun": "蜀 · 镇军将军 · 顺平侯",
+    "zhaotong": "蜀 · 虎贲中郎督 · 嗣爵",
+    "zhaoguang": "蜀 · 牙门将 · 沓中战死",
+    "mateng": "汉 · 卫尉 · 为曹操所诛",
+    "machao": "蜀 · 骠骑将军 · 斄乡侯",
+    "macheng": "蜀 · 嗣斄乡侯",
+    "madai": "蜀 · 平北将军 · 斩魏延",
+    "madai-fu": "谱牒权标 · 名无载",
+    "huangzhong": "蜀 · 后将军 · 定军山斩夏侯渊",
+    "huangxu": "蜀 · 早卒，无后"
+  },
+  "orders": {
+    "guanping": 10,
+    "guanxing": 20,
+    "guantong": 10,
+    "guanyi": 20,
+    "zhangbao": 10,
+    "zhangshao": 20,
+    "zhangzun": 10,
+    "zhaotong": 10,
+    "zhaoguang": 20,
+    "macheng": 10
+  },
+  "meta": {
+    "watermark": "虎",
+    "subtitle": "五虎上将之家：五支并列，荣枯各异。",
+    "tags": [
+      "蜀汉",
+      "五虎上将",
+      "将门家系"
+    ],
+    "sectionTitle": "六支并列，家系各传",
+    "intro": "谱牒长卷六支并列：关羽、张飞、赵云、马超、黄忠各成一支持其子孙，马岱从弟一支附于马氏之侧。曾为汉臣者不加冠——本页的皇冠只属于帝王，五虎皆名将而非君主。",
+    "note": "谱系以《三国志·蜀书》关张赵马黄各传及裴注为主。「五虎上将」为《三国演义》并称，正史《关张马黄赵传》同卷而位号各异，本页从俗为题。关平为羽长子、临沮同殉；关兴早卒，统无后、彝嗣而遭庞会灭门；飞妻夏侯氏及女敬哀皇后分见夏侯氏家谱与本页张氏卡；马岱为超从弟，其父失讳权标定位；黄叙早卒，忠嗣遂绝；婚姻不画。"
+  }
+}
