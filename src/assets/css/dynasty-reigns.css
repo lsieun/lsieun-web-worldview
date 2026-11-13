@@ -429,6 +429,25 @@
     border-color: var(--color-line-strong);
 }
 
+.kh-legend-crown {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    color: var(--color-brass);
+}
+
+.kh-legend-crown svg {
+    width: 22px;
+    height: 12px;
+}
+
+.kh-legend-crown svg path,
+.kh-legend-crown svg rect {
+    fill: var(--color-brass);
+}
+
 .kh-legend-line {
     width: 28px;
     height: 1px;
@@ -601,6 +620,55 @@
     border-radius: var(--radius-sm);
 }
 
+.kh-order.is-root {
+    width: 32px;
+    color: var(--color-muted);
+    font-size: 0.625rem;
+    border-color: var(--color-line-strong);
+}
+
+/* 皇冠压在卡片上缘，表示曾称帝；帝序仍写在卡内，不占长幼序号位 */
+.kh-crown {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    width: 32px;
+    height: 18px;
+    color: var(--color-brass);
+    transform: translateX(-50%);
+}
+
+.kh-crown svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.kh-crown svg path,
+.kh-crown svg rect {
+    fill: var(--color-brass);
+}
+
+.kh-imperial {
+    color: var(--color-brass);
+    font-weight: 600;
+}
+
+.kh-variant-link {
+    margin: 0 0 var(--space-sm);
+    color: var(--color-muted);
+    font-size: 0.75rem;
+}
+
+.kh-variant-link a {
+    color: var(--color-brass);
+    text-decoration: none;
+}
+
+.kh-variant-link a:hover {
+    text-decoration: underline;
+}
+
 .kh-identity {
     min-width: 0;
 }
@@ -760,6 +828,92 @@ body.kh-fullscreen-fallback {
     color: var(--color-muted);
     font-size: 0.75rem;
     line-height: 1.9;
+}
+
+/* ---------- 静态全图（SVG 对照版） ---------- */
+.fh-map-shell {
+    padding: var(--space-md);
+    overflow-x: auto;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+}
+
+.fh-map {
+    display: block;
+    width: 100%;
+    max-width: 1006px;
+    height: auto;
+    margin: 0 auto;
+}
+
+.fh-edge {
+    fill: none;
+    stroke: var(--color-line-strong);
+    stroke-width: 1;
+}
+
+.fh-card {
+    fill: var(--color-surface);
+    stroke: var(--color-line);
+    stroke-width: 1;
+}
+
+.fh-node.is-kin .fh-card {
+    fill: color-mix(in srgb, var(--color-surface) 72%, transparent);
+}
+
+.fh-node.is-emperor .fh-card {
+    fill: var(--color-surface-raised);
+    stroke: var(--color-brass);
+    stroke-width: 1.5;
+}
+
+.fh-rank {
+    fill: none;
+    stroke: var(--color-brass);
+    stroke-width: 1;
+}
+
+.fh-rank.is-root {
+    stroke: var(--color-line-strong);
+}
+
+.fh-rank-text {
+    fill: var(--color-brass);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.fh-rank-text.is-root {
+    fill: var(--color-muted);
+    font-size: 10px;
+}
+
+.fh-title {
+    fill: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.fh-detail {
+    fill: var(--color-muted);
+    font-size: 10px;
+}
+
+.fh-crown {
+    fill: var(--color-brass);
+}
+
+.fh-node-link {
+    cursor: pointer;
+}
+
+.fh-node-link:hover .fh-card {
+    stroke: var(--color-brass);
+    stroke-width: 2;
 }
 
 @media (max-width: 720px) {

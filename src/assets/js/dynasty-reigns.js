@@ -31,8 +31,12 @@
     let chartColors = null;
     let chartMetrics = { leaves: 1, levels: 1 };
     let initialZoom = 1.2;
+    let overviewMode = false;
+    let roamLabelTimer = null;
     let chartNodeById = new Map();
     let controlsReady = false;
+    const LABEL_HIDE_ZOOM = 1;
+    const LABEL_SHOW_ZOOM = 1.08;
 
     function directChild(element, className) {
         return Array.from(element.children).find((child) => child.classList.contains(className));
@@ -42,6 +46,7 @@
         const article = directChild(branch, 'kh-node');
         const childList = Array.from(branch.children).find((child) => child.tagName === 'UL');
         const hasRuler = article.classList.contains('is-emperor') || article.classList.contains('is-interim');
+        const rankText = article.querySelector('.kh-order').textContent.trim();
         const node = {
             name: article.dataset.treePerson,
             person: article.dataset.treePerson,
@@ -49,7 +54,11 @@
             title: article.querySelector('.kh-identity h4').textContent.trim(),
             detail: article.querySelector('.kh-identity p').textContent.trim(),
             reign: article.querySelector('.kh-reign').textContent.trim(),
-            order: Number.parseInt(article.querySelector('.kh-order').textContent, 10) || null,
+            siblingRank: Number.parseInt(article.dataset.siblingRank, 10) || 0,
+            emperor: article.dataset.emperor === 'true' || article.classList.contains('is-emperor'),
+            imperialLabel: article.querySelector('.kh-imperial')?.textContent.trim() || '',
+            order: Number.parseInt(article.dataset.imperialOrder, 10)
+                || (article.dataset.siblingRank === undefined ? Number.parseInt(rankText, 10) : null),
             hasRuler,
             href: article.dataset.nodeHref || '',
             children: childList
@@ -129,6 +138,12 @@
 
     function chartLabel(params) {
         const data = params.data;
+        if (familyMode) {
+            const rank = `{rank|${data.siblingRank || '始'}}`;
+            const crown = data.emperor ? '{crown|♛}' : '';
+            const label = data.imperialLabel ? `${data.imperialLabel} · ${data.reign}` : data.reign;
+            return `${rank}${crown}{title|${data.title}}\n{name|${data.detail}}\n{reign|${label}}`;
+        }
         if (!data.hasRuler) {
             const detail = data.detail && data.detail !== data.reign ? `\n{name|${data.detail}}` : '';
             const reign = data.reign ? `\n{reign|${data.reign}}` : '';
@@ -145,9 +160,13 @@
 
     function chartTooltip(params) {
         const data = params.data;
-        const identity = data.hasRuler
-            ? `${data.order ? `第 ${data.order} 位皇帝` : '过渡人物 · 未正式即位'} · ${data.detail}`
-            : (data.detail || '宗室支系');
+        const identity = familyMode
+            ? `${data.siblingRank ? `同父兄弟排行第 ${data.siblingRank}` : '本谱始祖'}`
+                + (data.emperor ? ` · ${data.imperialLabel}` : '')
+                + ` · ${data.detail || '宗室支系'}`
+            : data.hasRuler
+                ? `${data.order ? `第 ${data.order} 位皇帝` : '过渡人物 · 未正式即位'} · ${data.detail}`
+                : (data.detail || '宗室支系');
         const action = data.hasRuler
             ? '点击查看在位大事 →'
             : (data.href ? '点击查看帝系年表 →' : '');
@@ -165,11 +184,15 @@
             animation: forExport ? false : !reduceMotion(),
             aria: {
                 enabled: true,
-                description: `${dynastyTitle} 血缘世系树。数字表示皇帝即位顺序，连线只表示父母与子女关系，未即位宗亲用于连接世系。`
+                description: familyMode
+                    ? `${dynastyTitle} 父系家谱。数字为同一父亲名下的长幼序，皇冠表示曾称帝，连线只表示父子关系。`
+                    : `${dynastyTitle} 血缘世系树。数字表示皇帝即位顺序，连线只表示父母与子女关系，未即位宗亲用于连接世系。`
             },
             title: forExport ? {
                 text: `${dynastyTitle} · 血缘世系`,
-                subtext: '数字为帝序 · 连线仅表示亲属关系 · 未即位宗亲不计入帝序',
+                subtext: familyMode
+                    ? '数字为长幼序 · 皇冠表示曾称帝 · 连线仅表示父子关系'
+                    : '数字为帝序 · 连线仅表示亲属关系 · 未即位宗亲不计入帝序',
                 left: 36,
                 top: 26,
                 textStyle: { color: chartColors.ink, fontFamily: chartColors.fontSerif, fontSize: 26, fontWeight: 600 },
@@ -198,18 +221,30 @@
                 roam: !forExport,
                 center: settings.center || initialCenter,
                 zoom: settings.zoom || initialZoom,
-                scaleLimit: { min: 1, max: 4 },
-                nodeScaleRatio: 0.01,
+                scaleLimit: { min: 0.12, max: 5 },
+                nodeScaleRatio: settings.overview ? 1 : 0.01,
                 initialTreeDepth: -1,
                 expandAndCollapse: false,
                 edgeShape: 'polyline',
                 edgeForkPosition: '50%',
                 lineStyle: { color: chartColors.lineStrong, width: 1 },
                 label: {
-                    show: true,
+                    show: !settings.overview,
                     position: 'inside',
                     formatter: chartLabel,
                     rich: {
+                        rank: {
+                            color: chartColors.brass,
+                            fontFamily: chartColors.fontMono,
+                            fontSize: 12,
+                            fontWeight: 600,
+                            padding: [0, 5, 0, 0]
+                        },
+                        crown: {
+                            color: chartColors.brass,
+                            fontSize: 13,
+                            padding: [0, 2, 0, 0]
+                        },
                         order: {
                             color: chartColors.surfaceRaised,
                             backgroundColor: chartColors.brass,
@@ -265,8 +300,34 @@
         return Math.min(3, Math.max(1.15, widthZoom, heightZoom));
     }
 
+    /* 全图：按叶子数与层数估算内容尺寸，缩到一屏；此时节点随缩放等比变小 */
+    function calculateFitZoom() {
+        const contentWidth = chartMetrics.leaves * 225;
+        const contentHeight = chartMetrics.levels * 108;
+        const availableWidth = Math.max(chartEl.clientWidth - 48, 1);
+        const availableHeight = Math.max(chartEl.clientHeight - 48, 1);
+        const fit = Math.min(availableWidth / contentWidth, availableHeight / contentHeight);
+        return Math.min(1, Math.max(0.12, fit));
+    }
+
     function currentChartZoom() {
         return chart?.getOption().series[0].zoom || initialZoom;
+    }
+
+    function currentChartCenter() {
+        return chart?.getOption().series[0].center || initialCenter;
+    }
+
+    /* 缩小到卡片会互相压字时收起标签，只留节点方块；放大回阅读比例再显示 */
+    function shouldHideLabels(zoom) {
+        if (zoom < LABEL_HIDE_ZOOM) return true;
+        if (zoom > LABEL_SHOW_ZOOM) return false;
+        return overviewMode;
+    }
+
+    function applyChartView({ center, zoom, overview = overviewMode }) {
+        overviewMode = overview;
+        chart.setOption(buildChartOption(styledChartData(chartTarget), { center, zoom, overview }));
     }
 
     function centerChartPerson(person) {
@@ -371,12 +432,15 @@
                 exportChart(button);
             } else if (action === 'reset') {
                 initialZoom = calculateInitialZoom();
-                chart.setOption({ series: [{ center: initialCenter, zoom: initialZoom }] });
+                applyChartView({ center: initialCenter, zoom: initialZoom, overview: false });
                 chartStatus.textContent = '';
+            } else if (action === 'fit') {
+                applyChartView({ center: ['50%', '50%'], zoom: calculateFitZoom(), overview: true });
+                chartStatus.textContent = '已缩放到整棵世系；放大或拖动可查看细节。';
             } else if (action === 'zoom-in' || action === 'zoom-out') {
                 const factor = action === 'zoom-in' ? 1.25 : 0.8;
-                const zoom = Math.min(4, Math.max(1, currentChartZoom() * factor));
-                chart.setOption({ series: [{ zoom }] });
+                const zoom = Math.min(5, Math.max(0.12, currentChartZoom() * factor));
+                applyChartView({ center: currentChartCenter(), zoom, overview: shouldHideLabels(zoom) });
             }
         });
         document.addEventListener('fullscreenchange', updateChartFullscreen);
@@ -390,7 +454,8 @@
             chartColors = readChartColors();
             chart.setOption(buildChartOption(styledChartData(chartTarget), {
                 center: current.center,
-                zoom: current.zoom
+                zoom: current.zoom,
+                overview: overviewMode
             }));
         }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
     }
@@ -425,6 +490,16 @@
                 } else {
                     showView('timeline', { person, historyMode: 'push' });
                 }
+            });
+            // 滚轮/拖动缩放后按当前比例决定是否显示标签，避免缩小后文字互相重叠。
+            chart.on('treeRoam', () => {
+                clearTimeout(roamLabelTimer);
+                roamLabelTimer = setTimeout(() => {
+                    if (!chart) return;
+                    const zoom = currentChartZoom();
+                    if (shouldHideLabels(zoom) === overviewMode) return;
+                    applyChartView({ center: currentChartCenter(), zoom, overview: shouldHideLabels(zoom) });
+                }, 160);
             });
             return true;
         } catch {

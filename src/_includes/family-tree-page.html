@@ -6,21 +6,31 @@
 <li class="kh-branch">
     <article class="kh-node{% if node.emperor %} is-emperor{% elif node.status == 'interim' %} is-interim{% else %} is-kin{% endif %}"
              id="tree-{{ node.id }}" data-tree-person="{{ node.id }}" data-parents="{{ node.parents | join(' ') }}"
+             data-sibling-rank="{{ node.siblingRank or '' }}" data-emperor="{{ 'true' if node.emperor else 'false' }}"
+             data-imperial-order="{{ node.order or '' }}"
              {% if node.href %}data-node-href="{{ node.href }}"{% endif %} tabindex="-1">
+        {% if node.emperor %}
+        <span class="kh-crown" aria-label="曾称帝">
+            <svg viewBox="0 0 32 18" aria-hidden="true" focusable="false">
+                <path d="M2 14.5 4.5 5 11 10.5 16 2 21 10.5 27.5 5 30 14.5Z"></path>
+                <rect x="3" y="15" width="26" height="2.6" rx="1"></rect>
+            </svg>
+        </span>
+        {% endif %}
         <div class="kh-node-top">
-            {% if node.emperor %}
-            <span class="kh-order" aria-label="第 {{ node.order }} 位皇帝">{{ node.order }}</span>
-            {% elif node.status == 'interim' %}
-            <span class="kh-order is-transition">过渡</span>
+            {% if node.siblingRank %}
+            <span class="kh-order" aria-label="同父兄弟中排行第 {{ node.siblingRank }}">{{ node.siblingRank }}</span>
             {% else %}
-            <span class="kh-order is-kin" aria-hidden="true">宗</span>
+            <span class="kh-order is-root" aria-label="本谱始祖">始</span>
             {% endif %}
             <div class="kh-identity">
                 <h4>{{ node.title }}</h4>
                 <p>{{ node.detail }}</p>
             </div>
         </div>
-        <p class="kh-reign">{{ node.reignLabel }}</p>
+        <p class="kh-reign">
+            {% if node.emperor %}<span class="kh-imperial">{{ node.imperialLabel }}</span> · {% endif %}{{ node.reignLabel }}
+        </p>
         {% if node.href %}
         <a class="kh-timeline-link" href="{{ node.href }}">帝系年表 <span aria-hidden="true">→</span></a>
         {% else %}
@@ -70,21 +80,26 @@
             </div>
 
             <div class="kh-legend" aria-label="家谱图例">
-                <span><i class="kh-legend-mark is-emperor" aria-hidden="true">1</i>皇帝与帝序，可跳转东吴帝系</span>
-                <span><i class="kh-legend-mark is-kin" aria-hidden="true">宗</i>太子、诸王与宗室支系</span>
+                <span><i class="kh-legend-mark is-emperor" aria-hidden="true">1</i>同父兄弟长幼序，跨父各自从 1 起</span>
+                <span><i class="kh-legend-crown" aria-hidden="true"><svg viewBox="0 0 32 18" focusable="false"><path d="M2 14.5 4.5 5 11 10.5 16 2 21 10.5 27.5 5 30 14.5Z"></path><rect x="3" y="15" width="26" height="2.6" rx="1"></rect></svg></i>曾称帝，卡片顶部加冠</span>
                 <span><i class="kh-legend-line" aria-hidden="true"></i>父系血缘关系</span>
             </div>
+
+            {% if familyView.meta.mapHref %}
+            <p class="kh-variant-link">对照实现：<a href="{{ familyView.meta.mapHref }}">静态全图版（SVG，整棵世系一次展开）</a></p>
+            {% endif %}
 
             <div class="kh-chart-shell bleed" data-tree-chart-shell hidden>
                 <div class="kh-chart-toolbar" role="group" aria-label="家谱查看工具">
                     <div class="kh-chart-actions">
+                        <button type="button" data-tree-action="fit" aria-label="查看整棵家谱">全图</button>
                         <button type="button" data-tree-action="zoom-out" aria-label="缩小家谱">缩小</button>
                         <button type="button" data-tree-action="zoom-in" aria-label="放大器谱">放大</button>
                         <button type="button" data-tree-action="reset">复位</button>
                         <button type="button" data-tree-action="fullscreen" aria-pressed="false">全屏</button>
                         <button type="button" data-tree-action="export">导出 PNG</button>
                     </div>
-                    <p>拖动平移 · 滚轮缩放 · 点击皇帝查看帝系年表</p>
+                    <p>拖动平移 · 滚轮缩放 · 「全图」看整棵世系 · 点击皇帝查看帝系年表</p>
                 </div>
                 <div class="kh-chart-stage" data-tree-chart tabindex="0" role="img" aria-label="孙氏父系家谱。可拖动、缩放，也可使用上方按钮操作。"></div>
                 <p class="kh-chart-status" data-tree-status role="status" aria-live="polite"></p>

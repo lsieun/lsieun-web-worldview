@@ -281,9 +281,11 @@ function buildFamilyView(view, dynasties, figures, figureSources, dynastySources
             generation: 0,
             emperor: Boolean(ruler),
             order: ruler?.order,
+            imperialLabel: ruler ? (ruler.order ? `第 ${ruler.order} 位皇帝` : "过渡人物") : "",
+            siblingRank: null,
             status: ruler?.status || "kin",
-            title: ruler?.title || figure.name,
-            detail: ruler ? figure.name : (roles[id] || "宗室宗亲"),
+            title: figure.name,
+            detail: ruler ? ruler.title : (roles[id] || "宗室宗亲"),
             reignLabel: ruler
                 ? terms.map((term) => `${formatYear(term.start)} — ${formatYear(term.end)}`).join("、")
                 : "宗室支系",
@@ -329,7 +331,48 @@ function buildFamilyView(view, dynasties, figures, figureSources, dynastySources
     treeRoots.sort(compareNodes);
     treeRoots.forEach(sortTree);
 
+    /* 长幼序：同一父亲的子女按已排序的 children 依次编号 1..N，跨父各自从 1 开始 */
+    function assignSiblingRanks(node) {
+        node.children.forEach((child, index) => {
+            child.siblingRank = index + 1;
+            assignSiblingRanks(child);
+        });
+    }
+    treeRoots.forEach(assignSiblingRanks);
+
+    /* 静态全图坐标：沿父系向下（generation 为列），叶子自上而下占用行，父节点居中于子女 */
+    const map = { column: 200, row: 50, nodeWidth: 150, nodeHeight: 42, pad: 28 };
+    let leafCursor = 0;
+    function assignMapCoordinates(node) {
+        node.mapX = map.pad + node.generation * map.column;
+        if (!node.children.length) {
+            node.mapY = map.pad + leafCursor * map.row;
+            leafCursor += 1;
+        } else {
+            node.children.forEach(assignMapCoordinates);
+            const first = node.children[0];
+            const last = node.children[node.children.length - 1];
+            node.mapY = (first.mapY + last.mapY) / 2;
+        }
+    }
+    treeRoots.forEach(assignMapCoordinates);
+
+    const mapEdges = [];
+    for (const node of nodes.values()) {
+        for (const child of node.children) {
+            const x1 = node.mapX + map.nodeWidth;
+            const y1 = node.mapY + map.nodeHeight / 2;
+            const x2 = child.mapX;
+            const y2 = child.mapY + map.nodeHeight / 2;
+            const midX = (x1 + x2) / 2;
+            mapEdges.push({ from: node.id, to: child.id, path: `M${x1} ${y1} H${midX} V${y2} H${x2}` });
+        }
+    }
+
     const generationsMax = nodes.size ? Math.max(...[...nodes.values()].map((node) => node.generation)) + 1 : 0;
+    const maxGeneration = generationsMax - 1;
+    const mapWidth = map.pad * 2 + maxGeneration * map.column + map.nodeWidth;
+    const mapHeight = map.pad * 2 + Math.max(leafCursor - 1, 0) * map.row + map.nodeHeight;
 
     return {
         id: view.id,
@@ -340,6 +383,13 @@ function buildFamilyView(view, dynasties, figures, figureSources, dynastySources
         nodeCount: nodes.size,
         emperorCount: [...nodes.values()].filter((node) => node.emperor).length,
         generationCount: generationsMax,
+        map: {
+            width: mapWidth,
+            height: mapHeight,
+            nodeWidth: map.nodeWidth,
+            nodeHeight: map.nodeHeight,
+            edges: mapEdges
+        },
         treeRoots
     };
 }
