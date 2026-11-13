@@ -1082,6 +1082,14 @@
     padding-top: clamp(2.5rem, 5vw, 4rem);
 }
 
+/* TOC 准备好且视口足够宽时，切为三列（TOC 窄条 | 正文 | 侧栏） */
+@media (min-width: 1360px) {
+    .entry-body:has(.toc-slot.is-ready) {
+        grid-template-columns: 140px minmax(0, 1fr) 210px;
+        gap: clamp(1.5rem, 4vw, 2.5rem) clamp(2rem, 6vw, 5rem);
+    }
+}
+
 .prose {
     max-width: 46rem;
     font-size: 1.03rem;
@@ -1595,4 +1603,262 @@
 
 .reference-line a:hover {
     border-bottom-style: solid;
+}
+
+/* ------------------------------------------------------------
+   浮动目录 (TOC)
+   宽 ≥1360px 时启用，左侧窄条 sticky 跟随滚动
+   ------------------------------------------------------------ */
+.toc-slot {
+    display: none;
+}
+
+@media (min-width: 1360px) {
+    .toc-slot.is-ready {
+        display: block;
+        align-self: start;
+        position: sticky;
+        top: 105px;
+    }
+}
+
+.toc {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    line-height: 1.55;
+    color: var(--color-muted);
+}
+
+/* 头部按钮 */
+.toc-head {
+    margin-bottom: 0.6rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-line-strong);
+}
+
+.toc-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.28em;
+    color: var(--color-brass);
+    text-transform: uppercase;
+    transition: color var(--ease-out);
+}
+
+.toc-toggle:hover {
+    color: var(--color-brass-soft);
+}
+
+.toc-toggle-icon {
+    display: inline-block;
+    width: 10px;
+    text-align: center;
+    font-size: 0.8rem;
+    transition: transform var(--ease-out);
+}
+
+.toc[aria-expanded="false"] .toc-toggle-icon,
+.toc.is-collapsed .toc-toggle-icon {
+    transform: rotate(180deg);
+}
+
+/* 整体收缩：只保留竖排标题 */
+.toc.is-collapsed {
+    position: relative;
+}
+
+.toc.is-collapsed .toc-body,
+.toc.is-collapsed .toc-foot {
+    display: none;
+}
+
+.toc.is-collapsed .toc-toggle {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    padding: 0.2rem 0;
+}
+
+.toc.is-collapsed .toc-head {
+    border-bottom: none;
+}
+
+/* 列表容器 */
+.toc-body {
+    max-height: calc(100vh - 160px);
+    overflow-y: auto;
+    padding-right: 4px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line-strong) transparent;
+}
+
+.toc-body::-webkit-scrollbar {
+    width: 3px;
+}
+
+.toc-body::-webkit-scrollbar-thumb {
+    background: var(--color-line-strong);
+    border-radius: 2px;
+}
+
+.toc-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* h2 条目 */
+.toc-h2 {
+    margin: 0;
+}
+
+.toc-h2-row {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+}
+
+.toc-fold-btn {
+    flex-shrink: 0;
+    width: 12px;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    line-height: 1.55;
+    color: var(--color-muted);
+    transition: transform var(--ease-out), color var(--ease-out);
+    text-align: left;
+}
+
+.toc-fold-btn:hover {
+    color: var(--color-brass);
+}
+
+.toc-h2.is-folded .toc-fold-btn span {
+    transform: rotate(-90deg);
+    display: inline-block;
+}
+
+.toc-link-wrap {
+    flex: 1;
+    min-width: 0;
+}
+
+.toc-link-wrap a {
+    display: block;
+    padding: 0.28rem 0;
+    color: var(--color-ink);
+    text-decoration: none;
+    border-bottom: none;
+    opacity: 0.85;
+    transition: color var(--ease-out), opacity var(--ease-out);
+}
+
+.toc-link-wrap a:hover {
+    color: var(--color-brass);
+    opacity: 1;
+}
+
+.toc-link-wrap a.is-active {
+    color: var(--color-brass);
+    opacity: 1;
+    font-weight: 600;
+}
+
+/* h3 子列表 */
+.toc-sublist {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 12px;
+    border-left: 1px solid var(--color-line);
+    transition: max-height var(--ease-out), opacity var(--ease-out);
+    overflow: hidden;
+}
+
+.toc-h2.is-folded .toc-sublist {
+    display: none;
+}
+
+.toc-h3 {
+    margin: 0;
+}
+
+.toc-h3 a {
+    display: block;
+    padding: 0.22rem 0;
+    color: var(--color-ink-soft);
+    text-decoration: none;
+    opacity: 0.7;
+    font-size: 0.68rem;
+    transition: color var(--ease-out), opacity var(--ease-out);
+}
+
+.toc-h3 a:hover {
+    color: var(--color-brass);
+    opacity: 1;
+}
+
+.toc-h3 a.is-active {
+    color: var(--color-brass);
+    opacity: 1;
+    font-weight: 600;
+}
+
+/* 底部区 */
+.toc-foot {
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--color-line);
+}
+
+.toc-bottom {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    color: var(--color-muted);
+    transition: color var(--ease-out);
+}
+
+.toc-bottom:hover {
+    color: var(--color-brass);
+}
+
+.toc-bottom span:first-child {
+    font-size: 0.7rem;
+    transition: transform var(--ease-out);
+}
+
+.toc-bottom:hover span:first-child {
+    transform: translateY(2px);
+}
+
+/* 小屏强制隐藏 */
+@media (max-width: 1359px) {
+    .toc-slot,
+    .toc {
+        display: none !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .toc-toggle-icon,
+    .toc-fold-btn span {
+        transition: none;
+    }
 }
