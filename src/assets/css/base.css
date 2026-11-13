@@ -307,21 +307,6 @@ button {
     letter-spacing: 0.04em;
 }
 
-.footer-coord {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    line-height: 2;
-    letter-spacing: 0.16em;
-    color: var(--color-muted);
-    text-align: right;
-}
-
-.footer-coord strong {
-    display: block;
-    font-weight: 500;
-    color: var(--color-brass);
-}
-
 .footer-bottom {
     display: flex;
     align-items: center;
@@ -421,10 +406,6 @@ button {
 
     .footer-main {
         flex-direction: column;
-    }
-
-    .footer-coord {
-        text-align: left;
     }
 
     .footer-bottom {
