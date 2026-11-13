@@ -1,0 +1,14 @@
+{
+  "id": "sunlv",
+  "name": "孙虑",
+  "birth": 213,
+  "death": 232,
+  "summary": "孙权次子，建昌侯，赤乌元年卒。",
+  "parents": [
+    "sunquan"
+  ],
+  "tags": [
+    "东吴",
+    "宗室"
+  ]
+}

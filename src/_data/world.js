@@ -246,6 +246,104 @@ function buildReignView(view, dynasties, figures, events, dynastySources, figure
     };
 }
 
+/* ---------- 家族世系：只画父系血缘，皇帝节点保留帝序与在位年段 ---------- */
+function buildFamilyView(view, dynasties, figures, figureSources, dynastySources) {
+    const viewSource = `views/${view.id}.json`;
+    const dynasty = dynasties[view.dynasty];
+    if (!dynasty) throw new Error(`[world] ${viewSource} 缺少有效 dynasty`);
+    const dynastySource = dynastySources[dynasty.id];
+    const figureIds = new Set(ensureArray(view.figures, viewSource, "figures"));
+    const roles = view.roles && typeof view.roles === "object" ? view.roles : {};
+    const orders = view.orders && typeof view.orders === "object" ? view.orders : {};
+
+    const rulerById = new Map();
+    for (const ruler of ensureArray(dynasty.rulers, dynastySource, "rulers")) {
+        rulerById.set(ruler.figure, ruler);
+    }
+
+    const nodes = new Map();
+    for (const id of figureIds) {
+        ensureRef(figures, "人物", viewSource, "figures", id);
+        const figure = figures[id];
+        const parents = ensureArray(figure.parents, figureSources[id], "parents")
+            .filter((parentId) => figureIds.has(parentId));
+        if (parents.length > 1) {
+            throw new Error(`[world] ${viewSource} 的世系节点「${id}」目前只支持一个树内父节点`);
+        }
+        const ruler = rulerById.get(id);
+        const terms = ruler ? ensureArray(ruler.terms, dynastySource, `rulers.${id}.terms`) : [];
+        nodes.set(id, {
+            id,
+            name: figure.name,
+            birth: figure.birth,
+            parents,
+            children: [],
+            generation: 0,
+            emperor: Boolean(ruler),
+            order: ruler?.order,
+            status: ruler?.status || "kin",
+            title: ruler?.title || figure.name,
+            detail: ruler ? figure.name : (roles[id] || "宗室宗亲"),
+            reignLabel: ruler
+                ? terms.map((term) => `${formatYear(term.start)} — ${formatYear(term.end)}`).join("、")
+                : "宗室支系",
+            href: ruler && view.emperorHref
+                ? `${view.emperorHref}#timeline-${id}`
+                : ""
+        });
+    }
+
+    const generations = new Map();
+    function generationOf(id, trail = new Set()) {
+        if (generations.has(id)) return generations.get(id);
+        if (trail.has(id)) throw new Error(`[world] ${viewSource} 的世系关系存在环，涉及「${id}」`);
+        const node = nodes.get(id);
+        const parentId = node.parents[0];
+        if (!parentId) {
+            generations.set(id, 0);
+            return 0;
+        }
+        trail.add(id);
+        const generation = generationOf(parentId, trail) + 1;
+        trail.delete(id);
+        generations.set(id, generation);
+        return generation;
+    }
+
+    const treeRoots = [];
+    for (const node of nodes.values()) {
+        node.generation = generationOf(node.id);
+        const parentId = node.parents[0];
+        if (parentId) nodes.get(parentId).children.push(node);
+        else treeRoots.push(node);
+    }
+    const compareNodes = (a, b) =>
+        (orders[a.id] ?? 999) - (orders[b.id] ?? 999) ||
+        (a.birth ?? 9999) - (b.birth ?? 9999) ||
+        (a.order ?? 999) - (b.order ?? 999) ||
+        a.name.localeCompare(b.name, "zh-Hans-CN");
+    function sortTree(node) {
+        node.children.sort(compareNodes);
+        node.children.forEach(sortTree);
+    }
+    treeRoots.sort(compareNodes);
+    treeRoots.forEach(sortTree);
+
+    const generationsMax = nodes.size ? Math.max(...[...nodes.values()].map((node) => node.generation)) + 1 : 0;
+
+    return {
+        id: view.id,
+        title: view.title,
+        href: view.href,
+        meta: { watermark: "史", ...view.meta },
+        dynasty: { id: dynasty.id, name: dynasty.name, start: dynasty.start, end: dynasty.end },
+        nodeCount: nodes.size,
+        emperorCount: [...nodes.values()].filter((node) => node.emperor).length,
+        generationCount: generationsMax,
+        treeRoots
+    };
+}
+
 /* ---------- 帝系与群臣：按生卒重叠打包的泳道 ---------- */
 const CROWD = {
     ppy: 3.6,          // 纵向像素 / 年
@@ -773,6 +871,19 @@ export default function () {
             }
             continue;
         }
+        if (view.type === "family-tree") {
+            if (!view.dynasty) throw new Error(`[world] ${source} 缺少 dynasty`);
+            for (const figureId of ensureArray(view.figures, source, "figures")) {
+                ensureRef(figures, "人物", source, "figures", figureId);
+            }
+            for (const roleId of Object.keys(view.roles || {})) {
+                ensureRef(figures, "人物", source, "roles", roleId);
+            }
+            for (const orderId of Object.keys(view.orders || {})) {
+                ensureRef(figures, "人物", source, "orders", orderId);
+            }
+            continue;
+        }
         const groupIds = new Set();
         for (const group of ensureArray(view.groups, source, "groups")) {
             if (!group.id || !group.name) throw new Error(`[world] ${source} 的 groups 每项都需要 id 与 name`);
@@ -845,6 +956,7 @@ export default function () {
     const timelines = {};
     const reignViews = {};
     const crowdViews = {};
+    const familyViews = {};
     for (const view of Object.values(views)) {
         if (view.type === "reign-crowd") {
             crowdViews[view.id] = buildCrowdView(view, dynasties, figures, figureSources, events, eventSources, dynastySources);
@@ -852,6 +964,10 @@ export default function () {
         }
         if (view.type === "dynasty-reigns") {
             reignViews[view.id] = buildReignView(view, dynasties, figures, events, dynastySources, figureSources);
+            continue;
+        }
+        if (view.type === "family-tree") {
+            familyViews[view.id] = buildFamilyView(view, dynasties, figures, figureSources, dynastySources);
             continue;
         }
         const cast = ensureArray(view.cast, "", "cast");
@@ -916,5 +1032,5 @@ export default function () {
         };
     }
 
-    return { figures, places, regions, views, dynasties: dynastyList, topicCount, timelines, reignViews, crowdViews };
+    return { figures, places, regions, views, dynasties: dynastyList, topicCount, timelines, reignViews, crowdViews, familyViews };
 }

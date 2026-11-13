@@ -4,5 +4,8 @@
   "birthApprox": true,
   "birth": 155,
   "death": 191,
-  "summary": "吴郡富春人，孙吴奠基者。讨黄巾、击董卓最力，岘山中伏而亡。"
+  "summary": "吴郡富春人，孙吴奠基者。讨黄巾、击董卓最力，岘山中伏而亡。",
+  "parents": [
+    "sunzhong"
+  ]
 }

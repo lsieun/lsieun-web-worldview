@@ -31,6 +31,7 @@
 | 舆图区块 | `src/_includes/atlas.html` | `{% include "atlas.html" %}` | `/`、`/geo/` | `_data/hubs.json` + `assets/data/world.json` | [舆图模板](舆图模板.md) |
 | 多人时间轴 | `src/_includes/person-timeline-page.html` | `{% set timeline = ... %}` 后 include | `/figures/chu-han.html`、`/figures/qing.html` | `world.timelines[...]` 或 `qingTimeline.json` | [多人时间轴模板](多人时间轴模板.md) |
 | 帝系双视图 | `src/_includes/dynasty-reigns-page.html` | `{% set reignView = ... %}` 后 include | 西汉、东汉、东吴历代皇帝 | `world.reignViews[...]` | [帝系双视图模板](帝系双视图模板.md) |
+| 家族世系 | `src/_includes/family-tree-page.html` | `{% set familyView = ... %}` 后 include | 孙氏家谱 | `world.familyViews[...]` | [帝系双视图模板](帝系双视图模板.md) |
 | 帝系与群臣 | `src/_includes/reign-crowd-page.html` | `{% set crowdView = ... %}` 后 include | 西汉名臣 | `world.crowdViews[...]` | [帝系与群臣规范](帝系与群臣规范.md) |
 | 谥法参考页 | `src/content/history/posthumous.html` | 独立页面 | `/history/posthumous.html` | `_data/posthumous.json` | 本文档“参考页”一节 |
 | 实体拼装与校验 | `src/_data/world.js` | 全局数据 `world` | 所有数据驱动页面 | `_data/{figures,events,places,regions,views,dynasties}` | [数据契约与构建校验](数据契约与构建校验.md) |
