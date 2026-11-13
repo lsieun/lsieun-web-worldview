@@ -347,15 +347,15 @@
 
 .rt-regencies ul {
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px var(--space-md);
+    flex-direction: column;
+    gap: 6px;
     margin: 0;
     padding: 0;
     list-style: none;
 }
 
 .rt-regencies li {
-    min-width: 180px;
+    display: block;
 }
 
 .rt-regencies strong,
