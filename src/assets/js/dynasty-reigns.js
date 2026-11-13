@@ -11,8 +11,8 @@
     const panels = new Map(
         Array.from(root.querySelectorAll('[data-reign-panel]')).map((panel) => [panel.dataset.reignPanel, panel])
     );
-    const buttons = Array.from(root.querySelectorAll('[data-reign-switch]'));
-    if (!panels.has('kinship') || !panels.has('timeline') || !buttons.length) return;
+    /* 平铺模式不再需要 reign-switch 按钮，但保留 panel 检查确保两个视图都存在 */
+    if (!panels.has('kinship') || !panels.has('timeline')) return;
 
     const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const dynastyTitle = document.querySelector('h1')?.textContent?.trim() || '历代皇帝';
@@ -45,6 +45,9 @@
         const childList = Array.from(branch.children).find((child) => child.tagName === 'UL');
         const hasRuler = article.classList.contains('is-emperor') || article.classList.contains('is-interim');
         const rankText = article.querySelector('.kh-order').textContent.trim();
+        let events = [];
+        const rawEvents = article.dataset.events || '';
+        if (rawEvents) events = rawEvents.split('||').filter(Boolean);
         const node = {
             name: article.dataset.treePerson,
             person: article.dataset.treePerson,
@@ -55,6 +58,9 @@
             order: Number.parseInt(rankText, 10) || null,
             hasRuler,
             href: article.dataset.nodeHref || '',
+            note: article.dataset.note || '',
+            summary: article.dataset.summary || '',
+            events,
             children: childList
                 ? Array.from(childList.children).map((child) => readChartNode(child, article.dataset.treePerson))
                 : []
@@ -148,18 +154,38 @@
     }
 
     function chartTooltip(params) {
-        const data = params.data;
-        const identity = data.hasRuler
-            ? `${data.order ? `第 ${data.order} 位皇帝` : '过渡人物 · 未正式即位'} · ${data.detail}`
-            : (data.detail || '宗室支系');
-        const action = data.hasRuler
-            ? '点击查看在位大事 →'
-            : (data.href ? '点击查看帝系年表 →' : '');
-        return `<div style="max-width:260px"><strong>${escapeHtml(data.title)}</strong>`
-            + `<div style="margin-top:4px">${escapeHtml(identity)}</div>`
-            + `<div style="margin-top:4px;color:${chartColors.muted}">${escapeHtml(data.reign)}</div>`
-            + (action ? `<div style="margin-top:6px;color:${chartColors.brass}">${action}</div>` : '')
+        const d = params.data;
+        /* 宗亲节点：简要信息 */
+        if (!d.hasRuler) {
+            return `<div style="max-width:240px;font-family:${chartColors.fontBody};font-size:13px;line-height:1.6;color:${chartColors.ink}">`
+                + `<strong style="font-family:${chartColors.fontSerif};font-size:14px;color:${chartColors.ink}">${escapeHtml(d.title)}</strong>`
+                + `<div style="margin-top:4px;color:${chartColors.muted};font-size:12px">未即位 · 世系连接节点</div>`
+                + (d.href ? `<a style="display:block;margin-top:8px;color:${chartColors.brass};font-size:12px;text-decoration:none" href="${escapeHtml(d.href)}">查看纪年 ↓</a>` : '')
+                + '</div>';
+        }
+        /* 皇帝节点：丰富信息 */
+        const rulerNote = d.note ? truncateHtml(d.note, 110) : '';
+        const summary = d.summary ? truncateHtml(d.summary, 70) : '';
+        const eventsHtml = d.events && d.events.length
+            ? `<div style="margin-top:10px"><div style="color:${chartColors.muted};font-size:11px;letter-spacing:.08em;margin-bottom:4px">任内关键事件</div>`
+                + d.events.map((ev) => `<div style="font-size:12px;color:${chartColors.ink};line-height:1.5">· ${escapeHtml(ev)}</div>`).join('')
+                + `</div>`
+            : '';
+        return `<div style="max-width:300px;font-family:${chartColors.fontBody};font-size:13px;line-height:1.6;color:${chartColors.ink}">`
+            + `<div style="color:${chartColors.brass};font-family:${chartColors.fontMono};font-size:11px;font-weight:600;letter-spacing:.06em">第 ${d.order || '—'} 位皇帝</div>`
+            + `<strong style="display:block;margin-top:2px;font-family:${chartColors.fontSerif};font-size:16px;color:${chartColors.ink};font-weight:600">${escapeHtml(d.title)}</strong>`
+            + `<div style="margin-top:2px;color:${chartColors.muted};font-size:12px">${escapeHtml(d.detail)}</div>`
+            + `<div style="margin-top:6px;color:${chartColors.muted};font-family:${chartColors.fontMono};font-size:11px">${escapeHtml(d.reign)}</div>`
+            + (rulerNote ? `<div style="margin-top:10px;font-size:12.5px;color:${chartColors.ink-soft};line-height:1.7">${escapeHtml(rulerNote)}</div>` : '')
+            + eventsHtml
+            + (summary ? `<div style="margin-top:10px;padding-top:8px;border-top:1px solid ${chartColors.line};font-size:12px;color:${chartColors.muted};font-style:italic">${escapeHtml(summary)}</div>` : '')
+            + (d.href ? `<a style="display:block;margin-top:10px;color:${chartColors.brass};font-size:12px;text-decoration:none;font-weight:500" href="${escapeHtml(d.href)}">查看纪年详情 ↓</a>` : '')
             + '</div>';
+    }
+
+    function truncateHtml(text, maxLen) {
+        if (!text) return '';
+        return text.length > maxLen ? text.slice(0, maxLen) + '…' : text;
     }
 
     function buildChartOption(data, settings = {}) {
@@ -181,9 +207,12 @@
             } : undefined,
             tooltip: forExport ? { show: false } : {
                 confine: true,
+                appendToBody: true,
                 backgroundColor: chartColors.surfaceRaised,
                 borderColor: chartColors.lineStrong,
-                textStyle: { color: chartColors.ink, fontFamily: chartColors.fontBody, fontSize: 12 },
+                borderWidth: 1,
+                padding: [12, 14],
+                textStyle: { color: chartColors.ink, fontFamily: chartColors.fontBody, fontSize: 13 },
                 formatter: chartTooltip
             },
             series: [{
@@ -540,13 +569,9 @@
         if (person && !target) return;
 
         activeView = view;
-        for (const [key, panel] of panels) panel.hidden = key !== view;
-        if (view === 'kinship') ensureChart();
-        buttons.forEach((button) => {
-            const on = button.dataset.reignSwitch === view;
-            button.classList.toggle('is-active', on);
-            button.setAttribute('aria-pressed', String(on));
-        });
+        /* 平铺模式：两个 panel 都显示，不再 hidden 切换 */
+        ensureChart();
+        /* 按钮已移除，跳过 active 状态切换 */
 
         clearHighlights();
         if (target) {
@@ -577,13 +602,7 @@
         });
     }
 
-    buttons.forEach((button) => {
-        button.addEventListener('click', () => {
-            const view = button.dataset.reignSwitch;
-            if (view === activeView && !root.querySelector('.is-target')) return;
-            showView(view, { historyMode: 'push' });
-        });
-    });
+    /* 按钮已移除，不再需要点击监听。双向定位通过 data-reign-link 跳转实现 */
 
     root.addEventListener('click', (event) => {
         const link = event.target.closest('[data-reign-link]');

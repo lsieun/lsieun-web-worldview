@@ -15,11 +15,17 @@
             <p class="page-lead">{{ reignView.meta.subtitle }}</p>
             {% endif %}
             <div class="page-meta">
-                {% for tag in (reignView.meta.tags or []) %}
-                <span>{{ tag }}</span>
-                {% endfor %}
-                <span>正式皇帝 <strong>{{ reignView.formalCount }} 位</strong></span>
-                <span>任内大事 <strong>{{ reignView.eventCount }} 件</strong></span>
+                <div class="pm-tags">
+                    {% for tag in (reignView.meta.tags or []) %}
+                    <span class="pm-tag">{{ tag }}</span>
+                    {% endfor %}
+                </div>
+                <div class="pm-stats">
+                    <span class="pm-stat">正式皇帝 <strong>{{ reignView.formalCount }} 位</strong></span>
+                    {% if reignView.treeCount %}
+                    <span class="pm-stat">世系节点 <strong>{{ reignView.treeCount }} 个</strong></span>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </section>
@@ -27,25 +33,17 @@
     <section class="section section--tint reign-workspace">
         <div class="container">
             <div class="section-head" data-reveal>
-                <p class="eyebrow">01 · TWO VIEWS</p>
-                <h2 class="section-title">帝系与纪年，互相印证</h2>
+                <p class="eyebrow">TWO VIEWS · ONE NARRATIVE</p>
+                <h2 class="section-title">血缘与纪年，依次展开</h2>
                 {% if reignView.meta.intro %}
                 <p class="section-intro">{{ reignView.meta.intro }}</p>
                 {% endif %}
             </div>
 
-            <div class="reign-switch" role="group" aria-label="切换帝系视图">
-                <button class="reign-switch-btn is-active" type="button" data-reign-switch="timeline" aria-pressed="true">
-                    <span>在位纪年</span><small>帝序 · 年段 · 大事</small>
-                </button>
-                <button class="reign-switch-btn" type="button" data-reign-switch="kinship" aria-pressed="false">
-                    <span>血缘世系</span><small>亲属 · 支系 · 入继</small>
-                </button>
-            </div>
-
             <div class="reign-panels">
-                {% include "reign-timeline.html" %}
+                {# 先血缘世系树，后在位纪年；全部平铺，不再切换 #}
                 {% include "kinship-tree.html" %}
+                {% include "reign-timeline.html" %}
             </div>
 
             {% if reignView.meta.note %}

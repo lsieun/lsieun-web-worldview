@@ -184,6 +184,7 @@ function buildReignView(view, dynasties, figures, events, dynastySources, figure
             throw new Error(`[world] views/${view.id}.json 的世系节点「${id}」目前只支持一个树内父节点`);
         }
         const ruler = rulerById.get(id);
+        const nodeHref = ruler ? `${view.href}#timeline-${id}` : "";
         nodes.set(id, {
             id,
             name: figure.name,
@@ -195,7 +196,10 @@ function buildReignView(view, dynasties, figures, events, dynastySources, figure
             title: ruler?.title || figure.name,
             status: ruler?.status || "kin",
             note: ruler?.note || "",
-            reignLabel: ruler ? ruler.terms.map((term) => `${term.startLabel} — ${term.endLabel}`).join("、") : "未即位 · 世系连接"
+            reignLabel: ruler ? ruler.terms.map((term) => `${term.startLabel} — ${term.endLabel}`).join("、") : "未即位 · 世系连接",
+            /* ECharts tooltip 需要的丰富数据 */
+            tooltipEvents: ruler ? ruler.terms.flatMap((term) => (term.events || []).map((ev) => `${ev.yearLabel || ev.year} ${ev.title}`)).slice(0, 6) : [],
+            href: nodeHref
         });
     }
 

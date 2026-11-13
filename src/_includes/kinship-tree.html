@@ -1,7 +1,10 @@
 {%- macro renderNode(node) %}
 <li class="kh-branch">
     <article class="kh-node{% if node.status == 'formal' %} is-emperor{% elif node.status == 'interim' %} is-interim{% else %} is-kin{% endif %}"
-             id="tree-{{ node.id }}" data-tree-person="{{ node.id }}" data-parents="{{ node.parents | join(' ') }}" tabindex="-1">
+             id="tree-{{ node.id }}" data-tree-person="{{ node.id }}" data-parents="{{ node.parents | join(' ') }}"
+             data-note="{{ node.note | escape }}" data-summary="{{ node.summary | escape }}"
+             data-events="{{ node.tooltipEvents | join('||') | escape }}" data-node-href="{{ node.href }}"
+             tabindex="-1">
         <div class="kh-node-top">
             {% if node.status == 'formal' %}
             <span class="kh-order" aria-label="第 {{ node.order }} 位皇帝">{{ node.order }}</span>
@@ -18,7 +21,7 @@
         <p class="kh-reign">{{ node.reignLabel }}</p>
         {% if node.hasRuler %}
         <a class="kh-timeline-link" href="#timeline-{{ node.id }}" data-reign-link="timeline" data-person="{{ node.id }}">
-            在位大事 <span aria-hidden="true">→</span>
+            查看纪年 <span aria-hidden="true">↓</span>
         </a>
         {% else %}
         <span class="kh-kin-note">不计入皇帝序号</span>

@@ -3,6 +3,52 @@
    竖向在位时间线 + 血缘世系树
    ========================================================================== */
 
+/* 标签组（chip 样式）与统计组（数据样式）视觉区分 */
+.page-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px var(--space-lg);
+    margin-top: var(--space-md);
+    padding-top: var(--space-md);
+    border-top: 1px solid color-mix(in srgb, var(--color-line-strong) 50%, transparent);
+}
+
+.pm-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.pm-tag {
+    padding: 3px 10px;
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    background: color-mix(in srgb, var(--color-line-strong) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-line-strong) 35%, transparent);
+    border-radius: var(--radius-sm);
+}
+
+.pm-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.pm-stat {
+    color: var(--color-muted);
+    font-size: 0.75rem;
+}
+
+.pm-stat strong {
+    margin-left: 3px;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
 .reign-hero .page-lead {
     max-width: 48em;
 }
@@ -88,9 +134,7 @@
     margin-top: var(--space-xl);
 }
 
-.dynasty-reigns-page.is-enhanced .reign-panel + .reign-panel {
-    margin-top: 0;
-}
+/* 两个视图改为平铺后，enhanced 状态下不再需要 panel 紧贴 */
 
 .reign-panel-head {
     display: flex;
@@ -1251,4 +1295,14 @@ body.kh-fullscreen-fallback {
     .kh-node {
         transition: none;
     }
+}
+
+/* ECharts tooltip 文字模糊修复：强制抗锯齿 + 禁用 transform subpixel 偏移 */
+.echarts-tooltip {
+    font-smooth: always !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+    transform: translateZ(0) !important;
+    will-change: transform;
 }
