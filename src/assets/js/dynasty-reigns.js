@@ -22,13 +22,22 @@
     const chartShell = kinshipPanel.querySelector('[data-tree-chart-shell]');
     const chartEl = kinshipPanel.querySelector('[data-tree-chart]');
     const chartStatus = kinshipPanel.querySelector('[data-tree-status]');
-    const initialCenter = ['50%', '15%'];
+
+    /* ---------- 页面级初始视角（来自 frontmatter treeView） ---------- */
+    const treeCenterX = root.dataset.treeCenterX || '50%';
+    const treeCenterY = root.dataset.treeCenterY || '15%';
+    const initialCenter = [treeCenterX, treeCenterY];
+    /** @type {string} 指定人物 id 作为初始中心，优先级高于 centerX/Y */
+    const initialCenterPerson = root.dataset.treeCenterPerson || '';
+    /** @type {number|null} 用户显式声明的初始缩放；null 表示自动计算 */
+    const userZoom = root.dataset.treeZoom ? parseFloat(root.dataset.treeZoom) : null;
+
     let chart = null;
     let chartData = [];
     let chartTarget = '';
     let chartColors = null;
     let chartMetrics = { leaves: 1, levels: 1 };
-    let initialZoom = 1.2;
+    let initialZoom = userZoom || 1.2;
     let overviewMode = false;
     let roamLabelTimer = null;
     let chartNodeById = new Map();
@@ -490,8 +499,13 @@
                 renderer: 'canvas',
                 devicePixelRatio: Math.max(window.devicePixelRatio || 1, 2)
             });
-            initialZoom = calculateInitialZoom();
+            initialZoom = userZoom ?? calculateInitialZoom();
             chart.setOption(buildChartOption(styledChartData(''), { center: initialCenter, zoom: initialZoom }));
+            /* 如果用户声明了 centerPerson，chart 布局完成后把它放到视口中心 */
+            if (initialCenterPerson && chartNodeById.has(initialCenterPerson)) {
+                /* ECharts tree 的 layout 是异步的，用 setTimeout 等一帧 */
+                requestAnimationFrame(() => centerChartPerson(initialCenterPerson));
+            }
             chartShell.hidden = false;
             kinshipPanel.classList.add('is-chart-enhanced');
             setupChartControls();

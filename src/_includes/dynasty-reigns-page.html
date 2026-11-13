@@ -5,7 +5,13 @@
 {% if reignView and reignView.rulers %}
 <link rel="stylesheet" href="/assets/css/dynasty-reigns.css">
 
-<div class="dynasty-reigns-page" data-reign-root>
+<div class="dynasty-reigns-page" data-reign-root
+    {% if treeView is defined %}
+        data-tree-center-person="{{ treeView.centerPerson | default('') }}"
+        data-tree-center-x="{{ treeView.centerX | default('50%') }}"
+        data-tree-center-y="{{ treeView.centerY | default('15%') }}"
+        data-tree-zoom="{{ treeView.zoom | default('') }}"
+    {% endif %}>
     <section class="page-hero reign-hero">
         <span class="watermark" aria-hidden="true">{{ reignView.meta.watermark | default('史') }}</span>
         <div class="container">
