@@ -446,7 +446,8 @@
      *   centerOptionX = targetLayout.x - seriesLeft / zoom
      *   centerOptionY = targetLayout.y - seriesTop / zoom
      *
-     * 根节点跳过：它已被 initialCenter 放在顶部合适位置，不应强制居中。
+     * 适用于任意节点（包括根节点）。用户在 frontmatter 声明 centerPerson，
+     * 就是希望那个人物出现在画布中心。
      */
     function centerChartPerson(person) {
         if (!chart || !person) return;
@@ -461,10 +462,6 @@
         const seriesLeft = opt.series[0].left;
         const seriesTop = opt.series[0].top;
         const zoom = opt.series[0].zoom;
-
-        // 跳过根节点（TB 树 layout.y=0 是根）
-        const isRoot = targetLayout.y === 0;
-        if (isRoot) return;
 
         // 用新公式直接算 centerOption
         const newCX = targetLayout.x - seriesLeft / zoom;
