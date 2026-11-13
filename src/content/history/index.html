@@ -52,6 +52,34 @@ layout: "default.html"
                     {% if d.summary %}<p class="chr-summary">{{ d.summary }}</p>{% endif %}
                 </div>
                 <div class="chr-group-body">
+                    {%- for sg in (d.subgroups or []) %}
+                    <div class="chr-subgroup" id="dynasty-{{ sg.id }}">
+                        <div class="chr-sub-head">
+                            <h3 class="chr-sub-name">{{ sg.name }}</h3>
+                            <span class="chr-sub-years">{{ sg.start | cnYear }} — {{ sg.end | cnYear }}</span>
+                            {% if sg.summary %}<p class="chr-sub-summary">{{ sg.summary }}</p>{% endif %}
+                        </div>
+                        {%- for t in sg.topics %}
+                        <a class="chr-row" href="{{ t.href }}">
+                            <span class="chr-row-title">{{ t.title }}</span>
+                            <span class="chr-row-note">{{ t.summary }}</span>
+                            <span class="chr-row-meta">{{ t.meta }}</span>
+                            <span class="chr-row-arrow" aria-hidden="true">→</span>
+                        </a>
+                        {%- endfor %}
+                        {%- for entry in collections.historyEntries %}
+                        {%- if entry.data.dynasty == sg.id %}
+                        <a class="chr-row" href="{{ entry.url }}">
+                            <span class="chr-row-title">{{ entry.data.title }}</span>
+                            <span class="chr-row-note">{{ entry.data.lead }}</span>
+                            <span class="chr-row-meta">{{ entry.data.span }}</span>
+                            <span class="chr-row-arrow" aria-hidden="true">→</span>
+                        </a>
+                        {%- endif %}
+                        {%- endfor %}
+                        <p class="chr-empty">专题待补</p>
+                    </div>
+                    {%- endfor %}
                     {%- for t in d.topics %}
                     <a class="chr-row" href="{{ t.href }}">
                         <span class="chr-row-title">{{ t.title }}</span>

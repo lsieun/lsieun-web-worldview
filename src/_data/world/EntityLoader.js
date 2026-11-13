@@ -70,6 +70,7 @@ export class EntityLoader {
             const start = ensureNumber(dynasty.start, source, "start");
             const end = ensureNumber(dynasty.end, source, "end");
             ensureNumber(dynasty.order, source, "order");
+            if (dynasty.parent) ensureRef(ctx.dynasties, "父朝代", source, "parent", dynasty.parent);
             if (start > end) throw new Error(`[world] ${source} 的 start 晚于 end`);
             for (const topic of ensureArray(dynasty.topics, source, "topics")) {
                 if (!topic.title || !topic.href) {

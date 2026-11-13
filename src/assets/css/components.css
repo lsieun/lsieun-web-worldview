@@ -683,6 +683,44 @@
     min-width: 0;
 }
 
+.chr-subgroup {
+    padding-bottom: 0.9rem;
+}
+
+.chr-subgroup:last-child {
+    padding-bottom: 0;
+}
+
+.chr-sub-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.3rem 0.9rem;
+    padding: 0.45rem 0.25rem 0.1rem;
+}
+
+.chr-sub-name {
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+}
+
+.chr-sub-years {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.06em;
+    color: var(--color-brass);
+}
+
+.chr-sub-summary {
+    flex-basis: 100%;
+    max-width: 42em;
+    font-size: 0.78rem;
+    line-height: 1.8;
+    color: var(--color-muted);
+}
+
 .chr-row {
     display: grid;
     grid-template-columns: minmax(9rem, 13rem) minmax(0, 1fr) auto 1.2rem;
