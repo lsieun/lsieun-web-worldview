@@ -1,0 +1,149 @@
+{
+  "name": "曹魏",
+  "en": "CAO WEI",
+  "start": 220,
+  "end": 266,
+  "order": 105,
+  "summary": "受汉禅而立、禅晋而终；帝位传五人，权柄却渐归司马氏。",
+  "rulers": [
+    {
+      "figure": "caocao",
+      "title": "魏武帝",
+      "status": "interim",
+      "note": "曹操终身未称帝：196 年迎献帝都许，号令自此出其手；216 年进爵魏王，位在诸侯王上。曹丕代汉后追尊武皇帝，庙号太祖。",
+      "terms": [
+        {
+          "start": 216,
+          "end": 220,
+          "events": [
+            "caocao-weiwang",
+            "caocao-death"
+          ]
+        }
+      ]
+    },
+    {
+      "figure": "caopi",
+      "title": "魏文帝",
+      "status": "formal",
+      "order": 1,
+      "note": "曹操世子。220 年受汉禅即皇帝位，国号魏，定都洛阳；在位七年，行九品中正制，三度伐吴无功，卒年四十。",
+      "terms": [
+        {
+          "start": 220,
+          "end": 226,
+          "events": [
+            "xiandi-chanshan",
+            "jiupin-zhongzheng",
+            "caopi-death"
+          ]
+        }
+      ]
+    },
+    {
+      "figure": "caorui",
+      "title": "魏明帝",
+      "status": "formal",
+      "order": 2,
+      "note": "曹丕长子。在位十三年，屡却诸葛亮北伐、平定辽东，曹魏国势至此最盛；晚年大兴宫室，托孤曹爽与司马懿，埋下权臣之患。",
+      "terms": [
+        {
+          "start": 226,
+          "end": 239,
+          "events": [
+            "caorui-jianji",
+            "zhugeliang-beifa",
+            "zhugeliang-wuzhangyuan",
+            "simayi-ping-liaodong",
+            "caorui-death"
+          ]
+        }
+      ]
+    },
+    {
+      "figure": "caofang",
+      "title": "魏少帝",
+      "status": "formal",
+      "order": 3,
+      "note": "曹叡养子，生父曹楷，八岁即位。正始年间曹爽与司马懿共受遗诏辅政；高平陵之变后大权归司马氏，254 年被司马师废为齐王。",
+      "terms": [
+        {
+          "start": 239,
+          "end": 254,
+          "events": [
+            "caofang-jianji",
+            "caoshuang-xingshi",
+            "gaoping-ling",
+            "caofang-deposed"
+          ]
+        }
+      ]
+    },
+    {
+      "figure": "caomao",
+      "title": "高贵乡公",
+      "status": "formal",
+      "order": 4,
+      "note": "曹丕之孙、东海定王曹霖之子，司马师所立，时年十四。不甘为傀儡，260 年率殿中卫士讨司马昭，遇弑于南阙。",
+      "terms": [
+        {
+          "start": 254,
+          "end": 260,
+          "events": [
+            "caomao-jianji",
+            "caomao-death"
+          ]
+        }
+      ]
+    },
+    {
+      "figure": "caohuan",
+      "title": "魏元帝",
+      "status": "formal",
+      "order": 5,
+      "note": "曹操之孙、燕王曹宇之子，司马昭所立，时年十五。在位六年形同禅代前的过渡；266 年禅位于司马炎，封陈留王，302 年善终。",
+      "terms": [
+        {
+          "start": 260,
+          "end": 266,
+          "events": [
+            "caohuan-jianji",
+            "wei-mie-shu",
+            "simazhao-jinwang",
+            "jin-dai-wei"
+          ]
+        }
+      ]
+    }
+  ],
+  "regencies": [
+    {
+      "figure": "caoshuang",
+      "start": 239,
+      "end": 249,
+      "label": "宗室辅政",
+      "note": "与司马懿同受遗诏辅政，尊懿为太傅而自专朝权；伐蜀败于兴势，声望尽失。"
+    },
+    {
+      "figure": "simayi",
+      "start": 249,
+      "end": 251,
+      "label": "政变夺权",
+      "note": "高平陵之变诛曹爽三族，都督中外诸军、录尚书事；曹魏军政实权自此归司马氏。"
+    },
+    {
+      "figure": "simashi",
+      "start": 251,
+      "end": 255,
+      "label": "大将军专权",
+      "note": "继司马懿掌政，废曹芳、立曹髦；255 年亲征毌丘俭、文钦之叛，目疾迸发卒于许昌。"
+    },
+    {
+      "figure": "simazhao",
+      "start": 255,
+      "end": 265,
+      "label": "晋公晋王代魏",
+      "note": "继兄掌政，默许贾充使成济弑曹髦，迎立曹奂；263 年遣军灭蜀，进爵晋王，为禅代铺平道路。"
+    }
+  ]
+}

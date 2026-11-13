@@ -18,7 +18,7 @@
                 <header class="rt-header">
                     <div>
                         <p class="rt-kicker">
-                            {% if ruler.status == 'formal' %}第 {{ ruler.order }} 位皇帝{% else %}西汉 · 政权过渡{% endif %}
+                            {% if ruler.status == 'formal' %}第 {{ ruler.order }} 位皇帝{% else %}{{ reignView.dynasty.name }} · 政权过渡{% endif %}
                         </p>
                         <h4 class="rt-name">{{ ruler.title }}<span>{{ ruler.name }}</span></h4>
                     </div>
