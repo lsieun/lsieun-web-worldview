@@ -75,6 +75,12 @@
     const tipMeta = card.querySelector('[data-qtg-tip-meta]');
     const tipDesc = card.querySelector('[data-qtg-tip-desc]');
 
+    // 列头已移出横向滚动容器以便纵向吸顶；横向滚动时按 scrollLeft 平移列头对齐列
+    const syncHeadX = () => {
+        head.style.transform = `translateX(${-scroll.scrollLeft}px)`;
+    };
+    scroll.addEventListener('scroll', syncHeadX, { passive: true });
+
     const yOf = (year) => TOP + (year - START) * PPY;
     const lifeText = (p) => `${p.birthLabel || p.birth}–${p.deathLabel || p.death}`;
     const ageOf = (p, year) => year - p.birth + 1;
@@ -123,6 +129,7 @@
             body.textContent = '';
             body.appendChild(el('div', 'qtg-empty', '请在上方选择至少一位人物'));
             body.style.height = '60px';
+            syncHeadX();
             return;
         }
 
@@ -130,8 +137,6 @@
         const colW = Math.max(MIN_COL, Math.floor((avail - AXIS_W) / people.length));
         const height = TOP + (END - START) * PPY + BOTTOM;
         const tableWidth = AXIS_W + people.length * colW;
-        // 图表宽于可用版心时退回容器内横滚（CSS 据此切断列头吸顶，与窄屏一致）
-        card.classList.toggle('is-overflow', tableWidth > avail);
 
         card.style.setProperty('--qtg-axis', `${AXIS_W}px`);
         card.style.setProperty('--qtg-col', `${colW}px`);
@@ -256,6 +261,9 @@
 
             body.appendChild(lane);
         });
+
+        // 重建列头后按当前 scrollLeft 重新对齐
+        syncHeadX();
     }
 
     // 列头吸顶：避让站点自身的 sticky 头部

@@ -457,7 +457,7 @@
     overflow-x: auto;
 }
 
-/* 列头吸顶（宽屏无横向滚动时相对视口生效） */
+/* 列头吸顶：列头位于横向滚动容器之外，纵向始终相对视口吸顶；横向位移由 JS 按 scrollLeft 同步 */
 .qtg-head {
     position: sticky;
     top: var(--qtg-head-top, 0px);
@@ -715,9 +715,8 @@
 }
 
 /* ---------- 响应式 ---------- */
-/* 窄屏滚动容器不参与页面纵向吸顶，避免站点页头高度被重复计算。 */
+/* 窄屏年龄表仍在容器内横滚，滚动容器会打断列头对视口的吸顶，改为 static。 */
 @media (max-width: 1179px) {
-    .qtg-head,
     .qt-head {
         position: static;
     }
@@ -727,21 +726,9 @@
     .qt-scroll {
         overflow-x: visible;
     }
-    .qtg-scroll {
-        overflow-x: visible;
-    }
     .qt-table {
         min-width: 0;
     }
-}
-
-/* 图表宽于版心（person-lifeline.js 加 is-overflow）时退回容器内横滚；
-   滚动容器会打断列头对视口的吸顶，按窄屏惯例改 static。 */
-.qtg-card.is-overflow .qtg-scroll {
-    overflow-x: auto;
-}
-.qtg-card.is-overflow .qtg-head {
-    position: static;
 }
 
 @media (max-width: 720px) {
