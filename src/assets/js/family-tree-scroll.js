@@ -16,6 +16,42 @@
 
     const nodeById = new Map(nodes.map((node) => [node.dataset.person, node]));
     const parents = new Map(nodes.map((node) => [node.dataset.person, (node.dataset.parent || '').split(' ')[0] || '']));
+
+    /* 长卷平移：原尺寸渲染后可按住拖动横向查看（触屏走原生滚动）；
+       拖动中抑制误点人物小传，位移不足 4px 仍视为点击。 */
+    const shell = root.querySelector('.lh-map-shell');
+    let panning = false;
+    let dragged = false;
+    let panStartX = 0;
+    let panStartLeft = 0;
+    if (shell) {
+        if (shell.scrollWidth > shell.clientWidth + 4) shell.classList.add('is-scrollable');
+        shell.addEventListener('pointerdown', (event) => {
+            if (event.pointerType === 'touch') return;
+            panning = true;
+            dragged = false;
+            panStartX = event.clientX;
+            panStartLeft = shell.scrollLeft;
+            shell.classList.add('is-panning');
+        });
+        window.addEventListener('pointermove', (event) => {
+            if (!panning) return;
+            const dx = event.clientX - panStartX;
+            if (Math.abs(dx) > 4) dragged = true;
+            shell.scrollLeft = panStartLeft - dx;
+        });
+        window.addEventListener('pointerup', () => {
+            panning = false;
+            shell.classList.remove('is-panning');
+        });
+        shell.addEventListener('click', (event) => {
+            if (dragged) {
+                event.preventDefault();
+                event.stopPropagation();
+                dragged = false;
+            }
+        }, true);
+    }
     /* 分支图例由模板注入（branches JSON），标签缺失时回退到始祖 */
     const branchLabels = { root: '始祖' };
     try {

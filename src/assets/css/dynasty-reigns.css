@@ -873,6 +873,8 @@ body.kh-fullscreen-fallback {
     position: relative;
     padding: var(--space-md);
     overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line-strong) transparent;
     background:
         repeating-linear-gradient(90deg,
             color-mix(in srgb, var(--color-brass) 5%, transparent) 0 1px,
@@ -900,10 +902,49 @@ body.kh-fullscreen-fallback {
     outline-offset: 2px;
 }
 
+/* 长卷原尺寸渲染：可横向滚动时显示拖拽提示与细滚动条，文字保持原大小 */
+.lh-map-shell.is-scrollable {
+    cursor: grab;
+}
+
+.lh-map-shell.is-panning {
+    cursor: grabbing;
+    user-select: none;
+}
+
+.lh-map-shell::-webkit-scrollbar {
+    height: 6px;
+}
+
+.lh-map-shell::-webkit-scrollbar-thumb {
+    background: var(--color-line-strong);
+    border-radius: 3px;
+}
+
+.lh-hint {
+    display: none;
+    position: absolute;
+    right: 18px;
+    bottom: 14px;
+    z-index: 2;
+    padding: 0.25rem 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.56rem;
+    letter-spacing: 0.12em;
+    color: var(--color-muted);
+    background: color-mix(in srgb, var(--color-surface-raised) 88%, transparent);
+    border: 1px solid var(--color-line);
+    border-radius: 3px;
+    pointer-events: none;
+}
+
+.lh-map-shell.is-scrollable .lh-hint {
+    display: inline-flex;
+}
+
 .lh-map {
     display: block;
-    width: 100%;
-    max-width: 1280px;
+    max-width: none; /* 解除全局 svg 限宽：长卷原尺寸渲染，滚动查看 */
     height: auto;
     margin: 0 auto;
 }
