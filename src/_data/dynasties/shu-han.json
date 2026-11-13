@@ -5,5 +5,76 @@
   "end": 263,
   "order": 106,
   "parent": "three-kingdoms",
-  "summary": "刘备承汉统，历二帝，263 年为魏所灭。"
+  "summary": "刘备承汉统，历二帝，263 年为魏所灭。",
+  "rulers": [
+    {
+      "figure": "liubei",
+      "title": "汉昭烈帝",
+      "status": "formal",
+      "order": 1,
+      "note": "汉景帝之子中山靖王刘胜之后（自称）。曹丕代汉后，221 年在成都称帝，国号汉，以续汉统；次年倾国伐吴败于夷陵，223 年四月崩于永安宫，临终托孤诸葛亮。",
+      "terms": [
+        {
+          "start": 221,
+          "end": 223,
+          "events": [
+            "liubei-chengdi",
+            "zhangfei-death",
+            "yiling",
+            "liubei-death"
+          ]
+        }
+      ]
+    },
+    {
+      "figure": "liushan",
+      "title": "汉后主",
+      "status": "formal",
+      "order": 2,
+      "note": "刘备之子，小名阿斗，十七岁即位。在位四十一年：前有诸葛亮总揽朝政、五次北伐，亮死后蒋琬、费祎相继主政，晚年宠信黄皓；263 年魏军兵临成都，用谯周之议出降，封安乐公。",
+      "terms": [
+        {
+          "start": 223,
+          "end": 263,
+          "events": [
+            "liushan-jianji",
+            "zhugeliang-nanzheng",
+            "zhugeliang-beifa",
+            "zhugeliang-wuzhangyuan",
+            "liushan-xiangwei"
+          ]
+        }
+      ]
+    }
+  ],
+  "regencies": [
+    {
+      "figure": "zhugeliang",
+      "start": 223,
+      "end": 234,
+      "label": "相父辅政",
+      "note": "受遗诏辅政，以丞相开府治事，政由己出；南抚夷越、五次北伐，234 年病逝五丈原军中。"
+    },
+    {
+      "figure": "jiangwan",
+      "start": 234,
+      "end": 246,
+      "label": "继亮执政",
+      "note": "诸葛亮临终指定接班，以大将军录尚书事，后进大司马；改北伐为固守，休养生息。"
+    },
+    {
+      "figure": "feiyi",
+      "start": 246,
+      "end": 253,
+      "label": "大将军主政",
+      "note": "接掌军政，保境安民，每裁抑姜维北伐之兵不过万人；253 年岁首遇刺身亡。"
+    },
+    {
+      "figure": "huanghao",
+      "start": 253,
+      "end": 263,
+      "label": "宦官弄权",
+      "note": "刘禅近幸，专擅朝政；姜维请诛之不得，反因避祸外屯沓中，蜀汉亡国之局与此有关。"
+    }
+  ]
 }
