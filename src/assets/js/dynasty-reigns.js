@@ -394,29 +394,40 @@
      *   treeCanvasCenter = centerX + (treeLayoutCenter - rootLayoutX) * zoom
      *   令 treeCanvasCenter = w/2 → centerX = w/2 - (treeLayoutCenter - rootLayoutX) * zoom
      */
+    /**
+     * 自动把树的几何中心对齐画布水平中心。
+     *
+     * ECharts tree 的像素变换公式（从 View.ts 源码推导）：
+     *   pixelX = (layoutX - centerOptionX) * zoom + (canvasW/2 - seriesLeft)
+     *
+     * 目标：让 tree 几何中心 layoutX=(Lmin+Lmax)/2 的 pixel 位置 = canvasW/2：
+     *   (treeCenterLayout - centerOptionX) * zoom + (canvasW/2 - seriesLeft) = canvasW/2
+     *   centerOptionX = treeCenterLayout - seriesLeft / zoom
+     */
     function centerTreeHorizontally() {
         if (!chart) return;
+        const opt = chart.getOption();
         const data = chart.getModel().getSeriesByIndex(0).getData();
-        const canvas = chartEl;
-        const w = canvas.clientWidth;
-        const zoom = currentChartZoom();
-        const cur = currentChartCenter();
-        const curCX = typeof cur[0] === 'string' ? parseFloat(cur[0])/100*w : cur[0];
-        const curCY = typeof cur[1] === 'string' ? parseFloat(cur[1])/100*canvas.clientHeight : cur[1];
+        const w = chartEl.clientWidth;
+        const zoom = opt.series[0].zoom;
+        const seriesLeft = opt.series[0].left;
 
-        // 找 root layout 和全局 X 范围
-        let rootLayout = null, Lmin = Infinity, Lmax = -Infinity;
+        const cur = opt.series[0].center;
+        const curCX = typeof cur[0] === 'string' ? parseFloat(cur[0])/100*w : cur[0];
+        const curCY = typeof cur[1] === 'string' ? parseFloat(cur[1])/100*chartEl.clientHeight : cur[1];
+
+        // 找全局 X 范围（TB 树 layout.x 即为水平坐标）
+        let Lmin = Infinity, Lmax = -Infinity;
         for (let i = 0; i < data.count(); i++) {
             const l = data.getItemLayout(i);
             if (!l) continue;
-            if (l.y === 0) rootLayout = l;
             if (l.x < Lmin) Lmin = l.x;
             if (l.x > Lmax) Lmax = l.x;
         }
-        if (!rootLayout || !isFinite(Lmin) || !isFinite(Lmax)) return;
+        if (!isFinite(Lmin) || !isFinite(Lmax)) return;
 
-        const treeLayoutCenterX = (Lmin + Lmax) / 2;
-        const newCX = w / 2 - (treeLayoutCenterX - rootLayout.x) * zoom;
+        const treeCenterLayout = (Lmin + Lmax) / 2;
+        const newCX = treeCenterLayout - seriesLeft / zoom;
 
         // 偏差 < 4px 不用折腾
         if (Math.abs(newCX - curCX) < 4) return;
@@ -424,48 +435,48 @@
         chart.setOption({ series: [{ center: [newCX, curCY] }] });
     }
 
+    /**
+     * 把指定人物节点平移到画布中心。
+     *
+     * ECharts tree 像素变换公式：
+     *   pixelX = (layoutX - centerOptionX) * zoom + (canvasW/2 - seriesLeft)
+     *   pixelY = (layoutY - centerOptionY) * zoom + (canvasH/2 - seriesTop)
+     *
+     * 目标：targetLayout 的 pixel = canvas center：
+     *   centerOptionX = targetLayout.x - seriesLeft / zoom
+     *   centerOptionY = targetLayout.y - seriesTop / zoom
+     *
+     * 根节点跳过：它已被 initialCenter 放在顶部合适位置，不应强制居中。
+     */
     function centerChartPerson(person) {
         if (!chart || !person) return;
 
+        const opt = chart.getOption();
         const data = chart.getModel().getSeriesByIndex(0).getData();
         const targetIdx = data.indexOfName(person);
         if (targetIdx < 0) return;
         const targetLayout = data.getItemLayout(targetIdx);
         if (!targetLayout) return;
 
-        // 根节点：TB 树 y=0，LR 树 x=0，取 layout 坐标最小的那个
-        let rootIdx = 0;
-        let rootLayout = null;
-        {
-            let minVal = Infinity;
-            for (let i = 0; i < data.count(); i++) {
-                const l = data.getItemLayout(i);
-                if (l && l.y < minVal) { minVal = l.y; rootIdx = i; rootLayout = l; }
-            }
-        }
-        if (!rootLayout) return;
+        const seriesLeft = opt.series[0].left;
+        const seriesTop = opt.series[0].top;
+        const zoom = opt.series[0].zoom;
 
-        /* 根节点已经被 initialCenter 放在画布顶部（TB 树）或左侧（LR 树），
-         * 不需要也不应该强制放到画布中心——那会把整棵树挤到下半屏。 */
-        if (targetIdx === rootIdx) return;
+        // 跳过根节点（TB 树 layout.y=0 是根）
+        const isRoot = targetLayout.y === 0;
+        if (isRoot) return;
 
-        // 当前 center + zoom（center 可能是百分比字符串，先转像素）
-        const el = chartEl;
-        const w = el.clientWidth;
-        const h = el.clientHeight;
-        const zoom = currentChartZoom();
-        const [curCX, curCY] = centerToPixel(currentChartCenter(), w, h);
+        // 用新公式直接算 centerOption
+        const newCX = targetLayout.x - seriesLeft / zoom;
+        const newCY = targetLayout.y - seriesTop / zoom;
 
-        // 目标节点当前画布位置
-        const targetCanvasX = curCX + (targetLayout.x - rootLayout.x) * zoom;
-        const targetCanvasY = curCY + (targetLayout.y - rootLayout.y) * zoom;
-
-        // 已经差不多居中就跳过
-        if (Math.abs(targetCanvasX - w / 2) < 8 && Math.abs(targetCanvasY - h / 2) < 8) return;
-
-        // 反推让节点到画布中心所需的新 center
-        const newCX = w / 2 - (targetLayout.x - rootLayout.x) * zoom;
-        const newCY = h / 2 - (targetLayout.y - rootLayout.y) * zoom;
+        // 偏差 < 4px 不用折腾
+        const curCenter = opt.series[0].center;
+        const curCX = typeof curCenter[0] === 'string'
+            ? parseFloat(curCenter[0])/100*chartEl.clientWidth : curCenter[0];
+        const curCY = typeof curCenter[1] === 'string'
+            ? parseFloat(curCenter[1])/100*chartEl.clientHeight : curCenter[1];
+        if (Math.abs(newCX - curCX) < 4 && Math.abs(newCY - curCY) < 4) return;
 
         chart.setOption({ series: [{ center: [newCX, newCY] }] });
     }
