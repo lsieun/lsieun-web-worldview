@@ -1,13 +1,14 @@
 /**
- * toc.js — 详情页浮动目录（固定左侧面板）
- * 扫描 <main> 内的 h2/h3，生成固定定位的浮动目录，支持：
+ * toc.js — 浮动目录（固定左侧面板），两种来源共用同一面板：
+ *   1. 详情/专题页：扫描 <main> 内的 h2/h3，运行时构建（原有模式）；
+ *   2. 栏目索引页：页面预置 <nav data-chr-toc> 静态链接源（构建期输出），
+ *      本组件复用同一面板渲染，滚动联动目标为链接指向的分区元素。
+ *      启用宽度可用 data-toc-min-width 覆盖（索引页表格宽，需要更高阈值）。
+ * 面板能力（两种模式一致）：
  *   - 整体收缩/展开（持久化 localStorage）
- *   - h2 单节折叠/展开
  *   - 滚动联动高亮当前可见章节
  *   - 回到顶部按钮
- *   - viewport < 1360px 自动隐藏
- *
- * 本脚本自创建 DOM，不依赖页面预设容器；页面需引入本脚本即可生效。
+ *   - 视口宽度不足自动隐藏
  */
 (function () {
     'use strict';
@@ -15,6 +16,7 @@
     const STORAGE_KEY = 'wv-toc-collapsed';
     const FOLD_KEY_PREFIX = 'wv-toc-fold-';
     const MIN_WIDTH = 1360;
+    const SCROLL_OFFSET = 90;
 
     function slugify(text) {
         return text
@@ -38,12 +40,13 @@
         });
     }
 
-    function buildToc(headings) {
+    /* ---------- 面板外壳：头部收缩按钮 + 列表容器 + 回到顶部 ---------- */
+
+    function createPanelShell(ariaLabel) {
         const root = document.createElement('nav');
         root.className = 'toc-float';
-        root.setAttribute('aria-label', '目录');
+        root.setAttribute('aria-label', ariaLabel);
 
-        // 头部：标题 + 收缩按钮
         const head = document.createElement('div');
         head.className = 'toc-head';
         head.innerHTML = `
@@ -54,9 +57,44 @@
         `;
         root.appendChild(head);
 
-        // 列表容器
-        const listWrap = document.createElement('div');
-        listWrap.className = 'toc-body';
+        const body = document.createElement('div');
+        body.className = 'toc-body';
+        root.appendChild(body);
+
+        const foot = document.createElement('div');
+        foot.className = 'toc-foot';
+        foot.innerHTML = `
+            <button class="toc-top" type="button" aria-label="回到顶部">
+                <span aria-hidden="true">↑</span>
+                <span>回到顶部</span>
+            </button>
+        `;
+        root.appendChild(foot);
+
+        const toggleBtn = head.querySelector('.toc-toggle');
+        toggleBtn.addEventListener('click', () => {
+            const isCollapsed = root.classList.toggle('is-collapsed');
+            toggleBtn.setAttribute('aria-expanded', !isCollapsed);
+            toggleBtn.setAttribute('aria-label', isCollapsed ? '展开目录' : '收起目录');
+            localStorage.setItem(STORAGE_KEY, isCollapsed ? '1' : '0');
+        });
+        if (localStorage.getItem(STORAGE_KEY) === '1') {
+            root.classList.add('is-collapsed');
+            toggleBtn.setAttribute('aria-expanded', 'false');
+            toggleBtn.setAttribute('aria-label', '展开目录');
+        }
+
+        foot.querySelector('.toc-top').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        return { root, body };
+    }
+
+    /* ---------- 模式一：扫描 h2/h3 ---------- */
+
+    function buildToc(headings) {
+        const { root, body } = createPanelShell('目录');
 
         const ul = document.createElement('ul');
         ul.className = 'toc-list';
@@ -133,47 +171,67 @@
 
         if (currentUl) ul.appendChild(currentUl);
 
-        listWrap.appendChild(ul);
-        root.appendChild(listWrap);
-
-        // 底部：回到顶部按钮
-        const foot = document.createElement('div');
-        foot.className = 'toc-foot';
-        foot.innerHTML = `
-            <button class="toc-top" type="button" aria-label="回到顶部">
-                <span aria-hidden="true">↑</span>
-                <span>回到顶部</span>
-            </button>
-        `;
-        root.appendChild(foot);
-
-        // 绑定整体收缩按钮
-        const toggleBtn = head.querySelector('.toc-toggle');
-        toggleBtn.addEventListener('click', () => {
-            const isCollapsed = root.classList.toggle('is-collapsed');
-            toggleBtn.setAttribute('aria-expanded', !isCollapsed);
-            toggleBtn.setAttribute('aria-label', isCollapsed ? '展开目录' : '收起目录');
-            localStorage.setItem(STORAGE_KEY, isCollapsed ? '1' : '0');
-        });
-
-        // 应用整体收缩持久化
-        if (localStorage.getItem(STORAGE_KEY) === '1') {
-            root.classList.add('is-collapsed');
-            toggleBtn.setAttribute('aria-expanded', 'false');
-            toggleBtn.setAttribute('aria-label', '展开目录');
-        }
-
-        // 绑定回到顶部
-        const topBtn = foot.querySelector('.toc-top');
-        topBtn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
+        body.appendChild(ul);
         document.body.appendChild(root);
         return root;
     }
 
-    function setupScrollHighlight(headings, toc) {
+    /* ---------- 模式二：静态链接源（栏目索引页） ---------- */
+
+    function buildStaticToc(source) {
+        const links = Array.from(source.querySelectorAll('a[href^="#"]'));
+        if (!links.length) return null;
+
+        const sections = [];
+        const ul = document.createElement('ul');
+        ul.className = 'toc-list';
+
+        links.forEach((link) => {
+            const id = link.getAttribute('href').slice(1);
+            const section = document.getElementById(id);
+            if (!section) return;
+            const li = document.createElement('li');
+            li.className = 'toc-h2';
+            const headRow = document.createElement('div');
+            headRow.className = 'toc-h2-row';
+            const linkWrap = document.createElement('span');
+            linkWrap.className = 'toc-link-wrap';
+            const a = document.createElement('a');
+            a.href = `#${id}`;
+            a.dataset.target = id;
+            a.title = link.title || '';
+            a.innerHTML = link.innerHTML;
+            linkWrap.appendChild(a);
+            headRow.appendChild(linkWrap);
+            li.appendChild(headRow);
+            ul.appendChild(li);
+            sections.push(section);
+        });
+
+        if (!sections.length) return null;
+
+        const { root, body } = createPanelShell(source.getAttribute('aria-label') || '目录');
+        body.appendChild(ul);
+        document.body.appendChild(root);
+        return { toc: root, sections };
+    }
+
+    /* ---------- 共用：平滑跳转 + 滚动联动高亮 ---------- */
+
+    function bindSmoothScroll(toc) {
+        toc.addEventListener('click', (e) => {
+            const a = e.target.closest('a[href^="#"]');
+            if (!a) return;
+            const target = document.getElementById(a.getAttribute('href').slice(1));
+            if (target) {
+                e.preventDefault();
+                const y = target.getBoundingClientRect().top + window.scrollY - SCROLL_OFFSET;
+                window.scrollTo({ top: y, behavior: 'smooth' });
+            }
+        });
+    }
+
+    function setupScrollHighlight(sections, toc) {
         const links = toc.querySelectorAll('.toc-list a');
         const linkMap = new Map();
         links.forEach((a) => linkMap.set(a.dataset.target, a));
@@ -183,16 +241,16 @@
 
         function onScroll() {
             let current = null;
-            for (const h of headings) {
-                const rect = h.getBoundingClientRect();
+            for (const section of sections) {
+                const rect = section.getBoundingClientRect();
                 if (rect.top - THRESHOLD_TOP <= 0) {
-                    current = h.id;
+                    current = section.id;
                 } else {
                     break;
                 }
             }
             if (!current) {
-                const last = headings[headings.length - 1];
+                const last = sections[sections.length - 1];
                 if (last) current = last.id;
             }
 
@@ -235,16 +293,28 @@
     /**
      * 详情页正文容器选择器。
      * 索引页（index.html 们）只有 .page-hero / .section / .chronicle 等壳子类，
-     * 不匹配下面任何一个，因此不会生成 TOC。
+     * 不匹配下面任何一个，因此不会走标题扫描模式。
      */
     const DETAIL_CONTAINERS = '.prose, .dynasty-reigns-page, .reign-crowd-page, .family-tree-scroll, .entry-body, .person-timeline-page';
 
     function init() {
-        // 视口太窄不启用
-        if (window.innerWidth < MIN_WIDTH) return;
-
         const main = document.querySelector('main');
         if (!main) return;
+
+        /* 模式二：栏目索引页的静态目录源（如史册索引的朝代目录） */
+        const source = main.querySelector('[data-chr-toc]');
+        if (source) {
+            const minWidth = Number.parseInt(source.dataset.tocMinWidth, 10) || MIN_WIDTH;
+            if (window.innerWidth < minWidth) return;
+            const built = buildStaticToc(source);
+            if (!built) return;
+            bindSmoothScroll(built.toc);
+            setupScrollHighlight(built.sections, built.toc);
+            return;
+        }
+
+        /* 模式一：详情/专题页的标题扫描 */
+        if (window.innerWidth < MIN_WIDTH) return;
 
         // 索引页没有详情页正文容器 → 不生成 TOC
         if (!main.querySelector(DETAIL_CONTAINERS)) return;
@@ -258,19 +328,7 @@
 
         ensureIds(headings);
         const toc = buildToc(headings);
-
-        // 平滑滚动
-        toc.addEventListener('click', (e) => {
-            const a = e.target.closest('a[href^="#"]');
-            if (!a) return;
-            const target = document.getElementById(a.getAttribute('href').slice(1));
-            if (target) {
-                e.preventDefault();
-                const y = target.getBoundingClientRect().top + window.scrollY - 90;
-                window.scrollTo({ top: y, behavior: 'smooth' });
-            }
-        });
-
+        bindSmoothScroll(toc);
         setupScrollHighlight(headings, toc);
     }
 

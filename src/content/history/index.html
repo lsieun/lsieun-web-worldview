@@ -25,23 +25,19 @@ layout: "default.html"
     </div>
 </section>
 
+{# 朝代目录数据源：toc.js 静态源模式读取，生成可折叠的左侧浮动面板（≥1540px） #}
+<nav class="chr-toc" data-chr-toc data-toc-min-width="1540" hidden aria-label="朝代目录">
+    {%- for d in world.dynasties %}
+    <a href="#dynasty-{{ d.id }}" data-chr-link="{{ d.id }}"
+       title="{{ d.name }} {{ d.start | cnYear }} — {{ d.end | cnYear }}">
+        <span class="chr-toc-name">{{ d.name }}</span>
+        <span class="chr-toc-years">{{ d.start | cnYear }}</span>
+    </a>
+    {%- endfor %}
+</nav>
+
 <section class="section">
     <div class="container">
-        <nav class="chr-toc" data-chr-toc aria-label="朝代目录">
-            <p class="chr-toc-title">朝代目录</p>
-            <ul class="chr-toc-list">
-                {%- for d in world.dynasties %}
-                <li>
-                    <a href="#dynasty-{{ d.id }}" data-chr-link="{{ d.id }}"
-                       title="{{ d.name }} {{ d.start | cnYear }} — {{ d.end | cnYear }}">
-                        <span class="chr-toc-name">{{ d.name }}</span>
-                        <span class="chr-toc-years">{{ d.start | cnYear }}</span>
-                    </a>
-                </li>
-                {%- endfor %}
-            </ul>
-        </nav>
-
         <div class="chronicle bleed" data-chr-root>
             <div class="chronicle-head" aria-hidden="true">
                 <span>朝代</span>
@@ -62,51 +58,45 @@ layout: "default.html"
                             <span class="chr-sub-years">{{ sg.start | cnYear }} — {{ sg.end | cnYear }}</span>
                             {% if sg.summary %}<p class="chr-sub-summary">{{ sg.summary }}</p>{% endif %}
                         </div>
-                        {%- for t in sg.topics %}
-                        <a class="chr-row" href="{{ t.href }}">
-                            <span class="chr-row-title">{{ t.title }}</span>
-                            <span class="chr-row-note">{{ t.summary }}</span>
-                            <span class="chr-row-meta">{{ t.meta }}</span>
-                            <span class="chr-row-arrow" aria-hidden="true">→</span>
+                        <div class="chr-chips">
+                            {%- for t in sg.topics %}
+                            <a class="chr-chip" href="{{ t.href }}">
+                                <span class="chr-chip-title">{{ t.title }}</span>
+                                {%- if t.meta %}<span class="chr-chip-meta">{{ t.meta }}</span>{% endif %}
+                            </a>
+                            {%- endfor %}
+                            {%- for entry in collections.historyEntries %}
+                            {%- if entry.data.dynasty == sg.id %}
+                            <a class="chr-chip" href="{{ entry.url }}">
+                                <span class="chr-chip-title">{{ entry.data.title }}</span>
+                                {%- if entry.data.span %}<span class="chr-chip-meta">{{ entry.data.span }}</span>{% endif %}
+                            </a>
+                            {%- endif %}
+                            {%- endfor %}
+                            <p class="chr-empty">专题待补</p>
+                        </div>
+                    </div>
+                    {%- endfor %}
+                    <div class="chr-chips">
+                        {%- for t in d.topics %}
+                        <a class="chr-chip" href="{{ t.href }}">
+                            <span class="chr-chip-title">{{ t.title }}</span>
+                            {%- if t.meta %}<span class="chr-chip-meta">{{ t.meta }}</span>{% endif %}
                         </a>
                         {%- endfor %}
                         {%- for entry in collections.historyEntries %}
-                        {%- if entry.data.dynasty == sg.id %}
-                        <a class="chr-row" href="{{ entry.url }}">
-                            <span class="chr-row-title">{{ entry.data.title }}</span>
-                            <span class="chr-row-note">{{ entry.data.lead }}</span>
-                            <span class="chr-row-meta">{{ entry.data.span }}</span>
-                            <span class="chr-row-arrow" aria-hidden="true">→</span>
+                        {%- if entry.data.dynasty == d.id %}
+                        <a class="chr-chip" href="{{ entry.url }}">
+                            <span class="chr-chip-title">{{ entry.data.title }}</span>
+                            {%- if entry.data.span %}<span class="chr-chip-meta">{{ entry.data.span }}</span>{% endif %}
                         </a>
                         {%- endif %}
                         {%- endfor %}
                         <p class="chr-empty">专题待补</p>
                     </div>
-                    {%- endfor %}
-                    {%- for t in d.topics %}
-                    <a class="chr-row" href="{{ t.href }}">
-                        <span class="chr-row-title">{{ t.title }}</span>
-                        <span class="chr-row-note">{{ t.summary }}</span>
-                        <span class="chr-row-meta">{{ t.meta }}</span>
-                        <span class="chr-row-arrow" aria-hidden="true">→</span>
-                    </a>
-                    {%- endfor %}
-                    {%- for entry in collections.historyEntries %}
-                    {%- if entry.data.dynasty == d.id %}
-                    <a class="chr-row" href="{{ entry.url }}">
-                        <span class="chr-row-title">{{ entry.data.title }}</span>
-                        <span class="chr-row-note">{{ entry.data.lead }}</span>
-                        <span class="chr-row-meta">{{ entry.data.span }}</span>
-                        <span class="chr-row-arrow" aria-hidden="true">→</span>
-                    </a>
-                    {%- endif %}
-                    {%- endfor %}
-                    <p class="chr-empty">专题待补</p>
                 </div>
             </section>
             {%- endfor %}
         </div>
     </div>
 </section>
-
-<script src="/assets/js/chronicle.js" defer></script>

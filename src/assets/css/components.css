@@ -558,80 +558,28 @@
 }
 
 /* ------------------------------------------------------------
-   史册：左侧朝代目录（固定悬浮，≥1540px 显示）
+   史册：左侧朝代目录（数据源；面板由 toc.js 静态源模式生成，≥1540px）
    ------------------------------------------------------------ */
 .chr-toc {
     display: none;
-    position: fixed;
-    top: 96px;
-    left: max(24px, calc((100vw - 1180px) / 2 - 174px));
-    width: 9.5rem;
-    z-index: 30;
 }
 
-@media (min-width: 1540px) {
-    .chr-toc {
-        display: block;
-    }
-}
-
-.chr-toc-title {
-    padding: 0 0.15rem 0.45rem;
-    font-family: var(--font-mono);
-    font-size: 0.58rem;
-    letter-spacing: 0.24em;
-    color: var(--color-muted);
-}
-
-.chr-toc-list {
-    max-height: calc(100vh - 160px);
-    overflow-y: auto;
-    scrollbar-width: thin;
-    padding: 0.4rem 0.45rem;
-    background: color-mix(in srgb, var(--color-surface) 88%, transparent);
-    border: 1px solid var(--color-line);
-    border-radius: 4px;
-    backdrop-filter: blur(8px);
-}
-
-.chr-toc-list a {
+.toc-float .chr-toc-link {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    gap: 0.5rem;
-    padding: 0.28rem 0.45rem;
-    border-radius: 3px;
-    color: inherit;
-    transition: background 0.3s, color 0.3s;
+    gap: 0.4rem;
 }
 
-.chr-toc-list a:hover {
-    background: color-mix(in srgb, var(--color-surface) 65%, transparent);
-    color: var(--color-brass);
-}
-
-.chr-toc-list a.is-active {
-    background: color-mix(in srgb, var(--color-brass) 10%, transparent);
-    color: var(--color-brass);
-}
-
-.chr-toc-name {
-    font-family: var(--font-serif);
-    font-size: 0.82rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    white-space: nowrap;
-}
-
-.chr-toc-years {
-    font-family: var(--font-mono);
+.toc-float .chr-toc-years {
     font-size: 0.54rem;
     letter-spacing: 0.04em;
     color: var(--color-muted);
     white-space: nowrap;
 }
 
-.chr-toc-list a.is-active .chr-toc-years {
+.toc-float .chr-toc-link.is-active .chr-toc-years,
+.toc-float .chr-toc-link:hover .chr-toc-years {
     color: var(--color-brass);
 }
 
@@ -735,67 +683,56 @@
     color: var(--color-muted);
 }
 
-.chr-row {
-    display: grid;
-    grid-template-columns: minmax(9rem, 13rem) minmax(0, 1fr) auto 1.2rem;
-    gap: 1.25rem;
+.chr-chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.35rem 0.25rem;
+}
+
+.chr-chip {
+    display: inline-flex;
     align-items: baseline;
-    padding: 1rem 0.25rem;
-    border-bottom: 1px solid color-mix(in srgb, var(--color-line) 60%, transparent);
+    gap: 0.5rem;
+    padding: 0.45rem 0.8rem;
+    border: 1px solid var(--color-line);
+    border-radius: 4px;
     color: inherit;
-    transition: padding 0.3s, background 0.3s;
+    transition: border-color 0.3s, color 0.3s, background 0.3s;
 }
 
-.chr-row:last-child {
-    border-bottom: none;
+.chr-chip:hover {
+    border-color: var(--color-brass);
+    background: color-mix(in srgb, var(--color-brass) 6%, transparent);
 }
 
-.chr-row:hover {
-    padding-left: 0.75rem;
-    background: color-mix(in srgb, var(--color-surface) 65%, transparent);
-}
-
-.chr-row-title {
-    font-size: 1rem;
+.chr-chip-title {
+    font-family: var(--font-serif);
+    font-size: 0.92rem;
     font-weight: 500;
-    transition: color 0.3s;
+    white-space: nowrap;
 }
 
-.chr-row:hover .chr-row-title {
+.chr-chip:hover .chr-chip-title {
     color: var(--color-brass);
 }
 
-.chr-row-note {
-    font-size: 0.82rem;
-    line-height: 1.8;
-    color: var(--color-muted);
-}
-
-.chr-row-meta {
+.chr-chip-meta {
     font-family: var(--font-mono);
-    font-size: 0.6rem;
+    font-size: 0.56rem;
     letter-spacing: 0.06em;
     color: var(--color-brass);
     white-space: nowrap;
 }
 
-.chr-row-arrow {
-    color: var(--color-muted);
-    transition: transform 0.3s, color 0.3s;
-}
-
-.chr-row:hover .chr-row-arrow {
-    transform: translateX(4px);
-    color: var(--color-brass);
-}
-
 .chr-empty {
-    padding: 1rem 0.25rem;
+    padding: 0.45rem 0.2rem;
     font-size: 0.82rem;
     color: var(--color-muted);
 }
 
-.chr-row ~ .chr-empty {
+.chr-chip ~ .chr-empty {
     display: none;
 }
 
@@ -822,23 +759,12 @@
         max-width: none;
     }
 
-    .chr-row {
-        grid-template-columns: minmax(0, 1fr) auto;
-        gap: 0.35rem 1rem;
-        padding: 0.85rem 0;
+    .chr-chips {
+        gap: 0.45rem;
     }
 
-    .chr-row-note {
-        grid-column: 1 / -1;
-        order: 3;
-    }
-
-    .chr-row-meta {
-        order: 2;
-    }
-
-    .chr-row-arrow {
-        display: none;
+    .chr-chip {
+        padding: 0.4rem 0.65rem;
     }
 }
 
