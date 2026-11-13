@@ -23,11 +23,15 @@
     const chartEl = kinshipPanel.querySelector('[data-tree-chart]');
     const chartStatus = kinshipPanel.querySelector('[data-tree-status]');
 
-    /* ---------- 页面级初始视角（来自 frontmatter treeView） ---------- */
+    /* ---------- 页面级初始视角（来自 frontmatter treeView） ----------
+     * ECharts tree 的 center 用来定位**根节点**在画布上的位置。
+     * 竖向（TB）树把根放顶部，centerY 用小百分比（5%~15%）给下方子孙留空间。
+     * 横向（LR）树把根放左侧，centerX 用小百分比。
+     * centerPerson 是初始渲染完成后，把指定**任意节点**平移到画布中心的视口操作。 */
     const treeCenterX = root.dataset.treeCenterX || '50%';
-    const treeCenterY = root.dataset.treeCenterY || '15%';
+    const treeCenterY = root.dataset.treeCenterY || '10%';
     const initialCenter = [treeCenterX, treeCenterY];
-    /** @type {string} 指定人物 id 作为初始中心，优先级高于 centerX/Y */
+    /** @type {string} 用户声明的初始聚焦人物 id */
     const initialCenterPerson = root.dataset.treeCenterPerson || '';
     /** @type {number|null} 用户显式声明的初始缩放；null 表示自动计算 */
     const userZoom = root.dataset.treeZoom ? parseFloat(root.dataset.treeZoom) : null;
@@ -357,17 +361,67 @@
         chart.setOption(buildChartOption(styledChartData(chartTarget), { center, zoom, overview }));
     }
 
+    /** 把 center 的百分比或像素值统一转成画布像素。 */
+    function centerToPixel(center, canvasW, canvasH) {
+        const x = typeof center[0] === 'string'
+            ? parseFloat(center[0]) / 100 * canvasW
+            : center[0];
+        const y = typeof center[1] === 'string'
+            ? parseFloat(center[1]) / 100 * canvasH
+            : center[1];
+        return [x, y];
+    }
+
+    /**
+     * 把指定人物节点平移到画布中心。
+     * 不触发树的重新布局（只改 center，ECharts tree 的 roam 状态就存在 center 里）。
+     *
+     * 推导：
+     *   Root 画布坐标 = center 像素值（ECharts tree 把根放在 center 位置）
+     *   Node 画布坐标 = center + (node.layout - root.layout) * zoom
+     *   目标：node 画布 = (w/2, h/2)
+     *   所以：newCenter = (w/2, h/2) - (node.layout - root.layout) * zoom
+     */
     function centerChartPerson(person) {
         if (!chart || !person) return;
+
         const data = chart.getModel().getSeriesByIndex(0).getData();
-        const dataIndex = data.indexOfName(person);
-        if (dataIndex < 0) return;
-        const layout = data.getItemLayout(dataIndex);
-        if (!layout) return;
-        chart.setOption({ series: [{
-            center: [layout.x, layout.y],
-            zoom: Math.max(currentChartZoom(), initialZoom)
-        }] });
+        const targetIdx = data.indexOfName(person);
+        if (targetIdx < 0) return;
+        const targetLayout = data.getItemLayout(targetIdx);
+        if (!targetLayout) return;
+
+        // 根节点：TB 树 y=0，LR 树 x=0，取 layout 坐标最小的那个
+        let rootIdx = 0;
+        let rootLayout = null;
+        {
+            let minVal = Infinity;
+            for (let i = 0; i < data.count(); i++) {
+                const l = data.getItemLayout(i);
+                if (l && l.y < minVal) { minVal = l.y; rootIdx = i; rootLayout = l; }
+            }
+        }
+        if (!rootLayout) return;
+
+        // 当前 center + zoom（center 可能是百分比字符串，先转像素）
+        const el = chartEl;
+        const w = el.clientWidth;
+        const h = el.clientHeight;
+        const zoom = currentChartZoom();
+        const [curCX, curCY] = centerToPixel(currentChartCenter(), w, h);
+
+        // 目标节点当前画布位置
+        const targetCanvasX = curCX + (targetLayout.x - rootLayout.x) * zoom;
+        const targetCanvasY = curCY + (targetLayout.y - rootLayout.y) * zoom;
+
+        // 已经差不多居中就跳过
+        if (Math.abs(targetCanvasX - w / 2) < 8 && Math.abs(targetCanvasY - h / 2) < 8) return;
+
+        // 反推让节点到画布中心所需的新 center
+        const newCX = w / 2 - (targetLayout.x - rootLayout.x) * zoom;
+        const newCY = h / 2 - (targetLayout.y - rootLayout.y) * zoom;
+
+        chart.setOption({ series: [{ center: [newCX, newCY] }] });
     }
 
     function updateChartFullscreen() {
@@ -491,6 +545,8 @@
         if (chart) return true;
         if (!chartShell || !chartEl || !window.echarts || kinshipPanel.hidden) return false;
         try {
+            /* 先 unhide 再 init：hidden 状态下 clientWidth=0，ECharts 会按错误尺寸 layout */
+            chartShell.hidden = false;
             chartNodeById = new Map();
             chartData = Array.from(kinshipPanel.querySelectorAll('.kh-roots > .kh-branch')).map((branch) => readChartNode(branch));
             chartMetrics = measureChartTree(chartData);
@@ -503,10 +559,8 @@
             chart.setOption(buildChartOption(styledChartData(''), { center: initialCenter, zoom: initialZoom }));
             /* 如果用户声明了 centerPerson，chart 布局完成后把它放到视口中心 */
             if (initialCenterPerson && chartNodeById.has(initialCenterPerson)) {
-                /* ECharts tree 的 layout 是异步的，用 setTimeout 等一帧 */
                 requestAnimationFrame(() => centerChartPerson(initialCenterPerson));
             }
-            chartShell.hidden = false;
             kinshipPanel.classList.add('is-chart-enhanced');
             setupChartControls();
             chart.on('click', (params) => {
