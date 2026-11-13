@@ -25,7 +25,8 @@
     let panStartX = 0;
     let panStartLeft = 0;
     if (shell) {
-        if (shell.scrollWidth > shell.clientWidth + 4) shell.classList.add('is-scrollable');
+        const frame = shell.parentElement;
+        if (shell.scrollWidth > shell.clientWidth + 4) frame.classList.add('is-scrollable');
         shell.addEventListener('pointerdown', (event) => {
             if (event.pointerType === 'touch') return;
             panning = true;

@@ -888,8 +888,12 @@ body.kh-fullscreen-fallback {
     box-shadow: var(--shadow-lift);
 }
 
-.lh-map-shell::after {
-    content: "";
+.lh-map-frame {
+    position: relative;
+}
+
+/* 取景内框：定位在滚动层之外，拖动时纹丝不动 */
+.lh-frame {
     position: absolute;
     inset: 10px;
     border: 1px solid color-mix(in srgb, var(--color-line-strong) 55%, transparent);
@@ -938,7 +942,7 @@ body.kh-fullscreen-fallback {
     pointer-events: none;
 }
 
-.lh-map-shell.is-scrollable .lh-hint {
+.lh-map-frame.is-scrollable .lh-hint {
     display: inline-flex;
 }
 
