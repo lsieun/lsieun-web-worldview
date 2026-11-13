@@ -1,0 +1,79 @@
+{
+  "title": "北伐人物与年龄",
+  "dynasty": "shu-han",
+  "summary": "把夷陵之后到五丈原的十二位人物放回公元 222—234 年的同一条时间轴：白帝托孤、南中平定、五次北伐、秋风五丈原，看这些转折发生时，各自几岁、在不在场。",
+  "range": { "start": 222, "end": 234 },
+  "meta": {
+    "key": "beifa-ages",
+    "watermark": "北",
+    "title": "北伐人物与年龄",
+    "subtitle": "公元 222 — 234，从夷陵新败到秋风五丈原",
+    "tags": ["蜀汉", "北伐", "十二人对比"],
+    "intro": "纵向自上而下是时间。左侧竖轴只标夷陵、白帝、南中、出师表、祁山、石亭、木门、五丈原这些转折大事；右侧十二位人物各一条生命线，走到大事那一年就落一个节点，写明当时的年龄（虚岁）。",
+    "lifelineHint": "圆点为在世时经历的大事，实心圆点是与本人直接相关的事件。悬停可看事件与年龄。下方另附年龄明细表。",
+    "tableIntro": "同一批大事逐行列成表格，便于横向比较同一年十二人的年龄。点击人物列头可单独聚焦其一列，再次点击取消。",
+    "note": "年龄口径为<strong>虚岁</strong>（事件年份 − 出生年份 + 1）；「未生」表示尚未出生，「已故」表示事件发生时已去世。生年口径：刘备、诸葛亮、刘禅、姜维、司马懿、孙权、陆逊生卒有明文；马超、曹仁、曹真取通行约年；赵云约 171 据《云别传》推算；曹叡生年从 204 说（有 205、206 异说）。魏延、李严、马岱、王平、杨仪、费祎、张郃、曹休、郭淮生年无载，不入图，其事见于轴上事件标注。死亡节点：马超（222）、刘备（223）、曹仁（223）、赵云（229）、曹真（231）、诸葛亮（234）皆在窗内以实心节点标注；姜维 228 年归蜀，此前其线以「未归」示意。"
+  },
+  "groups": [
+    { "id": "shu", "name": "蜀汉", "desc": "承先主之业，北伐中坚" },
+    { "id": "wei", "name": "曹魏", "desc": "关中雍凉方面的对手" },
+    { "id": "wu", "name": "东吴", "desc": "石亭一线的盟军侧翼" }
+  ],
+  "cast": [
+    { "figure": "zhugeliang", "group": "shu", "role": "蜀 · 丞相 · 北伐主帅" },
+    { "figure": "liubei", "group": "shu", "role": "蜀 · 先主 · 夷陵败后崩于白帝" },
+    { "figure": "liushan", "group": "shu", "role": "蜀 · 后主 · 即位时年十七" },
+    { "figure": "machao", "group": "shu", "role": "蜀 · 骠骑将军 · 斄乡侯" },
+    { "figure": "zhaoyun", "group": "shu", "role": "蜀 · 镇军将军 · 顺平侯" },
+    { "figure": "jiangwei", "group": "shu", "role": "蜀 · 亮之传人 · 凉州上士" },
+    { "figure": "simayi", "group": "wei", "role": "魏 · 西线统帅 · 与亮相持" },
+    { "figure": "caoren", "group": "wei", "role": "魏 · 大司马 · 宗室宿将" },
+    { "figure": "caozhen", "group": "wei", "role": "魏 · 大司马 · 西线主帅" },
+    { "figure": "caorui", "group": "wei", "role": "魏 · 明帝 · 改元太和" },
+    { "figure": "sunquan", "group": "wu", "role": "吴 · 吴大帝 · 称帝连蜀" },
+    { "figure": "luxun", "group": "wu", "role": "吴 · 辅国将军 · 石亭主帅" }
+  ],
+  "events": [
+    "yiling",
+    "liubei-death",
+    "caoren-death",
+    "zhugeliang-nanzheng",
+    "zhugeliang-chushibiao",
+    "zhugeliang-beifa",
+    "luxun-shiting",
+    "caozhen-fashu",
+    "zhanghe-death",
+    "zhugeliang-wuzhangyuan",
+    "weyan-death"
+  ],
+  "personalEvents": [
+    "yiling",
+    "liubei-death",
+    "machao-death",
+    "caoren-death",
+    "zhugeliang-nanzheng",
+    "zhugeliang-chushibiao",
+    "zhugeliang-beifa",
+    "jiangwei-guishu",
+    "luxun-shiting",
+    "caozhen-fashu",
+    "zhaoyun-death",
+    "zhanghe-death",
+    "caozhen-death",
+    "zhugeliang-wuzhangyuan"
+  ],
+  "defaults": [
+    "zhugeliang",
+    "liubei",
+    "liushan",
+    "machao",
+    "zhaoyun",
+    "jiangwei",
+    "simayi",
+    "caoren",
+    "caozhen",
+    "caorui",
+    "sunquan",
+    "luxun"
+  ]
+}
