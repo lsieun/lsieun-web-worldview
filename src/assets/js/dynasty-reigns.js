@@ -403,6 +403,10 @@
         }
         if (!rootLayout) return;
 
+        /* 根节点已经被 initialCenter 放在画布顶部（TB 树）或左侧（LR 树），
+         * 不需要也不应该强制放到画布中心——那会把整棵树挤到下半屏。 */
+        if (targetIdx === rootIdx) return;
+
         // 当前 center + zoom（center 可能是百分比字符串，先转像素）
         const el = chartEl;
         const w = el.clientWidth;
