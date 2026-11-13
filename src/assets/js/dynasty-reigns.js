@@ -382,6 +382,48 @@
      *   目标：node 画布 = (w/2, h/2)
      *   所以：newCenter = (w/2, h/2) - (node.layout - root.layout) * zoom
      */
+    /**
+     * 自动把树的几何中心对齐画布水平中心。
+     * ECharts orthogonal TB 布局按子树大小分配空间，左右通常不对称，
+     * 直接用 centerX=50% 会让 root 在正中但整棵树偏左或偏右。
+     *
+     * 推导：
+     *   所有节点 layout.x ∈ [Lmin, Lmax]
+     *   treeLayoutCenter = (Lmin + Lmax) / 2
+     *   rootCanvasX = centerX（center 就是 root 的画布位置）
+     *   treeCanvasCenter = centerX + (treeLayoutCenter - rootLayoutX) * zoom
+     *   令 treeCanvasCenter = w/2 → centerX = w/2 - (treeLayoutCenter - rootLayoutX) * zoom
+     */
+    function centerTreeHorizontally() {
+        if (!chart) return;
+        const data = chart.getModel().getSeriesByIndex(0).getData();
+        const canvas = chartEl;
+        const w = canvas.clientWidth;
+        const zoom = currentChartZoom();
+        const cur = currentChartCenter();
+        const curCX = typeof cur[0] === 'string' ? parseFloat(cur[0])/100*w : cur[0];
+        const curCY = typeof cur[1] === 'string' ? parseFloat(cur[1])/100*canvas.clientHeight : cur[1];
+
+        // 找 root layout 和全局 X 范围
+        let rootLayout = null, Lmin = Infinity, Lmax = -Infinity;
+        for (let i = 0; i < data.count(); i++) {
+            const l = data.getItemLayout(i);
+            if (!l) continue;
+            if (l.y === 0) rootLayout = l;
+            if (l.x < Lmin) Lmin = l.x;
+            if (l.x > Lmax) Lmax = l.x;
+        }
+        if (!rootLayout || !isFinite(Lmin) || !isFinite(Lmax)) return;
+
+        const treeLayoutCenterX = (Lmin + Lmax) / 2;
+        const newCX = w / 2 - (treeLayoutCenterX - rootLayout.x) * zoom;
+
+        // 偏差 < 4px 不用折腾
+        if (Math.abs(newCX - curCX) < 4) return;
+
+        chart.setOption({ series: [{ center: [newCX, curCY] }] });
+    }
+
     function centerChartPerson(person) {
         if (!chart || !person) return;
 
@@ -519,6 +561,7 @@
                 initialZoom = calculateInitialZoom();
                 applyChartView({ center: initialCenter, zoom: initialZoom, overview: false });
                 chartStatus.textContent = '';
+                requestAnimationFrame(() => centerTreeHorizontally());
             } else if (action === 'fit') {
                 applyChartView({ center: ['50%', '50%'], zoom: calculateFitZoom(), overview: true });
                 chartStatus.textContent = '已缩放到整棵世系；放大或拖动可查看细节。';
@@ -561,10 +604,15 @@
             });
             initialZoom = userZoom ?? calculateInitialZoom();
             chart.setOption(buildChartOption(styledChartData(''), { center: initialCenter, zoom: initialZoom }));
-            /* 如果用户声明了 centerPerson，chart 布局完成后把它放到视口中心 */
-            if (initialCenterPerson && chartNodeById.has(initialCenterPerson)) {
-                requestAnimationFrame(() => centerChartPerson(initialCenterPerson));
-            }
+            /* layout 完成后：先把整棵树的几何中心对齐画布中心，
+             * 再对非根节点做 centerChartPerson（如果用户声明了）。
+             * 根节点跳过 centerChartPerson，它已经被初始 center 放在顶部合适位置。 */
+            requestAnimationFrame(() => {
+                centerTreeHorizontally();
+                if (initialCenterPerson && chartNodeById.has(initialCenterPerson)) {
+                    centerChartPerson(initialCenterPerson);
+                }
+            });
             kinshipPanel.classList.add('is-chart-enhanced');
             setupChartControls();
             chart.on('click', (params) => {
