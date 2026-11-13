@@ -105,17 +105,14 @@
         return lineage;
     }
 
-    function styledChartData(person, zoom = 1) {
+    function styledChartData(person) {
         const lineage = person ? lineageFor(person) : new Set();
-        /* symbolSize 随 zoom 微调 */
-        const scale = Math.max(0.55, Math.min(1.15, zoom));
         function styleNode(node) {
             const isTarget = node.person === person;
             const inLineage = lineage.has(node.person);
-            const baseSize = node.hasRuler ? [156, 38] : [132, 32];
             return {
                 ...node,
-                symbolSize: [baseSize[0] * scale, baseSize[1] * scale],
+                symbolSize: node.hasRuler ? [156, 38] : [132, 32],
                 itemStyle: {
                     color: node.hasRuler ? chartColors.surfaceRaised : chartColors.surface,
                     borderColor: inLineage ? chartColors.brass : (node.hasRuler ? chartColors.line : chartColors.lineStrong),
@@ -127,7 +124,7 @@
                     color: inLineage ? chartColors.brass : chartColors.lineStrong,
                     width: inLineage ? 2 : 1
                 },
-                children: node.children.map((child) => styleNode(child))
+                children: node.children.map(styleNode)
             };
         }
         return chartData.map(styleNode);
@@ -136,12 +133,11 @@
     function chartLabel(params) {
         const data = params.data;
         if (!data.hasRuler) {
-            /* 宗亲节点：1 行 */
+            /* 宗亲节点砍到 1 行 */
             return `{kin|宗}{title|${data.title}}`;
         }
-        /* 皇帝节点：1 行（帝序圆 + 谥号 + 真名）。
-           全部压到单行，symbolSize 配扁框，这样树形整体紧凑、一屏可装下整棵树。
-           完整信息（在位年段、生卒年）都在 tooltip 里 */
+        /* 皇帝节点砍到 1 行（帝序 + 谥号 + 真名）。
+           在位年段移到 tooltip，框改扁后整体紧凑、字体不挤 */
         return `{order|${data.order || '◇'}}{title|${data.title}}{name|${data.detail}}`;
     }
 
@@ -212,7 +208,6 @@
                 expandAndCollapse: false,
                 edgeShape: 'polyline',
                 edgeForkPosition: '50%',
-                /* 间距稍留空间，既不挤也不松 */
                 nodeGap: 36,
                 levelGap: 64,
                 lineStyle: { color: chartColors.lineStrong, width: 1 },
@@ -220,12 +215,23 @@
                     show: !settings.overview,
                     position: 'inside',
                     formatter: chartLabel,
-                    /* 单行，字号稍放大保证可辨识度 */
                     rich: {
+                        rank: {
+                            color: chartColors.brass,
+                            fontFamily: chartColors.fontMono,
+                            fontSize: 12,
+                            fontWeight: 600,
+                            padding: [0, 5, 0, 0]
+                        },
+                        crown: {
+                            color: chartColors.brass,
+                            fontSize: 13,
+                            padding: [0, 2, 0, 0]
+                        },
                         order: {
                             color: chartColors.surfaceRaised,
                             backgroundColor: chartColors.brass,
-                            borderRadius: 9,
+                            borderRadius: 10,
                             width: 20,
                             height: 20,
                             align: 'center',
@@ -258,8 +264,9 @@
                             fontFamily: chartColors.fontBody,
                             fontSize: 11,
                             lineHeight: 20,
-                            padding: [0, 0, 0, 5]
-                        }
+                            padding: [0, 0, 0, 4]
+                        },
+                        reign: { color: chartColors.muted, fontFamily: chartColors.fontMono, fontSize: 10, lineHeight: 16 }
                     }
                 },
                 emphasis: {
@@ -277,15 +284,15 @@
     }
 
     function calculateInitialZoom() {
-        /* 默认适中阅读比例，不强制 fit 一屏（会挤成一团）。
-           用户点"全图"按钮才缩到一屏 */
-        return Math.max(1.15, Math.min(1.4, (chartMetrics.levels * 72) / Math.max(chartEl.clientHeight, 1)));
+        const widthZoom = (chartMetrics.leaves * 225) / Math.max(chartEl.clientWidth, 1);
+        const heightZoom = (chartMetrics.levels * 108) / Math.max(chartEl.clientHeight, 1);
+        return Math.min(3, Math.max(1.15, widthZoom, heightZoom));
     }
 
     /* 全图：按叶子数与层数估算内容尺寸，缩到一屏；此时节点随缩放等比变小 */
     function calculateFitZoom() {
-        const contentWidth = chartMetrics.leaves * 180;
-        const contentHeight = chartMetrics.levels * 72;
+        const contentWidth = chartMetrics.leaves * 225;
+        const contentHeight = chartMetrics.levels * 108;
         const availableWidth = Math.max(chartEl.clientWidth - 48, 1);
         const availableHeight = Math.max(chartEl.clientHeight - 48, 1);
         const fit = Math.min(availableWidth / contentWidth, availableHeight / contentHeight);
@@ -309,8 +316,7 @@
 
     function applyChartView({ center, zoom, overview = overviewMode }) {
         overviewMode = overview;
-        /* zoom 同时传给 styledChartData 让节点 symbolSize 随缩放动态调整，避免缩小时重叠 */
-        chart.setOption(buildChartOption(styledChartData(chartTarget, zoom), { center, zoom, overview }));
+        chart.setOption(buildChartOption(styledChartData(chartTarget), { center, zoom, overview }));
     }
 
     function centerChartPerson(person) {
@@ -456,18 +462,7 @@
                 devicePixelRatio: Math.max(window.devicePixelRatio || 1, 2)
             });
             initialZoom = calculateInitialZoom();
-            chart.setOption(buildChartOption(styledChartData('', initialZoom), { center: initialCenter, zoom: initialZoom }));
-            /* ECharts tree 的 center 控制整个几何中心而非根节点位置，
-               树左右不对称时根节点会偏移。渲染后手动定位根节点到画布顶部居中 */
-            chart.once('rendered', () => {
-                const data = chart.getModel().getSeriesByIndex(0).getData();
-                const rootLayout = data.getItemLayout(0);
-                if (rootLayout) {
-                    const rootCenter = ['50%', '12%'];
-                    chart.setOption({ series: [{ center: rootCenter }] });
-                    initialCenter = rootCenter;
-                }
-            });
+            chart.setOption(buildChartOption(styledChartData(''), { center: initialCenter, zoom: initialZoom }));
             chartShell.hidden = false;
             kinshipPanel.classList.add('is-chart-enhanced');
             setupChartControls();
