@@ -250,6 +250,21 @@
           ]
         }
       ]
+    },
+    {
+      "figure": "yuanshu",
+      "title": "仲氏皇帝（僭号）",
+      "status": "interim",
+      "note": "袁术非汉室刘氏，197 年据寿春僭号称帝、自号仲家，不占汉帝序，以过渡条目附于献帝之侧；199 年穷途呕血而死。",
+      "terms": [
+        {
+          "start": 197,
+          "end": 199,
+          "events": [
+            "yuanshu-chengdi"
+          ]
+        }
+      ]
     }
   ],
   "regencies": [
