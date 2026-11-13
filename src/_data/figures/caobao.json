@@ -2,5 +2,7 @@
   "id": "caobao",
   "name": "曹褒",
   "summary": "曹仁、曹纯之祖，颍川太守。与曹腾同族，行辈与腾相当，为谯县曹氏支系之祖。",
-  "parents": []
+  "parents": [
+    "caojie-yuanwei"
+  ]
 }

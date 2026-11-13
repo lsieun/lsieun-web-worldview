@@ -130,6 +130,21 @@ export class FamilyViewBuilder extends ViewBuilder {
         }
         for (const node of nodes.values()) node.branchIndex = branchIndexOf.get(node.branch) ?? -1;
 
+        /* ---------- 3.6 世代对齐：跨根页按视图声明的偏移对齐辈分列 ----------
+         * 各独立支树默认从 0 世起算；view.generationShifts 以支根 id 声明偏移，
+         * 使养子、从弟等跨支辈分与主线对列（如曹真降一辈与曹丕对列）。
+         */
+        const shifts = view.generationShifts && typeof view.generationShifts === 'object' ? view.generationShifts : {};
+        for (const root of treeRoots) {
+            const shift = shifts[root.id];
+            if (!shift) continue;
+            const walk = (node) => {
+                node.generation = Math.max(0, node.generation + shift);
+                node.children.forEach(walk);
+            };
+            walk(root);
+        }
+
         /* ---------- 4. 谱牒长卷坐标 ---------- */
         const scroll = { column: 250, row: 68, nodeWidth: 200, nodeHeight: 58, pad: 40 };
         let scrollLeafCursor = 0;
