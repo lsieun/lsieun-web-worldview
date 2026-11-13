@@ -1,0 +1,9 @@
+{
+  "name": "赵胜",
+  "en": "Zhao Sheng",
+  "birth": -308,
+  "birthApprox": true,
+  "death": -251,
+  "summary": "赵武灵王之子、赵惠文王之弟，封平原君。长平后力主抗秦，出使楚国搬兵，促成楚魏赵合纵解围邯郸。",
+  "milestones": ["battle-of-changping", "handan-siege", "maosui-recommend", "plain-jun-death"]
+}

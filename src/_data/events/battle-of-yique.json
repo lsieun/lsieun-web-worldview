@@ -1,0 +1,9 @@
+{
+  "title": "伊阙之战",
+  "year": -293,
+  "desc": "秦将白起在伊阙全歼韩魏联军二十四万，韩将公孙喜、魏将犀武战死。韩魏从此不敢西顾，白起一战成名。",
+  "figures": ["tianwen", "wewuji", "huangxie"],
+  "axis": true,
+  "key": true,
+  "era": "战国"
+}

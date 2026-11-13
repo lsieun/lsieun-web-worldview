@@ -1,0 +1,62 @@
+{
+  "title": "战国四公子",
+  "dynasty": "zhanguo",
+  "href": "/figures/zhanguo-four-lords.html",
+  "topicMeta": "人物年龄",
+  "summary": "孟尝君、平原君、信陵君、春申君——战国养士之风的极致与终章。",
+  "range": { "start": -356, "end": -238 },
+  "meta": {
+    "key": "zhanguo-four-lords",
+    "watermark": "孟",
+    "title": "战国四公子",
+    "subtitle": "前 356 — 前 238，从商鞅变法到秦灭周",
+    "tags": ["战国", "四人对比", "养士"],
+    "intro": "纵向自上而下是时间轴。左侧竖轴标着商鞅变法、马陵之战、张仪欺楚、五国伐齐、长平、窃符救赵这些时代大事；右侧四条生命线分别属于齐孟尝君田文、赵平原君赵胜、魏信陵君魏无忌、楚春申君黄歇。走到大事那一年就落一个节点，写明当时的年龄（未生者空白）。",
+    "lifelineHint": "圆点为在世时经历的大事，实心圆点是与本人直接相关的事件。悬停可看事件与年龄。下方另附年龄明细表。",
+    "tableIntro": "同一批大事逐行列成表格，便于横向比较同一年四人的年龄。点击人物列头可单独聚焦其一列，再次点击取消。",
+    "note": "年龄口径为<strong>虚岁</strong>（事件年份 − 出生年份 + 1）；「未生」表示尚未出生，「已故」表示事件发生时已去世。四位公子生年均无确切史料：孟尝君田文约前 356、平原君赵胜约前 308、信陵君魏无忌约前 310、春申君黄歇约前 315——这里采用史学界通行约年，仅供参考。信陵君、春申君卒年亦存异说。四人分属齐、赵、魏、楚，正合战国合纵连横之大势：他们养士数千以抗秦，却分别死于自然、猜忌与刺杀——养士的辉煌与贵族政治的局限在此集中显现。<strong>重要的年龄错位：</strong>田文约前 356 年生，比另外三位早约半个世纪——商鞅变法那年他刚出生，马陵之战时他十五岁；而长平之战时他已去世十九年，只剩三位公子还在舞台上。时间轴范围始于田文出生，田文约前 356 年出生，比另外三位早约半个世纪——商鞅变法那年他刚出生，马陵之战时他十五岁；而长平之战时他已去世十九年，只剩三位公子还在舞台上。时间轴范围始于田文出生、终于春申君被刺。"
+  },
+  "groups": [
+    { "id": "qi", "name": "齐 · 孟尝君", "desc": "田文 · 鸡鸣狗盗之主" },
+    { "id": "zhao", "name": "赵 · 平原君", "desc": "赵胜 · 毛遂自荐之君" },
+    { "id": "wei", "name": "魏 · 信陵君", "desc": "魏无忌 · 窃符救赵之将" },
+    { "id": "chu", "name": "楚 · 春申君", "desc": "黄歇 · 楚相十五年" }
+  ],
+  "cast": [
+    { "figure": "tianwen", "group": "qi", "role": "孟尝君 · 养士三千" },
+    { "figure": "zhaosheng", "group": "zhao", "role": "平原君 · 力主抗秦" },
+    { "figure": "wewuji", "group": "wei", "role": "信陵君 · 窃符救赵" },
+    { "figure": "huangxie", "group": "chu", "role": "春申君 · 楚相十五年" }
+  ],
+  "events": [
+    "shangyang-reform",
+    "battle-of-maling",
+    "first-coalition",
+    "zhangyi-deceive-chu",
+    "qin-zhaoxiangwang-ascend",
+    "chuisha-battle",
+    "mengchang-in-qin",
+    "mengchang-escape",
+    "mengchang-attack-qin",
+    "battle-of-yique",
+    "five-nations-attack-qi",
+    "tian-dan-restore-qi",
+    "battle-of-changping",
+    "handan-siege",
+    "xinling-save-zhao",
+    "qin-mie-zhou",
+    "xinling-coalition"
+  ],
+  "personalEvents": [
+    "mengchang-death",
+    "maosui-recommend",
+    "plain-jun-death",
+    "xinling-death",
+    "huangxie-to-qin",
+    "chu-crown-prince-hostage",
+    "huangxie-save-zhao",
+    "shouchun-capital",
+    "huangxie-death"
+  ],
+  "defaults": ["tianwen", "zhaosheng", "wewuji", "huangxie"]
+}

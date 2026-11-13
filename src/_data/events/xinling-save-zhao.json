@@ -1,0 +1,9 @@
+{
+  "title": "窃符救赵",
+  "year": -257,
+  "desc": "魏安釐王遣晋鄙救赵，中途观望不前。信陵君用侯嬴计，盗得虎符，击杀晋鄙，夺军八万南下邯郸，大败秦军。",
+  "figures": ["wewuji", "zhaosheng", "huangxie"],
+  "axis": true,
+  "key": true,
+  "era": "战国"
+}

@@ -1,0 +1,9 @@
+{
+  "name": "田文",
+  "en": "Tian Wen",
+  "birth": -356,
+  "birthApprox": true,
+  "death": -279,
+  "summary": "齐国贵族，袭薛公，号孟尝君。养士数千，鸡鸣狗盗皆得其用。曾入秦为相，旋即东归，联合韩魏两次攻秦。",
+  "milestones": ["mengchang-in-qin", "mengchang-escape", "mengchang-attack-qin", "mengchang-death"]
+}

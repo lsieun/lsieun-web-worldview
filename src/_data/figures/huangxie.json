@@ -1,0 +1,9 @@
+{
+  "name": "黄歇",
+  "en": "Huang Xie",
+  "birth": -315,
+  "birthApprox": true,
+  "death": -238,
+  "summary": "楚国贵族，顷襄王时使秦说止攻楚，后送太子完为质。考烈王时为相十五年，救赵、灭鲁、合纵抗秦。终死于李园之手。",
+  "milestones": ["huangxie-to-qin", "chu-crown-prince-hostage", "huangxie-save-zhao", "shouchun-capital", "huangxie-death"]
+}
