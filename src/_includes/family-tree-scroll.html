@@ -4,9 +4,9 @@
 #}
 {%- macro renderScrollNode(node) %}
 {%- if node.href %}<a class="lh-node-link" href="{{ node.href }}" aria-label="{{ node.title }} 帝系年表">{%- endif %}
-<g class="lh-node branch-{{ node.branch }}{% if node.emperor %} is-emperor{% endif %}"
+<g class="lh-node branch-{{ 'root' if node.branchIndex == -1 else node.branchIndex }}{% if node.emperor %} is-emperor{% endif %}"
    transform="translate({{ node.scrollX }} {{ node.scrollY }})"
-   data-person="{{ node.id }}" data-parent="{{ node.parents | join(' ') }}" data-branch="{{ node.branch }}"
+   data-person="{{ node.id }}" data-parent="{{ node.parents | join(' ') }}" data-branch="{{ node.branch }}" data-branch-index="{{ node.branchIndex }}"
    data-name="{{ node.title }}" data-title="{{ node.detail }}" data-rank="{{ node.siblingRank or '始' }}"
    data-emperor="{{ 'true' if node.emperor else 'false' }}" data-imperial="{{ node.imperialLabel }}"
    data-reign="{{ node.reignLabel }}" data-href="{{ node.href }}"
@@ -43,13 +43,13 @@
 {% if familyView and familyView.scrollMap %}
 <link rel="stylesheet" href="/assets/css/dynasty-reigns.css">
 
-<div class="lineage-scroll" data-lineage-scroll>
+<div class="lineage-scroll" data-lineage-scroll data-branches="{{ familyView.branches | jsonify | escape }}">
     <section class="page-hero reign-hero">
         <span class="watermark" aria-hidden="true">{{ familyView.meta.watermark | default('孙') }}</span>
         <div class="container">
             <p class="eyebrow">LINEAGE · SCROLL</p>
             <h1 class="page-title">{{ familyView.title }} · 谱牒长卷</h1>
-            <p class="page-lead">姓名在上，帝号在下；朱印记同父长幼，鎏金冠只标曾称帝。整条世系以五世为列，三支分色，像展读一卷谱牒。</p>
+            <p class="page-lead">{{ familyView.meta.intro | default('姓名在上，帝号在下；朱印记同父长幼，鎏金冠只标曾称帝。') }}</p>
             <div class="page-meta">
                 <span>宗族人物 <strong>{{ familyView.nodeCount }} 位</strong></span>
                 <span>世系 <strong>{{ familyView.generationCount }} 世</strong></span>
@@ -62,21 +62,21 @@
         <div class="container">
             <div class="section-head" data-reveal>
                 <p class="eyebrow">01 · PEDIGREE SCROLL</p>
-                <h2 class="section-title" id="lineage-scroll-title">五世成列，三支分色</h2>
+                <h2 class="section-title" id="lineage-scroll-title">{{ familyView.meta.sectionTitle | default('谱牒长卷') }}</h2>
                 <p class="section-intro">悬停任一人可点亮其世系路径；点击打开人物小传。皇帝节点的帝号仍是副题，姓名始终是主标题。</p>
             </div>
 
             <div class="lh-legend" aria-label="谱牒图例">
                 <span><i class="lh-legend-seal" aria-hidden="true">1</i>朱印：同父兄弟长幼序</span>
                 <span><i class="lh-legend-crown" aria-hidden="true"><svg viewBox="0 0 32 18" focusable="false"><path d="M2 14.5 4.5 5 11 10.5 16 2 21 10.5 27.5 5 30 14.5Z"></path><rect x="3" y="15" width="26" height="2.6" rx="1"></rect></svg></i>鎏金冠：曾称帝</span>
-                <span><i class="lh-legend-branch branch-qiang" aria-hidden="true"></i>孙羌支</span>
-                <span><i class="lh-legend-branch branch-jian" aria-hidden="true"></i>孙坚支</span>
-                <span><i class="lh-legend-branch branch-jing" aria-hidden="true"></i>孙静支</span>
+                {%- for b in familyView.branches %}
+                <span><i class="lh-legend-branch branch-{{ b.index }}" aria-hidden="true"></i>{{ b.label }}</span>
+                {%- endfor %}
             </div>
 
-            <div class="lh-map-shell" tabindex="0" role="region" aria-label="孙氏谱牒长卷，可横向滚动查看">
+            <div class="lh-map-shell" tabindex="0" role="region" aria-label="{{ familyView.title }}谱牒长卷，可横向滚动查看">
                 <svg class="lh-map" viewBox="0 0 {{ familyView.scrollMap.width }} {{ familyView.scrollMap.height }}" role="img"
-                     aria-label="{{ familyView.title }}谱牒长卷。五世成列，三支分色；朱印为同父长幼序，鎏金冠表示曾称帝。">
+                     aria-label="{{ familyView.title }}谱牒长卷。{{ familyView.meta.sectionTitle | default('谱牒长卷') }}；朱印为同父长幼序，鎏金冠表示曾称帝。">
                     <defs>
                         <symbol id="lh-crown" viewBox="0 0 32 18">
                             <path d="M2 14.5 4.5 5 11 10.5 16 2 21 10.5 27.5 5 30 14.5Z"></path>
@@ -94,13 +94,13 @@
 
                     <g class="lh-edge-halos" aria-hidden="true">
                         {%- for edge in familyView.scrollMap.edges %}
-                        <path class="lh-edge-halo branch-{{ edge.branch }}" d="{{ edge.path }}"></path>
+                        <path class="lh-edge-halo branch-{{ 'root' if edge.branchIndex == -1 else edge.branchIndex }}" d="{{ edge.path }}"></path>
                         {%- endfor %}
                     </g>
 
                     <g class="lh-edges" aria-hidden="true">
                         {%- for edge in familyView.scrollMap.edges %}
-                        <path class="lh-edge branch-{{ edge.branch }}" data-from="{{ edge.from }}" data-to="{{ edge.to }}" d="{{ edge.path }}"></path>
+                        <path class="lh-edge branch-{{ 'root' if edge.branchIndex == -1 else edge.branchIndex }}" data-from="{{ edge.from }}" data-to="{{ edge.to }}" d="{{ edge.path }}"></path>
                         {%- endfor %}
                     </g>
 

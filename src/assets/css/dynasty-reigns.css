@@ -1048,22 +1048,53 @@ body.kh-fullscreen-fallback {
     opacity: 0.95;
 }
 
-.lh-node.branch-sunqiang,
-.lh-edge.branch-sunqiang,
-.lh-legend-branch.branch-qiang {
+/* 分支调色板：branchIndex 0–7 循环取用，全部由 CSS 变量派生 */
+.lh-node.branch-0,
+.lh-edge.branch-0,
+.lh-legend-branch.branch-0 {
     --branch-color: var(--color-seal);
 }
 
-.lh-node.branch-sunjian,
-.lh-edge.branch-sunjian,
-.lh-legend-branch.branch-jian {
+.lh-node.branch-1,
+.lh-edge.branch-1,
+.lh-legend-branch.branch-1 {
     --branch-color: var(--color-brass);
 }
 
-.lh-node.branch-sunjing,
-.lh-edge.branch-sunjing,
-.lh-legend-branch.branch-jing {
+.lh-node.branch-2,
+.lh-edge.branch-2,
+.lh-legend-branch.branch-2 {
     --branch-color: var(--color-celadon);
+}
+
+.lh-node.branch-3,
+.lh-edge.branch-3,
+.lh-legend-branch.branch-3 {
+    --branch-color: color-mix(in srgb, var(--color-seal) 55%, var(--color-brass));
+}
+
+.lh-node.branch-4,
+.lh-edge.branch-4,
+.lh-legend-branch.branch-4 {
+    --branch-color: color-mix(in srgb, var(--color-celadon) 60%, var(--color-brass));
+}
+
+.lh-node.branch-5,
+.lh-edge.branch-5,
+.lh-legend-branch.branch-5 {
+    --branch-color: color-mix(in srgb, var(--color-seal) 45%, var(--color-celadon));
+}
+
+.lh-node.branch-6,
+.lh-edge.branch-6,
+.lh-legend-branch.branch-6 {
+    --branch-color: color-mix(in srgb, var(--color-brass) 45%, var(--color-celadon));
+}
+
+.lh-node.branch-7,
+.lh-edge.branch-7,
+.lh-legend-branch.branch-7 {
+    --branch-color: color-mix(in srgb, var(--color-seal) 30%, var(--color-ink));
 }
 
 .lh-node.branch-root,
@@ -1090,16 +1121,36 @@ body.kh-fullscreen-fallback {
     display: none;
 }
 
-.lh-detail[data-branch="sunqiang"] {
+.lh-detail[data-branch-index="0"] {
     --branch-color: var(--color-seal);
 }
 
-.lh-detail[data-branch="sunjian"] {
+.lh-detail[data-branch-index="1"] {
     --branch-color: var(--color-brass);
 }
 
-.lh-detail[data-branch="sunjing"] {
+.lh-detail[data-branch-index="2"] {
     --branch-color: var(--color-celadon);
+}
+
+.lh-detail[data-branch-index="3"] {
+    --branch-color: color-mix(in srgb, var(--color-seal) 55%, var(--color-brass));
+}
+
+.lh-detail[data-branch-index="4"] {
+    --branch-color: color-mix(in srgb, var(--color-celadon) 60%, var(--color-brass));
+}
+
+.lh-detail[data-branch-index="5"] {
+    --branch-color: color-mix(in srgb, var(--color-seal) 45%, var(--color-celadon));
+}
+
+.lh-detail[data-branch-index="6"] {
+    --branch-color: color-mix(in srgb, var(--color-brass) 45%, var(--color-celadon));
+}
+
+.lh-detail[data-branch-index="7"] {
+    --branch-color: color-mix(in srgb, var(--color-seal) 30%, var(--color-ink));
 }
 
 .lh-detail-close {

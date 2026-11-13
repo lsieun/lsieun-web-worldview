@@ -1,0 +1,62 @@
+{
+  "type": "family-tree",
+  "dynasty": "cao-wei",
+  "title": "曹氏家谱",
+  "href": "/history/cao-family.html",
+  "topicMeta": "宗族世系",
+  "summary": "曹操以下八支父系血缘：帝位自曹丕一脉两传而绝，转出曹彰、曹宇两支入继；曹植、曹冲、曹彪以文才与早逝留名。",
+  "emperorHref": "/history/cao-wei-emperors.html",
+  "figures": [
+    "caocao",
+    "caoang",
+    "caopi",
+    "caozhang",
+    "caokai",
+    "caozhi",
+    "caochong",
+    "caoyu",
+    "caobiao",
+    "caolin",
+    "caorui",
+    "caofang",
+    "caomao",
+    "caohuan"
+  ],
+  "roles": {
+    "caoang": "魏 · 丰愍王（追谥）· 长子，宛城之役殁",
+    "caozhang": "魏 · 任城威王 · 黄须儿",
+    "caokai": "魏 · 袭封任城王 · 曹芳生父",
+    "caozhi": "魏 · 陈思王 · 才高八斗",
+    "caochong": "魏 · 邓哀王 · 曹操尝欲立为嗣",
+    "caoyu": "魏 · 燕王 · 曹奂生父",
+    "caobiao": "魏 · 白马王 · 王凌之乱赐死",
+    "caolin": "魏 · 东海定王 · 曹髦生父"
+  },
+  "orders": {
+    "caoang": 10,
+    "caopi": 20,
+    "caozhang": 30,
+    "caozhi": 40,
+    "caochong": 50,
+    "caoyu": 60,
+    "caobiao": 70,
+    "caolin": 20,
+    "caorui": 10,
+    "caokai": 10,
+    "caohuan": 10,
+    "caofang": 10,
+    "caomao": 10
+  },
+  "meta": {
+    "watermark": "曹",
+    "subtitle": "谯县曹氏：一支生出一朝帝系，也生出文脉与悲剧。",
+    "tags": [
+      "曹魏",
+      "谯沛宗室",
+      "帝系同源"
+    ],
+    "intro": "谱牒长卷自上而下四世并列：先看曹操八子的长幼与去向，再看帝位如何在丕、霖、彰、宇四支之间转手。曾称帝者加冠，点开可跳转帝系页。",
+    "note": "谱系以《三国志·魏书·武帝纪》与《武文世王公传》为主。曹操二十五子，本图取有传可考的八支；曹芳为曹叡养子，世系按养父连线（与帝系页一致），其血缘出自曹彰—曹楷一系，楷列于彰支以存其脉；曹真本姓秦氏（裴注引《魏略》）、曹休为族子，养子族子不画血缘线，故不入本图；母族与婚姻不画，夏侯氏联姻另见夏侯氏家谱。",
+    "sectionTitle": "四世八支，帝系同源"
+  }
+}

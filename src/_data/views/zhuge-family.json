@@ -1,0 +1,58 @@
+{
+  "type": "family-tree",
+  "dynasty": "three-kingdoms",
+  "title": "诸葛氏家谱",
+  "href": "/history/zhuge-family.html",
+  "topicMeta": "宗族世系",
+  "summary": "琅琊诸葛氏一门三方：瑾仕吴、亮仕蜀、诞仕魏，兄弟分事三国而各成栋梁，也各自走向不同的结局。",
+  "figures": [
+    "zhugegui",
+    "zhugejin",
+    "zhugeliang",
+    "zhugejun",
+    "zhugeqiao",
+    "zhugeke",
+    "zhugezhan",
+    "zhugeshang",
+    "zhugedan"
+  ],
+  "roles": {
+    "zhugegui": "汉 · 泰山郡丞",
+    "zhugejin": "吴 · 大将军 · 豫州牧",
+    "zhugeliang": "蜀 · 丞相 · 录尚书事",
+    "zhugejun": "蜀 · 长水校尉",
+    "zhugeqiao": "吴出继蜀 · 瑾次子，出继亮为嗣 · 驸马都尉",
+    "zhugeke": "吴 · 太傅 · 专权后被诛",
+    "zhugezhan": "蜀 · 卫将军 · 平尚书事",
+    "zhugeshang": "蜀 · 瞻长子 · 绵竹殉国",
+    "zhugedan": "魏 · 征东大将军 · 淮南三叛"
+  },
+  "orders": {
+    "zhugejin": 10,
+    "zhugeliang": 20,
+    "zhugejun": 30,
+    "zhugeke": 10,
+    "zhugeqiao": 20,
+    "zhugeshang": 10,
+    "zhugegui": 1,
+    "zhugedan": 2
+  },
+  "meta": {
+    "watermark": "诸",
+    "subtitle": "琅琊阳都诸葛氏：乱世把一个家族分进了三个国家。",
+    "tags": [
+      "琅琊诸葛氏",
+      "一门三方",
+      "跨蜀吴魏"
+    ],
+    "intro": "谱牒长卷不按国别拆分，三国人物同列一图：珪之下瑾、亮、均三支分事吴蜀，诞一支仕魏独立成根。国别写在每张卡片的身份里，「一门三方」一眼可见。",
+    "note": "谱系以《三国志·蜀书·诸葛亮传》《吴书·诸葛滕二孙濮阳韩传》及《魏书·王毌丘诸葛邓钟传》为主。连线只画父系血缘：诸葛乔为瑾次子、出继亮为嗣，按生父连线，出继关系写在卡片身份里；诞之父名失载，独立成根，与瑾、亮同为汉司隶校尉诸葛丰之后（世远不可谱）；婚姻不画（瞻尚公主、诞女适琅邪王司马伷，皆不入线）。时人语：蜀得其龙，吴得其虎，魏得其狗。",
+    "sectionTitle": "四世四支，一门三方"
+  },
+  "branchRoots": [
+    "zhugejin",
+    "zhugeliang",
+    "zhugejun",
+    "zhugedan"
+  ]
+}

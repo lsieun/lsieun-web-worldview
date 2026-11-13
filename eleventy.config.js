@@ -34,6 +34,9 @@ export default function (eleventyConfig) {
         return Math.min(100, Math.max(0, Number(ratio.toFixed(2))));
     });
 
+    //    JSON 序列化：谱牒长卷把分支图例注入 data 属性供脚本读取
+    eleventyConfig.addFilter("jsonify", (value) => JSON.stringify(value ?? null));
+
     // 5. 忽略资源目录，避免模板引擎二次解析
     eleventyConfig.ignores.add("src/assets/**");
 

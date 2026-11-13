@@ -1,0 +1,36 @@
+{
+  "type": "family-tree",
+  "dynasty": "shu-han",
+  "title": "刘氏家谱",
+  "href": "/history/liu-family.html",
+  "topicMeta": "宗族世系",
+  "summary": "刘备以下的蜀汉帝系血脉：父死子继只历两世，国亡后北迁洛阳。",
+  "emperorHref": "/history/shu-han-emperors.html",
+  "figures": [
+    "liubei",
+    "liushan",
+    "liuyong",
+    "liuli"
+  ],
+  "roles": {
+    "liuyong": "蜀 · 甘陵王 · 憎黄皓而见疏",
+    "liuli": "蜀 · 梁王"
+  },
+  "orders": {
+    "liushan": 10,
+    "liuyong": 20,
+    "liuli": 30
+  },
+  "meta": {
+    "watermark": "刘",
+    "subtitle": "涿郡刘氏：自承汉室宗枝，立国于西南。",
+    "tags": [
+      "蜀汉",
+      "承汉统",
+      "父死子继"
+    ],
+    "intro": "谱牒长卷自刘备起两世：禅、永、理三子长幼并列，帝位父死子继，是三国之中最简单的一条帝系血脉。",
+    "note": "谱系以《三国志·蜀书·先主传》与《二主妃子传》为主。刘备自称中山靖王刘胜之后，世系失载多代，故以刘备为根；刘封为罗侯寇氏之子、刘备养子，过继不画血缘线；刘禅七子本图不列（太子刘璿死于成都之乱，可后续补入）；婚姻不画。",
+    "sectionTitle": "两世三子，父死子继"
+  }
+}

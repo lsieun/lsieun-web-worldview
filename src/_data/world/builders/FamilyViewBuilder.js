@@ -69,8 +69,32 @@ export class FamilyViewBuilder extends ViewBuilder {
         };
         treeRoots.forEach(assignSiblingRanks);
 
-        /* ---------- 3. 支系（始祖之下第一代分支） ---------- */
+        /* ---------- 3. 支系 ----------
+         * 支首（branch head）三种口径：
+         *   a. view.branchRoots 显式声明（如诸葛氏：瑾/亮/均/诞四支）；
+         *   b. 多根页：各根自成一支（如夏侯氏：惇/渊/尚三支并列）；
+         *   c. 单根页（默认）：始祖之下第一代子节点各领一支（如孙氏：羌/坚/静）。
+         * 连线向上遇到支首即停；到不了支首的节点归入中性「root」色。
+         */
+        const branchRootIds = new Set(ensureArray(view.branchRoots, viewSource, "branchRoots"));
+        const multiRoot = branchRootIds.size === 0 && treeRoots.length > 1;
         const branchOf = (node) => {
+            if (branchRootIds.size) {
+                let current = node;
+                while (current) {
+                    if (branchRootIds.has(current.id)) return current.id;
+                    current = current.parents.length ? nodes.get(current.parents[0]) : null;
+                }
+                return "root";
+            }
+            if (multiRoot) {
+                if (!node.parents.length) return node.id;
+                let current = node;
+                while (current.parents.length && current.generation > 0) {
+                    current = nodes.get(current.parents[0]);
+                }
+                return current.id;
+            }
             const visited = new Set();
             let current = node;
             while (current.parents.length && current.generation > 1) {
@@ -81,6 +105,30 @@ export class FamilyViewBuilder extends ViewBuilder {
             return current.generation === 1 ? current.id : "root";
         };
         for (const node of nodes.values()) node.branch = branchOf(node);
+
+        /* ---------- 3.5 分支图例与配色索引（调色板 8 色，超出循环取用） ---------- */
+        const BRANCH_PALETTE = 8;
+        const branches = [];
+        const branchIndexOf = new Map();
+        const registerBranch = (node) => {
+            if (!node || branchIndexOf.has(node.id)) return;
+            const index = branches.length % BRANCH_PALETTE;
+            branchIndexOf.set(node.id, index);
+            branches.push({ id: node.id, index, label: `${node.name}支` });
+        };
+        if (branchRootIds.size) {
+            for (const id of branchRootIds) registerBranch(nodes.get(id));
+        } else {
+            for (const root of treeRoots) {
+                if (multiRoot) {
+                    registerBranch(root);
+                } else {
+                    for (const child of root.children) registerBranch(child);
+                }
+                if (!multiRoot && !root.children.length) registerBranch(root);
+            }
+        }
+        for (const node of nodes.values()) node.branchIndex = branchIndexOf.get(node.branch) ?? -1;
 
         /* ---------- 4. 谱牒长卷坐标 ---------- */
         const scroll = { column: 250, row: 68, nodeWidth: 200, nodeHeight: 58, pad: 40 };
@@ -114,7 +162,7 @@ export class FamilyViewBuilder extends ViewBuilder {
                     path = `M${x1} ${y1} H${mid - radius} Q${mid} ${y1} ${mid} ${y1 + direction * radius}`
                         + ` V${y2 - direction * radius} Q${mid} ${y2} ${mid + radius} ${y2} H${x2}`;
                 }
-                scrollEdges.push({ from: node.id, to: child.id, branch: node.branch, path });
+                scrollEdges.push({ from: node.id, to: child.id, branch: node.branch, branchIndex: node.branchIndex, path });
             }
         }
 
@@ -147,6 +195,7 @@ export class FamilyViewBuilder extends ViewBuilder {
                 generations: scrollGenerations,
                 edges: scrollEdges
             },
+            branches,
             treeRoots
         };
     }

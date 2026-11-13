@@ -1,0 +1,49 @@
+{
+  "type": "family-tree",
+  "dynasty": "cao-wei",
+  "title": "司马氏家谱",
+  "href": "/history/sima-family.html",
+  "topicMeta": "宗族世系",
+  "summary": "河内温县司马氏：司马防八子中的次系，祖孙三代把曹魏的权柄一步一步收进自家口袋，终以禅代收场。",
+  "figures": [
+    "simafang",
+    "simalang",
+    "simayi",
+    "simafu",
+    "simashi",
+    "simazhao",
+    "simayan",
+    "simayou"
+  ],
+  "roles": {
+    "simafang": "汉 · 京兆尹 · 举曹操为洛阳北部尉",
+    "simalang": "魏 · 兖州刺史 · 军疫而卒",
+    "simayi": "魏 · 太傅 · 高平陵政变主谋",
+    "simafu": "魏太宰 → 晋安平王 · 自称大魏纯臣",
+    "simashi": "魏 · 大将军 · 废立自专",
+    "simazhao": "魏 · 晋王 · 弑君灭蜀",
+    "simayan": "晋 · 武帝 · 266 年受魏禅",
+    "simayou": "晋 · 齐王 · 出继师为嗣，贤名遭忌"
+  },
+  "orders": {
+    "simalang": 10,
+    "simayi": 20,
+    "simafu": 30,
+    "simashi": 10,
+    "simazhao": 20,
+    "simayan": 10,
+    "simayou": 20
+  },
+  "meta": {
+    "watermark": "司",
+    "subtitle": "河内温县司马氏：三代四人，从辅臣走到龙椅。",
+    "tags": [
+      "河内司马氏",
+      "八达",
+      "三世禅代"
+    ],
+    "intro": "谱牒长卷自司马防起三世：八达之中本图取朗、懿、孚，懿—师—昭—炎为主线，孚以魏臣自始终。悬停卡片可读小传。",
+    "note": "谱系以《晋书·宣帝纪》《宗室传》及《三国志》裴注为主。司马防八子字皆带「达」，本图取朗、懿、孚三人；司马攸为昭次子、出继师为嗣，按生父连线，出继关系写在卡片身份里；婚姻不画（张春华、王元姬等皆不入）；师无亲子，嗣位由攸系承袭，晋初齐王攸之争是八王之乱的远因之一。",
+    "sectionTitle": "四世三支，禅代主线"
+  }
+}

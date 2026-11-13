@@ -16,12 +16,11 @@
 
     const nodeById = new Map(nodes.map((node) => [node.dataset.person, node]));
     const parents = new Map(nodes.map((node) => [node.dataset.person, (node.dataset.parent || '').split(' ')[0] || '']));
-    const branchLabels = {
-        root: '始祖',
-        sunqiang: '孙羌支',
-        sunjian: '孙坚支',
-        sunjing: '孙静支'
-    };
+    /* 分支图例由模板注入（branches JSON），标签缺失时回退到始祖 */
+    const branchLabels = { root: '始祖' };
+    try {
+        JSON.parse(root.dataset.branches || '[]').forEach((b) => { branchLabels[b.id] = b.label; });
+    } catch (error) { /* 数据源异常时保持回退 */ }
 
     let hoverId = '';
     let activeId = '';
@@ -69,6 +68,7 @@
             if (target) target.textContent = value;
         });
         detail.dataset.branch = node.dataset.branch;
+        if (node.dataset.branchIndex !== undefined) detail.dataset.branchIndex = node.dataset.branchIndex;
         const link = detail.querySelector('[data-field="link"]');
         if (link) {
             if (node.dataset.href) {

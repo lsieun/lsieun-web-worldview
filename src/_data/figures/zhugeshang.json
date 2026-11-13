@@ -1,0 +1,10 @@
+{
+  "id": "zhugeshang",
+  "name": "诸葛尚",
+  "birth": 245,
+  "death": 263,
+  "summary": "瞻长子。绵竹之战与父并军而出，力战没于阵，年十九。",
+  "parents": [
+    "zhugezhan"
+  ]
+}

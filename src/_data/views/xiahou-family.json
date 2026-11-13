@@ -1,0 +1,53 @@
+{
+  "type": "family-tree",
+  "dynasty": "cao-wei",
+  "title": "夏侯氏家谱",
+  "href": "/history/xiahou-family.html",
+  "topicMeta": "宗族世系",
+  "summary": "夏侯惇、夏侯渊两主干撑起曹魏军中半壁：惇镇内、渊征西，霸入蜀、玄死司马氏之手。",
+  "figures": [
+    "xiahou-dun",
+    "xiahou-chong",
+    "xiahou-mao",
+    "xiahou-yuan",
+    "xiahou-heng",
+    "xiahou-ba",
+    "xiahou-cheng",
+    "xiahou-wei",
+    "xiahou-shang",
+    "xiahou-xuan"
+  ],
+  "roles": {
+    "xiahou-dun": "魏 · 大将军 · 元从之首",
+    "xiahou-chong": "魏 · 嗣忠侯",
+    "xiahou-mao": "魏 · 镇东将军 · 尚清河公主",
+    "xiahou-yuan": "魏 · 征西将军 · 虎步关右",
+    "xiahou-heng": "魏 · 嗣安宁亭侯",
+    "xiahou-ba": "魏右将军 → 蜀车骑将军 · 249 年亡入蜀",
+    "xiahou-cheng": "魏 · 渊子 · 年十八卒",
+    "xiahou-wei": "魏 · 兖州刺史",
+    "xiahou-shang": "魏 · 征南大将军 · 渊从子，父名失载",
+    "xiahou-xuan": "魏 · 太常 · 谋诛司马师，事泄夷族"
+  },
+  "orders": {
+    "xiahou-chong": 10,
+    "xiahou-mao": 20,
+    "xiahou-heng": 10,
+    "xiahou-ba": 20,
+    "xiahou-cheng": 30,
+    "xiahou-wei": 40,
+    "xiahou-xuan": 10
+  },
+  "meta": {
+    "watermark": "夏",
+    "subtitle": "沛国谯县夏侯氏：与曹氏共起兵、世为婚姻的元从之族。",
+    "tags": [
+      "曹魏",
+      "谯沛元从",
+      "惇渊两支"
+    ],
+    "intro": "谱牒长卷并列惇、渊两主干与尚一支：先看两代人如何分担曹魏的军权，再看高平陵之后这支元从之族如何被司马氏拆散。悬停卡片可读小传。",
+    "note": "谱系以《三国志·魏书·诸夏侯曹传》及裴注为准。夏侯惇、夏侯渊为族兄弟，共同先祖名号失载，两支平列为根；夏侯尚为渊从子，其父失载，独立成根；婚姻不画（楙尚清河公主、衡尚曹操弟女、霸女适羊祜，皆以卡片身份注明）；渊诸子字尾带「权」、惇诸子字尾带「子」，可据此快速定位辈分；霸一支入晋后的续枝（《晋书》所记）不入图。",
+    "sectionTitle": "三支并列，两代成谱"
+  }
+}

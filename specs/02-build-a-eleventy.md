@@ -27,6 +27,7 @@ eleventyConfig.addPassthroughCopy({ "node_modules/echarts/dist/echarts.min.js": 
   - `cnYear`：负数年份输出「前 256」。
   - `pct(value, min, max)`：把年份映射为 0–100 的百分比，用于生命线定位。
   - `categoryName`：tag → 栏目名。
+  - `jsonify(value)`：`JSON.stringify` 包装，谱牒长卷注入 `data-branches` 等属性用；属性内使用需再接 `| escape`。
 
 ## 4. 常见陷阱
 
