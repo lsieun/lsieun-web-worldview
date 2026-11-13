@@ -4,5 +4,110 @@
   "start": 220,
   "end": 280,
   "order": 100,
-  "summary": "魏蜀吴鼎立，人口锐减，制度承前启后。"
+  "summary": "魏蜀吴鼎立，人口锐减，制度承前启后。",
+  "rulers": [
+    {
+      "figure": "sunquan",
+      "title": "吴大帝",
+      "status": "formal",
+      "order": 1,
+      "note": "222 年称吴王，229 年在武昌即皇帝位，国号吴，同年还都建业。帝序自 229 年称帝起计算，不把此前吴王年段并入。",
+      "terms": [
+        {
+          "start": 229,
+          "end": 252,
+          "events": [
+            "sunquan-chengdi",
+            "wu-er-gong",
+            "wu-fei-sunhe",
+            "sunquan-death"
+          ]
+        }
+      ]
+    },
+    {
+      "figure": "sunliang",
+      "title": "吴会稽王",
+      "status": "formal",
+      "order": 2,
+      "note": "孙权第七子，十岁即位。诸葛恪受遗诏辅政，其后孙峻、孙綝相继专权；258 年被孙綝废为会稽王。",
+      "terms": [
+        {
+          "start": 252,
+          "end": 258,
+          "events": [
+            "sunliang-jianji",
+            "dongxing-battle",
+            "zhugeke-xincheng",
+            "zhugeke-zhu",
+            "sunhe-ci",
+            "sunjun-zhuanquan"
+          ]
+        }
+      ]
+    },
+    {
+      "figure": "sunxiu",
+      "title": "吴景帝",
+      "status": "formal",
+      "order": 3,
+      "note": "孙权第六子，258 年由孙綝迎立，同年诛杀孙綝，亲掌朝政，在位六年。",
+      "terms": [
+        {
+          "start": 258,
+          "end": 264,
+          "events": [
+            "sunlin-fei-sunliang",
+            "sunxiu-jianji",
+            "sunlin-zhu",
+            "shuhan-miewang"
+          ]
+        }
+      ]
+    },
+    {
+      "figure": "sunhao",
+      "title": "吴末帝",
+      "status": "formal",
+      "order": 4,
+      "note": "孙权之孙、废太子孙和之子，264 年由濮阳兴、张布迎立。280 年晋军攻入建业，出降，东吴灭亡。",
+      "terms": [
+        {
+          "start": 264,
+          "end": 280,
+          "events": [
+            "sunhao-jianji",
+            "sunhao-hai-du",
+            "jin-miewu"
+          ]
+        }
+      ]
+    }
+  ],
+  "regencies": [
+    {
+      "figure": "zhugeke",
+      "start": 252,
+      "end": 253,
+      "label": "辅政与专权",
+      "note": "孙权临终受遗诏辅佐孙亮，东兴之战后声望极盛；新城败退后为孙峻所杀。",
+      "fate": "253 年孙峻设伏诛诸葛恪，夷其三族。"
+    },
+    {
+      "figure": "sunjun",
+      "start": 253,
+      "end": 256,
+      "label": "宗室专权",
+      "note": "诛诸葛恪后以丞相、大将军身份独揽朝政，孙亮在位期间政令多出其手。",
+      "fate": "256 年孙峻病卒，朝政转由其从弟孙綝接掌。"
+    },
+    {
+      "figure": "sunlin",
+      "start": 256,
+      "end": 258,
+      "label": "废立权臣",
+      "note": "接掌朝政后废孙亮、迎立孙休，是东吴帝位更替中最后一位操纵者。",
+      "fate": "258 年为孙休与丁奉等设计诛杀。"
+    }
+  ]
 }
