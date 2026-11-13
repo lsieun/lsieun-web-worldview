@@ -107,12 +107,12 @@
 
     function styledChartData(person, zoom = 1) {
         const lineage = person ? lineageFor(person) : new Set();
-        /* symbolSize 随 zoom 微调：放大时稍大以利阅读，缩小时随比例缩小避免重叠 */
+        /* symbolSize 随 zoom 微调。单行扁框，整体更紧凑 */
         const scale = Math.max(0.55, Math.min(1.15, zoom));
         function styleNode(node) {
             const isTarget = node.person === person;
             const inLineage = lineage.has(node.person);
-            const baseSize = node.hasRuler ? [150, 58] : [120, 42];
+            const baseSize = node.hasRuler ? [128, 32] : [108, 26];
             return {
                 ...node,
                 symbolSize: [baseSize[0] * scale, baseSize[1] * scale],
@@ -136,12 +136,13 @@
     function chartLabel(params) {
         const data = params.data;
         if (!data.hasRuler) {
-            /* 宗亲节点：1 行（宗标 + 姓名/身份） */
+            /* 宗亲节点：1 行 */
             return `{kin|宗}{title|${data.title}}`;
         }
-        /* 皇帝节点：2 行（帝序圆 + 谥号 / 真实姓名）。
-           砍掉在位年段和副标题，留给 tooltip 展示，避免缩小时重叠 */
-        return `{order|${data.order || '◇'}}{title|${data.title}}\n{name|${data.detail}}`;
+        /* 皇帝节点：1 行（帝序圆 + 谥号 + 真名）。
+           全部压到单行，symbolSize 配扁框，这样树形整体紧凑、一屏可装下整棵树。
+           完整信息（在位年段、生卒年）都在 tooltip 里 */
+        return `{order|${data.order || '◇'}}{title|${data.title}}{name|${data.detail}}`;
     }
 
     function escapeHtml(value) {
@@ -201,7 +202,7 @@
                 top: forExport ? 120 : 24,
                 bottom: forExport ? 60 : 24,
                 symbol: 'roundRect',
-                symbolSize: [150, 58],
+                symbolSize: [128, 32],
                 roam: !forExport,
                 center: settings.center || initialCenter,
                 zoom: settings.zoom || initialZoom,
@@ -211,44 +212,43 @@
                 expandAndCollapse: false,
                 edgeShape: 'polyline',
                 edgeForkPosition: '50%',
-                /* 显式设置间距，让 ECharts 在 symbolSize 基础上额外留出空间，
-                   避免兄弟节点或父子节点间因 label 溢出而重叠 */
-                nodeGap: 46,
-                levelGap: 80,
+                /* 单行扁框后间距可大幅收窄，让整棵树更紧凑 */
+                nodeGap: 28,
+                levelGap: 52,
                 lineStyle: { color: chartColors.lineStrong, width: 1 },
                 label: {
                     show: !settings.overview,
                     position: 'inside',
                     formatter: chartLabel,
-                    /* 节点整体缩小后，内部 rich text 也等比缩小 */
+                    /* 单行扁框，所有 rich text 对齐到同一行高 20px */
                     rich: {
                         order: {
                             color: chartColors.surfaceRaised,
                             backgroundColor: chartColors.brass,
-                            borderRadius: 10,
-                            width: 20,
-                            height: 20,
+                            borderRadius: 8,
+                            width: 18,
+                            height: 18,
                             align: 'center',
                             fontFamily: chartColors.fontMono,
-                            fontSize: 10,
+                            fontSize: 9,
                             fontWeight: 600,
-                            lineHeight: 20
+                            lineHeight: 18
                         },
                         kin: {
                             color: chartColors.muted,
                             borderColor: chartColors.lineStrong,
                             borderWidth: 1,
                             borderRadius: 3,
-                            width: 20,
-                            height: 20,
+                            width: 18,
+                            height: 18,
                             align: 'center',
-                            fontSize: 9,
-                            lineHeight: 20
+                            fontSize: 8,
+                            lineHeight: 18
                         },
                         title: {
                             color: chartColors.ink,
                             fontFamily: chartColors.fontSerif,
-                            fontSize: 13,
+                            fontSize: 12,
                             fontWeight: 600,
                             lineHeight: 18,
                             padding: [0, 0, 0, 4]
@@ -256,9 +256,9 @@
                         name: {
                             color: chartColors.muted,
                             fontFamily: chartColors.fontBody,
-                            fontSize: 10,
-                            lineHeight: 14,
-                            padding: [1, 0, 0, 0]
+                            fontSize: 9,
+                            lineHeight: 18,
+                            padding: [0, 0, 0, 4]
                         }
                     }
                 },
@@ -277,15 +277,19 @@
     }
 
     function calculateInitialZoom() {
-        const widthZoom = (chartMetrics.leaves * 225) / Math.max(chartEl.clientWidth, 1);
-        const heightZoom = (chartMetrics.levels * 108) / Math.max(chartEl.clientHeight, 1);
-        return Math.min(3, Math.max(1.15, widthZoom, heightZoom));
+        /* 默认直接全图 fit：单行扁框后框很小，一屏能装下整棵树 */
+        const contentWidth = chartMetrics.leaves * 150;
+        const contentHeight = chartMetrics.levels * 60;
+        const availableWidth = Math.max(chartEl.clientWidth - 48, 1);
+        const availableHeight = Math.max(chartEl.clientHeight - 48, 1);
+        const fit = Math.min(availableWidth / contentWidth, availableHeight / contentHeight);
+        return Math.min(1.2, Math.max(0.12, fit));
     }
 
     /* 全图：按叶子数与层数估算内容尺寸，缩到一屏；此时节点随缩放等比变小 */
     function calculateFitZoom() {
-        const contentWidth = chartMetrics.leaves * 225;
-        const contentHeight = chartMetrics.levels * 108;
+        const contentWidth = chartMetrics.leaves * 150;
+        const contentHeight = chartMetrics.levels * 60;
         const availableWidth = Math.max(chartEl.clientWidth - 48, 1);
         const availableHeight = Math.max(chartEl.clientHeight - 48, 1);
         const fit = Math.min(availableWidth / contentWidth, availableHeight / contentHeight);
