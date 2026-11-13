@@ -1,0 +1,13 @@
+{
+  "id": "zhugeliang-wuzhangyuan",
+  "title": "诸葛亮病逝五丈原",
+  "year": 234,
+  "era": "建兴十二年",
+  "dynasty": "three-kingdoms",
+  "axis": true,
+  "key": true,
+  "figures": [
+    "zhugeliang"
+  ],
+  "desc": "诸葛亮与司马懿相持百余日，八月病逝于五丈原军中，年五十四，蜀军遂退。"
+}

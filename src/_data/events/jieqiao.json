@@ -1,0 +1,13 @@
+{
+  "id": "jieqiao",
+  "title": "界桥之战",
+  "year": 192,
+  "era": "初平三年",
+  "dynasty": "eastern-han",
+  "axis": true,
+  "figures": [
+    "yuanshao",
+    "gongsunzan"
+  ],
+  "desc": "袁绍与公孙瓒大战于界桥，麴义先登大破白马义从，河北二雄自此连年相攻。"
+}

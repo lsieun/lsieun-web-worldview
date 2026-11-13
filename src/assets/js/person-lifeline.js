@@ -130,6 +130,8 @@
         const colW = Math.max(MIN_COL, Math.floor((avail - AXIS_W) / people.length));
         const height = TOP + (END - START) * PPY + BOTTOM;
         const tableWidth = AXIS_W + people.length * colW;
+        // 图表宽于可用版心时退回容器内横滚（CSS 据此切断列头吸顶，与窄屏一致）
+        card.classList.toggle('is-overflow', tableWidth > avail);
 
         card.style.setProperty('--qtg-axis', `${AXIS_W}px`);
         card.style.setProperty('--qtg-col', `${colW}px`);

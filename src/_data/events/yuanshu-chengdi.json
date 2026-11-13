@@ -1,0 +1,13 @@
+{
+  "id": "yuanshu-chengdi",
+  "title": "袁术寿春称帝",
+  "year": 197,
+  "era": "建安二年",
+  "dynasty": "eastern-han",
+  "axis": true,
+  "key": true,
+  "figures": [
+    "yuanshu"
+  ],
+  "desc": "袁术以谶纬自许，在寿春僭号称帝，随即众叛亲离，势遂衰。"
+}

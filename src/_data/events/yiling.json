@@ -1,0 +1,15 @@
+{
+  "id": "yiling",
+  "title": "夷陵之战",
+  "year": 222,
+  "era": "章武二年",
+  "dynasty": "three-kingdoms",
+  "axis": true,
+  "key": true,
+  "figures": [
+    "liubei",
+    "sunquan",
+    "luxun"
+  ],
+  "desc": "刘备大举伐吴，与陆逊相持夷陵，被火攻大败，退守白帝城。"
+}

@@ -2,7 +2,10 @@
   "id": "xiandi-chibi",
   "title": "赤壁之战",
   "year": 208,
-  "era": "建安",
-  "desc": "曹操南下，孙刘联军在赤壁用火攻大败曹军，三国鼎立格局初现。",
+  "era": "建安十三年",
+  "axis": true,
+  "key": true,
+  "figures": ["caocao", "liubei", "sunquan", "zhugeliang"],
+  "desc": "曹操南下，诸葛亮出使东吴促成孙刘联盟，联军在赤壁用火攻大败曹军，三国鼎立格局初现。",
   "dynasty": "eastern-han"
 }

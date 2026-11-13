@@ -1,0 +1,15 @@
+{
+  "id": "guandong-taodong",
+  "title": "关东共讨董卓",
+  "year": 190,
+  "era": "初平元年",
+  "dynasty": "eastern-han",
+  "axis": true,
+  "figures": [
+    "yuanshao",
+    "yuanshu",
+    "caocao",
+    "sunjian"
+  ],
+  "desc": "袁绍领衔，关东州郡起兵讨董，董卓挟天子西迁长安，焚洛阳。"
+}

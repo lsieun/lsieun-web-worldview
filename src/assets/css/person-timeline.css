@@ -735,6 +735,15 @@
     }
 }
 
+/* 图表宽于版心（person-lifeline.js 加 is-overflow）时退回容器内横滚；
+   滚动容器会打断列头对视口的吸顶，按窄屏惯例改 static。 */
+.qtg-card.is-overflow .qtg-scroll {
+    overflow-x: auto;
+}
+.qtg-card.is-overflow .qtg-head {
+    position: static;
+}
+
 @media (max-width: 720px) {
     .qt-table {
         --qt-rail: 54px;

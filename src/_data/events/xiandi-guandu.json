@@ -2,7 +2,10 @@
   "id": "xiandi-guandu",
   "title": "官渡之战",
   "year": 200,
-  "era": "建安",
-  "desc": "曹操与袁绍在官渡决战，曹操以少胜多，奠定统一北方基础。",
+  "era": "建安五年",
+  "axis": true,
+  "key": true,
+  "figures": ["caocao", "yuanshao"],
+  "desc": "曹操与袁绍在官渡决战，乌巢焚粮，曹操以少胜多，奠定统一北方基础。",
   "dynasty": "eastern-han"
 }

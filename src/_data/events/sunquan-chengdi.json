@@ -1,0 +1,13 @@
+{
+  "id": "sunquan-chengdi",
+  "title": "孙权称帝",
+  "year": 229,
+  "era": "黄龙元年",
+  "dynasty": "three-kingdoms",
+  "axis": true,
+  "key": true,
+  "figures": [
+    "sunquan"
+  ],
+  "desc": "石亭大胜后，孙权在武昌即皇帝位，国号吴，三国鼎立局面正式形成。"
+}

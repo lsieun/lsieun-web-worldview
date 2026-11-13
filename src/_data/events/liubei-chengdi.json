@@ -1,0 +1,12 @@
+{
+  "id": "liubei-chengdi",
+  "title": "刘备成都称帝",
+  "year": 221,
+  "era": "章武元年",
+  "dynasty": "three-kingdoms",
+  "axis": true,
+  "figures": [
+    "liubei"
+  ],
+  "desc": "曹丕篡汉后，刘备在成都即皇帝位，国号汉，史称蜀汉。"
+}
