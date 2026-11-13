@@ -457,6 +457,17 @@
             });
             initialZoom = calculateInitialZoom();
             chart.setOption(buildChartOption(styledChartData('', initialZoom), { center: initialCenter, zoom: initialZoom }));
+            /* ECharts tree 的 center 控制整个几何中心而非根节点位置，
+               树左右不对称时根节点会偏移。渲染后手动定位根节点到画布顶部居中 */
+            chart.once('rendered', () => {
+                const data = chart.getModel().getSeriesByIndex(0).getData();
+                const rootLayout = data.getItemLayout(0);
+                if (rootLayout) {
+                    const rootCenter = ['50%', '12%'];
+                    chart.setOption({ series: [{ center: rootCenter }] });
+                    initialCenter = rootCenter;
+                }
+            });
             chartShell.hidden = false;
             kinshipPanel.classList.add('is-chart-enhanced');
             setupChartControls();
