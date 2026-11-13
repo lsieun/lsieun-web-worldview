@@ -1,0 +1,136 @@
+{#
+  谱牒长卷：同一份孙氏世系数据的精美版原型。
+  构建期输出完整 SVG 与坐标；JS 只做悬停点亮世系、点击打开人物小传。
+#}
+{%- macro renderScrollNode(node) %}
+{%- if node.href %}<a class="lh-node-link" href="{{ node.href }}" aria-label="{{ node.title }} 帝系年表">{%- endif %}
+<g class="lh-node branch-{{ node.branch }}{% if node.emperor %} is-emperor{% endif %}"
+   transform="translate({{ node.scrollX }} {{ node.scrollY }})"
+   data-person="{{ node.id }}" data-parent="{{ node.parents | join(' ') }}" data-branch="{{ node.branch }}"
+   data-name="{{ node.title }}" data-title="{{ node.detail }}" data-rank="{{ node.siblingRank or '始' }}"
+   data-emperor="{{ 'true' if node.emperor else 'false' }}" data-imperial="{{ node.imperialLabel }}"
+   data-reign="{{ node.reignLabel }}" data-href="{{ node.href }}"
+   tabindex="0" role="group"
+   aria-label="{{ node.title }}{% if node.detail %}，{{ node.detail }}{% endif %}，{% if node.siblingRank %}同父兄弟排行第 {{ node.siblingRank }}{% else %}本谱始祖{% endif %}{% if node.emperor %}，{{ node.imperialLabel }}{% endif %}">
+    <title>{{ node.title }}{% if node.detail %} · {{ node.detail }}{% endif %}{% if node.emperor %} · {{ node.imperialLabel }}{% endif %}</title>
+    {%- if node.emperor %}
+    <use class="lh-crown" href="#lh-crown" x="{{ (familyView.scrollMap.nodeWidth / 2) - 19 }}" y="-19" width="38" height="21"></use>
+    {%- endif %}
+    <path class="lh-card" d="M10 0 H190 Q200 0 200 10 V58 H0 V10 Q0 0 10 0 Z"></path>
+    {%- if node.emperor %}
+    <path class="lh-emperor-frame" d="M8 4 H192 Q196 4 196 8 V54 H4 V8 Q4 4 8 4 Z"></path>
+    {%- endif %}
+    <path class="lh-rule" d="M10 9 H190"></path>
+    <rect class="lh-accent" x="0" y="10" width="3" height="38"></rect>
+    <rect class="lh-seal" x="10" y="14" width="20" height="20" rx="1"></rect>
+    <text class="lh-seal-text" x="20" y="29.5" text-anchor="middle">{{ node.siblingRank or '始' }}</text>
+    <text class="lh-name" x="38" y="29">{{ node.title }}</text>
+    <text class="lh-sub" x="38" y="43">{{ node.detail }}</text>
+    {%- if node.emperor %}
+    <text class="lh-reign" x="38" y="53">{{ node.reignLabel }}</text>
+    {%- endif %}
+</g>
+{%- if node.href %}</a>{%- endif %}
+{%- endmacro %}
+
+{%- macro renderScrollBranch(node) %}
+{{ renderScrollNode(node) }}
+{%- for child in node.children %}
+{{ renderScrollBranch(child) }}
+{%- endfor %}
+{%- endmacro %}
+
+{% if familyView and familyView.scrollMap %}
+<link rel="stylesheet" href="/assets/css/dynasty-reigns.css">
+
+<div class="lineage-scroll" data-lineage-scroll>
+    <section class="page-hero reign-hero">
+        <span class="watermark" aria-hidden="true">{{ familyView.meta.watermark | default('孙') }}</span>
+        <div class="container">
+            <p class="eyebrow">LINEAGE · SCROLL</p>
+            <h1 class="page-title">{{ familyView.title }} · 谱牒长卷</h1>
+            <p class="page-lead">姓名在上，帝号在下；朱印记同父长幼，鎏金冠只标曾称帝。整条世系以五世为列，三支分色，像展读一卷谱牒。</p>
+            <div class="page-meta">
+                <span>宗族人物 <strong>{{ familyView.nodeCount }} 位</strong></span>
+                <span>世系 <strong>{{ familyView.generationCount }} 世</strong></span>
+                <span>皇帝 <strong>{{ familyView.emperorCount }} 位</strong></span>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section--tint" aria-labelledby="lineage-scroll-title">
+        <div class="container">
+            <div class="section-head" data-reveal>
+                <p class="eyebrow">01 · PEDIGREE SCROLL</p>
+                <h2 class="section-title" id="lineage-scroll-title">五世成列，三支分色</h2>
+                <p class="section-intro">悬停任一人可点亮其世系路径；点击打开人物小传。皇帝节点的帝号仍是副题，姓名始终是主标题。</p>
+            </div>
+
+            <div class="lh-legend" aria-label="谱牒图例">
+                <span><i class="lh-legend-seal" aria-hidden="true">1</i>朱印：同父兄弟长幼序</span>
+                <span><i class="lh-legend-crown" aria-hidden="true"><svg viewBox="0 0 32 18" focusable="false"><path d="M2 14.5 4.5 5 11 10.5 16 2 21 10.5 27.5 5 30 14.5Z"></path><rect x="3" y="15" width="26" height="2.6" rx="1"></rect></svg></i>鎏金冠：曾称帝</span>
+                <span><i class="lh-legend-branch branch-qiang" aria-hidden="true"></i>孙羌支</span>
+                <span><i class="lh-legend-branch branch-jian" aria-hidden="true"></i>孙坚支</span>
+                <span><i class="lh-legend-branch branch-jing" aria-hidden="true"></i>孙静支</span>
+            </div>
+
+            <div class="lh-map-shell" tabindex="0" role="region" aria-label="孙氏谱牒长卷，可横向滚动查看">
+                <svg class="lh-map" viewBox="0 0 {{ familyView.scrollMap.width }} {{ familyView.scrollMap.height }}" role="img"
+                     aria-label="{{ familyView.title }}谱牒长卷。五世成列，三支分色；朱印为同父长幼序，鎏金冠表示曾称帝。">
+                    <defs>
+                        <symbol id="lh-crown" viewBox="0 0 32 18">
+                            <path d="M2 14.5 4.5 5 11 10.5 16 2 21 10.5 27.5 5 30 14.5Z"></path>
+                            <rect x="3" y="15" width="26" height="2.6" rx="1"></rect>
+                        </symbol>
+                    </defs>
+
+                    <g class="lh-bands">
+                        {%- for generation in familyView.scrollMap.generations %}
+                        <rect class="lh-band lh-band--{{ generation.index }}" x="{{ generation.x - 24 }}" y="28" width="{{ familyView.scrollMap.nodeWidth + 48 }}" height="{{ familyView.scrollMap.height - 44 }}" rx="2"></rect>
+                        <text class="lh-band-label" x="{{ generation.x + (familyView.scrollMap.nodeWidth / 2) }}" y="19" text-anchor="middle">{{ generation.label }}</text>
+                        <path class="lh-band-tick" d="M{{ generation.x - 16 }} 26 H{{ generation.x + familyView.scrollMap.nodeWidth + 16 }}"></path>
+                        {%- endfor %}
+                    </g>
+
+                    <g class="lh-edge-halos" aria-hidden="true">
+                        {%- for edge in familyView.scrollMap.edges %}
+                        <path class="lh-edge-halo branch-{{ edge.branch }}" d="{{ edge.path }}"></path>
+                        {%- endfor %}
+                    </g>
+
+                    <g class="lh-edges" aria-hidden="true">
+                        {%- for edge in familyView.scrollMap.edges %}
+                        <path class="lh-edge branch-{{ edge.branch }}" data-from="{{ edge.from }}" data-to="{{ edge.to }}" d="{{ edge.path }}"></path>
+                        {%- endfor %}
+                    </g>
+
+                    <g class="lh-nodes">
+                        {%- for root in familyView.treeRoots %}
+                        {{ renderScrollBranch(root) }}
+                        {%- endfor %}
+                    </g>
+                </svg>
+            </div>
+
+            <aside class="lh-detail" data-lineage-detail hidden aria-live="polite">
+                <button type="button" class="lh-detail-close" data-lineage-close aria-label="关闭人物小传">×</button>
+                <p class="lh-detail-branch" data-field="branch"></p>
+                <h3 data-field="name"></h3>
+                <p class="lh-detail-title" data-field="title"></p>
+                <dl class="lh-detail-meta">
+                    <div><dt>长幼</dt><dd data-field="rank"></dd></div>
+                    <div><dt>帝位</dt><dd data-field="imperial"></dd></div>
+                </dl>
+                <p class="lh-detail-reign" data-field="reign"></p>
+                <a class="lh-detail-link" data-field="link" hidden>查看帝系年表 <span aria-hidden="true">→</span></a>
+            </aside>
+
+            {% if familyView.meta.note %}
+            <p class="reign-method-note">{{ familyView.meta.note | safe }}</p>
+            {% endif %}
+        </div>
+    </section>
+</div>
+
+<script src="/assets/js/family-tree-scroll.js" defer></script>
+{% endif %}

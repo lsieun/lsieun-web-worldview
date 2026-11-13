@@ -8,17 +8,15 @@
     const root = document.querySelector('[data-reign-root]');
     if (!root) return;
 
-    const familyMode = root.hasAttribute('data-family-root');
     const panels = new Map(
         Array.from(root.querySelectorAll('[data-reign-panel]')).map((panel) => [panel.dataset.reignPanel, panel])
     );
     const buttons = Array.from(root.querySelectorAll('[data-reign-switch]'));
-    if (!panels.has('kinship')) return;
-    if (!familyMode && (!panels.has('timeline') || !buttons.length)) return;
+    if (!panels.has('kinship') || !panels.has('timeline') || !buttons.length) return;
 
     const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const dynastyTitle = document.querySelector('h1')?.textContent?.trim() || '历代皇帝';
-    let activeView = familyMode ? 'kinship' : 'timeline';
+    let activeView = 'timeline';
 
     const kinshipPanel = panels.get('kinship');
     const chartShell = kinshipPanel.querySelector('[data-tree-chart-shell]');
@@ -54,11 +52,7 @@
             title: article.querySelector('.kh-identity h4').textContent.trim(),
             detail: article.querySelector('.kh-identity p').textContent.trim(),
             reign: article.querySelector('.kh-reign').textContent.trim(),
-            siblingRank: Number.parseInt(article.dataset.siblingRank, 10) || 0,
-            emperor: article.dataset.emperor === 'true' || article.classList.contains('is-emperor'),
-            imperialLabel: article.querySelector('.kh-imperial')?.textContent.trim() || '',
-            order: Number.parseInt(article.dataset.imperialOrder, 10)
-                || (article.dataset.siblingRank === undefined ? Number.parseInt(rankText, 10) : null),
+            order: Number.parseInt(rankText, 10) || null,
             hasRuler,
             href: article.dataset.nodeHref || '',
             children: childList
@@ -138,12 +132,6 @@
 
     function chartLabel(params) {
         const data = params.data;
-        if (familyMode) {
-            const rank = `{rank|${data.siblingRank || '始'}}`;
-            const crown = data.emperor ? '{crown|♛}' : '';
-            const label = data.imperialLabel ? `${data.imperialLabel} · ${data.reign}` : data.reign;
-            return `${rank}${crown}{title|${data.title}}\n{name|${data.detail}}\n{reign|${label}}`;
-        }
         if (!data.hasRuler) {
             const detail = data.detail && data.detail !== data.reign ? `\n{name|${data.detail}}` : '';
             const reign = data.reign ? `\n{reign|${data.reign}}` : '';
@@ -160,13 +148,9 @@
 
     function chartTooltip(params) {
         const data = params.data;
-        const identity = familyMode
-            ? `${data.siblingRank ? `同父兄弟排行第 ${data.siblingRank}` : '本谱始祖'}`
-                + (data.emperor ? ` · ${data.imperialLabel}` : '')
-                + ` · ${data.detail || '宗室支系'}`
-            : data.hasRuler
-                ? `${data.order ? `第 ${data.order} 位皇帝` : '过渡人物 · 未正式即位'} · ${data.detail}`
-                : (data.detail || '宗室支系');
+        const identity = data.hasRuler
+            ? `${data.order ? `第 ${data.order} 位皇帝` : '过渡人物 · 未正式即位'} · ${data.detail}`
+            : (data.detail || '宗室支系');
         const action = data.hasRuler
             ? '点击查看在位大事 →'
             : (data.href ? '点击查看帝系年表 →' : '');
@@ -184,15 +168,11 @@
             animation: forExport ? false : !reduceMotion(),
             aria: {
                 enabled: true,
-                description: familyMode
-                    ? `${dynastyTitle} 父系家谱。数字为同一父亲名下的长幼序，皇冠表示曾称帝，连线只表示父子关系。`
-                    : `${dynastyTitle} 血缘世系树。数字表示皇帝即位顺序，连线只表示父母与子女关系，未即位宗亲用于连接世系。`
+                description: `${dynastyTitle} 血缘世系树。数字表示皇帝即位顺序，连线只表示父母与子女关系，未即位宗亲用于连接世系。`
             },
             title: forExport ? {
                 text: `${dynastyTitle} · 血缘世系`,
-                subtext: familyMode
-                    ? '数字为长幼序 · 皇冠表示曾称帝 · 连线仅表示父子关系'
-                    : '数字为帝序 · 连线仅表示亲属关系 · 未即位宗亲不计入帝序',
+                subtext: '数字为帝序 · 连线仅表示亲属关系 · 未即位宗亲不计入帝序',
                 left: 36,
                 top: 26,
                 textStyle: { color: chartColors.ink, fontFamily: chartColors.fontSerif, fontSize: 26, fontWeight: 600 },
@@ -478,12 +458,7 @@
             kinshipPanel.classList.add('is-chart-enhanced');
             setupChartControls();
             chart.on('click', (params) => {
-                if (!params.data) return;
-                if (familyMode) {
-                    if (params.data.href) window.location.href = params.data.href;
-                    return;
-                }
-                if (!params.data.hasRuler) return;
+                if (!params.data || !params.data.hasRuler) return;
                 const person = params.data.person;
                 if (document.fullscreenElement === chartShell || chartShell.classList.contains('is-expanded')) {
                     exitChartFullscreen().then(() => showView('timeline', { person, historyMode: 'push' }));
@@ -611,37 +586,8 @@
         showView(view, { person, historyMode: 'push' });
     });
 
-    function focusFamilyPerson(person, scroll = true) {
-        const target = personTarget('kinship', person);
-        if (!target) return;
-        clearHighlights();
-        target.classList.add('is-target');
-        highlightKinship(target);
-        if (chart) {
-            chartTarget = person;
-            chart.setOption({ series: [{ data: styledChartData(person) }] });
-        }
-        if (!scroll) return;
-        requestAnimationFrame(() => {
-            if (chart) centerChartPerson(person);
-            const destination = chart ? chartShell : target;
-            destination.scrollIntoView({
-                behavior: reduceMotion() ? 'auto' : 'smooth',
-                block: 'start',
-                inline: 'nearest'
-            });
-            if (!chart) target.focus({ preventScroll: true });
-        });
-    }
-
     function syncFromHash(scroll = true) {
         const hash = window.location.hash;
-        if (familyMode) {
-            ensureChart();
-            const match = hash.match(/^#tree-(.+)$/);
-            if (match) focusFamilyPerson(decodeURIComponent(match[1]), scroll);
-            return;
-        }
         let match = hash.match(/^#(timeline|tree)-(.+)$/);
         if (match) {
             const view = match[1] === 'timeline' ? 'timeline' : 'kinship';

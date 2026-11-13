@@ -340,39 +340,67 @@ function buildFamilyView(view, dynasties, figures, figureSources, dynastySources
     }
     treeRoots.forEach(assignSiblingRanks);
 
-    /* 静态全图坐标：沿父系向下（generation 为列），叶子自上而下占用行，父节点居中于子女 */
-    const map = { column: 200, row: 50, nodeWidth: 150, nodeHeight: 42, pad: 28 };
-    let leafCursor = 0;
-    function assignMapCoordinates(node) {
-        node.mapX = map.pad + node.generation * map.column;
-        if (!node.children.length) {
-            node.mapY = map.pad + leafCursor * map.row;
-            leafCursor += 1;
-        } else {
-            node.children.forEach(assignMapCoordinates);
-            const first = node.children[0];
-            const last = node.children[node.children.length - 1];
-            node.mapY = (first.mapY + last.mapY) / 2;
+    /* 支系：始祖之下的三条第一代分支，供长卷分色 */
+    function branchOf(node) {
+        const visited = new Set();
+        let current = node;
+        while (current.parents.length && current.generation > 1) {
+            if (visited.has(current.id)) break;
+            visited.add(current.id);
+            current = nodes.get(current.parents[0]);
         }
+        return current.generation === 1 ? current.id : "root";
     }
-    treeRoots.forEach(assignMapCoordinates);
-
-    const mapEdges = [];
-    for (const node of nodes.values()) {
-        for (const child of node.children) {
-            const x1 = node.mapX + map.nodeWidth;
-            const y1 = node.mapY + map.nodeHeight / 2;
-            const x2 = child.mapX;
-            const y2 = child.mapY + map.nodeHeight / 2;
-            const midX = (x1 + x2) / 2;
-            mapEdges.push({ from: node.id, to: child.id, path: `M${x1} ${y1} H${midX} V${y2} H${x2}` });
-        }
-    }
+    for (const node of nodes.values()) node.branch = branchOf(node);
 
     const generationsMax = nodes.size ? Math.max(...[...nodes.values()].map((node) => node.generation)) + 1 : 0;
     const maxGeneration = generationsMax - 1;
-    const mapWidth = map.pad * 2 + maxGeneration * map.column + map.nodeWidth;
-    const mapHeight = map.pad * 2 + Math.max(leafCursor - 1, 0) * map.row + map.nodeHeight;
+
+    /* 谱牒长卷坐标：卡片更大，列距更宽，连线在转角处做圆角 */
+    const scroll = { column: 250, row: 68, nodeWidth: 200, nodeHeight: 58, pad: 40 };
+    let scrollLeafCursor = 0;
+    function assignScrollCoordinates(node) {
+        node.scrollX = scroll.pad + node.generation * scroll.column;
+        if (!node.children.length) {
+            node.scrollY = scroll.pad + scrollLeafCursor * scroll.row;
+            scrollLeafCursor += 1;
+        } else {
+            node.children.forEach(assignScrollCoordinates);
+            node.scrollY = (node.children[0].scrollY + node.children[node.children.length - 1].scrollY) / 2;
+        }
+    }
+    treeRoots.forEach(assignScrollCoordinates);
+
+    const scrollEdges = [];
+    for (const node of nodes.values()) {
+        for (const child of node.children) {
+            const x1 = node.scrollX + scroll.nodeWidth;
+            const y1 = node.scrollY + scroll.nodeHeight / 2;
+            const x2 = child.scrollX;
+            const y2 = child.scrollY + scroll.nodeHeight / 2;
+            const mid = (x1 + x2) / 2;
+            let path;
+            if (Math.abs(y2 - y1) < 1) {
+                path = `M${x1} ${y1} H${x2}`;
+            } else {
+                const radius = Math.min(10, Math.abs(y2 - y1) / 2, (x2 - x1) / 2);
+                const direction = y2 > y1 ? 1 : -1;
+                path = `M${x1} ${y1} H${mid - radius} Q${mid} ${y1} ${mid} ${y1 + direction * radius}`
+                    + ` V${y2 - direction * radius} Q${mid} ${y2} ${mid + radius} ${y2} H${x2}`;
+            }
+            scrollEdges.push({ from: node.id, to: child.id, branch: node.branch, path });
+        }
+    }
+
+    const numerals = ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十"];
+    const scrollGenerations = Array.from({ length: generationsMax }, (_, index) => ({
+        index,
+        label: `${numerals[index] || index + 1}世`,
+        x: scroll.pad + index * scroll.column,
+        width: scroll.nodeWidth
+    }));
+    const scrollWidth = scroll.pad * 2 + maxGeneration * scroll.column + scroll.nodeWidth;
+    const scrollHeight = scroll.pad * 2 + Math.max(scrollLeafCursor - 1, 0) * scroll.row + scroll.nodeHeight;
 
     return {
         id: view.id,
@@ -383,12 +411,13 @@ function buildFamilyView(view, dynasties, figures, figureSources, dynastySources
         nodeCount: nodes.size,
         emperorCount: [...nodes.values()].filter((node) => node.emperor).length,
         generationCount: generationsMax,
-        map: {
-            width: mapWidth,
-            height: mapHeight,
-            nodeWidth: map.nodeWidth,
-            nodeHeight: map.nodeHeight,
-            edges: mapEdges
+        scrollMap: {
+            width: scrollWidth,
+            height: scrollHeight,
+            nodeWidth: scroll.nodeWidth,
+            nodeHeight: scroll.nodeHeight,
+            generations: scrollGenerations,
+            edges: scrollEdges
         },
         treeRoots
     };
