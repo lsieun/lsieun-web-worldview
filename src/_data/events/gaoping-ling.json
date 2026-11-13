@@ -1,0 +1,13 @@
+{
+  "id": "gaoping-ling",
+  "title": "高平陵之变",
+  "year": 249,
+  "era": "正始十年",
+  "dynasty": "three-kingdoms",
+  "axis": true,
+  "key": true,
+  "figures": [
+    "simayi"
+  ],
+  "desc": "司马懿趁曹爽陪曹芳谒高平陵，闭城发动政变，诛曹爽三族；朝权归司马氏，三国归晋自此始。"
+}

@@ -5,7 +5,7 @@
   "era": "建安十三年",
   "axis": true,
   "key": true,
-  "figures": ["caocao", "liubei", "sunquan", "zhugeliang"],
-  "desc": "曹操南下，诸葛亮出使东吴促成孙刘联盟，联军在赤壁用火攻大败曹军，三国鼎立格局初现。",
+  "figures": ["caocao", "liubei", "sunquan", "zhugeliang", "zhouyu", "lusu"],
+  "desc": "曹操南下，诸葛亮出使东吴促成孙刘联盟，周瑜率吴军与刘备联军火攻破曹，三国鼎立格局初现。",
   "dynasty": "eastern-han"
 }

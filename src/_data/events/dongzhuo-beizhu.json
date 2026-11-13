@@ -1,0 +1,13 @@
+{
+  "id": "dongzhuo-beizhu",
+  "title": "王允、吕布诛董卓",
+  "year": 192,
+  "era": "初平三年",
+  "dynasty": "eastern-han",
+  "axis": true,
+  "key": true,
+  "figures": [
+    "lvbu"
+  ],
+  "desc": "吕布与王允定计诛董卓于未央阙下；董卓部将李傕、郭汜旋即攻入长安，关中大乱。"
+}

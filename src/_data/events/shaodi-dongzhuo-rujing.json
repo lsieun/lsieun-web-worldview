@@ -5,7 +5,7 @@
   "era": "光熹",
   "axis": true,
   "key": true,
-  "figures": ["yuanshao"],
+  "figures": ["yuanshao", "liuxie-xian"],
   "desc": "董卓率兵进入洛阳，先改元，再废少帝刘辩为弘农王，立陈留王刘协为帝；袁绍不肯附废议，横刀出奔冀州。",
   "dynasty": "eastern-han"
 }

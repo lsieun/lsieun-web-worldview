@@ -5,6 +5,7 @@
   "era": "延康元年",
   "axis": true,
   "key": true,
+  "figures": ["caopi", "liuxie-xian"],
   "desc": "曹丕逼迫献帝禅让，代汉建魏，东汉正式终结。刘协被封为山阳公。",
   "dynasty": "eastern-han"
 }

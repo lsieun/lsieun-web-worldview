@@ -1,25 +1,26 @@
 {
   "title": "三国人物与年龄",
   "dynasty": "three-kingdoms",
-  "summary": "把汉末三国十九位人物放回同一条时间轴：黄巾、官渡、赤壁、五丈原这些转折发生时，谁正当盛年，谁已在暮年，谁还没出生。",
-  "range": { "start": 130, "end": 245 },
+  "summary": "把汉末三国二十八位人物放回同一条时间轴：黄巾、官渡、赤壁、五丈原、高平陵这些转折发生时，谁正当盛年，谁已在暮年，谁还没出生。",
+  "range": { "start": 130, "end": 252 },
   "meta": {
     "key": "three-kingdoms-ages",
     "watermark": "鼎",
     "title": "三国人物与年龄",
-    "subtitle": "公元 130 — 245，从黄巾前五十年到陆逊谢世",
-    "tags": ["汉末三国", "十九人对比"],
-    "intro": "纵向自上而下是时间。左侧竖轴只标黄巾、讨董、官渡、赤壁、北伐、称帝这类转折大事；右侧十九位人物各一条生命线，走到大事那一年就落一个节点，写明当时的年龄（虚岁）。",
+    "subtitle": "公元 130 — 252，从黄巾前五十年到吴大帝驾崩",
+    "tags": ["汉末三国", "二十八人对比"],
+    "intro": "纵向自上而下是时间。左侧竖轴只标黄巾、讨董、官渡、赤壁、北伐、高平陵这类转折大事；右侧二十八位人物各一条生命线，走到大事那一年就落一个节点，写明当时的年龄（虚岁）。",
     "lifelineHint": "圆点为在世时经历的大事，实心圆点是与本人直接相关的事件。悬停可看事件与年龄。下方另附年龄明细表。",
-    "tableIntro": "同一批大事逐行列成表格，便于横向比较同一年十九人的年龄。点击人物列头可单独聚焦其一列，再次点击取消。",
-    "note": "年龄口径为<strong>虚岁</strong>（事件年份 − 出生年份 + 1）；「未生」表示尚未出生，「已故」表示事件发生时已去世。曹操、刘备、孙策、孙权、刘表、陶谦、诸葛亮、郭嘉、荀彧、陆逊、庞统生卒有明确记载；关羽（约 160）、张飞（约 165）、袁绍（约 154）、袁术（约 155）生年正史无载，取通行约年；孙坚生年 155 由裴松之注推算；公孙瓒生年史无明载，仅知长于刘备，约 155 纯为推算；徐庶生卒年正史无载，仅知黄初中官至右中郎将、御史中丞，蜀汉建兴六年（228）诸葛亮北伐时尚在世，约 172—约 235 均为后人推测，其年龄仅供参考。卒年数处存异：孙坚《三国志》本传作初平三年（192），裴注考为初平二年（191），此处从通行 191；关羽、吕蒙皆卒于建安二十四年十二月，公历已入 220 年初，均按 220 计（吕蒙「年四十二」系以 219 年末计）。孙权卒于 252 年，其生命线下端在窗口之外按截断显示。分组按大众熟悉的阵营归属划分，便于筛选——黄巾起事时，诸人尚未分属三国；徐庶虽终老于魏，其事迹与蜀汉相连，归入蜀汉组。"
+    "tableIntro": "同一批大事逐行列成表格，便于横向比较同一年二十八人的年龄。点击人物列头可单独聚焦其一列，再次点击取消。",
+    "note": "年龄口径为<strong>虚岁</strong>（事件年份 − 出生年份 + 1）；「未生」表示尚未出生，「已故」表示事件发生时已去世。曹操、刘备、孙策、孙权、刘表、陶谦、诸葛亮、郭嘉、荀彧、陆逊、庞统、周瑜、鲁肃、司马懿、曹丕、张辽、马超、汉献帝生卒有明确记载；关羽（约 160）、张飞（约 165）、袁绍（约 154）、袁术（约 155）生年正史无载，取通行约年；孙坚生年 155 由裴松之注推算；公孙瓒生年史无明载，仅知长于刘备，约 155 纯为推算；吕布生年无载，仅知其与刘备约为兄弟，取约 161 作参照；赵云生年无载，据《云别传》初平二年（191）为本郡所举、举吏多在弱冠，推为约 171——两人的年龄仅供参考；徐庶生卒年正史无载，仅知黄初中官至右中郎将、御史中丞，蜀汉建兴六年（228）诸葛亮北伐时尚在世，约 172—约 235 均为后人推测，其年龄仅供参考。卒年数处存异：孙坚《三国志》本传作初平三年（192），裴注考为初平二年（191），此处从通行 191；关羽、吕蒙皆卒于建安二十四年十二月，公历已入 220 年初，均按 220 计（吕蒙「年四十二」系以 219 年末计）。视窗至 252 年孙权驾崩为止，诸人生卒均完整入图。分组按大众熟悉的阵营归属划分，便于筛选——黄巾起事时，诸人尚未分属三国；徐庶虽终老于魏，其事迹与蜀汉相连，归入蜀汉组。"
   },
   "groups": [
-    { "id": "wei", "name": "曹魏", "desc": "曹操与荀彧、郭嘉" },
-    { "id": "shu", "name": "蜀汉", "desc": "刘备与诸葛、关张" },
-    { "id": "wu", "name": "东吴", "desc": "孙氏三代与吕蒙、陆逊" },
+    { "id": "han", "name": "汉室", "desc": "被挟持的汉天子" },
+    { "id": "wei", "name": "曹魏", "desc": "曹操与荀彧、郭嘉、司马懿" },
+    { "id": "shu", "name": "蜀汉", "desc": "刘备与诸葛、关张赵马" },
+    { "id": "wu", "name": "东吴", "desc": "孙氏三代与周鲁吕陆" },
     { "id": "yuan", "name": "袁氏", "desc": "汝南袁氏，四世三公" },
-    { "id": "qunxiong", "name": "群雄", "desc": "刘表、公孙瓒、陶谦等割据者" }
+    { "id": "qunxiong", "name": "群雄", "desc": "吕布、刘表、公孙瓒、陶谦等割据者" }
   ],
   "cast": [
     { "figure": "taoqian", "group": "qunxiong", "role": "徐州牧 · 让徐州于刘备" },
@@ -31,22 +32,32 @@
     { "figure": "gongsunzan", "group": "qunxiong", "role": "白马将军 · 割据幽州" },
     { "figure": "guanyu", "group": "shu", "role": "汉寿亭侯 · 威震华夏" },
     { "figure": "liubei", "group": "shu", "role": "昭烈帝 · 蜀汉开国" },
+    { "figure": "lvbu", "group": "qunxiong", "role": "温侯 · 辕门射戟" },
     { "figure": "xunyu", "group": "wei", "role": "尚书令 · 居中持重" },
     { "figure": "zhangfei", "group": "shu", "role": "车骑将军 · 据水断桥" },
+    { "figure": "zhangliao", "group": "wei", "role": "征东将军 · 威震逍遥津" },
     { "figure": "guojia", "group": "wei", "role": "司空军祭酒 · 算无遗策" },
+    { "figure": "zhaoyun", "group": "shu", "role": "镇东将军 · 长坂救主" },
+    { "figure": "lusu", "group": "wu", "role": "横江将军 · 榻上定策" },
     { "figure": "xushu", "group": "shu", "role": "荐卧龙 · 半途北归" },
     { "figure": "sunce", "group": "wu", "role": "讨逆将军 · 平定江东" },
+    { "figure": "zhouyu", "group": "wu", "role": "大都督 · 赤壁破曹" },
+    { "figure": "machao", "group": "shu", "role": "骠骑将军 · 威震凉州" },
     { "figure": "lvmeng", "group": "wu", "role": "虎威将军 · 白衣渡江" },
     { "figure": "pangtong", "group": "shu", "role": "军师中郎将 · 凤雏" },
+    { "figure": "simayi", "group": "wei", "role": "太傅 · 高平陵权归司马氏" },
     { "figure": "zhugeliang", "group": "shu", "role": "丞相 · 隆中定三分" },
+    { "figure": "liuxie-xian", "group": "han", "role": "汉献帝 · 在位三十一年" },
     { "figure": "sunquan", "group": "wu", "role": "吴大帝 · 坐断东南" },
-    { "figure": "luxun", "group": "wu", "role": "丞相 · 火烧连营" }
+    { "figure": "luxun", "group": "wu", "role": "丞相 · 火烧连营" },
+    { "figure": "caopi", "group": "wei", "role": "魏文帝 · 受禅代汉" }
   ],
   "events": [
     "lingdi-huangjin",
     "shaodi-dongzhuo-rujing",
     "guandong-taodong",
     "jieqiao",
+    "dongzhuo-beizhu",
     "xiandi-xuchao-dongjing",
     "yuanshu-chengdi",
     "xiandi-guandu",
@@ -56,7 +67,8 @@
     "yiling",
     "zhugeliang-beifa",
     "sunquan-chengdi",
-    "zhugeliang-wuzhangyuan"
+    "zhugeliang-wuzhangyuan",
+    "gaoping-ling"
   ],
   "personalEvents": [
     "liubiao-ru-jingzhou",
@@ -91,7 +103,24 @@
     "liubei-death",
     "zhugeliang-nanzheng",
     "luxun-shiting",
-    "luxun-death"
+    "luxun-death",
+    "lvbu-yuanmen",
+    "lvbu-death",
+    "simayi-chushi",
+    "zhaoyun-changban",
+    "zhouyu-nanjun",
+    "zhouyu-death",
+    "lusu-tashang",
+    "lusu-death",
+    "zhangliao-xiaoyaojin",
+    "machao-tongguan",
+    "machao-gui-liubei",
+    "machao-death",
+    "zhangliao-death",
+    "caopi-death",
+    "zhaoyun-death",
+    "sunquan-death",
+    "simayi-death"
   ],
   "defaults": [
     "taoqian",
@@ -103,15 +132,24 @@
     "gongsunzan",
     "guanyu",
     "liubei",
+    "lvbu",
     "xunyu",
     "zhangfei",
+    "zhangliao",
     "guojia",
+    "zhaoyun",
+    "lusu",
     "xushu",
     "sunce",
+    "zhouyu",
+    "machao",
     "lvmeng",
     "pangtong",
+    "simayi",
     "zhugeliang",
+    "liuxie-xian",
     "sunquan",
-    "luxun"
+    "luxun",
+    "caopi"
   ]
 }
