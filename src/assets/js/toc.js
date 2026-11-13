@@ -232,12 +232,22 @@
         onScroll();
     }
 
+    /**
+     * 详情页正文容器选择器。
+     * 索引页（index.html 们）只有 .page-hero / .section / .chronicle 等壳子类，
+     * 不匹配下面任何一个，因此不会生成 TOC。
+     */
+    const DETAIL_CONTAINERS = '.prose, .dynasty-reigns-page, .reign-crowd-page, .family-tree-scroll, .entry-body, .person-timeline-page';
+
     function init() {
         // 视口太窄不启用
         if (window.innerWidth < MIN_WIDTH) return;
 
         const main = document.querySelector('main');
         if (!main) return;
+
+        // 索引页没有详情页正文容器 → 不生成 TOC
+        if (!main.querySelector(DETAIL_CONTAINERS)) return;
 
         // 扫描 h2/h3，但排除 page-hero、section-head、eyebrow 里的（这些是页面元信息，不是正文分节）
         const excludedSelectors = '.page-hero, .reign-hero, .section-head, .eyebrow, .section-title';
