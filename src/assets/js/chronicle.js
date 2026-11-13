@@ -1,15 +1,16 @@
 /**
- * chronicle.js — 史册：朝代条与分组表的滚动联动
+ * chronicle.js — 史册：左侧朝代目录与分组表的滚动联动
  *
- * 上方朝代条吸顶并横向滚动；页面滚到某一朝代分组时，高亮对应朝代段，
- * 并把该段滚入条内的可见范围。点击朝代段平滑跳转到对应分组。
+ * 左侧朝代目录（chr-toc）固定悬浮；页面滚到某一朝代分组时，高亮对应目录项，
+ * 并把该项滚入目录可见范围。点击目录项平滑跳转到对应分组。
+ * 原「纪年带」因横向滚动条交互不佳已移除，其吸顶高亮逻辑由本目录承接。
  */
 (function () {
     const root = document.querySelector('[data-chr-root]');
-    const ribbon = document.querySelector('[data-chr-ribbon]');
-    if (!root || !ribbon) return;
+    const toc = document.querySelector('[data-chr-toc]');
+    if (!root || !toc) return;
 
-    const links = Array.from(ribbon.querySelectorAll('[data-chr-link]'));
+    const links = Array.from(toc.querySelectorAll('[data-chr-link]'));
     const groups = Array.from(root.querySelectorAll('[data-chr-group]'));
     if (!links.length || !groups.length) return;
 
@@ -28,8 +29,7 @@
 
         const link = byId.get(id);
         if (!link) return;
-        const left = link.offsetLeft - (ribbon.clientWidth - link.offsetWidth) / 2;
-        ribbon.scrollTo({ left: Math.max(0, left), behavior: 'smooth' });
+        link.scrollIntoView({ block: 'nearest' });
     }
 
     const observer = new IntersectionObserver((entries) => {
@@ -41,7 +41,7 @@
 
     groups.forEach((group) => observer.observe(group));
 
-    ribbon.addEventListener('click', (event) => {
+    toc.addEventListener('click', (event) => {
         const link = event.target.closest('[data-chr-link]');
         if (!link) return;
         const id = link.dataset.chrLink;
