@@ -107,12 +107,12 @@
 
     function styledChartData(person, zoom = 1) {
         const lineage = person ? lineageFor(person) : new Set();
-        /* symbolSize 随 zoom 微调。单行扁框，整体更紧凑 */
+        /* symbolSize 随 zoom 微调 */
         const scale = Math.max(0.55, Math.min(1.15, zoom));
         function styleNode(node) {
             const isTarget = node.person === person;
             const inLineage = lineage.has(node.person);
-            const baseSize = node.hasRuler ? [128, 32] : [108, 26];
+            const baseSize = node.hasRuler ? [156, 38] : [132, 32];
             return {
                 ...node,
                 symbolSize: [baseSize[0] * scale, baseSize[1] * scale],
@@ -202,7 +202,7 @@
                 top: forExport ? 120 : 24,
                 bottom: forExport ? 60 : 24,
                 symbol: 'roundRect',
-                symbolSize: [128, 32],
+                symbolSize: [156, 38],
                 roam: !forExport,
                 center: settings.center || initialCenter,
                 zoom: settings.zoom || initialZoom,
@@ -212,53 +212,53 @@
                 expandAndCollapse: false,
                 edgeShape: 'polyline',
                 edgeForkPosition: '50%',
-                /* 单行扁框后间距可大幅收窄，让整棵树更紧凑 */
-                nodeGap: 28,
-                levelGap: 52,
+                /* 间距稍留空间，既不挤也不松 */
+                nodeGap: 36,
+                levelGap: 64,
                 lineStyle: { color: chartColors.lineStrong, width: 1 },
                 label: {
                     show: !settings.overview,
                     position: 'inside',
                     formatter: chartLabel,
-                    /* 单行扁框，所有 rich text 对齐到同一行高 20px */
+                    /* 单行，字号稍放大保证可辨识度 */
                     rich: {
                         order: {
                             color: chartColors.surfaceRaised,
                             backgroundColor: chartColors.brass,
-                            borderRadius: 8,
-                            width: 18,
-                            height: 18,
+                            borderRadius: 9,
+                            width: 20,
+                            height: 20,
                             align: 'center',
                             fontFamily: chartColors.fontMono,
-                            fontSize: 9,
+                            fontSize: 10,
                             fontWeight: 600,
-                            lineHeight: 18
+                            lineHeight: 20
                         },
                         kin: {
                             color: chartColors.muted,
                             borderColor: chartColors.lineStrong,
                             borderWidth: 1,
                             borderRadius: 3,
-                            width: 18,
-                            height: 18,
+                            width: 20,
+                            height: 20,
                             align: 'center',
-                            fontSize: 8,
-                            lineHeight: 18
+                            fontSize: 9,
+                            lineHeight: 20
                         },
                         title: {
                             color: chartColors.ink,
                             fontFamily: chartColors.fontSerif,
-                            fontSize: 12,
+                            fontSize: 14,
                             fontWeight: 600,
-                            lineHeight: 18,
+                            lineHeight: 20,
                             padding: [0, 0, 0, 4]
                         },
                         name: {
                             color: chartColors.muted,
                             fontFamily: chartColors.fontBody,
-                            fontSize: 9,
-                            lineHeight: 18,
-                            padding: [0, 0, 0, 4]
+                            fontSize: 11,
+                            lineHeight: 20,
+                            padding: [0, 0, 0, 5]
                         }
                     }
                 },
@@ -277,19 +277,15 @@
     }
 
     function calculateInitialZoom() {
-        /* 默认直接全图 fit：单行扁框后框很小，一屏能装下整棵树 */
-        const contentWidth = chartMetrics.leaves * 150;
-        const contentHeight = chartMetrics.levels * 60;
-        const availableWidth = Math.max(chartEl.clientWidth - 48, 1);
-        const availableHeight = Math.max(chartEl.clientHeight - 48, 1);
-        const fit = Math.min(availableWidth / contentWidth, availableHeight / contentHeight);
-        return Math.min(1.2, Math.max(0.12, fit));
+        /* 默认适中阅读比例，不强制 fit 一屏（会挤成一团）。
+           用户点"全图"按钮才缩到一屏 */
+        return Math.max(1.15, Math.min(1.4, (chartMetrics.levels * 72) / Math.max(chartEl.clientHeight, 1)));
     }
 
     /* 全图：按叶子数与层数估算内容尺寸，缩到一屏；此时节点随缩放等比变小 */
     function calculateFitZoom() {
-        const contentWidth = chartMetrics.leaves * 150;
-        const contentHeight = chartMetrics.levels * 60;
+        const contentWidth = chartMetrics.leaves * 180;
+        const contentHeight = chartMetrics.levels * 72;
         const availableWidth = Math.max(chartEl.clientWidth - 48, 1);
         const availableHeight = Math.max(chartEl.clientHeight - 48, 1);
         const fit = Math.min(availableWidth / contentWidth, availableHeight / contentHeight);
