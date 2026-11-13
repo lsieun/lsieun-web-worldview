@@ -1667,7 +1667,6 @@
 
 .toc-float.is-collapsed .toc-toggle {
     writing-mode: vertical-rl;
-    transform: rotate(180deg);
     padding: 0.2rem 0;
 }
 
