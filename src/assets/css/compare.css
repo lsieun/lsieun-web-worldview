@@ -62,7 +62,7 @@
 
 /* ---------- 容器 ---------- */
 .cmp-container {
-    max-width: 960px;
+    max-width: 1040px;
     margin-inline: auto;
     padding-inline: 24px;
 }
@@ -77,6 +77,7 @@
 }
 
 /* 两条贯穿竖线（整个 timeline 共享） */
+/* 管道宽 80px：左蓝线 -40px / 右红线 +40px */
 .cmp-timeline::before,
 .cmp-timeline::after {
     content: "";
@@ -86,19 +87,19 @@
     width: 2px;
     z-index: 0;
 }
-.cmp-timeline::before { left: calc(50% - 22px); background: var(--accent-blue, #3b82f6); opacity: 0.6; }
-.cmp-timeline::after  { left: calc(50% + 22px); background: var(--accent-red,  #ef4444); opacity: 0.6; }
+.cmp-timeline::before { left: calc(50% - 40px); background: var(--accent-blue, #3b82f6); opacity: 0.6; }
+.cmp-timeline::after  { left: calc(50% + 40px); background: var(--accent-red,  #ef4444); opacity: 0.6; }
 
-/* 统一三列：左栏 | 中轴(44px) | 右栏 */
+/* 统一三列：左栏 | 中轴(80px) | 右栏 */
 .cmp-row, .cmp-tick {
     display: grid;
-    grid-template-columns: 1fr 44px 1fr;
+    grid-template-columns: 1fr 80px 1fr;
     position: relative;
     scroll-margin-top: 80px;
 }
 
 /* ---------- 事件行 ---------- */
-.cmp-row { padding: 10px 0; }
+.cmp-row { padding: 0; }
 
 .cmp-col {
     display: flex;
@@ -127,8 +128,8 @@
     z-index: 3;
     border: 2px solid var(--bg, #fff);
 }
-.cmp-axis-dot--left  { left: -22px; top: 50%; transform: translate(-50%, -50%); background: var(--accent-blue, #3b82f6); box-shadow: 0 0 0 1px rgba(59,130,246,0.3); }
-.cmp-axis-dot--right { right: -22px; top: 50%; transform: translate(50%, -50%); background: var(--accent-red,  #ef4444); box-shadow: 0 0 0 1px rgba(239,68,68,0.3); }
+.cmp-axis-dot--left  { left: -40px; top: 50%; transform: translate(-50%, -50%); background: var(--accent-blue, #3b82f6); box-shadow: 0 0 0 1px rgba(59,130,246,0.3); }
+.cmp-axis-dot--right { right: -40px; top: 50%; transform: translate(50%, -50%); background: var(--accent-red,  #ef4444); box-shadow: 0 0 0 1px rgba(239,68,68,0.3); }
 
 /* ---------- 刻度行 ---------- */
 .cmp-tick { padding: 4px 0; }
@@ -149,8 +150,8 @@
 
 .cmp-tick-line {
     position: absolute;
-    left: -22px;   /* 对齐左蓝线 */
-    right: -22px;  /* 对齐右红线 */
+    left: -40px;   /* 对齐左蓝线 */
+    right: -40px;  /* 对齐右红线 */
     top: 50%;
     transform: translateY(-50%);
     height: 1px;

@@ -137,7 +137,12 @@ export default function () {
         .filter((t) => t.anchor)
         .sort((a, b) => a.start - b.start);
 
-    /* ---------- 5. 交错 stream：50年刻度 + 事件行 ---------- */
+    /* ---------- 5. 交错 stream：50年刻度 + 事件行，按年份差算 gap ---------- */
+    // 越近的时代可以越密，古代可以疏——让 1px/年 作为基础
+    const PX_PER_YEAR = 1.5;
+    const MIN_GAP_PX = 2;       // 两个事件同年份时，最小间距
+    const MAX_GAP_PX = 120;     // 最大 gap（比如 1000 年没事件时，别拉太长）
+
     const stream = [];
     let ti = 0;
     for (const r of rows) {
@@ -152,5 +157,16 @@ export default function () {
         ti++;
     }
 
-    return { stream, chinaToc, worldToc, minYear, maxYear };
+    // 计算每个条目的 gapTop（和上一个条目的年份差 × 系数）
+    let prevYear = minYear;
+    for (const item of stream) {
+        const gapYears = Math.max(0, item.year - prevYear);
+        item.gapTop = Math.max(MIN_GAP_PX, Math.min(MAX_GAP_PX, gapYears * PX_PER_YEAR));
+        prevYear = item.year;
+    }
+
+    // 计算总高（供模板调试）
+    const totalHeight = stream.reduce((sum, it) => sum + it.gapTop + (it.kind === "row" ? 50 : 24), 0);
+
+    return { stream, chinaToc, worldToc, minYear, maxYear, pxPerYear: PX_PER_YEAR, totalHeight };
 }

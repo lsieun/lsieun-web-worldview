@@ -54,8 +54,8 @@ layout: "default.html"
 
             {%- for item in compare.stream %}
             {%- if item.kind == "tick" %}
-            {# ========== 刻度行：管道里画横线 + 年份文字 ========== #}
-            <div class="cmp-tick" id="{{ item.id }}" data-cmp-block="{{ item.id }}">
+            {# ========== 刻度行 ========== #}
+            <div class="cmp-tick" id="{{ item.id }}" data-cmp-block="{{ item.id }}" style="margin-top: {{ item.gapTop }}px">
                 <div class="cmp-tick-col cmp-tick-col--left">
                     {% if item.year % 100 == 0 %}<span class="cmp-century-label">{{ item.century }}</span>{% endif %}
                 </div>
@@ -68,8 +68,8 @@ layout: "default.html"
             </div>
 
             {%- else %}
-            {# ========== 事件行：只有卡片 + 锚点，管道不画横线 ========== #}
-            <div class="cmp-row" id="{{ item.id }}" data-cmp-block="{{ item.id }}">
+            {# ========== 事件行 ========== #}
+            <div class="cmp-row" id="{{ item.id }}" data-cmp-block="{{ item.id }}" style="margin-top: {{ item.gapTop }}px">
                 <div class="cmp-col cmp-col--china">
                     {%- for ev in item.china %}
                     <div class="cmp-event cmp-event--china">
