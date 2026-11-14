@@ -130,13 +130,13 @@
     margin-left: -5px;  /* 让小杠贴在竖线左侧 */
 }
 
-/* minor(10年): 淡灰 4px */
+/* minor(10年): 淡灰 5px */
 .cmp-tick--minor::before,
 .cmp-tick--minor::after {
-    width: 4px;
+    width: 5px;
     height: 1px;
-    background: var(--color-line-strong);
-    opacity: 0.6;
+    background: var(--color-muted);
+    opacity: 0.8;
 }
 
 /* mid(50年): 中灰 6px */

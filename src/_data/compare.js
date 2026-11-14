@@ -147,22 +147,42 @@ export default function () {
         .sort((a, b) => a.start - b.start);
 
     /* ---------- 5. 构建 stream：tick + 独立事件（只留 key:true 的重要事件） ---------- */
-    const PX_PER_YEAR = 8.0;       // 1 年 = 8px
-    const EVENT_HEIGHT = 24;       // 每个事件的视觉高度（含 gap）
-    const EVENT_MIN_GAP = 4;       // 两个事件之间最小间距
+    const PX_PER_YEAR = 12.0;      // 1 年 = 12px，10年 = 120px，50年 = 600px
+    const EVENT_HEIGHT = 18;       // 每个事件的视觉高度
+    const EVENT_MIN_GAP = 3;       // 两个事件之间最小间距
 
-    // 把 rows 展平成独立事件 —— 只保留 key=true
-    const allEvents = [];
+    /* 同年份同 side 事件先合并成一条（用"；"连接） */
+    const mergedByKey = new Map();  // "china:-206" → [{title:"鸿门宴；秦朝灭亡...", key:true}]
+
     for (const row of rows) {
-        for (const ev of row.china) {
-            if (ev.key) allEvents.push({ kind: "event", side: "china", year: row.year, yearLabel: row.yearLabel, ...ev });
+        // 中国
+        const chinaKey = `china:${row.year}`;
+        const chinaTitles = row.china.filter(ev => ev.key).map(ev => ev.title);
+        if (chinaTitles.length > 0) {
+            mergedByKey.set(chinaKey, {
+                kind: "event", side: "china",
+                year: row.year, yearLabel: row.yearLabel,
+                title: chinaTitles.join("；"),
+                key: true
+            });
         }
-        for (const ev of row.world) {
-            if (ev.key) allEvents.push({ kind: "event", side: "world", year: row.year, yearLabel: row.yearLabel, ...ev });
+        // 世界
+        const worldKey = `world:${row.year}`;
+        const worldItems = row.world.filter(ev => ev.key);
+        const worldTitles = worldItems.map(ev => ev.title + (ev.region ? `(${ev.region})` : ""));
+        if (worldTitles.length > 0) {
+            mergedByKey.set(worldKey, {
+                kind: "event", side: "world",
+                year: row.year, yearLabel: row.yearLabel,
+                title: worldTitles.join("；"),
+                key: true
+            });
         }
     }
-    allEvents.sort((a, b) => a.year - b.year);
-    console.log(`[compare] key events: ${allEvents.length} (china: ${allEvents.filter(e=>e.side==='china').length}, world: ${allEvents.filter(e=>e.side==='world').length})`);
+
+    const allEvents = Array.from(mergedByKey.values())
+        .sort((a, b) => a.year - b.year);
+    console.log(`[compare] merged events: ${allEvents.length} (china: ${allEvents.filter(e=>e.side==='china').length}, world: ${allEvents.filter(e=>e.side==='world').length})`);
 
     // tick 保持精确年份 top（不受堆叠影响）
     const stream = [];
