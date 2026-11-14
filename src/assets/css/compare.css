@@ -1,13 +1,12 @@
 /* =======================================================
- * compare.css v3 — 中外对比页
- * 中间宽轴 + 年份横线标记 + 事件卡片年份近轴 + 分支线
- *
- * 布局：
- *   [ 中国 flex-end ] [ 60px 宽轴 rail ] [ 世界 flex-start ]
- *   轴 rail 内含：hline + 左右 dot + 年份文字
- *   中国卡片：年份靠右 → 靠近轴
- *   世界卡片：年份靠左 → 靠近轴
- *   卡片伪元素画 branch 线 → 连到轴心
+ * compare.css v4 — 中外对比页
+ * 中间轴：两条贯穿竖线（左蓝 / 右红）+ 每年份横线
+ * 视觉模型：
+ *   蓝线 │  ←─────── 1492 ────────→  │ 红线
+ *        │  朱元璋(弘治五年)           │ 哥伦布 1492 西班牙
+ *        │                           │
+ *        │  ←─────── 1600 ────────→  │
+ *        │                           │ 伽利略 1600
  * ======================================================= */
 
 /* ---------- 浮动导航 ---------- */
@@ -59,7 +58,7 @@
 
 /* ---------- 容器 ---------- */
 .cmp-container {
-    max-width: 920px;
+    max-width: 960px;
     margin-inline: auto;
     padding-inline: 24px;
 }
@@ -73,13 +72,35 @@
     padding-bottom: 3rem;
 }
 
+/* 全局贯穿竖线（放在 timeline 上，整条时间轴共享） */
+.cmp-timeline::before,
+.cmp-timeline::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    z-index: 0;
+}
+.cmp-timeline::before {
+    left: calc(50% - 22px); /* 左蓝线 */
+    background: var(--accent-blue, #3b82f6);
+    opacity: 0.7;
+}
+.cmp-timeline::after {
+    left: calc(50% + 22px); /* 右红线 */
+    background: var(--accent-red, #ef4444);
+    opacity: 0.7;
+}
+
 /* ---------- 事件行 ---------- */
 .cmp-row {
     display: grid;
-    grid-template-columns: 1fr 60px 1fr;
+    grid-template-columns: 1fr 44px 1fr;
     align-items: stretch;
     position: relative;
     scroll-margin-top: 80px;
+    padding: 8px 0;
 }
 
 .cmp-col {
@@ -87,85 +108,113 @@
     flex-direction: column;
     gap: 6px;
     min-width: 0;
-    padding: 8px 0;
+    position: relative;
+    z-index: 1;
 }
 
-/* 中国列：右对齐，靠近中间轴 */
+/* 中国列：右对齐，靠近左蓝线 */
 .cmp-col--china {
     align-items: flex-end;
     text-align: right;
-    padding-right: 0;
+    padding-right: 4px;
 }
 
-/* 世界列：左对齐，靠近中间轴 */
+/* 世界列：左对齐，靠近右红线 */
 .cmp-col--world {
     align-items: flex-start;
     text-align: left;
-    padding-left: 0;
+    padding-left: 4px;
 }
 
-/* ---------- 中间轴 rail（60px 宽） ---------- */
+/* ---------- 中间轴（44px 宽的管道） ---------- */
 .cmp-col--axis {
     position: relative;
-    padding: 8px 0;
-}
-
-.cmp-axis-rail {
-    position: absolute;
-    inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-/* 贯穿 rail 宽度的水平横线 */
-.cmp-axis-hline {
+/* 横线从左蓝线画到右红线（跨越 44px + 两列的 padding gap） */
+.cmp-axis-rail {
     position: absolute;
+    left: -6px;   /* 延伸到 timeline 左蓝线位置 */
+    right: -6px;  /* 延伸到 timeline 右红线位置 */
     top: 50%;
-    left: 0;
-    right: 0;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    height: 22px; /* 上下各 11px 画斜线对接竖线 */
+}
+
+/* 中间的横线主体 */
+.cmp-axis-hline {
+    flex: 1;
     height: 1px;
     background: var(--border, #d1d5db);
 }
 
-/* 左右两端的圆点 */
+/* 横线左端：斜向上接到左蓝线 */
+.cmp-axis-rail::before {
+    content: "";
+    position: absolute;
+    left: -12px;
+    top: 11px;
+    width: 12px;
+    height: 1px;
+    background: var(--border, #d1d5db);
+}
+
+/* 横线右端：斜向上接到右红线 */
+.cmp-axis-rail::after {
+    content: "";
+    position: absolute;
+    right: -12px;
+    top: 11px;
+    width: 12px;
+    height: 1px;
+    background: var(--border, #d1d5db);
+}
+
+/* 圆点在横线两端（横线和竖线交叉点） */
 .cmp-axis-dot {
     position: absolute;
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    border: 2px solid var(--card-bg, #fff);
-    box-shadow: 0 0 0 1.5px var(--border, #d1d5db);
-    z-index: 1;
+    z-index: 3;
+    border: 2px solid var(--bg, #fff);
 }
-.cmp-axis-dot--left  { left: 0;   top: 50%; transform: translate(-50%, -50%); background: var(--accent-blue, #3b82f6); }
-.cmp-axis-dot--right { right: 0;  top: 50%; transform: translate( 50%, -50%); background: var(--accent-red,  #ef4444); }
+.cmp-axis-dot--left {
+    left: -22px;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--accent-blue, #3b82f6);
+    box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.3);
+}
+.cmp-axis-dot--right {
+    right: -22px;
+    top: 50%;
+    transform: translate(50%, -50%);
+    background: var(--accent-red, #ef4444);
+    box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.3);
+}
 
-/* 轴上的年份文字（竖排显示，在 rail 中央） */
+/* 横线中央的年份文字 */
 .cmp-axis-year {
-    font-size: 0.65rem;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.62rem;
     font-weight: 700;
     font-variant-numeric: tabular-nums;
     color: var(--text-muted, #6b7280);
-    writing-mode: vertical-rl;
-    text-orientation: mixed;
-    letter-spacing: 1px;
-    z-index: 2;
     background: var(--bg, #fff);
-    padding: 4px 0;
-}
-
-/* 整列的背景竖条（一条贯穿的参考竖线） */
-.cmp-col--axis::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    border-left: 1px dashed var(--border-muted, #e5e7eb);
-    opacity: 0.4;
+    padding: 1px 4px;
+    border-radius: 3px;
+    letter-spacing: 0.5px;
+    box-shadow: 0 0 0 1px var(--border-muted, #e5e7eb);
+    z-index: 4;
 }
 
 /* ---------- 事件卡片 ---------- */
@@ -182,11 +231,14 @@
     font-size: 0.82rem;
     line-height: 1.5;
     max-width: 100%;
-    transition: box-shadow 0.15s;
+    transition: box-shadow 0.15s, transform 0.15s;
 }
-.cmp-event:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.cmp-event:hover {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    transform: translateY(-1px);
+}
 
-/* 中国卡片：年份在右 → 靠中间轴 */
+/* 中国卡片：年份在右 → 靠近左蓝线 */
 .cmp-event--china {
     flex-direction: row-reverse;
     border-left: none;
@@ -196,7 +248,7 @@
 .cmp-event--china .cmp-event-year { order: 1; margin-right: auto; }
 .cmp-event--china .cmp-event-desc { order: 3; flex: 0 0 100%; }
 
-/* 世界卡片：年份在左 → 靠中间轴 */
+/* 世界卡片：年份在左 → 靠近右红线 */
 .cmp-event--world {
     border-left: 3px solid var(--accent-red, #ef4444);
     border-right: none;
@@ -232,26 +284,28 @@
     line-height: 1.5;
 }
 
-/* ---------- 分支线（卡片 → 轴点） ---------- */
+/* ---------- 分支线（卡片 → 竖线圆点） ---------- */
 .cmp-event--china::after {
     content: "";
     position: absolute;
-    right: -8px;
+    right: -10px;
     top: 50%;
-    width: 12px;
+    width: 14px;
     height: 1px;
     background: var(--accent-blue, #3b82f6);
     pointer-events: none;
+    opacity: 0.7;
 }
 .cmp-event--world::before {
     content: "";
     position: absolute;
-    left: -8px;
+    left: -10px;
     top: 50%;
-    width: 12px;
+    width: 14px;
     height: 1px;
     background: var(--accent-red, #ef4444);
     pointer-events: none;
+    opacity: 0.7;
 }
 
 /* ---------- 世纪分隔 ---------- */
@@ -265,15 +319,15 @@
 .cmp-century-label {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 0.7rem;
+    gap: 12px;
+    font-size: 0.68rem;
     color: var(--text-muted, #9ca3af);
-    font-weight: 600;
-    letter-spacing: 0.5px;
+    font-weight: 700;
+    letter-spacing: 1px;
 }
 .cmp-century-bar-l,
 .cmp-century-bar-r {
-    width: 80px;
+    width: 100px;
     height: 1px;
     background: var(--border, #d1d5db);
 }
@@ -287,23 +341,23 @@
 }
 
 @media (max-width: 720px) {
-    .cmp-row {
-        grid-template-columns: 1fr;
-    }
+    .cmp-row { grid-template-columns: 1fr; padding: 6px 0; }
     .cmp-col--axis { display: none; }
     .cmp-col--china, .cmp-col--world {
-        padding-left: 32px;
+        padding-left: 24px;
         padding-right: 0;
         align-items: flex-start;
         text-align: left;
     }
+    .cmp-timeline::before { left: 10px; }
+    .cmp-timeline::after { display: none; }
     .cmp-event--china {
         flex-direction: row;
         border-right: none;
         border-left: 3px solid var(--accent-blue, #3b82f6);
     }
-    .cmp-event--china .cmp-event-year { order: 1; margin-right: 2px; margin-left: 0; text-align: left; }
+    .cmp-event--china .cmp-event-year { order: 1; margin-right: 2px; text-align: left; }
     .cmp-event--china .cmp-event-body { order: 2; }
-    .cmp-event--china::after { display: none; }
+    .cmp-event--china::after,
     .cmp-event--world::before { display: none; }
 }
