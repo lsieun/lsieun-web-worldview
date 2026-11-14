@@ -137,30 +137,69 @@ export default function () {
         .filter((t) => t.anchor)
         .sort((a, b) => a.start - b.start);
 
-    /* ---------- 5. 交错 stream：50年刻度 + 事件行，绝对定位 top ---------- */
-    const PX_PER_YEAR = 4.0;  // 1 年 = 4px，50年 = 200px（宽松）
+    /* ---------- 5. 构建 stream：tick + 独立事件 ---------- */
+    const PX_PER_YEAR = 4.0;       // 1 年 = 4px
+    const EVENT_HEIGHT = 24;       // 每个事件的视觉高度（含 gap）
+    const EVENT_MIN_GAP = 2;       // 两个事件之间最小间距
 
+    // 把 rows 展平成独立事件
+    const allEvents = [];
+    for (const row of rows) {
+        for (const ev of row.china) {
+            allEvents.push({ kind: "event", side: "china", year: row.year, yearLabel: row.yearLabel, ...ev });
+        }
+        for (const ev of row.world) {
+            allEvents.push({ kind: "event", side: "world", year: row.year, yearLabel: row.yearLabel, ...ev });
+        }
+    }
+    // 按年份排序
+    allEvents.sort((a, b) => a.year - b.year);
+
+    // tick 保持精确年份 top（不受堆叠影响）
     const stream = [];
     let ti = 0;
-    for (const r of rows) {
-        while (ti < ticks.length && ticks[ti].year <= r.year) {
+    for (const ev of allEvents) {
+        while (ti < ticks.length && ticks[ti].year <= ev.year) {
             stream.push({ kind: "tick", year: ticks[ti].year, label: ticks[ti].label, century: ticks[ti].century, id: `tick-${ticks[ti].year}` });
             ti++;
         }
-        stream.push({ kind: "row", ...r });
+        stream.push(ev);
     }
     while (ti < ticks.length) {
         stream.push({ kind: "tick", year: ticks[ti].year, label: ticks[ti].label, century: ticks[ti].century, id: `tick-${ticks[ti].year}` });
         ti++;
     }
 
-    // 每个条目的绝对 top（相对于 timeline 容器顶部）
+    // tick: 精确 top
+    // event: idealTop = 年份位置，displayTop 做堆叠调整
     for (const item of stream) {
-        item.absoluteTop = Math.round((item.year - minYear) * PX_PER_YEAR);
+        item.idealTop = Math.round((item.year - minYear) * PX_PER_YEAR);
     }
 
-    // 总高 = (maxYear - minYear) × pxPerYear + 底部留白
-    const totalHeight = Math.round((maxYear - minYear) * PX_PER_YEAR) + 200;
+    // 堆叠调整：tick 保持精确 top；event 按 side 分开堆叠
+    // 中国事件只避开中国事件，世界事件只避开世界事件
+    let chinaBottom = -Infinity;
+    let worldBottom = -Infinity;
+    for (const item of stream) {
+        if (item.kind === "tick") {
+            item.displayTop = item.idealTop;
+        } else if (item.kind === "event") {
+            if (item.side === "china") {
+                const desired = item.idealTop;
+                item.displayTop = Math.max(desired, chinaBottom + EVENT_MIN_GAP);
+                chinaBottom = item.displayTop + EVENT_HEIGHT;
+            } else {
+                const desired = item.idealTop;
+                item.displayTop = Math.max(desired, worldBottom + EVENT_MIN_GAP);
+                worldBottom = item.displayTop + EVENT_HEIGHT;
+            }
+        }
+    }
 
-    return { stream, chinaToc, worldToc, minYear, maxYear, pxPerYear: PX_PER_YEAR, totalHeight };
+    // 总高
+    const maxEventBottom = allEvents.reduce((m, ev) => Math.max(m, ev.displayTop + EVENT_HEIGHT), 0);
+    const maxTickTop = Math.round((maxYear - minYear) * PX_PER_YEAR);
+    const totalHeight = Math.max(maxEventBottom, maxTickTop) + 200;
+
+    return { stream, chinaToc, worldToc, minYear, maxYear, pxPerYear: PX_PER_YEAR, totalHeight, eventHeight: EVENT_HEIGHT };
 }

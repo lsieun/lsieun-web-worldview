@@ -1,6 +1,10 @@
 /* =======================================================
- * compare.css v7 — 中外对比页
- * 红蓝贯穿竖线 + 50年宽松间距(200px) + 单行事件 + 棒棒糖
+ * compare.css v8 — 独立事件 absolute 定位 + 堆叠防重叠
+ * timeline: relative 容器 + 红蓝贯穿竖线
+ * tick: absolute + displayTop（精确年份位置）
+ * event: absolute + displayTop（堆叠调整后的位置）
+ *   中国事件在左半部分，branch 线 → 蓝竖线
+ *   世界事件在右半部分，branch 线 → 红竖线
  * ======================================================= */
 
 /* ---------- 浮动导航 ---------- */
@@ -57,14 +61,13 @@
     padding-inline: 24px;
 }
 
-/* ---------- 时间轴容器 ---------- */
+/* ---------- 时间轴容器（relative，高度由内联 style 设定） ---------- */
 .cmp-timeline {
     position: relative;
-    padding-top: 0;
-    padding-bottom: 0;
 }
 
-/* 红蓝贯穿竖线 —— 从 top:0 到 bottom:0，覆盖整个容器高度 */
+/* 红蓝贯穿竖线 —— 从 top:0 到 bottom:0 */
+/* timeline 宽 1040-48=992px，中轴 40px 在 center */
 .cmp-timeline::before,
 .cmp-timeline::after {
     content: "";
@@ -77,67 +80,32 @@
 .cmp-timeline::before { left: calc(50% - 40px); background: var(--accent-blue, #3b82f6); opacity: 0.6; }
 .cmp-timeline::after  { left: calc(50% + 40px); background: var(--accent-red,  #ef4444); opacity: 0.6; }
 
-/* ---------- tick 和 row：absolute + 三列 ---------- */
-.cmp-row, .cmp-tick {
+/* ---------- 刻度 tick ---------- */
+.cmp-tick {
     position: absolute;
     left: 0;
     right: 0;
     display: grid;
     grid-template-columns: 1fr 80px 1fr;
-    z-index: 1;
+    z-index: 2;
+    height: 22px;
+    pointer-events: none;
 }
-
-/* ---------- 事件行 ---------- */
-.cmp-col {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
-    position: relative;
-}
-.cmp-col--china { align-items: flex-end; text-align: right; padding-right: 4px; }
-.cmp-col--world { align-items: flex-start; text-align: left; padding-left: 4px; }
-
-.cmp-col--axis {
-    display: flex;
-    justify-content: center;
-    position: relative;
-}
-
-/* 棒棒糖圆点（在蓝/红竖线上） */
-.cmp-axis-dot {
-    position: absolute;
-    top: 5px;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    border: 2px solid var(--bg, #fff);
-    z-index: 3;
-}
-.cmp-axis-dot--left  { left: -40px; transform: translate(-50%, 0); background: var(--accent-blue, #3b82f6); box-shadow: 0 0 0 1px rgba(59,130,246,0.4); }
-.cmp-axis-dot--right { right: -40px; transform: translate(50%, 0); background: var(--accent-red,  #ef4444); box-shadow: 0 0 0 1px rgba(239,68,68,0.4); }
-
-/* ---------- 刻度行 ---------- */
-.cmp-tick { z-index: 2; }
 .cmp-tick-col {
     display: flex;
     align-items: center;
     min-width: 0;
-    height: 0;
 }
 .cmp-tick-col--left  { justify-content: flex-end; padding-right: 8px; }
 .cmp-tick-col--right { justify-content: flex-start; padding-left: 8px; }
-
-.cmp-tick-col--axis {
-    justify-content: center;
-    position: relative;
-}
+.cmp-tick-col--axis  { position: relative; justify-content: center; }
 
 .cmp-tick-line {
     position: absolute;
     left: -40px;
     right: -40px;
-    top: 5px;
+    top: 50%;
+    transform: translateY(-50%);
     height: 1px;
     background: var(--border, #d1d5db);
     display: flex;
@@ -156,8 +124,6 @@
     letter-spacing: 0.5px;
     box-shadow: 0 0 0 1px var(--border-muted, #e5e7eb);
     white-space: nowrap;
-    position: relative;
-    top: -1px;
 }
 
 .cmp-century-label {
@@ -167,30 +133,33 @@
     letter-spacing: 0.5px;
 }
 
-/* ---------- 事件：棒棒糖 + 单行 ---------- */
-/* 每个事件就是一行文字：年份 + 标题 + region，不换行 */
+/* ---------- 独立事件：棒棒糖 ---------- */
+/* 事件高度 22px，绝对定位 */
 .cmp-event {
-    position: relative;
+    position: absolute;
     display: inline-flex;
     align-items: center;
     gap: 5px;
     white-space: nowrap;
     font-size: 0.82rem;
     line-height: 1.6;
-    max-width: 100%;
-    height: 22px;  /* 固定单行高度 */
+    height: 22px;
+    z-index: 3;
 }
 
-/* 中国：年份在左，事件在右，branch 线从右侧延伸到蓝点 */
+/* 中国事件：在左半部分，右对齐 */
+/* 宽屏：左侧区域 left:0 → 蓝线(left:calc(50%-40px)) */
 .cmp-event--china {
-    flex-direction: row;
+    right: calc(50% + 40px + 14px);  /* 右边缘对齐蓝线左边 - 14px（branch 线长度） */
     justify-content: flex-end;
+    text-align: right;
 }
 
-/* 世界：事件在左，region 和年份在右，branch 线从左侧延伸到红点 */
+/* 世界事件：在右半部分，左对齐 */
 .cmp-event--world {
-    flex-direction: row;
+    left: calc(50% + 40px + 14px);   /* 左边缘对齐红线右边 + 14px */
     justify-content: flex-start;
+    text-align: left;
 }
 
 /* 年份 */
@@ -199,19 +168,17 @@
     font-variant-numeric: tabular-nums;
     flex-shrink: 0;
 }
-.cmp-event--china .cmp-event-year { color: var(--accent-blue, #3b82f6); order: 1; }
-.cmp-event--china .cmp-event-body { order: 2; max-width: 180px; }
-.cmp-event--world .cmp-event-body { order: 1; max-width: 180px; }
-.cmp-event--world .cmp-event-region { order: 2; }
-.cmp-event--world .cmp-event-year { order: 3; color: var(--accent-red, #ef4444); }
+.cmp-event--china .cmp-event-year { color: var(--accent-blue, #3b82f6); }
+.cmp-event--world .cmp-event-year { color: var(--accent-red, #ef4444); margin-left: auto; }
 
-/* 标题：单行省略号 */
+/* 标题 */
 .cmp-event-body {
     font-weight: 500;
     color: var(--text, #111);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    max-width: 240px;
 }
 
 .cmp-event-region {
@@ -223,33 +190,28 @@
     flex-shrink: 0;
 }
 
-/* desc 不再显示（单行模式） */
-.cmp-event-desc { display: none; }
-
-/* ---------- 棒棒糖分支线（事件 → 竖线上的点） ---------- */
-/* 中国事件：从事件卡片右边缘 → 向右 → 到蓝竖线 */
+/* ---------- branch 线（事件 → 竖线） ---------- */
+/* 中国：右边缘 → 蓝竖线（向右延伸） */
 .cmp-event--china::after {
     content: "";
     position: absolute;
-    right: -12px;
+    right: -14px;        /* 从事件右边缘开始 */
     top: 50%;
-    width: 12px;
+    width: 14px;
     height: 1px;
     background: var(--accent-blue, #3b82f6);
     pointer-events: none;
-    opacity: 0.7;
 }
-/* 世界事件：从事件卡片左边缘 → 向左 → 到红竖线 */
+/* 世界：左边缘 → 红竖线（向左延伸） */
 .cmp-event--world::before {
     content: "";
     position: absolute;
-    left: -12px;
+    left: -14px;         /* 从事件左边缘开始 */
     top: 50%;
-    width: 12px;
+    width: 14px;
     height: 1px;
     background: var(--accent-red, #ef4444);
     pointer-events: none;
-    opacity: 0.7;
 }
 
 /* ---------- 响应式 ---------- */
@@ -258,12 +220,6 @@
     .cmp-container { padding-inline: 32px; }
 }
 @media (max-width: 720px) {
-    .cmp-row, .cmp-tick {
-        position: relative !important;
-        top: auto !important;
-        grid-template-columns: 1fr;
-    }
-    .cmp-col--axis { display: none; }
     .cmp-timeline::after { display: none; }
     .cmp-event--china::after, .cmp-event--world::before { display: none; }
 }

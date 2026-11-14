@@ -50,14 +50,15 @@ layout: "default.html"
 
 <section class="section cmp-section">
     <div class="container cmp-container">
-        {# 时间轴容器：position:relative，高度 = totalHeight #}
+        {# 时间轴容器 #}
         <div class="cmp-timeline" data-cmp-root style="height: {{ compare.totalHeight }}px">
 
             {%- for item in compare.stream %}
+
             {%- if item.kind == "tick" %}
-            {# ========== 刻度行：绝对定位到精确年份 top ========== #}
+            {# ========== 刻度行 ========== #}
             <div class="cmp-tick" id="{{ item.id }}" data-cmp-block="{{ item.id }}"
-                 style="top: {{ item.absoluteTop }}px">
+                 style="top: {{ item.displayTop }}px">
                 <div class="cmp-tick-col cmp-tick-col--left">
                     {% if item.year % 100 == 0 %}<span class="cmp-century-label">{{ item.century }}</span>{% endif %}
                 </div>
@@ -70,33 +71,21 @@ layout: "default.html"
             </div>
 
             {%- else %}
-            {# ========== 事件行：绝对定位到精确年份 top ========== #}
-            <div class="cmp-row" id="{{ item.id }}" data-cmp-block="{{ item.id }}"
-                 style="top: {{ item.absoluteTop }}px">
-                <div class="cmp-col cmp-col--china">
-                    {%- for ev in item.china %}
-                    <div class="cmp-event cmp-event--china">
-                        <span class="cmp-event-year">{{ item.yearLabel }}</span>
-                        <span class="cmp-event-body">{{ ev.title }}</span>
-                    </div>
-                    {%- endfor %}
-                </div>
-
-                <div class="cmp-col cmp-col--axis">
-                    {% if item.china.length > 0 %}<div class="cmp-axis-dot cmp-axis-dot--left"></div>{% endif %}
-                    {% if item.world.length > 0 %}<div class="cmp-axis-dot cmp-axis-dot--right"></div>{% endif %}
-                </div>
-
-                <div class="cmp-col cmp-col--world">
-                    {%- for ev in item.world %}
-                    <div class="cmp-event cmp-event--world">
-                        <span class="cmp-event-body">{{ ev.title }}</span>
-                        {% if ev.region %}<span class="cmp-event-region">{{ ev.region }}</span>{% endif %}
-                        <span class="cmp-event-year">{{ item.year }}</span>
-                    </div>
-                    {%- endfor %}
-                </div>
+            {# ========== 独立事件（每个事件自己 absolute + 棒棒糖） ========== #}
+            {%- if item.side == "china" %}
+            <div class="cmp-event cmp-event--china" data-cmp-block="ev-{{ item.side }}-{{ item.year }}"
+                 style="top: {{ item.displayTop }}px">
+                <span class="cmp-event-year">{{ item.yearLabel }}</span>
+                <span class="cmp-event-body">{{ item.title }}</span>
             </div>
+            {%- else %}
+            <div class="cmp-event cmp-event--world" data-cmp-block="ev-{{ item.side }}-{{ item.year }}"
+                 style="top: {{ item.displayTop }}px">
+                <span class="cmp-event-body">{{ item.title }}</span>
+                {% if item.region %}<span class="cmp-event-region">{{ item.region }}</span>{% endif %}
+                <span class="cmp-event-year">{{ item.year }}</span>
+            </div>
+            {%- endif %}
             {%- endif %}
             {%- endfor %}
 
