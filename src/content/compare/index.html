@@ -19,7 +19,7 @@ layout: "default.html"
         </p>
         <div class="page-meta">
             <span>范围 <strong>{{ compare.minYear | cnYear }} — {{ compare.maxYear | cnYear }}</strong></span>
-            <span>导航 <strong>{{ compare.chinaToc.length + compare.worldToc.length }}</strong> 条</span>
+            <span>每 50 年 <strong>{{ compare.pxPerYear * 50 }}px</strong></span>
         </div>
     </div>
 </section>
@@ -50,12 +50,14 @@ layout: "default.html"
 
 <section class="section cmp-section">
     <div class="container cmp-container">
-        <div class="cmp-timeline" data-cmp-root>
+        {# 时间轴容器：position:relative，高度 = totalHeight #}
+        <div class="cmp-timeline" data-cmp-root style="height: {{ compare.totalHeight }}px">
 
             {%- for item in compare.stream %}
             {%- if item.kind == "tick" %}
-            {# ========== 刻度行 ========== #}
-            <div class="cmp-tick" id="{{ item.id }}" data-cmp-block="{{ item.id }}" style="margin-top: {{ item.gapTop }}px">
+            {# ========== 刻度行：绝对定位到精确年份 top ========== #}
+            <div class="cmp-tick" id="{{ item.id }}" data-cmp-block="{{ item.id }}"
+                 style="top: {{ item.absoluteTop }}px">
                 <div class="cmp-tick-col cmp-tick-col--left">
                     {% if item.year % 100 == 0 %}<span class="cmp-century-label">{{ item.century }}</span>{% endif %}
                 </div>
@@ -68,8 +70,9 @@ layout: "default.html"
             </div>
 
             {%- else %}
-            {# ========== 事件行 ========== #}
-            <div class="cmp-row" id="{{ item.id }}" data-cmp-block="{{ item.id }}" style="margin-top: {{ item.gapTop }}px">
+            {# ========== 事件行：绝对定位到精确年份 top ========== #}
+            <div class="cmp-row" id="{{ item.id }}" data-cmp-block="{{ item.id }}"
+                 style="top: {{ item.absoluteTop }}px">
                 <div class="cmp-col cmp-col--china">
                     {%- for ev in item.china %}
                     <div class="cmp-event cmp-event--china">
