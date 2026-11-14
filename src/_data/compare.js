@@ -86,18 +86,18 @@ export default function () {
             id: `yr-${r.year}`
         }));
 
-    /* ---------- 3. 世纪刻度 ---------- */
+    /* ---------- 3. 刻度：50 年一格 ---------- */
     const allYears = rows.map((r) => r.year);
     let minYear = Math.min(...allYears, -2100);
     let maxYear = Math.max(...allYears, 2026);
 
-    // 向下/向上对齐到整百年
-    if (minYear % 100 !== 0) minYear = Math.floor(minYear / 100) * 100;
-    if (maxYear % 100 !== 0) maxYear = Math.ceil(maxYear / 100) * 100;
+    // 向下/向上对齐到 50
+    if (minYear % 50 !== 0) minYear = Math.floor(minYear / 50) * 50;
+    if (maxYear % 50 !== 0) maxYear = Math.ceil(maxYear / 50) * 50;
 
-    const centuries = [];
-    for (let y = minYear; y <= maxYear; y += 100) {
-        centuries.push({ year: y, label: centuryLabel(y) });
+    const ticks = [];
+    for (let y = minYear; y <= maxYear; y += 50) {
+        ticks.push({ year: y, label: cnYear(y), century: centuryLabel(y) });
     }
 
     /* ---------- 4. 导航 TOC ---------- */
@@ -137,26 +137,19 @@ export default function () {
         .filter((t) => t.anchor)
         .sort((a, b) => a.start - b.start);
 
-    /* ---------- 5. 交错 stream：世纪刻度 + 事件行 ---------- */
-    // 把 centuries 和 rows 合并成一个 stream，按 year 排序
-    // century 放在对应年份行的上方
+    /* ---------- 5. 交错 stream：50年刻度 + 事件行 ---------- */
     const stream = [];
-    let ci = 0;
+    let ti = 0;
     for (const r of rows) {
-        while (ci < centuries.length && centuries[ci].year <= r.year) {
-            // 这个世纪刻度是否真的有事件落在它之后？避免尾部多余刻度
-            if (centuries[ci].year <= maxYear) {
-                stream.push({ kind: "century", year: centuries[ci].year, label: centuries[ci].label, id: `century-${centuries[ci].year}` });
-            }
-            ci++;
+        while (ti < ticks.length && ticks[ti].year <= r.year) {
+            stream.push({ kind: "tick", year: ticks[ti].year, label: ticks[ti].label, century: ticks[ti].century, id: `tick-${ticks[ti].year}` });
+            ti++;
         }
         stream.push({ kind: "row", ...r });
     }
-
-    // 尾部剩余世纪刻度
-    while (ci < centuries.length) {
-        stream.push({ kind: "century", year: centuries[ci].year, label: centuries[ci].label, id: `century-${centuries[ci].year}` });
-        ci++;
+    while (ti < ticks.length) {
+        stream.push({ kind: "tick", year: ticks[ti].year, label: ticks[ti].label, century: ticks[ti].century, id: `tick-${ticks[ti].year}` });
+        ti++;
     }
 
     return { stream, chinaToc, worldToc, minYear, maxYear };

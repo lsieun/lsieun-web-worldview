@@ -1,12 +1,16 @@
 /* =======================================================
- * compare.css v4 — 中外对比页
- * 中间轴：两条贯穿竖线（左蓝 / 右红）+ 每年份横线
- * 视觉模型：
- *   蓝线 │  ←─────── 1492 ────────→  │ 红线
- *        │  朱元璋(弘治五年)           │ 哥伦布 1492 西班牙
- *        │                           │
- *        │  ←─────── 1600 ────────→  │
- *        │                           │ 伽利略 1600
+ * compare.css v5 — 中外对比页
+ * 中间管道：两条贯穿竖线 + 仅 50 年刻度横线
+ * 事件行：只有卡片 + branch 线锚点，管道不画横线
+ * 年份：在事件卡片上，远离管道（中国→左蓝线左侧，世界→右红线右侧）
+ *
+ * 视觉：
+ *   蓝线 │  ─── 1500 ───  │ 红线    ← tick 行画横线
+ *        │                 │
+ * 前1492  ●  弘治五年      ● 哥伦布 1492 西班牙   ← row 行，横线不画
+ *        │                 │
+ *        │  ─── 1500 ───  │              ← tick 行画横线
+ *        │                 │
  * ======================================================= */
 
 /* ---------- 浮动导航 ---------- */
@@ -72,7 +76,7 @@
     padding-bottom: 3rem;
 }
 
-/* 全局贯穿竖线（放在 timeline 上，整条时间轴共享） */
+/* 两条贯穿竖线（整个 timeline 共享） */
 .cmp-timeline::before,
 .cmp-timeline::after {
     content: "";
@@ -82,26 +86,19 @@
     width: 2px;
     z-index: 0;
 }
-.cmp-timeline::before {
-    left: calc(50% - 22px); /* 左蓝线 */
-    background: var(--accent-blue, #3b82f6);
-    opacity: 0.7;
-}
-.cmp-timeline::after {
-    left: calc(50% + 22px); /* 右红线 */
-    background: var(--accent-red, #ef4444);
-    opacity: 0.7;
+.cmp-timeline::before { left: calc(50% - 22px); background: var(--accent-blue, #3b82f6); opacity: 0.6; }
+.cmp-timeline::after  { left: calc(50% + 22px); background: var(--accent-red,  #ef4444); opacity: 0.6; }
+
+/* 统一三列：左栏 | 中轴(44px) | 右栏 */
+.cmp-row, .cmp-tick {
+    display: grid;
+    grid-template-columns: 1fr 44px 1fr;
+    position: relative;
+    scroll-margin-top: 80px;
 }
 
 /* ---------- 事件行 ---------- */
-.cmp-row {
-    display: grid;
-    grid-template-columns: 1fr 44px 1fr;
-    align-items: stretch;
-    position: relative;
-    scroll-margin-top: 80px;
-    padding: 8px 0;
-}
+.cmp-row { padding: 10px 0; }
 
 .cmp-col {
     display: flex;
@@ -111,22 +108,10 @@
     position: relative;
     z-index: 1;
 }
+.cmp-col--china  { align-items: flex-end; text-align: right;  padding-right: 4px; }
+.cmp-col--world  { align-items: flex-start; text-align: left; padding-left: 4px; }
 
-/* 中国列：右对齐，靠近左蓝线 */
-.cmp-col--china {
-    align-items: flex-end;
-    text-align: right;
-    padding-right: 4px;
-}
-
-/* 世界列：左对齐，靠近右红线 */
-.cmp-col--world {
-    align-items: flex-start;
-    text-align: left;
-    padding-left: 4px;
-}
-
-/* ---------- 中间轴（44px 宽的管道） ---------- */
+/* row 的轴列：空的，只有圆点锚点（不画横线！） */
 .cmp-col--axis {
     position: relative;
     display: flex;
@@ -134,48 +119,6 @@
     justify-content: center;
 }
 
-/* 横线从左蓝线画到右红线（跨越 44px + 两列的 padding gap） */
-.cmp-axis-rail {
-    position: absolute;
-    left: -6px;   /* 延伸到 timeline 左蓝线位置 */
-    right: -6px;  /* 延伸到 timeline 右红线位置 */
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    align-items: center;
-    height: 22px; /* 上下各 11px 画斜线对接竖线 */
-}
-
-/* 中间的横线主体 */
-.cmp-axis-hline {
-    flex: 1;
-    height: 1px;
-    background: var(--border, #d1d5db);
-}
-
-/* 横线左端：斜向上接到左蓝线 */
-.cmp-axis-rail::before {
-    content: "";
-    position: absolute;
-    left: -12px;
-    top: 11px;
-    width: 12px;
-    height: 1px;
-    background: var(--border, #d1d5db);
-}
-
-/* 横线右端：斜向上接到右红线 */
-.cmp-axis-rail::after {
-    content: "";
-    position: absolute;
-    right: -12px;
-    top: 11px;
-    width: 12px;
-    height: 1px;
-    background: var(--border, #d1d5db);
-}
-
-/* 圆点在横线两端（横线和竖线交叉点） */
 .cmp-axis-dot {
     position: absolute;
     width: 10px;
@@ -184,37 +127,59 @@
     z-index: 3;
     border: 2px solid var(--bg, #fff);
 }
-.cmp-axis-dot--left {
-    left: -22px;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    background: var(--accent-blue, #3b82f6);
-    box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.3);
+.cmp-axis-dot--left  { left: -22px; top: 50%; transform: translate(-50%, -50%); background: var(--accent-blue, #3b82f6); box-shadow: 0 0 0 1px rgba(59,130,246,0.3); }
+.cmp-axis-dot--right { right: -22px; top: 50%; transform: translate(50%, -50%); background: var(--accent-red,  #ef4444); box-shadow: 0 0 0 1px rgba(239,68,68,0.3); }
+
+/* ---------- 刻度行 ---------- */
+.cmp-tick { padding: 4px 0; }
+
+.cmp-tick-col {
+    display: flex;
+    align-items: center;
+    min-width: 0;
 }
-.cmp-axis-dot--right {
-    right: -22px;
-    top: 50%;
-    transform: translate(50%, -50%);
-    background: var(--accent-red, #ef4444);
-    box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.3);
+.cmp-tick-col--left  { justify-content: flex-end; padding-right: 8px; }
+.cmp-tick-col--right { justify-content: flex-start; padding-left: 8px; }
+
+/* tick 行的中间轴列：画横线 + 年份文字 */
+.cmp-tick-col--axis {
+    position: relative;
+    justify-content: center;
 }
 
-/* 横线中央的年份文字 */
-.cmp-axis-year {
+.cmp-tick-line {
     position: absolute;
-    left: 50%;
+    left: -22px;   /* 对齐左蓝线 */
+    right: -22px;  /* 对齐右红线 */
     top: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateY(-50%);
+    height: 1px;
+    background: var(--border, #d1d5db);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+.cmp-tick-year {
     font-size: 0.62rem;
     font-weight: 700;
     font-variant-numeric: tabular-nums;
     color: var(--text-muted, #6b7280);
     background: var(--bg, #fff);
-    padding: 1px 4px;
+    padding: 1px 5px;
     border-radius: 3px;
     letter-spacing: 0.5px;
     box-shadow: 0 0 0 1px var(--border-muted, #e5e7eb);
-    z-index: 4;
+    white-space: nowrap;
+}
+
+/* 整百年额外显示世纪标签（左栏） */
+.cmp-century-label {
+    font-size: 0.6rem;
+    color: var(--text-muted, #9ca3af);
+    font-style: italic;
+    letter-spacing: 0.5px;
 }
 
 /* ---------- 事件卡片 ---------- */
@@ -238,22 +203,27 @@
     transform: translateY(-1px);
 }
 
-/* 中国卡片：年份在右 → 靠近左蓝线 */
+/* 中国卡片：年份在最左（远离蓝线侧），branch 线从右侧延伸到蓝点 */
 .cmp-event--china {
-    flex-direction: row-reverse;
-    border-left: none;
     border-right: 3px solid var(--accent-blue, #3b82f6);
+    border-left: none;
+    flex-direction: row;
 }
+.cmp-event--china .cmp-event-year { order: 1; }
 .cmp-event--china .cmp-event-body { order: 2; }
-.cmp-event--china .cmp-event-year { order: 1; margin-right: auto; }
 .cmp-event--china .cmp-event-desc { order: 3; flex: 0 0 100%; }
 
-/* 世界卡片：年份在左 → 靠近右红线 */
+/* 世界卡片：年份在最右（远离红线侧），branch 线从左侧延伸到红点 */
 .cmp-event--world {
     border-left: 3px solid var(--accent-red, #ef4444);
     border-right: none;
+    flex-direction: row;
 }
-.cmp-event--world .cmp-event-year { margin-right: 2px; }
+.cmp-event--world .cmp-event-desc { order: 1; flex: 0 0 100%; }
+.cmp-event--world .cmp-event-title-row { order: 2; display: contents; }
+.cmp-event--world .cmp-event-body { }
+.cmp-event--world .cmp-event-region { }
+.cmp-event--world .cmp-event-year { margin-left: auto; }
 
 /* 年份文字 */
 .cmp-event-year {
@@ -262,8 +232,8 @@
     flex-shrink: 0;
     min-width: 3em;
 }
-.cmp-event--china .cmp-event-year { color: var(--accent-blue, #3b82f6); text-align: right; }
-.cmp-event--world .cmp-event-year { color: var(--accent-red, #ef4444); text-align: left; }
+.cmp-event--china .cmp-event-year { color: var(--accent-blue, #3b82f6); text-align: left; }
+.cmp-event--world .cmp-event-year { color: var(--accent-red, #ef4444); text-align: right; }
 
 .cmp-event-body { font-weight: 500; color: var(--text, #111); }
 
@@ -277,62 +247,35 @@
 }
 
 .cmp-event-desc {
-    flex: 0 0 100%;
     font-size: 0.75rem;
     color: var(--text-muted, #6b7280);
     margin-top: 2px;
     line-height: 1.5;
 }
 
-/* ---------- 分支线（卡片 → 竖线圆点） ---------- */
+/* ---------- 分支线（卡片 → 蓝/红竖线） ---------- */
 .cmp-event--china::after {
     content: "";
     position: absolute;
-    right: -10px;
+    right: -12px;
     top: 50%;
-    width: 14px;
+    width: 16px;
     height: 1px;
     background: var(--accent-blue, #3b82f6);
     pointer-events: none;
-    opacity: 0.7;
+    opacity: 0.6;
 }
 .cmp-event--world::before {
     content: "";
     position: absolute;
-    left: -10px;
+    left: -12px;
     top: 50%;
-    width: 14px;
+    width: 16px;
     height: 1px;
     background: var(--accent-red, #ef4444);
     pointer-events: none;
-    opacity: 0.7;
+    opacity: 0.6;
 }
-
-/* ---------- 世纪分隔 ---------- */
-.cmp-century {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    padding: 18px 0 10px;
-    scroll-margin-top: 80px;
-}
-.cmp-century-label {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 0.68rem;
-    color: var(--text-muted, #9ca3af);
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-.cmp-century-bar-l,
-.cmp-century-bar-r {
-    width: 100px;
-    height: 1px;
-    background: var(--border, #d1d5db);
-}
-.cmp-century-bar-l { background: linear-gradient(to left, var(--border, #d1d5db), transparent); }
-.cmp-century-bar-r { background: linear-gradient(to right, var(--border, #d1d5db), transparent); }
 
 /* ---------- 响应式 ---------- */
 @media (max-width: 1280px) {
@@ -341,8 +284,8 @@
 }
 
 @media (max-width: 720px) {
-    .cmp-row { grid-template-columns: 1fr; padding: 6px 0; }
-    .cmp-col--axis { display: none; }
+    .cmp-row, .cmp-tick { grid-template-columns: 1fr; padding: 6px 0; }
+    .cmp-col--axis, .cmp-tick-col--axis { display: none; }
     .cmp-col--china, .cmp-col--world {
         padding-left: 24px;
         padding-right: 0;
@@ -351,13 +294,7 @@
     }
     .cmp-timeline::before { left: 10px; }
     .cmp-timeline::after { display: none; }
-    .cmp-event--china {
-        flex-direction: row;
-        border-right: none;
-        border-left: 3px solid var(--accent-blue, #3b82f6);
-    }
-    .cmp-event--china .cmp-event-year { order: 1; margin-right: 2px; text-align: left; }
-    .cmp-event--china .cmp-event-body { order: 2; }
+    .cmp-event--china { border-right: none; border-left: 3px solid var(--accent-blue, #3b82f6); }
     .cmp-event--china::after,
     .cmp-event--world::before { display: none; }
 }
