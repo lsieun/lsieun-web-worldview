@@ -56,7 +56,7 @@ layout: "default.html"
             {%- for item in compare.stream %}
 
             {%- if item.kind == "tick" %}
-            {# ========== 刻度行：三级 ========== #}
+            {# ========== 刻度行：三级小杠 + 年份标签 ========== #}
             <div class="cmp-tick cmp-tick--{% if item.major %}major{% elif item.mid %}mid{% else %}minor{% endif %}"
                  id="{{ item.id }}" data-cmp-block="{{ item.id }}"
                  style="top: {{ item.displayTop }}px">
@@ -64,11 +64,9 @@ layout: "default.html"
                     {% if item.major %}<span class="cmp-century-label">{{ item.century }}</span>{% endif %}
                 </div>
                 <div class="cmp-tick-col cmp-tick-col--axis">
-                    <div class="cmp-tick-line">
-                        {% if item.major or item.mid %}
-                        <span class="cmp-tick-year">{{ item.label }}</span>
-                        {% endif %}
-                    </div>
+                    {% if item.major or item.mid %}
+                    <span class="cmp-tick-label">{{ item.label }}</span>
+                    {% endif %}
                 </div>
                 <div class="cmp-tick-col cmp-tick-col--right"></div>
             </div>

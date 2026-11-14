@@ -1,10 +1,6 @@
 /* =======================================================
- * compare.css v8 — 独立事件 absolute 定位 + 堆叠防重叠
- * timeline: relative 容器 + 红蓝贯穿竖线
- * tick: absolute + displayTop（精确年份位置）
- * event: absolute + displayTop（堆叠调整后的位置）
- *   中国事件在左半部分，branch 线 → 蓝竖线
- *   世界事件在右半部分，branch 线 → 红竖线
+ * compare.css — 中外对比页（使用项目设计令牌变量）
+ * 红蓝贯穿竖线 + 尺子刻度（短小杠凸出来）+ 棒棒糖单行事件
  * ======================================================= */
 
 /* ---------- 浮动导航 ---------- */
@@ -16,9 +12,9 @@
     z-index: 100;
     padding: 0.5rem 0;
     border-radius: 8px;
-    background: var(--card-bg, rgba(255,255,255,0.96));
-    border: 1px solid var(--border-muted, #e5e7eb);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-line);
+    box-shadow: var(--shadow-lift);
     max-height: 70vh;
     overflow-y: auto;
     font-size: 0.76rem;
@@ -36,19 +32,19 @@
     align-items: center;
     gap: 3px;
     padding: 3px 8px;
-    color: var(--text-muted, #6b7280);
+    color: var(--color-muted);
     text-decoration: none;
     border-left: 3px solid transparent;
     transition: background 0.15s;
 }
-.cmp-toc a:hover { background: var(--hover-bg, #f3f4f6); color: var(--text, #111); }
+.cmp-toc a:hover { background: var(--color-bg-tint); color: var(--color-ink); }
 .cmp-toc a.is-active {
-    border-left-color: var(--accent-blue, #3b82f6);
-    color: var(--text, #111);
-    background: var(--hover-bg, #f3f4f6);
+    border-left-color: var(--color-celadon);
+    color: var(--color-ink);
+    background: var(--color-bg-tint);
 }
 .cmp-toc--right a { border-left: none; border-right: 3px solid transparent; }
-.cmp-toc--right a.is-active { border-right-color: var(--accent-red, #ef4444); }
+.cmp-toc--right a.is-active { border-right-color: var(--color-seal); }
 
 .cmp-toc-flag { font-size: 0.8rem; flex-shrink: 0; }
 .cmp-toc-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -61,13 +57,12 @@
     padding-inline: 24px;
 }
 
-/* ---------- 时间轴容器（relative，高度由内联 style 设定） ---------- */
+/* ---------- 时间轴容器 ---------- */
 .cmp-timeline {
     position: relative;
 }
 
-/* 红蓝贯穿竖线 —— 从 top:0 到 bottom:0 */
-/* timeline 宽 1040-48=992px，中轴 40px 在 center */
+/* 红蓝贯穿竖线 */
 .cmp-timeline::before,
 .cmp-timeline::after {
     content: "";
@@ -77,10 +72,18 @@
     width: 2px;
     z-index: 0;
 }
-.cmp-timeline::before { left: calc(50% - 40px); background: var(--accent-blue, #3b82f6); opacity: 0.6; }
-.cmp-timeline::after  { left: calc(50% + 40px); background: var(--accent-red,  #ef4444); opacity: 0.6; }
+.cmp-timeline::before {
+    left: calc(50% - 40px);
+    background: var(--color-celadon);
+    opacity: 0.7;
+}
+.cmp-timeline::after {
+    left: calc(50% + 40px);
+    background: var(--color-seal);
+    opacity: 0.7;
+}
 
-/* ---------- 刻度 tick ---------- */
+/* ---------- tick 刻度（短小杠凸出来） ---------- */
 .cmp-tick {
     position: absolute;
     left: 0;
@@ -88,7 +91,7 @@
     display: grid;
     grid-template-columns: 1fr 80px 1fr;
     z-index: 2;
-    height: 22px;
+    height: 0;  /* 行本身不占高度 */
     pointer-events: none;
 }
 .cmp-tick-col {
@@ -100,62 +103,94 @@
 .cmp-tick-col--right { justify-content: flex-start; padding-left: 8px; }
 .cmp-tick-col--axis  { position: relative; justify-content: center; }
 
-.cmp-tick-line {
+/* 
+   刻度 = 在蓝/红竖线上各凸出来一个短小杠
+   不是横跨两条线的横线！
+*/
+.cmp-tick-col--axis {
+    position: relative;
+}
+/* 左刻度小杠（在蓝竖线上） */
+.cmp-tick-col--axis::before {
+    content: "";
     position: absolute;
-    left: -40px;
-    right: -40px;
-    top: 50%;
+    top: 0;
+    left: -40px;              /* 蓝竖线位置 */
     transform: translateY(-50%);
-    height: 1px;
-    background: var(--border, #d1d5db);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 0;
+    height: 0;
+}
+/* 右刻度小杠（在红竖线上） */
+.cmp-tick-col--axis::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -40px;             /* 红竖线位置 */
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
 }
 
-/* tick 三级样式 */
-.cmp-tick--minor .cmp-tick-line {
+/* minor(10年): 淡灰细小杠，左右各凸 4px */
+.cmp-tick--minor .cmp-tick-col--axis::before,
+.cmp-tick--minor .cmp-tick-col--axis::after {
+    width: 4px;
     height: 1px;
-    background: var(--border-muted, #e5e7eb);  /* 10年：淡细线 */
+    background: var(--color-line-strong);
+    opacity: 0.7;
 }
-.cmp-tick--mid .cmp-tick-line {
+
+/* mid(50年): 中灰中杠，左右各凸 6px */
+.cmp-tick--mid .cmp-tick-col--axis::before,
+.cmp-tick--mid .cmp-tick-col--axis::after {
+    width: 6px;
     height: 1px;
-    background: var(--border, #d1d5db);       /* 50年：中灰线 */
+    background: var(--color-muted);
+    opacity: 0.9;
 }
-.cmp-tick--major .cmp-tick-line {
+
+/* major(整百年): 深灰粗杠，左右各凸 8px + 显示世纪 */
+.cmp-tick--major .cmp-tick-col--axis::before,
+.cmp-tick--major .cmp-tick-col--axis::after {
+    width: 8px;
     height: 2px;
-    background: var(--text-muted, #9ca3af);   /* 整百年：粗灰线 */
+    background: var(--color-ink-soft);
+    opacity: 1;
 }
 
-.cmp-tick-year {
-    font-size: 0.65rem;
+/* 年份文字（只在 mid 和 major 显示） */
+.cmp-tick-label {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.6rem;
     font-weight: 700;
     font-variant-numeric: tabular-nums;
-    color: var(--text-muted, #6b7280);
-    background: var(--bg, #fff);
-    padding: 1px 6px;
-    border-radius: 3px;
-    letter-spacing: 0.5px;
-    box-shadow: 0 0 0 1px var(--border-muted, #e5e7eb);
+    color: var(--color-muted);
+    background: var(--color-surface);
+    padding: 1px 5px;
+    border-radius: 2px;
     white-space: nowrap;
+    pointer-events: auto;
 }
-.cmp-tick--major .cmp-tick-year {
-    font-size: 0.72rem;
+.cmp-tick--major .cmp-tick-label {
+    font-size: 0.7rem;
     font-weight: 800;
-    color: var(--text, #111);
-    box-shadow: 0 0 0 1.5px var(--border, #d1d5db);
+    color: var(--color-ink);
+    background: var(--color-surface-raised);
     padding: 2px 8px;
+    box-shadow: 0 0 0 1px var(--color-line-strong);
 }
 
 .cmp-century-label {
     font-size: 0.6rem;
-    color: var(--text-muted, #9ca3af);
+    color: var(--color-muted);
     font-style: italic;
     letter-spacing: 0.5px;
 }
 
 /* ---------- 独立事件：棒棒糖 ---------- */
-/* 事件高度 22px，绝对定位 */
 .cmp-event {
     position: absolute;
     display: inline-flex;
@@ -188,13 +223,13 @@
     font-variant-numeric: tabular-nums;
     flex-shrink: 0;
 }
-.cmp-event--china .cmp-event-year { color: var(--accent-blue, #3b82f6); margin-left: auto; }
-.cmp-event--world .cmp-event-year { color: var(--accent-red, #ef4444); margin-right: 4px; }
+.cmp-event--china .cmp-event-year { color: var(--color-celadon); margin-left: auto; }
+.cmp-event--world .cmp-event-year { color: var(--color-seal); margin-right: 4px; }
 
 /* 标题 */
 .cmp-event-body {
     font-weight: 500;
-    color: var(--text, #111);
+    color: var(--color-ink);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -205,33 +240,33 @@
     font-size: 0.65rem;
     padding: 1px 5px;
     border-radius: 8px;
-    background: var(--accent-red, #ef4444);
-    color: #fff;
+    background: var(--color-seal);
+    color: var(--color-surface-raised);
     flex-shrink: 0;
 }
 
 /* ---------- branch 线（事件 → 竖线） ---------- */
-/* 中国：右边缘 → 蓝竖线（向右延伸） */
 .cmp-event--china::after {
     content: "";
     position: absolute;
-    right: -14px;        /* 从事件右边缘开始 */
+    right: -14px;
     top: 50%;
     width: 14px;
     height: 1px;
-    background: var(--accent-blue, #3b82f6);
+    background: var(--color-celadon);
     pointer-events: none;
+    opacity: 0.7;
 }
-/* 世界：左边缘 → 红竖线（向左延伸） */
 .cmp-event--world::before {
     content: "";
     position: absolute;
-    left: -14px;         /* 从事件左边缘开始 */
+    left: -14px;
     top: 50%;
     width: 14px;
     height: 1px;
-    background: var(--accent-red, #ef4444);
+    background: var(--color-seal);
     pointer-events: none;
+    opacity: 0.7;
 }
 
 /* ---------- 响应式 ---------- */
@@ -240,6 +275,5 @@
     .cmp-container { padding-inline: 32px; }
 }
 @media (max-width: 720px) {
-    .cmp-timeline::after { display: none; }
     .cmp-event--china::after, .cmp-event--world::before { display: none; }
 }
