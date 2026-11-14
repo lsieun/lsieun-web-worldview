@@ -71,19 +71,21 @@ layout: "default.html"
             </div>
 
             {%- else %}
-            {# ========== 独立事件（每个事件自己 absolute + 棒棒糖） ========== #}
+            {# ========== 独立事件 ========== #}
             {%- if item.side == "china" %}
+            {# 中国：标题在左，年份在右（靠近蓝竖线） #}
             <div class="cmp-event cmp-event--china" data-cmp-block="ev-{{ item.side }}-{{ item.year }}"
                  style="top: {{ item.displayTop }}px">
-                <span class="cmp-event-year">{{ item.yearLabel }}</span>
                 <span class="cmp-event-body">{{ item.title }}</span>
+                <span class="cmp-event-year">{{ item.yearLabel }}</span>
             </div>
             {%- else %}
+            {# 世界：年份在左（靠近红竖线），标题+region在右 #}
             <div class="cmp-event cmp-event--world" data-cmp-block="ev-{{ item.side }}-{{ item.year }}"
                  style="top: {{ item.displayTop }}px">
+                <span class="cmp-event-year">{{ item.year }}</span>
                 <span class="cmp-event-body">{{ item.title }}</span>
                 {% if item.region %}<span class="cmp-event-region">{{ item.region }}</span>{% endif %}
-                <span class="cmp-event-year">{{ item.year }}</span>
             </div>
             {%- endif %}
             {%- endif %}

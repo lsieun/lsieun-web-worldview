@@ -147,17 +147,16 @@
     z-index: 3;
 }
 
-/* 中国事件：在左半部分，右对齐 */
-/* 宽屏：左侧区域 left:0 → 蓝线(left:calc(50%-40px)) */
+/* 中国事件：右对齐，flex-end → 标题在左，年份在右（靠近蓝竖线） */
 .cmp-event--china {
-    right: calc(50% + 40px + 14px);  /* 右边缘对齐蓝线左边 - 14px（branch 线长度） */
+    right: calc(50% + 40px + 14px);
     justify-content: flex-end;
     text-align: right;
 }
 
-/* 世界事件：在右半部分，左对齐 */
+/* 世界事件：左对齐，flex-start → 年份在左（靠近红竖线），标题在右 */
 .cmp-event--world {
-    left: calc(50% + 40px + 14px);   /* 左边缘对齐红线右边 + 14px */
+    left: calc(50% + 40px + 14px);
     justify-content: flex-start;
     text-align: left;
 }
@@ -168,8 +167,8 @@
     font-variant-numeric: tabular-nums;
     flex-shrink: 0;
 }
-.cmp-event--china .cmp-event-year { color: var(--accent-blue, #3b82f6); }
-.cmp-event--world .cmp-event-year { color: var(--accent-red, #ef4444); margin-left: auto; }
+.cmp-event--china .cmp-event-year { color: var(--accent-blue, #3b82f6); margin-left: auto; }
+.cmp-event--world .cmp-event-year { color: var(--accent-red, #ef4444); margin-right: 4px; }
 
 /* 标题 */
 .cmp-event-body {

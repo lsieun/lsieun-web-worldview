@@ -138,7 +138,7 @@ export default function () {
         .sort((a, b) => a.start - b.start);
 
     /* ---------- 5. 构建 stream：tick + 独立事件 ---------- */
-    const PX_PER_YEAR = 4.0;       // 1 年 = 4px
+    const PX_PER_YEAR = 8.0;       // 1 年 = 8px，50年 = 400px（足够容纳密集事件堆叠）
     const EVENT_HEIGHT = 24;       // 每个事件的视觉高度（含 gap）
     const EVENT_MIN_GAP = 2;       // 两个事件之间最小间距
 
@@ -176,24 +176,26 @@ export default function () {
         item.idealTop = Math.round((item.year - minYear) * PX_PER_YEAR);
     }
 
-    // 堆叠调整：tick 保持精确 top；event 按 side 分开堆叠
-    // 中国事件只避开中国事件，世界事件只避开世界事件
-    let chinaBottom = -Infinity;
-    let worldBottom = -Infinity;
+    // 堆叠调整：只和 idealTop 邻近的事件比较
+    // 避免公元前大量事件的堆叠影响公元后的事件
+    // 策略：维护两个 side 的 bottom 列表，新事件只和 idealTop < 自己的最近事件比较
+    const chinaStack = [];  // [{idealTop, bottom}]
+    const worldStack = [];
+
     for (const item of stream) {
         if (item.kind === "tick") {
             item.displayTop = item.idealTop;
-        } else if (item.kind === "event") {
-            if (item.side === "china") {
-                const desired = item.idealTop;
-                item.displayTop = Math.max(desired, chinaBottom + EVENT_MIN_GAP);
-                chinaBottom = item.displayTop + EVENT_HEIGHT;
-            } else {
-                const desired = item.idealTop;
-                item.displayTop = Math.max(desired, worldBottom + EVENT_MIN_GAP);
-                worldBottom = item.displayTop + EVENT_HEIGHT;
-            }
+            continue;
         }
+        // event: 找同 side 中 idealTop < 自己的最后一个
+        const stack = item.side === "china" ? chinaStack : worldStack;
+        // 移除所有 idealTop >= 当前事件的（它们在后面处理）
+        while (stack.length > 0 && stack[stack.length-1].idealTop >= item.idealTop) {
+            stack.pop();
+        }
+        const prevBottom = stack.length > 0 ? stack[stack.length-1].bottom : -Infinity;
+        item.displayTop = Math.max(item.idealTop, prevBottom + EVENT_MIN_GAP);
+        stack.push({ idealTop: item.idealTop, bottom: item.displayTop + EVENT_HEIGHT });
     }
 
     // 总高
