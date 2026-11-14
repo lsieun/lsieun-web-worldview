@@ -42,16 +42,23 @@ order: 99
 
         {# 地图区 — 不加 data-china-map，由 JS 手动 mount #}
         <div class="pj-map-block">
-            <div id="pj-map" class="china-map-chart"></div>
+            <div id="pj-map" class="pj-map-chart"></div>
             <script src="/assets/js/echarts.min.js" defer></script>
             <script src="/assets/js/china-map.js" defer></script>
             <link rel="stylesheet" href="/assets/css/china-map.css">
 
-            {# 图例 #}
+            {# Q 版 SVG 底图数据（由 confucius-svg.js 读取） #}
+            <script id="pj-qsvg-data" type="application/json">
+{{ confuciusMap | dump | safe }}
+            </script>
+            <script src="/assets/js/confucius-svg.js" defer></script>
+
+            {# 图例 + 模式切换 #}
             <div class="pj-map-legend">
                 <span class="pj-legend-item"><i class="pj-legend-line pj-legend-line--done"></i>已行经</span>
                 <span class="pj-legend-item"><i class="pj-legend-line pj-legend-line--pending"></i>待行经</span>
                 <span class="pj-legend-item"><i class="pj-legend-dot"></i>停留点</span>
+                <button id="pj-mode-toggle" class="pj-mode-toggle" type="button" title="切换 Q 版/地理图"></button>
             </div>
         </div>
 

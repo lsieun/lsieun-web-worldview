@@ -1,0 +1,48 @@
+{
+  "viewBox": "0 0 800 600",
+  "title": "春秋 · 中原列国（Q版）",
+  "base": {
+    "outline": "M 120,180 Q 180,100 300,90 Q 420,80 520,100 Q 620,120 680,160 Q 720,200 710,260 Q 700,320 680,360 Q 650,400 600,430 Q 540,460 460,480 Q 380,500 300,490 Q 220,480 170,440 Q 120,400 100,340 Q 80,280 100,220 Z",
+    "yellowRiver": "M 130,240 Q 200,200 280,220 Q 360,240 440,230 Q 520,220 600,240 Q 660,260 700,255",
+    "yangtze": "M 130,400 Q 220,370 320,390 Q 420,410 500,395 Q 580,380 650,400"
+  },
+
+  "regions": [
+    { "id": "qi", "name": "齐", "shape": "rect",  "x": 540, "y": 140, "w": 130, "h": 80, "fill": "#e8c94d", "opacity": 0.35, "labelOffset": [605, 182] },
+    { "id": "lu", "name": "鲁", "shape": "poly", "points": "470,165 540,140 570,180 540,220 470,220", "fill": "#d4764a", "opacity": 0.35, "labelOffset": [510, 195] },
+    { "id": "wei","name": "卫","shape": "poly","points": "420,130 470,120 490,160 470,200 420,210 400,170", "fill": "#7b8f5c", "opacity": 0.35, "labelOffset": [445, 170] },
+    { "id": "cao", "name": "曹", "shape": "rect", "x": 470, "y": 220, "w": 60, "h": 40, "fill": "#b08ac1", "opacity": 0.35, "labelOffset": [500, 245] },
+    { "id": "song","name": "宋","shape": "poly","points": "450,260 530,240 550,280 520,320 440,300", "fill": "#d4a04a", "opacity": 0.35, "labelOffset": [490, 280] },
+    { "id": "zheng","name": "郑","shape": "poly","points": "370,250 450,240 460,290 440,320 370,310 360,280", "fill": "#5da3d4", "opacity": 0.35, "labelOffset": [410, 280] },
+    { "id": "chen","name": "陈","shape": "rect","x": 440, "y": 330, "w": 70, "h": 50, "fill": "#c96587", "opacity": 0.35, "labelOffset": [475, 358] },
+    { "id": "cai","name": "蔡","shape": "rect","x": 380, "y": 380, "w": 70, "h": 50, "fill": "#c28f3a", "opacity": 0.35, "labelOffset": [415, 408] },
+    { "id": "chu", "name": "楚","shape": "poly","points": "250,380 380,360 510,380 580,400 550,460 440,480 330,470 260,440", "fill": "#b8372b", "opacity": 0.30, "labelOffset": [400, 425] },
+    { "id": "jin", "name": "晋","shape": "poly","points": "250,120 370,100 400,140 380,200 320,210 250,190 230,160", "fill": "#6b5c44", "opacity": 0.30, "labelOffset": [320, 160] },
+    { "id": "qin", "name": "秦","shape": "poly","points": "130,200 220,180 240,240 220,300 170,320 130,280", "fill": "#4a6670", "opacity": 0.30, "labelOffset": [180, 255] },
+    { "id": "wu", "name": "吴","shape": "rect","x": 560, "y": 320, "w": 100, "h": 70, "fill": "#4a9966", "opacity": 0.30, "labelOffset": [610, 360] },
+    { "id": "yue","name": "越","shape": "rect","x": 600, "y": 400, "w": 90, "h": 60, "fill": "#7b6b3a", "opacity": 0.30, "labelOffset": [645, 435] }
+  ],
+
+  "mountains": [
+    { "text": "太行", "x": 395, "y": 135, "rotate": -75, "fontSize": 16 },
+    { "text": "泰",   "x": 565, "y": 210, "rotate": 0,   "fontSize": 14 },
+    { "text": "蒙",   "x": 320, "y": 115, "rotate": 0,   "fontSize": 13 },
+    { "text": "秦岭", "x": 290, "y": 350, "rotate": -10, "fontSize": 15 },
+    { "text": "大巴", "x": 280, "y": 390, "rotate": -10, "fontSize": 13 }
+  ],
+
+  "cities": [
+    { "id": "qufu", "name": "曲阜", "x": 520, "y": 200 },
+    { "id": "diqiu", "name": "帝丘", "x": 455, "y": 150 },
+    { "id": "kuang", "name": "匡", "x": 445, "y": 180 },
+    { "id": "pu", "name": "蒲", "x": 460, "y": 210 },
+    { "id": "taoqiu", "name": "陶丘", "x": 500, "y": 240 },
+    { "id": "shangqiu", "name": "商丘", "x": 505, "y": 280 },
+    { "id": "xinzheng", "name": "新郑", "x": 425, "y": 280 },
+    { "id": "wanchen", "name": "宛丘", "x": 475, "y": 355 },
+    { "id": "shangcai", "name": "上蔡", "x": 415, "y": 405 },
+    { "id": "fuhan", "name": "负函", "x": 455, "y": 435 },
+    { "id": "ye", "name": "叶", "x": 370, "y": 430 },
+    { "id": "qufu-return", "name": "曲阜", "x": 520, "y": 200 }
+  ]
+}
