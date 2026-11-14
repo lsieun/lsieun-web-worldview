@@ -54,36 +54,44 @@ layout: "default.html"
 
             {%- for item in compare.stream %}
             {%- if item.kind == "century" %}
-            {# 世纪刻度 #}
+            {# 世纪分隔 #}
             <div class="cmp-century" id="{{ item.id }}" data-cmp-block="{{ item.id }}">
-                <div class="cmp-century-col">
-                    <span class="cmp-century-bar"></span>
-                    <span class="cmp-century-year">{{ item.year }}</span>
-                    <span class="cmp-century-label">{{ item.label }}</span>
-                </div>
-                <div class="cmp-century-spacer"></div>
-                <div class="cmp-century-col"></div>
+                <span class="cmp-century-label">
+                    <span class="cmp-century-bar-l"></span>
+                    <span class="cmp-century-text">{{ item.year }} 年 · {{ item.label }}</span>
+                    <span class="cmp-century-bar-r"></span>
+                </span>
             </div>
             {%- else %}
             {# 事件行 #}
             <div class="cmp-row" id="{{ item.id }}" data-cmp-block="{{ item.id }}">
-                <div class="cmp-row--china">
+                {# 左：中国 #}
+                <div class="cmp-col cmp-col--china">
                     {%- for ev in item.china %}
-                    <div class="cmp-event-card cmp-event-card--china">
-                        <span class="cmp-event-year">{{ item.yearLabel }}</span>
-                        <span class="cmp-event-title">{{ ev.title }}</span>
+                    <div class="cmp-event cmp-event--china">
+                        <span class="cmp-event-body">{{ ev.title }}</span>
                         {% if ev.desc %}<span class="cmp-event-desc">{{ ev.desc }}</span>{% endif %}
+                        <span class="cmp-event-year">{{ item.yearLabel }}</span>
                     </div>
                     {%- endfor %}
                 </div>
-                <div class="cmp-row--axis">
-                    <div class="cmp-axis-dot"></div>
+
+                {# 中：时间轴宽条 #}
+                <div class="cmp-col cmp-col--axis" aria-hidden="true">
+                    <div class="cmp-axis-rail">
+                        <div class="cmp-axis-hline"></div>
+                        {% if item.china.length > 0 %}<div class="cmp-axis-dot cmp-axis-dot--left"></div>{% endif %}
+                        {% if item.world.length > 0 %}<div class="cmp-axis-dot cmp-axis-dot--right"></div>{% endif %}
+                        <div class="cmp-axis-year">{{ item.yearLabel }}</div>
+                    </div>
                 </div>
-                <div class="cmp-row--world">
+
+                {# 右：世界 #}
+                <div class="cmp-col cmp-col--world">
                     {%- for ev in item.world %}
-                    <div class="cmp-event-card cmp-event-card--world">
+                    <div class="cmp-event cmp-event--world">
                         <span class="cmp-event-year">{{ item.year }}</span>
-                        <span class="cmp-event-title">{{ ev.title }}</span>
+                        <span class="cmp-event-body">{{ ev.title }}</span>
                         {% if ev.region %}<span class="cmp-event-region">{{ ev.region }}</span>{% endif %}
                         {% if ev.desc %}<span class="cmp-event-desc">{{ ev.desc }}</span>{% endif %}
                     </div>
