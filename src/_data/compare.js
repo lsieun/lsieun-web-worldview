@@ -169,7 +169,7 @@ export default function () {
     let ti = 0;
     for (const ev of allEvents) {
         while (ti < ticks.length && ticks[ti].year <= ev.year) {
-            stream.push({ kind: "tick", year: ticks[ti].year, label: ticks[ti].label, century: ticks[ti].century, id: `tick-${ticks[ti].year}` });
+            stream.push({ kind: "tick", year: ticks[ti].year, label: ticks[ti].label, century: ticks[ti].century, major: ticks[ti].major, mid: ticks[ti].mid, id: `tick-${ticks[ti].year}` });
             ti++;
         }
         stream.push(ev);
