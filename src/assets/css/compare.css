@@ -83,82 +83,81 @@
     opacity: 0.7;
 }
 
-/* ---------- tick 刻度（短小杠凸出来） ---------- */
+/* ---------- tick 刻度（贴紧蓝/红竖线） ---------- */
+/*
+   tick 结构极简：
+     .cmp-tick { position:absolute; left:0; right:0; top:XXpx }
+     .cmp-tick::before → 蓝竖线上的小杠
+     .cmp-tick::after  → 红竖线上的小杠
+     .cmp-tick-label   → 中间年份文字（只在 mid/major 显示）
+     
+   定位全在 timeline 这个坐标系里，没有中间层级。
+   蓝竖线位置 = left: calc(50% - 40px)
+   红竖线位置 = left: calc(50% + 40px)
+*/
 .cmp-tick {
     position: absolute;
     left: 0;
     right: 0;
-    display: grid;
-    grid-template-columns: 1fr 80px 1fr;
     z-index: 2;
-    height: 0;  /* 行本身不占高度 */
+    height: 0;
     pointer-events: none;
 }
-.cmp-tick-col {
-    display: flex;
-    align-items: center;
-    min-width: 0;
-}
-.cmp-tick-col--left  { justify-content: flex-end; padding-right: 8px; }
-.cmp-tick-col--right { justify-content: flex-start; padding-left: 8px; }
-.cmp-tick-col--axis  { position: relative; justify-content: center; }
 
-/* 
-   刻度 = 在蓝/红竖线上各凸出来一个短小杠
-   不是横跨两条线的横线！
-*/
-.cmp-tick-col--axis {
-    position: relative;
-}
-/* 左刻度小杠（在蓝竖线上） */
-.cmp-tick-col--axis::before {
+/* 基础刻度杠：贴紧蓝/红竖线，向中间凸 */
+.cmp-tick::before,
+.cmp-tick::after {
     content: "";
     position: absolute;
     top: 0;
-    left: -40px;              /* 蓝竖线位置 */
     transform: translateY(-50%);
-    width: 0;
-    height: 0;
-}
-/* 右刻度小杠（在红竖线上） */
-.cmp-tick-col--axis::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: -40px;             /* 红竖线位置 */
-    transform: translateY(-50%);
-    width: 0;
-    height: 0;
+    background: var(--color-line-strong);
 }
 
-/* minor(10年): 淡灰细小杠，左右各凸 4px */
-.cmp-tick--minor .cmp-tick-col--axis::before,
-.cmp-tick--minor .cmp-tick-col--axis::after {
+/* 左小杠：在蓝竖线位置，向右（中间）凸 */
+.cmp-tick::before {
+    left: calc(50% - 40px);
+    height: 1px;
+    width: 4px;
+    margin-left: 1px;   /* 竖线 2px 宽，偏移 1px 让小杠贴在竖线右侧 */
+}
+
+/* 右小杠：在红竖线位置，向左（中间）凸 */
+.cmp-tick::after {
+    left: calc(50% + 40px);
+    height: 1px;
+    width: 4px;
+    margin-left: -5px;  /* 让小杠贴在竖线左侧 */
+}
+
+/* minor(10年): 淡灰 4px */
+.cmp-tick--minor::before,
+.cmp-tick--minor::after {
     width: 4px;
     height: 1px;
     background: var(--color-line-strong);
-    opacity: 0.7;
+    opacity: 0.6;
 }
 
-/* mid(50年): 中灰中杠，左右各凸 6px */
-.cmp-tick--mid .cmp-tick-col--axis::before,
-.cmp-tick--mid .cmp-tick-col--axis::after {
+/* mid(50年): 中灰 6px */
+.cmp-tick--mid::before,
+.cmp-tick--mid::after {
     width: 6px;
     height: 1px;
     background: var(--color-muted);
     opacity: 0.9;
 }
 
-/* major(整百年): 深灰粗杠，左右各凸 8px + 显示世纪 */
-.cmp-tick--major .cmp-tick-col--axis::before,
-.cmp-tick--major .cmp-tick-col--axis::after {
+/* major(百年): 深灰粗 8px */
+.cmp-tick--major::before,
+.cmp-tick--major::after {
     width: 8px;
     height: 2px;
     background: var(--color-ink-soft);
     opacity: 1;
 }
 
-/* 年份文字（只在 mid 和 major 显示） */
+/* 年份文字 */
 .cmp-tick-label {
     position: absolute;
     top: 0;
