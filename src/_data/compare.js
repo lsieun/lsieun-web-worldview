@@ -63,7 +63,8 @@ export default function () {
     for (const ev of Object.values(chinaEvents)) {
         addToYear(ev.year, "china", {
             title: ev.title,
-            desc: ev.desc || ev.note || ""
+            desc: ev.desc || ev.note || "",
+            key: !!ev.key
         });
     }
 
@@ -71,7 +72,8 @@ export default function () {
         addToYear(ev.year, "world", {
             title: ev.title,
             region: ev.region || ev.era || "",
-            desc: ev.desc || ev.note || ""
+            desc: ev.desc || ev.note || "",
+            key: !!ev.key
         });
     }
 
@@ -92,12 +94,19 @@ export default function () {
     let maxYear = Math.max(...allYears, 2026);
 
     // 向下/向上对齐到 50
-    if (minYear % 50 !== 0) minYear = Math.floor(minYear / 50) * 50;
-    if (maxYear % 50 !== 0) maxYear = Math.ceil(maxYear / 50) * 50;
+    if (minYear % 10 !== 0) minYear = Math.floor(minYear / 10) * 10;
+    if (maxYear % 10 !== 0) maxYear = Math.ceil(maxYear / 10) * 10;
 
+    // tick：10 年一小格，整百年大字刻度
     const ticks = [];
-    for (let y = minYear; y <= maxYear; y += 50) {
-        ticks.push({ year: y, label: cnYear(y), century: centuryLabel(y) });
+    for (let y = minYear; y <= maxYear; y += 10) {
+        ticks.push({
+            year: y,
+            label: cnYear(y),
+            century: centuryLabel(y),
+            major: (y % 100 === 0),   // 整百年 = 大刻度
+            mid:   (y % 50 === 0 && y % 100 !== 0)  // 50年 = 中刻度
+        });
     }
 
     /* ---------- 4. 导航 TOC ---------- */
@@ -137,23 +146,23 @@ export default function () {
         .filter((t) => t.anchor)
         .sort((a, b) => a.start - b.start);
 
-    /* ---------- 5. 构建 stream：tick + 独立事件 ---------- */
-    const PX_PER_YEAR = 8.0;       // 1 年 = 8px，50年 = 400px（足够容纳密集事件堆叠）
+    /* ---------- 5. 构建 stream：tick + 独立事件（只留 key:true 的重要事件） ---------- */
+    const PX_PER_YEAR = 8.0;       // 1 年 = 8px
     const EVENT_HEIGHT = 24;       // 每个事件的视觉高度（含 gap）
-    const EVENT_MIN_GAP = 2;       // 两个事件之间最小间距
+    const EVENT_MIN_GAP = 4;       // 两个事件之间最小间距
 
-    // 把 rows 展平成独立事件
+    // 把 rows 展平成独立事件 —— 只保留 key=true
     const allEvents = [];
     for (const row of rows) {
         for (const ev of row.china) {
-            allEvents.push({ kind: "event", side: "china", year: row.year, yearLabel: row.yearLabel, ...ev });
+            if (ev.key) allEvents.push({ kind: "event", side: "china", year: row.year, yearLabel: row.yearLabel, ...ev });
         }
         for (const ev of row.world) {
-            allEvents.push({ kind: "event", side: "world", year: row.year, yearLabel: row.yearLabel, ...ev });
+            if (ev.key) allEvents.push({ kind: "event", side: "world", year: row.year, yearLabel: row.yearLabel, ...ev });
         }
     }
-    // 按年份排序
     allEvents.sort((a, b) => a.year - b.year);
+    console.log(`[compare] key events: ${allEvents.length} (china: ${allEvents.filter(e=>e.side==='china').length}, world: ${allEvents.filter(e=>e.side==='world').length})`);
 
     // tick 保持精确年份 top（不受堆叠影响）
     const stream = [];

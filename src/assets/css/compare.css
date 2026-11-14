@@ -113,6 +113,20 @@
     justify-content: center;
 }
 
+/* tick 三级样式 */
+.cmp-tick--minor .cmp-tick-line {
+    height: 1px;
+    background: var(--border-muted, #e5e7eb);  /* 10年：淡细线 */
+}
+.cmp-tick--mid .cmp-tick-line {
+    height: 1px;
+    background: var(--border, #d1d5db);       /* 50年：中灰线 */
+}
+.cmp-tick--major .cmp-tick-line {
+    height: 2px;
+    background: var(--text-muted, #9ca3af);   /* 整百年：粗灰线 */
+}
+
 .cmp-tick-year {
     font-size: 0.65rem;
     font-weight: 700;
@@ -124,6 +138,13 @@
     letter-spacing: 0.5px;
     box-shadow: 0 0 0 1px var(--border-muted, #e5e7eb);
     white-space: nowrap;
+}
+.cmp-tick--major .cmp-tick-year {
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: var(--text, #111);
+    box-shadow: 0 0 0 1.5px var(--border, #d1d5db);
+    padding: 2px 8px;
 }
 
 .cmp-century-label {
