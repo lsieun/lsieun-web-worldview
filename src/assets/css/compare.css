@@ -1,0 +1,229 @@
+/* =======================================================
+ * compare.css — 中外对比页
+ * 布局：三栏主体 + 左右浮动导航
+ * ======================================================= */
+
+/* ---------- 浮动导航 ---------- */
+.cmp-toc {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 160px;
+    z-index: 100;
+    padding: 0.6rem 0;
+    border-radius: 8px;
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border-muted, #e5e7eb);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    max-height: 70vh;
+    overflow-y: auto;
+    font-size: 0.78rem;
+    scrollbar-width: thin;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.cmp-toc.is-visible { opacity: 1; }
+
+.cmp-toc--left { left: 16px; }
+.cmp-toc--right { right: 16px; }
+
+.cmp-toc a {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    color: var(--text-muted, #6b7280);
+    text-decoration: none;
+    white-space: nowrap;
+    border-left: 3px solid transparent;
+    transition: background 0.15s;
+}
+
+.cmp-toc a:hover {
+    background: var(--hover-bg, #f3f4f6);
+    color: var(--text, #111);
+}
+
+.cmp-toc a.is-active {
+    border-left-color: var(--accent-blue, #3b82f6);
+    color: var(--text, #111);
+    background: var(--hover-bg, #f3f4f6);
+}
+
+.cmp-toc--right a { border-left: none; border-right: 3px solid transparent; }
+.cmp-toc--right a.is-active { border-right-color: var(--accent-red, #ef4444); border-left: none; }
+
+.cmp-toc-flag { font-size: 0.85rem; }
+.cmp-toc--left .cmp-toc-flag { margin-right: 2px; }
+.cmp-toc--right .cmp-toc-flag { margin-left: 2px; }
+.cmp-toc-name { flex: 1; }
+.cmp-toc-years { font-variant-numeric: tabular-nums; font-size: 0.7rem; opacity: 0.7; }
+
+/* ---------- 容器 ---------- */
+.cmp-section { padding-top: 0; }
+
+.cmp-container {
+    max-width: 960px;
+    margin-inline: auto;
+    padding-inline: 24px;
+}
+
+/* ---------- 区块 ---------- */
+.cmp-block {
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--border-muted, #e5e7eb);
+    scroll-margin-top: 80px;
+}
+
+.cmp-block:last-child { border-bottom: none; }
+
+/* 区块头 */
+.cmp-block-head {
+    display: grid;
+    grid-template-columns: 1fr 40px 1fr;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid var(--border, #d1d5db);
+}
+
+.cmp-block-head--china h2 {
+    font-size: 1.2rem;
+    margin: 0;
+    color: var(--text, #111);
+}
+
+.cmp-block-head--world h3 {
+    font-size: 0.95rem;
+    margin: 0;
+    color: var(--accent-red, #ef4444);
+    font-weight: 500;
+    text-align: right;
+}
+
+.cmp-block-flag { font-size: 1rem; margin-right: 4px; }
+
+.cmp-block-years {
+    font-size: 0.78rem;
+    color: var(--text-muted, #6b7280);
+    font-variant-numeric: tabular-nums;
+    margin-left: 8px;
+}
+
+.cmp-block-axis {
+    width: 2px;
+    height: 100%;
+    background: var(--border, #d1d5db);
+    margin-inline: auto;
+}
+
+/* ---------- 三栏主体 ---------- */
+.cmp-block-body {
+    display: grid;
+    grid-template-columns: 1fr 40px 1fr;
+    gap: 16px;
+}
+
+.cmp-col { min-width: 0; }
+
+.cmp-col--axis {
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.cmp-axis-line {
+    width: 2px;
+    flex: 1;
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        var(--border, #d1d5db) 10px,
+        var(--border, #d1d5db) calc(100% - 10px),
+        transparent 100%
+    );
+}
+
+/* ---------- 事件列表 ---------- */
+.cmp-event-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.cmp-event {
+    padding: 0.5rem 0;
+    border-bottom: 1px dashed var(--border-muted, #e5e7eb);
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.cmp-event:last-child { border-bottom: none; }
+
+.cmp-event-year {
+    color: var(--accent-blue, #3b82f6);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+    min-width: 3.2em;
+}
+
+.cmp-col--world .cmp-event-year { color: var(--accent-red, #ef4444); }
+
+.cmp-event-title {
+    font-weight: 500;
+    color: var(--text, #111);
+}
+
+.cmp-event-region {
+    font-size: 0.72rem;
+    padding: 1px 6px;
+    border-radius: 10px;
+    background: var(--accent-red, #ef4444);
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.cmp-event-desc {
+    flex: 0 0 100%;
+    font-size: 0.78rem;
+    color: var(--text-muted, #6b7280);
+    line-height: 1.5;
+}
+
+/* ---------- 区块头摘要 ---------- */
+.cmp-col-summary {
+    font-size: 0.82rem;
+    color: var(--text-muted, #6b7280);
+    margin: 0 0 0.6rem 0;
+    line-height: 1.5;
+}
+
+.cmp-empty {
+    font-size: 0.8rem;
+    color: var(--text-muted, #9ca3af);
+    font-style: italic;
+    padding: 1rem 0;
+    margin: 0;
+}
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 1280px) {
+    .cmp-toc { display: none; }
+    .cmp-container { padding-inline: 32px; }
+}
+
+@media (max-width: 720px) {
+    .cmp-block-head,
+    .cmp-block-body {
+        grid-template-columns: 1fr;
+    }
+    .cmp-block-axis,
+    .cmp-col--axis { display: none; }
+    .cmp-block-head--world h3 { text-align: left; margin-top: 0.4rem; }
+}
