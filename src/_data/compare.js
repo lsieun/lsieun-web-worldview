@@ -138,7 +138,7 @@ export default function () {
         .sort((a, b) => a.start - b.start);
 
     /* ---------- 5. 交错 stream：50年刻度 + 事件行，绝对定位 top ---------- */
-    const PX_PER_YEAR = 2.0;  // 1 年 = 2px，50年 = 100px（够宽松）
+    const PX_PER_YEAR = 4.0;  // 1 年 = 4px，50年 = 200px（宽松）
 
     const stream = [];
     let ti = 0;

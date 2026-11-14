@@ -78,7 +78,6 @@ layout: "default.html"
                     <div class="cmp-event cmp-event--china">
                         <span class="cmp-event-year">{{ item.yearLabel }}</span>
                         <span class="cmp-event-body">{{ ev.title }}</span>
-                        {% if ev.desc %}<span class="cmp-event-desc">{{ ev.desc }}</span>{% endif %}
                     </div>
                     {%- endfor %}
                 </div>
@@ -91,12 +90,9 @@ layout: "default.html"
                 <div class="cmp-col cmp-col--world">
                     {%- for ev in item.world %}
                     <div class="cmp-event cmp-event--world">
-                        {% if ev.desc %}<span class="cmp-event-desc">{{ ev.desc }}</span>{% endif %}
-                        <span class="cmp-event-title-row">
-                            <span class="cmp-event-body">{{ ev.title }}</span>
-                            {% if ev.region %}<span class="cmp-event-region">{{ ev.region }}</span>{% endif %}
-                            <span class="cmp-event-year">{{ item.year }}</span>
-                        </span>
+                        <span class="cmp-event-body">{{ ev.title }}</span>
+                        {% if ev.region %}<span class="cmp-event-region">{{ ev.region }}</span>{% endif %}
+                        <span class="cmp-event-year">{{ item.year }}</span>
                     </div>
                     {%- endfor %}
                 </div>
