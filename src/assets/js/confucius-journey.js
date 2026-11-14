@@ -1,5 +1,14 @@
 /**
- * confucius-journey.js — 孔子游历列国页面（支持 ECharts 地理图 和 Q-SVG 两种模式）
+ * confucius-journey.js — 孔子游历列国 · 专题脚本
+ *
+ * 依赖：
+ *   qmap-core.js  — 通用 Q 版地图渲染器（Layer 0/1/2）
+ *   china-map.js  — ECharts 地理图（Layer 0'：现代省级底图，作为备选模式）
+ *
+ * 两种模式：
+ *   qsvg   — Q 版 SVG（默认，用 QMap.mount）
+ *   echarts — ECharts 地理图（用 chinaMap.mount）
+ *   偏好存 localStorage['pj-map-mode']
  */
 (function () {
     'use strict';
@@ -19,114 +28,89 @@
     const allIds = journey.map((p) => p.id);
     let currentIdx = 0;
 
-    /* ============================================================
-     * 地图模式：'echarts' | 'qsvg'
-     * ============================================================ */
-    const mode = (localStorage.getItem('pj-map-mode') || 'qsvg');
-    let mapAPI = null; // 统一接口 { flyTo, updateJourney }
+    let mode = (localStorage.getItem('pj-map-mode') || 'qsvg');
+    let mapAPI = null; // 统一接口 { flyTo(idx), updateOverlay(idx) }
 
-    function initMap() {
-        if (mode === 'qsvg') {
-            initQSVG();
-        } else {
-            initECharts();
-        }
+    /* ============================================================
+     * 初始化
+     * ============================================================ */
+    function init() {
+        if (mode === 'qsvg') initQSVG();
+        else initECharts();
     }
 
     /* ---------- Q-SVG 模式 ---------- */
     function initQSVG() {
-        // 读 SVG 底图数据（来自 confuciusMap.json，注入到 HTML）
-        const mapDataEl = document.getElementById('pj-qsvg-data');
-        if (!mapDataEl) { initECharts(); return; } // fallback
+        const baseEl = document.getElementById('pj-qsvg-base');
+        const featuresEl = document.getElementById('pj-qsvg-features');
+        const periodEl = document.getElementById('pj-qsvg-period');
+        if (!baseEl || !featuresEl || !periodEl) { initECharts(); return; }
 
-        let mapData;
-        try { mapData = JSON.parse(mapDataEl.textContent); } catch (e) { initECharts(); return; }
+        let base, features, period;
+        try {
+            base = JSON.parse(baseEl.textContent);
+            features = JSON.parse(featuresEl.textContent);
+            period = JSON.parse(periodEl.textContent);
+        } catch (e) { initECharts(); return; }
 
-        // 用 confuciusSvg.render 渲染
-        if (!window.confuciusSvg) {
-            setTimeout(initQSVG, 100);
-            return;
-        }
+        if (!window.QMap) { setTimeout(initQSVG, 100); return; }
 
-        // 把 journey 的 SVG 坐标注入 mapData.cities
-        // city name → journey 匹配
-        const cityMap = {};
-        mapData.cities.forEach((c) => { cityMap[c.name] = c; });
+        const qmap = window.QMap.mount(mapContainer, { base, features, period });
+        if (!qmap) { initECharts(); return; }
 
-        const journeyWithCoords = journey.map((p) => {
-            const match = cityMap[p.name] || cityMap[p.name + '(return)'];
-            // 如果没有精确匹配，用 lon/lat 大致估算坐标
-            if (match) return { ...p, x: match.x, y: match.y };
-            return p;
+        // 从 period.capitalMarkers 查 SVG 坐标 → 应用到 journey
+        const capMap = {};
+        (period.capitalMarkers || []).forEach((c) => { capMap[c.name] = c.svg; });
+
+        const journeyWithSvg = journey.map((p) => {
+            // 先精确匹配
+            let svg = capMap[p.name];
+            // 不行就模糊匹配（如 qufu-return → qufu）
+            if (!svg) {
+                const baseName = p.name.replace(/[^一-龥]/g, '');
+                if (capMap[baseName]) svg = capMap[baseName];
+            }
+            return svg ? { ...p, x: svg[0], y: svg[1] } : p;
         });
 
-        // 把 qufu-return 的坐标设为 qufu 的
-        const qufu = journeyWithCoords.find((p) => p.id === 'qufu');
-        const qufuReturn = journeyWithCoords.find((p) => p.id === 'qufu-return');
-        if (qufu && qufuReturn) { qufuReturn.x = qufu.x; qufuReturn.y = qufu.y; }
-
-        const api = window.confuciusSvg.render(mapContainer, mapData);
+        // 曲阜 return 复用曲阜坐标
+        const qufu = journeyWithSvg.find((p) => p.id === 'qufu');
+        const qufuR = journeyWithSvg.find((p) => p.id === 'qufu-return');
+        if (qufu && qufuR) { qufuR.x = qufu.x; qufuR.y = qufu.y; }
 
         mapAPI = {
             type: 'qsvg',
-            flyTo(idx) {
-                const point = journeyWithCoords[idx];
-                if (point && api.svg._flyTo) {
-                    api.svg._flyTo(point.x, point.y, 2, 600);
-                }
-            },
-            updateJourney(idx) {
+            goTo(idx) { qmap.goToCity(allIds[idx], 2, 600); },
+            updateOverlay(idx) {
                 const doneIds = allIds.slice(0, idx + 1);
                 const activeId = allIds[idx];
-                window.confuciusSvg.updateJourney(api.svg, journeyWithCoords, doneIds, activeId, links);
+
+                // doneCoords = 前 idx+1 个点
+                const doneCities = journeyWithSvg.slice(0, idx + 1);
+                const pendingCities = journeyWithSvg.slice(idx);
+
+                qmap.overlay({
+                    cities: journeyWithSvg,
+                    doneIds,
+                    activeId,
+                    trackDone: doneCities,
+                    trackPending: pendingCities
+                });
             }
         };
 
         // 城市点击联动
-        window.addEventListener('pj-city-click', (e) => {
-            if (e.detail && typeof e.detail.index === 'number') {
-                goTo(e.detail.index);
-            }
+        window.addEventListener('qmap-city-click', (e) => {
+            if (e.detail && typeof e.detail.index === 'number') goTo(e.detail.index);
         });
+
+        goTo(0);
     }
 
     /* ---------- ECharts 模式 ---------- */
     function initECharts() {
-        const scheme = buildEChartsScheme();
-        const schemeEl = document.createElement('script');
-        schemeEl.type = 'application/json';
-        schemeEl.id = 'pj-map-data';
-        schemeEl.textContent = JSON.stringify(scheme);
-        mapContainer.parentElement.insertBefore(schemeEl, mapContainer.nextSibling);
+        if (!window.chinaMap) { setTimeout(initECharts, 100); return; }
 
-        if (!window.chinaMap) {
-            setTimeout(initECharts, 100);
-            return;
-        }
-        window.chinaMap.mount('pj-map');
-
-        setTimeout(() => {
-            const cm = mapContainer._cm;
-            if (cm) {
-                mapAPI = {
-                    type: 'echarts',
-                    flyTo(idx) {
-                        const point = journey[idx];
-                        cm.api.flyTo([point.lon, point.lat], 6.2);
-                    },
-                    updateJourney(idx) {
-                        const doneIds = allIds.slice(0, idx + 1);
-                        cm.api.updateJourney(doneIds, allIds, links);
-                    }
-                };
-                goTo(0);
-            } else {
-                setTimeout(arguments.callee, 100);
-            }
-        }, 800);
-    }
-
-    function buildEChartsScheme() {
         const markers = journey.map((p, i) => ({
             id: p.id, name: p.name, coords: [p.lon, p.lat], order: i + 1, active: i === 0
         }));
@@ -134,7 +118,8 @@
             text: s.name, coords: [s.lon, s.lat], color: '#b85c2f', fontSize: 14
         }));
         const allCoords = journey.map((p) => [p.lon, p.lat]);
-        return {
+
+        const scheme = {
             center: meta.center, zoom: meta.zoom,
             markers, tracks: {
                 done: { coords: [], width: 3 },
@@ -142,10 +127,36 @@
             },
             labels: stateLabels
         };
+
+        const schemeEl = document.createElement('script');
+        schemeEl.type = 'application/json';
+        schemeEl.id = 'pj-map-data';
+        schemeEl.textContent = JSON.stringify(scheme);
+        mapContainer.parentElement.insertBefore(schemeEl, mapContainer.nextSibling);
+
+        window.chinaMap.mount('pj-map');
+
+        setTimeout(() => {
+            const cm = mapContainer._cm;
+            if (!cm) { setTimeout(arguments.callee, 100); return; }
+
+            mapAPI = {
+                type: 'echarts',
+                goTo(idx) {
+                    const point = journey[idx];
+                    cm.api.flyTo([point.lon, point.lat], 6.2);
+                },
+                updateOverlay(idx) {
+                    const doneIds = allIds.slice(0, idx + 1);
+                    cm.api.updateJourney(doneIds, allIds, links);
+                }
+            };
+            goTo(0);
+        }, 800);
     }
 
     /* ============================================================
-     * 统一的 goTo（联动入口）
+     * 统一 goTo
      * ============================================================ */
     function goTo(idx) {
         idx = Math.max(0, Math.min(idx, journey.length - 1));
@@ -153,8 +164,8 @@
         const point = journey[idx];
 
         if (mapAPI) {
-            try { mapAPI.updateJourney(idx); } catch (e) {}
-            try { mapAPI.flyTo(idx); } catch (e) {}
+            try { mapAPI.updateOverlay(idx); } catch (e) {}
+            try { mapAPI.goTo(idx); } catch (e) {}
         }
 
         // 时间轴
@@ -177,7 +188,7 @@
         if (reasonEl) reasonEl.textContent = point.reason;
         if (storyEl) storyEl.textContent = point.story;
 
-        // 时间轴滚动
+        // 时间轴居中滚动
         const node = timeline.children[idx];
         if (node) {
             const tlRect = timeline.getBoundingClientRect();
@@ -187,10 +198,7 @@
         }
     }
 
-    function cnYear(y) {
-        if (y == null) return '';
-        return y < 0 ? `前 ${Math.abs(y)}` : `${y}`;
-    }
+    function cnYear(y) { return y < 0 ? `前 ${Math.abs(y)}` : `${y}`; }
 
     /* ============================================================
      * 事件绑定
@@ -198,8 +206,7 @@
     timeline.addEventListener('click', (e) => {
         const node = e.target.closest('.pj-tl-node');
         if (!node) return;
-        const idx = Array.from(timeline.children).indexOf(node);
-        if (idx >= 0) goTo(idx);
+        goTo(Array.from(timeline.children).indexOf(node));
     });
 
     document.addEventListener('keydown', (e) => {
@@ -207,15 +214,10 @@
         if (e.key === 'ArrowRight') goTo(currentIdx + 1);
     });
 
-    // 模式切换
     if (modeToggle) {
-        const updateLabel = () => {
-            modeToggle.textContent = mode === 'qsvg' ? '🗺 Q版' : '🌍 地理';
-        };
-        updateLabel();
+        modeToggle.textContent = mode === 'qsvg' ? '🗺 Q版' : '🌍 地理';
         modeToggle.addEventListener('click', () => {
-            const next = mode === 'qsvg' ? 'echarts' : 'qsvg';
-            localStorage.setItem('pj-map-mode', next);
+            localStorage.setItem('pj-map-mode', mode === 'qsvg' ? 'echarts' : 'qsvg');
             location.reload();
         });
     }
@@ -224,9 +226,9 @@
      * 启动
      * ============================================================ */
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initMap);
+        document.addEventListener('DOMContentLoaded', init);
     } else {
-        initMap();
+        init();
     }
 
     window.pjJourney = { goTo, journey, meta };

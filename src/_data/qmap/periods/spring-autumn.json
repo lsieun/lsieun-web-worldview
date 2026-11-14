@@ -1,0 +1,52 @@
+{
+  "_comment": "春秋时期（前770-前476）诸侯国色块 + 主要都城坐标。SVG 坐标对齐 base.json 的 800×600 viewBox。",
+
+  "period": "春秋",
+  "periodRange": "前 770 — 前 476",
+
+  "palette": {
+    "qi":    "#e8c94d",
+    "lu":    "#d4764a",
+    "wei":   "#7b8f5c",
+    "cao":   "#b08ac1",
+    "song":  "#d4a04a",
+    "zheng": "#5da3d4",
+    "chen":  "#c96587",
+    "cai":   "#c28f3a",
+    "chu":   "#b8372b",
+    "jin":   "#6b5c44",
+    "qin":   "#4a6670",
+    "wu":    "#4a9966",
+    "yue":   "#7b6b3a"
+  },
+
+  "regions": [
+    { "id": "qi",    "name": "齐", "shape": "rect",  "x": 540, "y": 140, "w": 130, "h": 80, "labelOffset": [605, 182] },
+    { "id": "lu",    "name": "鲁", "shape": "poly",  "points": "470,165 540,140 570,180 540,220 470,220", "labelOffset": [510, 195] },
+    { "id": "wei",   "name": "卫", "shape": "poly",  "points": "420,130 470,120 490,160 470,200 420,210 400,170", "labelOffset": [445, 170] },
+    { "id": "cao",   "name": "曹", "shape": "rect",  "x": 470, "y": 220, "w": 60, "h": 40, "labelOffset": [500, 245] },
+    { "id": "song",  "name": "宋", "shape": "poly",  "points": "450,260 530,240 550,280 520,320 440,300", "labelOffset": [490, 280] },
+    { "id": "zheng", "name": "郑", "shape": "poly",  "points": "370,250 450,240 460,290 440,320 370,310 360,280", "labelOffset": [410, 280] },
+    { "id": "chen",  "name": "陈", "shape": "rect",  "x": 440, "y": 330, "w": 70, "h": 50, "labelOffset": [475, 358] },
+    { "id": "cai",   "name": "蔡", "shape": "rect",  "x": 380, "y": 380, "w": 70, "h": 50, "labelOffset": [415, 408] },
+    { "id": "chu",   "name": "楚", "shape": "poly",  "points": "250,380 380,360 510,380 580,400 550,460 440,480 330,470 260,440", "labelOffset": [400, 425] },
+    { "id": "jin",   "name": "晋", "shape": "poly",  "points": "250,120 370,100 400,140 380,200 320,210 250,190 230,160", "labelOffset": [320, 160] },
+    { "id": "qin",   "name": "秦", "shape": "poly",  "points": "130,200 220,180 240,240 220,300 170,320 130,280", "labelOffset": [180, 255] },
+    { "id": "wu",    "name": "吴", "shape": "rect",  "x": 560, "y": 320, "w": 100, "h": 70, "labelOffset": [610, 360] },
+    { "id": "yue",   "name": "越", "shape": "rect",  "x": 600, "y": 400, "w": 90, "h": 60, "labelOffset": [645, 435] }
+  ],
+
+  "capitalMarkers": [
+    { "id": "qufu",     "name": "曲阜",   "svg": [520, 200], "state": "lu"    },
+    { "id": "diqiu",    "name": "帝丘",   "svg": [455, 150], "state": "wei"   },
+    { "id": "taoqiu",   "name": "陶丘",   "svg": [500, 240], "state": "cao"   },
+    { "id": "shangqiu", "name": "商丘",   "svg": [505, 280], "state": "song"  },
+    { "id": "xinzheng", "name": "新郑",   "svg": [425, 280], "state": "zheng" },
+    { "id": "wanchen",  "name": "宛丘",   "svg": [475, 355], "state": "chen"  },
+    { "id": "shangcai", "name": "上蔡",   "svg": [415, 405], "state": "cai"   },
+    { "id": "ying",     "name": "郢",     "svg": [370, 430], "state": "chu"   },
+    { "id": "linzi",    "name": "临淄",   "svg": [610, 168], "state": "qi"    },
+    { "id": "jiang",    "name": "绛",     "svg": [320, 155], "state": "jin"   },
+    { "id": "yong",     "name": "雍",     "svg": [180, 248], "state": "qin"   }
+  ]
+}

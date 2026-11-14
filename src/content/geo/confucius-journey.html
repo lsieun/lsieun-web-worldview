@@ -47,11 +47,11 @@ order: 99
             <script src="/assets/js/china-map.js" defer></script>
             <link rel="stylesheet" href="/assets/css/china-map.css">
 
-            {# Q 版 SVG 底图数据（由 confucius-svg.js 读取） #}
-            <script id="pj-qsvg-data" type="application/json">
-{{ confuciusMap | dump | safe }}
-            </script>
-            <script src="/assets/js/confucius-svg.js" defer></script>
+            {# Q 版 SVG 数据（分层：base → features → period） #}
+            <script id="pj-qsvg-base" type="application/json">{{ qmap.base | dump | safe }}</script>
+            <script id="pj-qsvg-features" type="application/json">{{ qmap.features | dump | safe }}</script>
+            <script id="pj-qsvg-period" type="application/json">{{ qmap.periods["spring-autumn"] | dump | safe }}</script>
+            <script src="/assets/js/qmap-core.js" defer></script>
 
             {# 图例 + 模式切换 #}
             <div class="pj-map-legend">

@@ -48,6 +48,17 @@
     --map-ocean: #c8d3db;
     --map-line: #b85c2f;
 
+    /* 3c. Q 版 SVG 历史地图 */
+    --qmap-land: #d9cba0;
+    --qmap-land-stroke: #7a6c4a;
+    --qmap-region-label: #3a2d1a;
+    --qmap-river-yellow: #d4982a;
+    --qmap-river-yangtze: #4e6d8a;
+    --qmap-river-text: #8a6218;
+    --qmap-mountain-text: #5a4a2e;
+    --qmap-pending: #999;
+    --qmap-point-pending: #7a6c4a;
+
     /* 表面（图例 / 说明卡） */
     --surface-muted: #ece5d6;
 
@@ -102,6 +113,17 @@
     --map-border-hi: #4a6f92;
     --map-ocean: #0f1a1e;
     --map-line: #d8b36b;
+
+    /* Q 版 SVG 历史地图 */
+    --qmap-land: #2a2e22;
+    --qmap-land-stroke: #5a5030;
+    --qmap-region-label: #e6dcc0;
+    --qmap-river-yellow: #d8a04a;
+    --qmap-river-yangtze: #5a7a92;
+    --qmap-river-text: #b89050;
+    --qmap-mountain-text: #8a8060;
+    --qmap-pending: #6a6050;
+    --qmap-point-pending: #5a5030;
 
     --surface-muted: #14241f;
 

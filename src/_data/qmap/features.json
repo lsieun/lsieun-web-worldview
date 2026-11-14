@@ -1,0 +1,32 @@
+{
+  "_comment": "通用地标：黄河/长江/主要山脉。所有时期共用，坐标对齐 base.json 的 800×600 viewBox。",
+
+  "rivers": [
+    {
+      "id": "yellow",
+      "name": "黄河",
+      "path": "M 130,240 Q 200,200 280,220 Q 360,240 440,230 Q 520,220 600,240 Q 660,260 700,255",
+      "stroke": "var(--qmap-river-yellow)",
+      "width": 10,
+      "labelAt": [300, 228],
+      "labelText": "黄 河"
+    },
+    {
+      "id": "yangtze",
+      "name": "长江",
+      "path": "M 130,400 Q 220,370 320,390 Q 420,410 500,395 Q 580,380 650,400",
+      "stroke": "var(--qmap-river-yangtze)",
+      "width": 8,
+      "labelAt": [320, 385],
+      "labelText": "长 江"
+    }
+  ],
+
+  "mountains": [
+    { "id": "taihang",   "name": "太行", "text": "太行", "x": 395, "y": 135, "rotate": -75, "fontSize": 16 },
+    { "id": "tai",       "name": "泰山", "text": "泰",   "x": 565, "y": 210, "rotate": 0,   "fontSize": 14 },
+    { "id": "daxing",    "name": "大兴安岭", "text": "大兴安岭", "x": 500, "y": 85, "rotate": -40, "fontSize": 14 },
+    { "id": "qinling",   "name": "秦岭", "text": "秦岭", "x": 290, "y": 350, "rotate": -10, "fontSize": 15 },
+    { "id": "daba",      "name": "大巴山", "text": "大巴", "x": 280, "y": 390, "rotate": -10, "fontSize": 13 }
+  ]
+}
