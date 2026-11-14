@@ -4,6 +4,15 @@
  *       里放 scheme（省份分组、分界线、标签、中心缩放）。
  * 自动：registerMap('china', GeoJSON)、主题切换重绘、窗口 resize、工具栏（缩放/还原/全屏）。
  *       平移 = 鼠标拖动；缩放 = 滚轮 / 工具栏按钮。
+ *
+ * 扩展支持：
+ *   scheme.markers   — 标记点数组 [{ id, name, coords, order?, color? }]
+ *   scheme.tracks    — 轨迹线 { done: {coords}, pending: {coords} }
+ *   外部 API：container._cm = { chart, api }
+ *     api.flyTo(coords, zoom)       — 飞到坐标
+ *     api.highlightMarker(id)       — 高亮标记点
+ *     api.clearHighlight()          — 清除高亮
+ *     api.setTrackProgress(doneIds, allIds, links) — 根据已完成的点重绘轨迹
  */
 (function () {
     /* ------------------------------------------------------------------
@@ -82,6 +91,9 @@
             }
         }
 
+        const series = [];
+
+        // ---------- 原有 lines（分界线等） ----------
         const lineData = (scheme.lines || [])
             .filter((line) => !line.hide)
             .map((line) => ({ coords: line.coords }));
@@ -93,6 +105,69 @@
                 opacity: line.opacity || 0.85
             }));
 
+        if (lineData.length) {
+            const firstStyle = lineStyles[0];
+            series.push({
+                id: 'overlays',
+                name: '分界线',
+                type: 'lines',
+                coordinateSystem: 'geo',
+                polyline: true,
+                z: 4,
+                silent: true,
+                lineStyle: firstStyle,
+                data: lineData.map((d, i) => ({
+                    coords: d.coords,
+                    lineStyle: lineStyles[i] || firstStyle
+                }))
+            });
+        }
+
+        // ---------- 轨迹线 tracks ----------
+        if (scheme.tracks) {
+            const trackDone = scheme.tracks.done;
+            const trackPending = scheme.tracks.pending;
+
+            if (trackPending && trackPending.coords && trackPending.coords.length >= 2) {
+                series.push({
+                    id: 'track-pending',
+                    name: '待行经',
+                    type: 'lines',
+                    coordinateSystem: 'geo',
+                    polyline: true,
+                    z: 5,
+                    silent: true,
+                    lineStyle: {
+                        color: trackPending.color || (palette.dark ? '#5a6e78' : '#a8b5bd'),
+                        width: trackPending.width || 2,
+                        opacity: trackPending.opacity || 0.5,
+                        type: 'dashed',
+                        dashOffset: 8
+                    },
+                    data: [{ coords: trackPending.coords }]
+                });
+            }
+
+            if (trackDone && trackDone.coords && trackDone.coords.length >= 2) {
+                series.push({
+                    id: 'track-done',
+                    name: '已行经',
+                    type: 'lines',
+                    coordinateSystem: 'geo',
+                    polyline: true,
+                    z: 5,
+                    silent: true,
+                    lineStyle: {
+                        color: trackDone.color || (palette.dark ? '#e98a5a' : '#bf4d28'),
+                        width: trackDone.width || 2.8,
+                        opacity: trackDone.opacity || 0.95
+                    },
+                    data: [{ coords: trackDone.coords }]
+                });
+            }
+        }
+
+        // ---------- labels（纯文字标注） ----------
         const textData = [];
         (scheme.lines || []).forEach((line) => {
             if (!line.hide && line.labelPoint) {
@@ -114,40 +189,99 @@
             });
         });
 
-        const geoComp = {
-            map: 'china',
-            roam: true,
-            zoom: scheme.zoom || 1.2,
-            center: scheme.center || [104, 35],
-            scaleLimit: { min: 0.5, max: 6 },
-            label: { show: false },
-            itemStyle: {
-                areaColor: palette.land,
-                borderColor: palette.border,
-                borderWidth: 0.9
-            },
-            emphasis: { disabled: true },
-            select: { disabled: true },
-            regions
-        };
+        // ---------- markers（带序号的标记点） ----------
+        if (scheme.markers && scheme.markers.length) {
+            const markerDark = palette.dark ? '#e98a5a' : '#bf4d28';
+            const markerDimDark = palette.dark ? '#5a6e78' : '#a8b5bd';
+            const markerTextDark = palette.dark ? '#1a2634' : '#ffffff';
 
-        const series = [];
+            const markerData = scheme.markers.map((m, idx) => {
+                const isActive = m.active === true || m._active === true;
+                const isDone = m._done === true;
+                const baseColor = m.color || (isDone ? markerDark : (isActive ? markerDark : markerDimDark));
+                const size = m.size || (isActive ? 12 : 8);
+                return {
+                    coords: m.coords,
+                    name: m.name,
+                    value: [m.coords[0], m.coords[1], idx],
+                    _id: m.id,
+                    _order: m.order || (idx + 1),
+                    _active: isActive,
+                    _done: isDone,
+                    itemStyle: {
+                        color: baseColor,
+                        borderColor: '#fff',
+                        borderWidth: 1.5
+                    },
+                    label: {
+                        show: true,
+                        formatter: m.order ? `{num|${m.order}}` : '',
+                        position: 'top',
+                        fontSize: 11,
+                        fontWeight: 700,
+                        distance: 4,
+                        color: markerTextDark,
+                        rich: {
+                            num: {
+                                fontSize: 10,
+                                color: '#fff',
+                                backgroundColor: baseColor,
+                                padding: [2, 5],
+                                borderRadius: 8,
+                                fontWeight: 700,
+                                lineHeight: 14
+                            }
+                        }
+                    }
+                };
+            });
 
-        if (lineData.length) {
-            const firstStyle = lineStyles[0];
+            // Active marker（当前停留点）用光晕效果
+            const activeMarkers = markerData.filter((m) => m._active);
+            if (activeMarkers.length) {
+                series.push({
+                    id: 'markers-active',
+                    name: '当前位置',
+                    type: 'effectScatter',
+                    coordinateSystem: 'geo',
+                    z: 8,
+                    rippleEffect: {
+                        brushType: 'stroke',
+                        scale: 3,
+                        period: 3
+                    },
+                    itemStyle: {
+                        color: markerDark,
+                        borderColor: '#fff',
+                        borderWidth: 2
+                    },
+                    data: activeMarkers
+                });
+            }
+
+            // All markers（作为可点击/可高亮的基础）
             series.push({
-                id: 'overlays',
-                name: '分界线',
-                type: 'lines',
+                id: 'markers',
+                name: '标记点',
+                type: 'scatter',
                 coordinateSystem: 'geo',
-                polyline: true,
-                z: 4,
-                silent: true,
-                lineStyle: firstStyle,
-                data: lineData.map((d, i) => ({
-                    coords: d.coords,
-                    lineStyle: lineStyles[i] || firstStyle
-                }))
+                z: 7,
+                symbolSize: (val, params) => {
+                    const d = params.data;
+                    return d._active ? 14 : (d._done ? 10 : 8);
+                },
+                itemStyle: {},
+                label: { show: false },
+                emphasis: {
+                    disabled: false,
+                    scale: 1.3,
+                    itemStyle: {
+                        color: '#fff',
+                        borderColor: markerDark,
+                        borderWidth: 3
+                    }
+                },
+                data: markerData
             });
         }
 
@@ -184,15 +318,32 @@
         return {
             backgroundColor: 'transparent',
             tooltip: { show: false },
-            geo: [geoComp],
+            geo: [geoComp(scheme, palette, regions)],
             series
+        };
+    }
+
+    function geoComp(scheme, palette, regions) {
+        return {
+            map: 'china',
+            roam: true,
+            zoom: scheme.zoom || 1.2,
+            center: scheme.center || [104, 35],
+            scaleLimit: { min: 0.5, max: 6 },
+            label: { show: false },
+            itemStyle: {
+                areaColor: palette.land,
+                borderColor: palette.border,
+                borderWidth: 0.9
+            },
+            emphasis: { disabled: true },
+            select: { disabled: true },
+            regions
         };
     }
 
     /* ------------------------------------------------------------------
      * 自定义工具栏（全屏按钮 + 重置按钮）
-     * 注：ECharts toolbox 只能挂在 grid/pie/series 上，geo 不支持。
-     *     这里用自绘 HTML 覆盖在 canvas 上，监听 geo 的 zoom 变化同步重置。
      * ------------------------------------------------------------------ */
     function injectToolbar(container, chart, palette) {
         const bar = document.createElement('div');
@@ -220,7 +371,6 @@
         };
         updateColor();
 
-        // 当前视角缓存（供 restore 使用）
         let currentZoom = 1.2;
         let currentCenter = [104, 35];
 
@@ -259,7 +409,6 @@
             applyView(def.zoom, def.center);
         });
 
-        // 全屏（参考 dynasty-reigns.js）
         const fsBtn = bar.querySelector('.cm-btn-fs');
         let isFullscreen = false;
         const enterFs = () => {
@@ -267,7 +416,6 @@
             if (wrapper.requestFullscreen) wrapper.requestFullscreen();
             else if (wrapper.webkitRequestFullscreen) wrapper.webkitRequestFullscreen();
             else {
-                // 页面级全屏回退
                 wrapper.classList.add('cm-fullscreen-fallback');
                 document.documentElement.classList.add('cm-fullscreen-locked');
             }
@@ -330,10 +478,11 @@
                     container.dataset.chartId = id;
 
                     let toolbarApi = null;
+                    let currentScheme = scheme;
 
                     const render = () => {
                         const palette = themeColors();
-                        const option = buildOption(scheme, palette);
+                        const option = buildOption(currentScheme, palette);
                         if (!option || !option.geo || !option.geo.length) {
                             throw new Error('buildOption 返回的 option 缺少 geo');
                         }
@@ -360,6 +509,103 @@
 
                     const onThemeChange = () => render();
                     document.addEventListener('themechanged', onThemeChange);
+
+                    /* ---- 外部 API ---- */
+                    const api = {
+                        /** 飞到指定坐标 */
+                        flyTo(coords, zoom, duration = 800) {
+                            const opt = chart.getOption();
+                            if (opt.geo && opt.geo[0]) {
+                                opt.geo[0].center = coords;
+                                if (zoom != null) opt.geo[0].zoom = zoom;
+                                chart.setOption(opt, false);
+                            }
+                        },
+
+                        /** 高亮某个 marker（通过 id） */
+                        highlightMarker(markerId) {
+                            const markers = currentScheme.markers || [];
+                            let found = false;
+                            markers.forEach((m) => {
+                                if (m.id === markerId) {
+                                    m._active = true;
+                                    found = true;
+                                } else {
+                                    m._active = false;
+                                }
+                            });
+                            return found;
+                        },
+
+                        /** 重新渲染（scheme 有更新后调用） */
+                        refresh(newScheme) {
+                            if (newScheme) currentScheme = newScheme;
+                            render();
+                        },
+
+                        /**
+                         * 根据"已完成的点"重绘轨迹
+                         * @param {string[]} doneIds 已完成（到达过）的 marker id 列表
+                         * @param {string[]} allIds 全部 marker id 列表（按顺序）
+                         * @param {{from:string,to:string}[]} links 连接关系
+                         */
+                        updateJourney(doneIds, allIds, links) {
+                            const markers = currentScheme.markers || [];
+                            const doneSet = new Set(doneIds);
+
+                            // 更新 markers 状态
+                            let activeIdx = -1;
+                            markers.forEach((m) => {
+                                const idx = allIds.indexOf(m.id);
+                                m._done = doneSet.has(m.id);
+                                m._active = false;
+                                if (idx >= 0 && !m._done && activeIdx < 0) {
+                                    activeIdx = idx;
+                                }
+                            });
+                            if (activeIdx >= 0 && markers[activeIdx]) {
+                                markers[activeIdx]._active = true;
+                            } else if (markers.length > 0) {
+                                // 全部完成 → 高亮最后一个
+                                markers[markers.length - 1]._active = true;
+                            }
+
+                            // 重建轨迹线
+                            const coordsById = {};
+                            markers.forEach((m) => { coordsById[m.id] = m.coords; });
+
+                            const doneCoords = [];
+                            const pendingCoords = [];
+                            let inPending = false;
+
+                            // 按 allIds 顺序构造路径
+                            for (let i = 0; i < allIds.length; i++) {
+                                const id = allIds[i];
+                                const coord = coordsById[id];
+                                if (!coord) continue;
+
+                                if (doneSet.has(id) || i === activeIdx) {
+                                    if (!inPending) doneCoords.push(coord);
+                                    else pendingCoords.push(coord);
+                                } else {
+                                    inPending = true;
+                                    pendingCoords.push(coord);
+                                }
+                            }
+
+                            currentScheme.tracks = {
+                                done: { coords: doneCoords.length >= 2 ? doneCoords : [], width: 3 },
+                                pending: { coords: pendingCoords.length >= 2 ? pendingCoords : [], width: 2 }
+                            };
+
+                            render();
+                        },
+
+                        /** 获取图表实例（用于更底层操作） */
+                        getChart() { return chart }
+                    };
+
+                    container._cm = { chart, api, scheme: currentScheme };
 
                     return () => {
                         ro.disconnect();

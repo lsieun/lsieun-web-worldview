@@ -1,0 +1,124 @@
+---
+# @formatter:off
+title: "孔子游历列国"
+description: "前 497 — 前 484，孔子在外十四年。一条路线，一串故事。"
+layout: "default.html"
+category: "舆图"
+tags: ["geo"]
+en: "Confucius's Journey"
+era: "春秋 · 鲁定公至鲁哀公"
+region: "中原列国"
+coords: "34.5°N · 114.5°E"
+span: "前 497 — 前 484 · 十四年"
+lead: "鲁定公十三年（前 497），孔子五十六岁，朝政荒废，他失望而去。此后十四年，自卫、过曹、适宋、至郑、居陈、迁蔡、入楚，终返曲阜。"
+keywords: ["孔子", "春秋", "游历", "列国"]
+order: 99
+# @formatter:on
+---
+
+<link rel="stylesheet" href="/assets/css/confucius-journey.css">
+
+{# ========== Hero ========== #}
+<section class="pj-hero">
+    <span class="watermark" aria-hidden="true">游</span>
+    <div class="container">
+        <p class="eyebrow">JOURNEY · 01</p>
+        <h1 class="pj-title">孔子游历列国</h1>
+        <p class="pj-lead">
+            鲁定公十三年（前 497），孔子五十六岁。朝政荒废，他失望而去。此后十四年，
+            自卫、过曹、适宋、至郑、居陈、迁蔡、入楚，终返曲阜。
+        </p>
+        <div class="pj-meta">
+            <span><strong>{{ confuciusJourney.journey | length }}</strong> 个停留点</span>
+            <span><strong>{{ confuciusJourney.meta.totalYears }}</strong> 年在外</span>
+            <span>文献 · {{ confuciusJourney.meta.source }}</span>
+        </div>
+    </div>
+</section>
+
+{# ========== 地图 + 详情 ========== #}
+<section class="pj-map-section" aria-label="游历地图">
+    <div class="container pj-map-container">
+
+        {# 地图区 — 不加 data-china-map，由 JS 手动 mount #}
+        <div class="pj-map-block">
+            <div id="pj-map" class="china-map-chart"></div>
+            <script src="/assets/js/echarts.min.js" defer></script>
+            <script src="/assets/js/china-map.js" defer></script>
+            <link rel="stylesheet" href="/assets/css/china-map.css">
+
+            {# 图例 #}
+            <div class="pj-map-legend">
+                <span class="pj-legend-item"><i class="pj-legend-line pj-legend-line--done"></i>已行经</span>
+                <span class="pj-legend-item"><i class="pj-legend-line pj-legend-line--pending"></i>待行经</span>
+                <span class="pj-legend-item"><i class="pj-legend-dot"></i>停留点</span>
+            </div>
+        </div>
+
+        {# 详情面板 #}
+        {% set firstPoint = confuciusJourney.journey[0] %}
+        <aside class="pj-detail-panel" id="pj-detail-panel" aria-live="polite">
+            <div class="pj-detail-head">
+                <span class="pj-detail-year">{{ firstPoint.year | cnYear }}</span>
+                <span class="pj-detail-state">{{ firstPoint.state }}</span>
+            </div>
+            <h3 class="pj-detail-title">{{ firstPoint.name }}</h3>
+            <p class="pj-detail-label">{{ firstPoint.label }}</p>
+            <p class="pj-detail-reason">{{ firstPoint.reason }}</p>
+            <blockquote class="pj-detail-story">{{ firstPoint.story }}</blockquote>
+        </aside>
+    </div>
+</section>
+
+{# ========== 时间轴 ========== #}
+<section class="pj-timeline-section" aria-label="游历时间轴">
+    <div class="container">
+        <h2 class="pj-section-title">十四年 · 十二个坐标</h2>
+        <p class="pj-section-intro">点击时间轴上的节点，地图会飞行并高亮对应位置。拖动平移、滚轮缩放地图。</p>
+
+        <div class="pj-timeline" id="pj-timeline">
+            {% for point in confuciusJourney.journey %}
+            <button class="pj-tl-node{% if loop.first %} is-active{% endif %}"
+                    type="button"
+                    data-pj-id="{{ point.id }}"
+                    data-pj-lon="{{ point.lon }}"
+                    data-pj-lat="{{ point.lat }}"
+                    title="{{ point.name }} · {{ point.year | cnYear }}">
+                <span class="pj-tl-num">{{ loop.index }}</span>
+                <span class="pj-tl-dot"></span>
+                <span class="pj-tl-name">{{ point.name }}</span>
+                <span class="pj-tl-state">{{ point.state }}</span>
+                <span class="pj-tl-year">{{ point.year | cnYear }}</span>
+            </button>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{# ========== 同期对照 ========== #}
+<section class="pj-contemporary-section">
+    <div class="container">
+        <h2 class="pj-section-title">同期 · 天下大变</h2>
+        <p class="pj-section-intro">孔子在外的这十四年，中原之外并不平静。</p>
+
+        <ul class="pj-contemporary-list">
+            {% for ev in confuciusJourney.contemporaries %}
+            <li>
+                <time>{{ ev.year | cnYear }}</time>
+                <span>{{ ev.label }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</section>
+
+{# ========== 原始数据（供 JS 构建 scheme） ========== #}
+<script id="pj-data" type="application/json">
+{
+  "meta": {{ confuciusJourney.meta | dump | safe }},
+  "states": {{ confuciusJourney.states | dump | safe }},
+  "journey": {{ confuciusJourney.journey | dump | safe }},
+  "links": {{ confuciusJourney.links | dump | safe }}
+}
+</script>
+<script src="/assets/js/confucius-journey.js" defer></script>
