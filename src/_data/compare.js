@@ -64,7 +64,8 @@ export default function () {
         addToYear(ev.year, "china", {
             title: ev.title,
             desc: ev.desc || ev.note || "",
-            key: !!ev.key
+            key: !!ev.key,
+            seq: ev.seq
         });
     }
 
@@ -73,7 +74,8 @@ export default function () {
             title: ev.title,
             region: ev.region || ev.era || "",
             desc: ev.desc || ev.note || "",
-            key: !!ev.key
+            key: !!ev.key,
+            seq: ev.seq
         });
     }
 
@@ -155,9 +157,11 @@ export default function () {
     const mergedByKey = new Map();  // "china:-206" → [{title:"鸿门宴；秦朝灭亡...", key:true}]
 
     for (const row of rows) {
-        // 中国
+        // 中国（同年份事件按 seq 排序，无 seq 排最后）
         const chinaKey = `china:${row.year}`;
-        const chinaTitles = row.china.filter(ev => ev.key).map(ev => ev.title);
+        const chinaTitles = row.china.filter(ev => ev.key)
+            .sort((a, b) => (a.seq ?? 999) - (b.seq ?? 999))
+            .map(ev => ev.title);
         if (chinaTitles.length > 0) {
             mergedByKey.set(chinaKey, {
                 kind: "event", side: "china",
@@ -166,9 +170,10 @@ export default function () {
                 key: true
             });
         }
-        // 世界
+        // 世界（同样按 seq 排序）
         const worldKey = `world:${row.year}`;
-        const worldItems = row.world.filter(ev => ev.key);
+        const worldItems = row.world.filter(ev => ev.key)
+            .sort((a, b) => (a.seq ?? 999) - (b.seq ?? 999));
         const worldTitles = worldItems.map(ev => ev.title + (ev.region ? `(${ev.region})` : ""));
         if (worldTitles.length > 0) {
             mergedByKey.set(worldKey, {
