@@ -1,0 +1,13 @@
+{
+  "name": "文艺复兴",
+  "en": "RENAISSANCE",
+  "start": 1300,
+  "end": 1600,
+  "order": 3,
+  "summary": "从但丁到伽利略。人文主义觉醒，艺术与科学并重，奠定近代欧洲的精神底色。",
+  "overlaps": ["age-of-discovery"],
+  "subgroups": [
+    { "id": "italian", "name": "意大利文艺复兴", "start": 1300, "end": 1527, "summary": "佛罗伦萨、罗马为中心，艺术三杰活跃期" },
+    { "id": "northern", "name": "北方文艺复兴", "start": 1450, "end": 1600, "summary": "低地国家、德意志、英格兰，关注宗教改革与人文教育" }
+  ]
+}

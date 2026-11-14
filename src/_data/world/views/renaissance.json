@@ -1,0 +1,49 @@
+{
+  "type": "timeline",
+  "era": "renaissance",
+  "title": "文艺复兴：人文的觉醒",
+  "range": { "start": 1300, "end": 1600 },
+  "href": "/world-history/renaissance.html",
+  "topicMeta": "人文复兴",
+  "summary": "从但丁到伽利略，横跨三百年的欧洲精神觉醒。艺术三杰与科学先驱同场，世界发生了什么。",
+  "meta": {
+    "watermark": "文",
+    "subtitle": "1300 — 1600 ｜ 意大利文艺复兴 · 北方文艺复兴",
+    "intro": "纵向自上而下是时间线。左侧竖轴标注时期与大事；右侧七位人物各一条生命线——艺术三杰（达芬奇/米开朗基罗/拉斐尔）居前，科学家与思想家紧随。事件落在人物生命线上的位置，标记当时的年龄。",
+    "note": "起始年份 1300 年但丁正值 35 岁，《神曲》已动笔。终止年份 1600 年伽利略 36 岁即将用望远镜观测月球，莎翁 36 岁《哈姆雷特》刚首演。艺术三杰与同期其他人物生命窗交错，达芬奇逝世于 1519 年（蒙娜丽莎同年完成），而伽利略恰在他逝世那年出生——达芬奇错过了伽利略，拉斐尔比伽利略早出生 81 天（同 1483 年），却早逝 2 年。年份以公元纪年。"
+  },
+  "groups": [
+    { "id": "art", "name": "艺术三杰", "desc": "达芬奇 / 米开朗基罗 / 拉斐尔" },
+    { "id": "science", "name": "科学先驱", "desc": "哥白尼 / 伽利略" },
+    { "id": "thought", "name": "思想家", "desc": "但丁 / 马基雅维利" },
+    { "id": "literature", "name": "文学家", "desc": "莎士比亚" },
+    { "id": "explorer", "name": "探索者", "desc": "哥伦布（与文艺复兴重叠）" }
+  ],
+  "cast": [
+    { "figure": "leonardo", "group": "art", "role": "博学者 · 《蒙娜丽莎》" },
+    { "figure": "michelangelo", "group": "art", "role": "雕塑家 · 《大卫》" },
+    { "figure": "rafael", "group": "art", "role": "画家 · 《雅典学院》" },
+    { "figure": "galileo", "group": "science", "role": "天文学家 · 望远镜" },
+    { "figure": "machiavelli", "group": "thought", "role": "政治思想家 · 《君主论》" },
+    { "figure": "dante", "group": "thought", "role": "诗人 · 《神曲》" },
+    { "figure": "shakespeare", "group": "literature", "role": "剧作家 · 《哈姆雷特》" },
+    { "figure": "columbus", "group": "explorer", "role": "航海家 · 美洲" }
+  ],
+  "events": [
+    "dante-divine-comedy",
+    "boccaccio-decameron",
+    "columbus-1492",
+    "last-supper",
+    "david-statue",
+    "school-of-athens",
+    "sistine-ceiling",
+    "machiavelli-prince",
+    "copernicus-de-revolutionibus",
+    "galileo-telescope",
+    "hamlet-premiere"
+  ],
+  "personalEvents": [
+    "mona-lisa"
+  ],
+  "defaults": ["leonardo", "michelangelo", "rafael", "galileo", "columbus"]
+}

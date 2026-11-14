@@ -1,0 +1,67 @@
+---
+# @formatter:off
+title: "文艺复兴：人文的觉醒"
+description: "从但丁到伽利略，横跨三百年的欧洲精神觉醒。艺术三杰与科学先驱同场，世界发生了什么。"
+layout: "default.html"
+# @formatter:on
+---
+{% set timeline = worldHistory.timelines["renaissance"] %}
+{% include "person-timeline-page.html" %}
+
+{% if timeline %}
+<section class="section">
+    <div class="container">
+        <h2 class="page-title" style="font-size: 1.6rem; margin-bottom: 1rem;">同期中国</h2>
+        <p class="page-lead" style="font-size: 0.95rem;">
+            当达芬奇在佛罗伦萨画《蒙娜丽莎》的时候，明朝正在修《永乐大典》；
+            当伽利略用望远镜看月球的时候，努尔哈赤正在统一女真。
+            两个世界，各自沿着自己的轨道走着。
+        </p>
+        <div class="world-compare">
+            <div class="compare-col compare-col--world">
+                <h3>欧洲 · 文艺复兴</h3>
+                <ul class="compare-list">
+                    <li><strong>1320</strong> 但丁完成《神曲》</li>
+                    <li><strong>1353</strong> 薄伽丘《十日谈》</li>
+                    <li><strong>1492</strong> 哥伦布发现美洲</li>
+                    <li><strong>1498</strong> 达芬奇《最后的晚餐》</li>
+                    <li><strong>1504</strong> 米开朗基罗《大卫》雕像</li>
+                    <li><strong>1511</strong> 拉斐尔《雅典学院》</li>
+                    <li><strong>1519</strong> 达芬奇完成《蒙娜丽莎》，同年逝世</li>
+                    <li><strong>1543</strong> 哥白尼《天体运行论》出版</li>
+                    <li><strong>1600</strong> 伽利略用望远镜观测月球</li>
+                    <li><strong>1600</strong> 莎士比亚《哈姆雷特》首演</li>
+                </ul>
+            </div>
+            <div class="compare-col compare-col--china">
+                <h3>中国 · 元末明初至晚明</h3>
+                <ul class="compare-list">
+                    <li><strong>1351</strong> 红巾军起义（元末农民起义）</li>
+                    <li><strong>1368</strong> 朱元璋灭元，建立明朝</li>
+                    <li><strong>1405</strong> 郑和首次下西洋（哥伦布出生时，郑和已下西洋 7 次）</li>
+                    <li><strong>1408</strong> 《永乐大典》修成</li>
+                    <li><strong>1421</strong> 明迁都北京</li>
+                    <li><strong>1449</strong> 土木之变，明英宗被俘</li>
+                    <li><strong>1487</strong> 弘治中兴</li>
+                    <li><strong>1519</strong> 王阳明平定宁王朱宸濠叛乱</li>
+                    <li><strong>1573</strong> 张居正改革开始（万历新政）</li>
+                    <li><strong>1609</strong> 努尔哈赤创立八旗制度</li>
+                </ul>
+            </div>
+        </div>
+        <p class="compare-foot">注：年份以公元纪年。郑和 1405 年首航大西洋，比哥伦布 1492 年早 87 年。</p>
+    </div>
+</section>
+<style>
+.world-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem; }
+.compare-col h3 { font-size: 1.1rem; margin-bottom: 0.75rem; padding-bottom: 0.3rem; border-bottom: 2px solid var(--accent-blue, #3b82f6); }
+.compare-col--china h3 { border-color: var(--accent-red, #ef4444); }
+.compare-list { list-style: none; padding: 0; margin: 0; }
+.compare-list li { padding: 0.35rem 0; border-bottom: 1px dashed var(--border-muted, #e5e7eb); font-size: 0.88rem; line-height: 1.55; }
+.compare-list li strong { color: var(--accent-blue, #3b82f6); margin-right: 0.4rem; font-variant-numeric: tabular-nums; }
+.compare-col--china .compare-list li strong { color: var(--accent-red, #ef4444); }
+.compare-list li:last-child { border-bottom: none; }
+.compare-foot { font-size: 0.8rem; color: var(--text-muted, #6b7280); margin-top: 1rem; }
+@media (max-width: 900px) { .world-compare { grid-template-columns: 1fr; } }
+</style>
+{% endif %}

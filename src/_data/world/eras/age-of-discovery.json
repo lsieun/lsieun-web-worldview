@@ -1,0 +1,9 @@
+{
+  "name": "大航海与殖民",
+  "en": "AGE OF DISCOVERY",
+  "start": 1492,
+  "end": 1763,
+  "order": 4,
+  "summary": "哥伦布到库克船长。欧洲人开辟新航路，征服美洲，改写全球贸易格局。",
+  "overlaps": ["renaissance"]
+}

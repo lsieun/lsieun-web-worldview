@@ -1,7 +1,7 @@
 ---
 # @formatter:off
 title: "世界史册"
-description: "人类历史的重大时期，与中国史册对照阅读。"
+description: "人类历史的关键时期，与中国史册对照阅读。"
 layout: "default.html"
 # @formatter:on
 ---
@@ -12,18 +12,66 @@ layout: "default.html"
         <p class="eyebrow">02 · World History</p>
         <h1 class="page-title">世界史册</h1>
         <p class="page-lead">
-            从古典时代到现代，沿着时间追踪影响人类走向的关键时期。
-            每个时期都配有同期中外对照，帮助理解东西方在同一时间点各自在做什么。
+            从古典文明到现代，沿着时间追踪影响人类走向的关键时期。
+            每个时期都有独立的人物与事件专题，内容成熟后会加上同期中国对照。
         </p>
-        <p class="page-meta">
-            <span>时期 <strong>规划中</strong></span>
+        <div class="page-meta">
+            <span>时期 <strong>{{ worldHistory.eras | length }}</strong> 段</span>
+            <span>专题 <strong>{{ worldHistory.timelines | length }}</strong> 篇</span>
             <span>跨度 <strong>前 3000 — 今</strong></span>
-        </p>
+        </div>
     </div>
 </section>
 
+{# 世界时期浮动目录 #}
+<nav class="chr-toc" data-chr-toc data-toc-min-width="1540" hidden aria-label="世界时期目录">
+    {%- for e in worldHistory.eras %}
+    <a href="#era-{{ e.id }}" data-chr-link="{{ e.id }}"
+       title="{{ e.name }} {{ e.start }} — {{ e.end }}">
+        <span class="chr-toc-name">{{ e.name }}</span>
+        <span class="chr-toc-years">{{ e.start }}</span>
+    </a>
+    {%- endfor %}
+</nav>
+
 <section class="section">
     <div class="container">
-        <p class="chr-empty">内容建设中，第一批时期预计为：古典时代 / 中世纪 / 文艺复兴 / 大航海时代 / 近代早期 / 现代。</p>
+        <div class="chronicle bleed" data-chr-root>
+            <div class="chronicle-head" aria-hidden="true">
+                <span>时期</span>
+                <span>专题</span>
+            </div>
+            {%- for e in worldHistory.eras %}
+            <section class="chr-group" id="era-{{ e.id }}" data-chr-group="{{ e.id }}">
+                <div class="chr-group-head">
+                    <h2 class="chr-name">{{ e.name }}</h2>
+                    <span class="chr-years">{{ e.start }} — {{ e.end }}</span>
+                    {% if e.summary %}<p class="chr-summary">{{ e.summary }}</p>{% endif %}
+                </div>
+                <div class="chr-group-body">
+                    {%- for sg in (e.subgroups or []) %}
+                    <div class="chr-subgroup" id="era-{{ sg.id }}">
+                        <div class="chr-sub-head">
+                            <h3 class="chr-sub-name">{{ sg.name }}</h3>
+                            <span class="chr-sub-years">{{ sg.start }} — {{ sg.end }}</span>
+                            {% if sg.summary %}<p class="chr-sub-summary">{{ sg.summary }}</p>{% endif %}
+                        </div>
+                    </div>
+                    {%- endfor %}
+                    <div class="chr-chips">
+                        {%- for t in e.topics %}
+                        <a class="chr-chip" href="{{ t.href }}">
+                            <span class="chr-chip-title">{{ t.title }}</span>
+                            {%- if t.meta %}<span class="chr-chip-meta">{{ t.meta }}</span>{% endif %}
+                        </a>
+                        {%- endfor %}
+                        {%- if e.topics.length == 0 %}
+                        <p class="chr-empty">专题待补</p>
+                        {%- endif %}
+                    </div>
+                </div>
+            </section>
+            {%- endfor %}
+        </div>
     </div>
 </section>

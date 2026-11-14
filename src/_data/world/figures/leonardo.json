@@ -1,0 +1,9 @@
+{
+  "name": "莱昂纳多·达·芬奇",
+  "en": "Leonardo da Vinci",
+  "birth": 1452,
+  "death": 1519,
+  "origin": "anchiano",
+  "note": "意大利文艺复兴时期博学者，在绘画、解剖、工程等多领域有开创性贡献。《蒙娜丽莎》《最后的晚餐》作者。",
+  "milestones": ["mona-lisa", "last-supper"]
+}
