@@ -1,7 +1,7 @@
 ---
 # @formatter:off
 title: "中外对比"
-description: "同一时间轴上，中国在做什么？世界在做什么？"
+description: "同一条时间轴，左边中国，右边世界。"
 layout: "default.html"
 # @formatter:on
 ---
@@ -14,112 +14,86 @@ layout: "default.html"
         <p class="eyebrow">03 · COMPARE</p>
         <h1 class="page-title">中外对比</h1>
         <p class="page-lead">
-            同一条时间轴，左边是中国，右边是世界。看看当朱元璋建明朝的时候，哥伦布还没出生；
+            一条线贯穿五千年。左边是中国，右边是世界。看看当朱元璋建明朝的时候，哥伦布还没出生；
             当伽利略用望远镜看月球的时候，努尔哈赤正在统一女真。
         </p>
         <div class="page-meta">
-            <span>朝代 <strong>{{ compare.sections | length }}</strong> 段</span>
-            <span>导航 <strong>{{ compare.toc | length }}</strong> 条</span>
+            <span>范围 <strong>{{ compare.minYear | cnYear }} — {{ compare.maxYear | cnYear }}</strong></span>
+            <span>导航 <strong>{{ compare.chinaToc.length + compare.worldToc.length }}</strong> 条</span>
         </div>
     </div>
 </section>
 
 {# 左浮动导航：中国朝代 #}
 <nav class="cmp-toc cmp-toc--left" aria-label="中国朝代导航">
-    {%- for t in compare.toc %}
-    {%- if t.kind == "china" %}
-    <a href="#{{ t.id }}" data-cmp-toc="{{ t.id }}"
+    {%- for t in compare.chinaToc %}
+    <a href="#{{ t.anchor }}" data-cmp-toc="{{ t.anchor }}"
        title="{{ t.label }} {{ t.start | cnYear }} — {{ t.end | cnYear }}">
         <span class="cmp-toc-flag">🇨🇳</span>
         <span class="cmp-toc-name">{{ t.label }}</span>
         <span class="cmp-toc-years">{{ t.start | cnYear }}</span>
     </a>
-    {%- endif %}
     {%- endfor %}
 </nav>
 
 {# 右浮动导航：世界时期 #}
 <nav class="cmp-toc cmp-toc--right" aria-label="世界时期导航">
-    {%- for t in compare.toc %}
-    {%- if t.kind == "world" %}
-    <a href="#{{ t.id }}" data-cmp-toc="{{ t.id }}"
+    {%- for t in compare.worldToc %}
+    <a href="#{{ t.anchor }}" data-cmp-toc="{{ t.anchor }}"
        title="{{ t.label }} {{ t.start }} — {{ t.end }}">
         <span class="cmp-toc-name">{{ t.label }}</span>
         <span class="cmp-toc-years">{{ t.start }}</span>
         <span class="cmp-toc-flag">🌍</span>
     </a>
-    {%- endif %}
     {%- endfor %}
 </nav>
 
 <section class="section cmp-section">
     <div class="container cmp-container">
-        {%- for s in compare.sections %}
-        <section class="cmp-block" id="{{ s.id }}" data-cmp-block="{{ s.id }}">
-            <header class="cmp-block-head">
-                <div class="cmp-block-head--china">
-                    <span class="cmp-block-flag">🇨🇳</span>
-                    <h2>{{ s.label }}</h2>
-                    <span class="cmp-block-years">{{ s.startLabel }} — {{ s.endLabel }}</span>
-                </div>
-                <div class="cmp-block-axis"></div>
-                <div class="cmp-block-head--world">
-                    {% if s.worldLabel %}<h3>🌍 {{ s.worldLabel }}</h3>{% endif %}
-                </div>
-            </header>
+        <div class="cmp-timeline" data-cmp-root>
 
-            {% if s.summary or s.events.china.length > 0 or s.events.world.length > 0 %}
-            <div class="cmp-block-body">
-                <div class="cmp-col cmp-col--china">
-                    {% if s.summary %}<p class="cmp-col-summary">{{ s.summary }}</p>{% endif %}
-                    {% if s.events.china.length > 0 %}
-                    <ul class="cmp-event-list">
-                        {%- for ev in s.events.china %}
-                        <li class="cmp-event">
-                            <span class="cmp-event-year">{{ ev.year | cnYear }}</span>
-                            <span class="cmp-event-title">{{ ev.title }}</span>
-                            {% if ev.desc %}<span class="cmp-event-desc">{{ ev.desc }}</span>{% endif %}
-                        </li>
-                        {%- endfor %}
-                    </ul>
-                    {% elif s.start > 1600 %}
-                    <p class="cmp-empty">此时期中国事件待补</p>
-                    {% endif %}
+            {%- for item in compare.stream %}
+            {%- if item.kind == "century" %}
+            {# 世纪刻度 #}
+            <div class="cmp-century" id="{{ item.id }}" data-cmp-block="{{ item.id }}">
+                <div class="cmp-century-col">
+                    <span class="cmp-century-bar"></span>
+                    <span class="cmp-century-year">{{ item.year }}</span>
+                    <span class="cmp-century-label">{{ item.label }}</span>
                 </div>
-
-                <div class="cmp-col cmp-col--axis" aria-hidden="true">
-                    <div class="cmp-axis-line"></div>
-                    {% for ev in s.events.china %}
-                    <div class="cmp-axis-tick"></div>
-                    {% endfor %}
+                <div class="cmp-century-spacer"></div>
+                <div class="cmp-century-col"></div>
+            </div>
+            {%- else %}
+            {# 事件行 #}
+            <div class="cmp-row" id="{{ item.id }}" data-cmp-block="{{ item.id }}">
+                <div class="cmp-row--china">
+                    {%- for ev in item.china %}
+                    <div class="cmp-event-card cmp-event-card--china">
+                        <span class="cmp-event-year">{{ item.yearLabel }}</span>
+                        <span class="cmp-event-title">{{ ev.title }}</span>
+                        {% if ev.desc %}<span class="cmp-event-desc">{{ ev.desc }}</span>{% endif %}
+                    </div>
+                    {%- endfor %}
                 </div>
-
-                <div class="cmp-col cmp-col--world">
-                    {% if s.events.world.length > 0 %}
-                    <ul class="cmp-event-list">
-                        {%- for ev in s.events.world %}
-                        <li class="cmp-event">
-                            <span class="cmp-event-year">{{ ev.year }}</span>
-                            <span class="cmp-event-title">{{ ev.title }}</span>
-                            {% if ev.region %}<span class="cmp-event-region">{{ ev.region }}</span>{% endif %}
-                            {% if ev.desc %}<span class="cmp-event-desc">{{ ev.desc }}</span>{% endif %}
-                        </li>
-                        {%- endfor %}
-                    </ul>
-                    {% elif s.start < 1300 %}
-                    <p class="cmp-empty">此时期世界事件待补</p>
-                    {% endif %}
+                <div class="cmp-row--axis">
+                    <div class="cmp-axis-dot"></div>
+                </div>
+                <div class="cmp-row--world">
+                    {%- for ev in item.world %}
+                    <div class="cmp-event-card cmp-event-card--world">
+                        <span class="cmp-event-year">{{ item.year }}</span>
+                        <span class="cmp-event-title">{{ ev.title }}</span>
+                        {% if ev.region %}<span class="cmp-event-region">{{ ev.region }}</span>{% endif %}
+                        {% if ev.desc %}<span class="cmp-event-desc">{{ ev.desc }}</span>{% endif %}
+                    </div>
+                    {%- endfor %}
                 </div>
             </div>
-            {% else %}
-            <div class="cmp-block-body">
-                <div class="cmp-col cmp-col--china"></div>
-                <div class="cmp-col cmp-col--axis"></div>
-                <div class="cmp-col cmp-col--world"></div>
-            </div>
-            {% endif %}
-        </section>
-        {%- endfor %}
+            {%- endif %}
+            {%- endfor %}
+
+        </div>
     </div>
 </section>
 
