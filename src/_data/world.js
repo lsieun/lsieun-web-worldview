@@ -9,12 +9,12 @@
  *
  * 详细模块见 world/ 子目录。
  */
-import { EntityLoader } from "./world/EntityLoader.js";
-import { DynastyRegistry } from "./world/DynastyRegistry.js";
-import { TimelineBuilder } from "./world/builders/TimelineBuilder.js";
-import { ReignViewBuilder } from "./world/builders/ReignViewBuilder.js";
-import { FamilyViewBuilder } from "./world/builders/FamilyViewBuilder.js";
-import { CrowdViewBuilder } from "./world/builders/CrowdViewBuilder.js";
+import { EntityLoader } from "./core/EntityLoader.js";
+import { DynastyRegistry } from "./core/DynastyRegistry.js";
+import { TimelineBuilder } from "./core/builders/TimelineBuilder.js";
+import { ReignViewBuilder } from "./core/builders/ReignViewBuilder.js";
+import { FamilyViewBuilder } from "./core/builders/FamilyViewBuilder.js";
+import { CrowdViewBuilder } from "./core/builders/CrowdViewBuilder.js";
 
 /* ---------- 视图分派 ---------- */
 const timelineBuilder  = new TimelineBuilder();

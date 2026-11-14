@@ -3,7 +3,7 @@
   "en": "WESTERN HAN",
   "start": -202,
   "end": 8,
-  "order": 70,
+  "order": 8,
   "summary": "承秦制而调整：从布衣皇帝到中央集权成熟",
   "rulers": [
     {
@@ -12,7 +12,16 @@
       "status": "formal",
       "order": 1,
       "note": "以汉王身份称帝，建立汉朝。这里从前 202 年称帝起计算皇帝在位期，不把此前汉王年段并入。",
-      "terms": [{ "start": -202, "end": -195, "events": ["emperor", "han-junguo-parallel"] }]
+      "terms": [
+        {
+          "start": -202,
+          "end": -195,
+          "events": [
+            "emperor",
+            "han-junguo-parallel"
+          ]
+        }
+      ]
     },
     {
       "figure": "liuying-huidi",
@@ -20,7 +29,16 @@
       "status": "formal",
       "order": 2,
       "note": "高祖之子。在位期间延续休养生息，朝政日益受到吕后影响。",
-      "terms": [{ "start": -195, "end": -188, "events": ["hui-changan-walls", "caoshen-chancellor"] }]
+      "terms": [
+        {
+          "start": -195,
+          "end": -188,
+          "events": [
+            "hui-changan-walls",
+            "caoshen-chancellor"
+          ]
+        }
+      ]
     },
     {
       "figure": "liugong",
@@ -28,7 +46,16 @@
       "status": "formal",
       "order": 3,
       "note": "史称前少帝，惠帝之子，由吕后临朝掌权。部分帝王名录省略其序号，本页依实际即位经历保留。",
-      "terms": [{ "start": -188, "end": -184, "events": ["qianshao-succession", "qianshao-deposed"] }]
+      "terms": [
+        {
+          "start": -188,
+          "end": -184,
+          "events": [
+            "qianshao-succession",
+            "qianshao-deposed"
+          ]
+        }
+      ]
     },
     {
       "figure": "liuhong",
@@ -36,7 +63,16 @@
       "status": "formal",
       "order": 4,
       "note": "史称后少帝，吕后所立。诸吕之乱后遭废杀，其帝序在后世名录中存在不同处理。",
-      "terms": [{ "start": -184, "end": -180, "events": ["lvlu-fengwang", "zhulu-rebellion"] }]
+      "terms": [
+        {
+          "start": -184,
+          "end": -180,
+          "events": [
+            "lvlu-fengwang",
+            "zhulu-rebellion"
+          ]
+        }
+      ]
     },
     {
       "figure": "liuheng",
@@ -44,7 +80,16 @@
       "status": "formal",
       "order": 5,
       "note": "高祖第四子，原封代王。诸吕之乱后由功臣迎立，是西汉第一次重要的旁支入继。",
-      "terms": [{ "start": -180, "end": -157, "events": ["wen-abolish-slander", "wen-abolish-corporal-punishment"] }]
+      "terms": [
+        {
+          "start": -180,
+          "end": -157,
+          "events": [
+            "wen-abolish-slander",
+            "wen-abolish-corporal-punishment"
+          ]
+        }
+      ]
     },
     {
       "figure": "liuqi",
@@ -52,7 +97,16 @@
       "status": "formal",
       "order": 6,
       "note": "文帝之子。延续休养生息，同时平定七国之乱，削弱同姓诸侯王的军事威胁。",
-      "terms": [{ "start": -157, "end": -141, "events": ["jing-thirty-tax", "qiguo-rebellion"] }]
+      "terms": [
+        {
+          "start": -157,
+          "end": -141,
+          "events": [
+            "jing-thirty-tax",
+            "qiguo-rebellion"
+          ]
+        }
+      ]
     },
     {
       "figure": "liuche",
@@ -60,7 +114,20 @@
       "status": "formal",
       "order": 7,
       "note": "景帝之子。长期在位改变了财政、诸侯、边疆与思想格局，也在晚年加剧社会损耗。",
-      "terms": [{ "start": -141, "end": -87, "events": ["zhangqian-first-mission", "tui-en-ling", "huo-qubing-hexi", "salt-iron-monopoly", "witchcraft-disaster", "luntai-edict"] }]
+      "terms": [
+        {
+          "start": -141,
+          "end": -87,
+          "events": [
+            "zhangqian-first-mission",
+            "tui-en-ling",
+            "huo-qubing-hexi",
+            "salt-iron-monopoly",
+            "witchcraft-disaster",
+            "luntai-edict"
+          ]
+        }
+      ]
     },
     {
       "figure": "liufuling",
@@ -68,7 +135,16 @@
       "status": "formal",
       "order": 8,
       "note": "武帝少子，年幼即位，由霍光等受遗诏辅政。",
-      "terms": [{ "start": -87, "end": -74, "events": ["huoguang-regency", "salt-iron-conference"] }]
+      "terms": [
+        {
+          "start": -87,
+          "end": -74,
+          "events": [
+            "huoguang-regency",
+            "salt-iron-conference"
+          ]
+        }
+      ]
     },
     {
       "figure": "liuhe",
@@ -76,7 +152,17 @@
       "status": "formal",
       "order": 9,
       "note": "武帝之孙、昌邑哀王刘髆之子，在位仅 27 日，被霍光废黜，后封海昏侯。本页保留其正式即位序号。",
-      "terms": [{ "start": -74, "end": -74, "durationLabel": "27 日", "events": ["liuhe-succession", "liuhe-deposed"] }]
+      "terms": [
+        {
+          "start": -74,
+          "end": -74,
+          "durationLabel": "27 日",
+          "events": [
+            "liuhe-succession",
+            "liuhe-deposed"
+          ]
+        }
+      ]
     },
     {
       "figure": "liuxun",
@@ -84,7 +170,17 @@
       "status": "formal",
       "order": 10,
       "note": "初名病已，后改名询。武帝曾孙、戾太子刘据之孙，由民间被迎立，属于典型的旁支入继。",
-      "terms": [{ "start": -74, "end": -49, "events": ["huoshi-purge", "western-regions-protectorate", "shiquge-conference"] }]
+      "terms": [
+        {
+          "start": -74,
+          "end": -49,
+          "events": [
+            "huoshi-purge",
+            "western-regions-protectorate",
+            "shiquge-conference"
+          ]
+        }
+      ]
     },
     {
       "figure": "liushi-yuandi",
@@ -92,7 +188,16 @@
       "status": "formal",
       "order": 11,
       "note": "宣帝之子。崇儒与收缩边郡并存，王氏外戚的影响在其后逐渐扩大。",
-      "terms": [{ "start": -49, "end": -33, "events": ["zhuya-abandoned", "zhaojun-heqin"] }]
+      "terms": [
+        {
+          "start": -49,
+          "end": -33,
+          "events": [
+            "zhuya-abandoned",
+            "zhaojun-heqin"
+          ]
+        }
+      ]
     },
     {
       "figure": "liuao",
@@ -100,7 +205,16 @@
       "status": "formal",
       "order": 12,
       "note": "元帝之子。母族王氏多人封侯掌权，为后来王莽崛起提供了政治通道。",
-      "terms": [{ "start": -33, "end": -7, "events": ["cheng-yellow-river-flood", "cheng-five-wang-marquises"] }]
+      "terms": [
+        {
+          "start": -33,
+          "end": -7,
+          "events": [
+            "cheng-yellow-river-flood",
+            "cheng-five-wang-marquises"
+          ]
+        }
+      ]
     },
     {
       "figure": "liuxin",
@@ -108,7 +222,16 @@
       "status": "formal",
       "order": 13,
       "note": "元帝之孙、定陶恭王刘康之子，以旁支入继。董贤等宠臣与丁、傅外戚先后影响朝政。",
-      "terms": [{ "start": -7, "end": -1, "events": ["ai-land-limit-proposal", "dongxian-grand-marshal"] }]
+      "terms": [
+        {
+          "start": -7,
+          "end": -1,
+          "events": [
+            "ai-land-limit-proposal",
+            "dongxian-grand-marshal"
+          ]
+        }
+      ]
     },
     {
       "figure": "liukan",
@@ -116,14 +239,32 @@
       "status": "formal",
       "order": 14,
       "note": "元帝之孙、中山孝王刘兴之子，九岁即位，王莽总揽朝政。",
-      "terms": [{ "start": -1, "end": 6, "events": ["wangmang-anhan-duke", "ping-mingtang-biyong"] }]
+      "terms": [
+        {
+          "start": -1,
+          "end": 6,
+          "events": [
+            "wangmang-anhan-duke",
+            "ping-mingtang-biyong"
+          ]
+        }
+      ]
     },
     {
       "figure": "ruzi-ying",
       "title": "孺子婴",
       "status": "interim",
       "note": "刘婴仅为皇太子，未正式即皇帝位，故不占帝序。王莽居摄；西汉结束后，于次年开始新朝纪年。",
-      "terms": [{ "start": 6, "end": 8, "events": ["ruzi-established", "zhai-yi-rebellion"] }]
+      "terms": [
+        {
+          "start": 6,
+          "end": 8,
+          "events": [
+            "ruzi-established",
+            "zhai-yi-rebellion"
+          ]
+        }
+      ]
     }
   ],
   "regencies": [

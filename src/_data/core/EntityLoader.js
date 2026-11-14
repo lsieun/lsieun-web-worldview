@@ -2,7 +2,8 @@
  * EntityLoader.js — 实体加载器
  *
  * 职责：
- * 1. 从六个子目录读取所有 JSON 实体（regions / places / figures / events / dynasties / views）
+ * 1. 从 china/ 子目录读取六个实体类（regions / places / figures / events / dynasties / views）
+ *    world/ 子目录预留，后续世界史册数据就位后同时加载
  * 2. 对每一类做字段级校验（引用完整性、类型、数值范围）
  * 3. 建立反向索引（figure.events / place.events / place.figures / figure.milestones）
  * 4. 对 views 做类型专属校验（不同 view.type 有不同的必填字段）
@@ -17,19 +18,19 @@ import { WorldContext } from "./WorldContext.js";
 export class EntityLoader {
     constructor() {
         const DATA_DIR = path.dirname(fileURLToPath(import.meta.url));
-        this.dataDir = path.resolve(DATA_DIR, ".."); // world/ 的上级 = _data/
+        this.dataDir = path.resolve(DATA_DIR, ".."); // core/ 的上级 = _data/
     }
 
     load() {
         const ctx = new WorldContext();
 
-        /* ---------- 1. 读取 ---------- */
-        const regionResult  = readEntities("regions",  this.dataDir);
-        const placeResult   = readEntities("places",   this.dataDir);
-        const figureResult  = readEntities("figures",  this.dataDir);
-        const eventResult   = readEntities("events",   this.dataDir);
-        const viewResult    = readEntities("views",    this.dataDir);
-        const dynastyResult = readEntities("dynasties",this.dataDir);
+        /* ---------- 1. 读取中国实体 ---------- */
+        const regionResult  = readEntities("china/regions",  this.dataDir);
+        const placeResult   = readEntities("china/places",   this.dataDir);
+        const figureResult  = readEntities("china/figures",  this.dataDir);
+        const eventResult   = readEntities("china/events",   this.dataDir);
+        const viewResult    = readEntities("china/views",    this.dataDir);
+        const dynastyResult = readEntities("china/dynasties",this.dataDir);
 
         ctx.regions   = regionResult.entities;
         ctx.places    = placeResult.entities;
