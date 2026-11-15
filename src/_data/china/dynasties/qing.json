@@ -5,6 +5,14 @@
   "end": 1912,
   "order": 24,
   "summary": "从努尔哈赤建立后金，到溥仪逊位，历 296 年。康雍乾盛世后，1840 起被卷入世界体系。",
+  "topics": [
+    {
+      "title": "大清人物与年龄",
+      "href": "/figures/qing-late.html",
+      "meta": "人物年龄",
+      "summary": "1840—1912 年，林则徐、曾国藩、慈禧、光绪等 13 位人物与晚清大事的年龄对照。"
+    }
+  ],
   "rulers": [
     {
       "figure": "qing-nurhachi",
