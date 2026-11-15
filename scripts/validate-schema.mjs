@@ -290,6 +290,17 @@ export function runSchemaValidation() {
 
     console.log(`扫描 ${allFiles.length} 个 JSON 文件...\n`);
 
+    /* ---------- 预加载所有 figures 建立 id → { name, file } 映射 ---------- */
+    const figureMap = new Map();
+    for (const { path: figPath, type } of allFiles) {
+        if (type !== "figure") continue;
+        const id = path.basename(figPath, ".json");
+        try {
+            const j = JSON.parse(fs.readFileSync(figPath, "utf8"));
+            figureMap.set(id, { name: j.name || "", file: path.relative(DATA_DIR, figPath) });
+        } catch { /* JSON 解析错误已在 per-file 校验里报过 */ }
+    }
+
     for (const { path, type } of allFiles) {
         const result = validateFile(path, type);
         if (!result) continue;
@@ -302,6 +313,60 @@ export function runSchemaValidation() {
             }
             fs.writeFileSync(path, JSON.stringify(newData, null, 2) + "\n", "utf8");
             autoFixes.push(path);
+        }
+    }
+
+    /* ---------- 跨 dynasty-rulers × figures 交叉校验 ----------
+     * 规则：dynasty.rulers[].title 是谥号（如"秦孝公"），
+     *       对应 figure.name 必须是本名（如"嬴渠梁"）。
+     *       两者相同 → figure 里填的是谥号而非本名，是数据口径问题。
+     *       同理适用于 dynasty.regencies 中的 figure（其 name 也应是本名）。
+     */
+    const dynastyDir = path.join(DATA_DIR, "china/dynasties");
+    const dyFiles = fs.readdirSync(dynastyDir).filter(f => f.endsWith(".json"));
+    for (const f of dyFiles) {
+        const dynastyFile = path.join(dynastyDir, f);
+        const dynastyRel = path.relative(DATA_DIR, dynastyFile);
+        let dynasty;
+        try {
+            dynasty = JSON.parse(fs.readFileSync(dynastyFile, "utf8"));
+        } catch { continue; }
+
+        // rulers: 检查 title vs figure.name
+        const rulers = dynasty.rulers || [];
+        for (let i = 0; i < rulers.length; i++) {
+            const r = rulers[i];
+            if (!r.figure || !r.title) continue;
+            const fig = figureMap.get(r.figure);
+            if (!fig) continue; // figure 引用是否存在已由 Builder 校验
+
+            if (fig.name === r.title) {
+                report(
+                    dynastyRel, `rulers[${i}].title`, "warn",
+                    `ruler.title "${r.title}" 与 figure.name 相同，` +
+                    `figure.name 应填本名而非谥号。` +
+                    `（figure 文件: ${fig.file}）`
+                );
+            }
+        }
+
+        // regencies: 同理，figure.name 应是本名
+        const regencies = dynasty.regencies || [];
+        for (let i = 0; i < regencies.length; i++) {
+            const rg = regencies[i];
+            if (!rg.figure) continue;
+            const fig = figureMap.get(rg.figure);
+            if (!fig) continue;
+
+            // 摄政者没有统一的 title 字段，但 label 是角色（"摄政"/"共和行政"）
+            // 如果 figure.name 结尾是爵位/谥号后缀（公/侯/王/帝/君 等），说明填的是尊号而非本名
+            if (/(公|侯|伯|子|男|君|帝|王)$/.test(fig.name)) {
+                report(
+                    dynastyRel, `regencies[${i}].figure`, "warn",
+                    `regency figure "${rg.figure}" 的 name="${fig.name}" 疑似尊号/谥号，` +
+                    `应填本名（如"姬旦"而非"周公"）。（figure 文件: ${fig.file}）`
+                );
+            }
         }
     }
 

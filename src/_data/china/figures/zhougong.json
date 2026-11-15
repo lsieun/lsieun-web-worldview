@@ -1,0 +1,10 @@
+{
+  "name": "姬旦",
+  "en": "Ji Dan",
+  "birth": -1080,
+  "birthApprox": true,
+  "death": -1025,
+  "deathApprox": true,
+  "summary": "史称周公、周公旦。文王第四子，武王之弟。助武王灭商；武王卒后成王年幼，以王叔身份摄政七年。平定管蔡之乱，营建东都洛邑，制礼作乐，奠定周朝礼乐制度。后归政成王。",
+  "parents": ["zhouwenwang"]
+}

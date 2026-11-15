@@ -1,0 +1,40 @@
+{
+  "type": "dynasty-reigns",
+  "dynasty": "western-zhou",
+  "title": "西周诸王",
+  "href": "/history/zhou-emperors.html",
+  "topicMeta": "帝王世系",
+  "summary": "前 1099 西伯姬昌到前 771 幽王被杀，275 年十三位王：文治成康、鼎盛穆王、孝王旁支、厉王丧国、宣中兴而幽亡国。",
+  "figures": [
+    "zhouwenwang",
+    "boyikao",
+    "zhouwuwang",
+    "zhougong",
+    "zhaogong",
+    "zhouchenggong",
+    "zhoukangwang",
+    "zhouzhaowang",
+    "zhoumuwang",
+    "zhougongwang",
+    "zhouyiwang",
+    "zhouxiaowang",
+    "zhouyiwang-yi",
+    "zhouliwang",
+    "zhouxuanwang",
+    "zhouyouwang"
+  ],
+  "meta": {
+    "watermark": "周",
+    "subtitle": "前 1099 — 前 771：275 年十三位王，从西伯到犬戎破镐京。",
+    "tags": [
+      "成康之治",
+      "穆王鼎盛",
+      "孝王旁支",
+      "厉王被逐",
+      "宣王中兴",
+      "幽王亡国"
+    ],
+    "intro": "默认沿竖向在位纪年阅读：文治奠基 → 成康太平 → 穆王鼎盛 → 共懿孝夷四朝衰微 → 厉王丧国 → 宣王中兴 → 幽王亡国。切换到血缘世系树可观察父子相传的主线，孝王是唯一旁支继位。周公摄政（前 1042—前 1036）为王叔辅政，前 841 年周召共和中的召公、周公为先祖爵位世袭。",
+    "note": "帝序以《史记·周本纪》为主。前 841 年是中国历史有确切纪年的起点。伯邑考为文王嫡长子但先殁未继位，周公旦为武王之弟摄政七年皆不入帝序。孝王姬辟方是穆王之子、懿王之叔，因懿王之子年幼而继位，六年死后还位于懿王之子姬燮（夷王），是西周唯一旁支继位。前 841 年共和中的周公、召公为世袭爵位，分别是周公旦、召公奭的后代，不是本文所列人物。"
+  }
+}

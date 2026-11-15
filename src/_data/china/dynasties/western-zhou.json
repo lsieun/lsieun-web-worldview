@@ -4,5 +4,129 @@
   "start": -1046,
   "end": -771,
   "order": 3,
-  "summary": "分封与礼乐，镐京为都，宗法秩序在此成形。"
+  "summary": "分封与礼乐，镐京为都，宗法秩序在此成形。前 1046 武王伐纣至前 771 犬戎破京，凡 275 年十三位王。",
+  "rulers": [
+    {
+      "figure": "zhouwenwang",
+      "title": "周文王",
+      "status": "formal",
+      "order": 1,
+      "note": "追尊为王，实际为商末周族首领、西伯。在位期间积德行善，奠定灭商基础。",
+      "terms": [{ "start": -1099, "end": -1056 }]
+    },
+    {
+      "figure": "zhouwuwang",
+      "title": "周武王",
+      "status": "formal",
+      "order": 2,
+      "note": "前 1046 年牧野之战灭商，建立周朝，分封诸侯。灭商后次年卒。",
+      "terms": [{ "start": -1046, "end": -1043, "events": ["western-zhou-established", "shang-falls"] }]
+    },
+    {
+      "figure": "zhouchenggong",
+      "title": "周成王",
+      "status": "formal",
+      "order": 3,
+      "note": "年幼继位，叔父周公摄政七年。归政后亲自主持朝政，封国建藩。与子康王并称「成康之治」。",
+      "terms": [{ "start": -1043, "end": -1021, "events": ["three-guards-rebellion", "zhougong-returns"] }]
+    },
+    {
+      "figure": "zhoukangwang",
+      "title": "周康王",
+      "status": "formal",
+      "order": 4,
+      "note": "成王之子。继承成王后政，文治武功并重。与父成王并称「成康之治」。",
+      "terms": [{ "start": -1021, "end": -996, "events": ["cheng-kang-prosperity"] }]
+    },
+    {
+      "figure": "zhouzhaowang",
+      "title": "周昭王",
+      "status": "formal",
+      "order": 5,
+      "note": "康王之子。多次南征荆楚，开辟南疆。第三次南征中渡汉水溺亡，周人讳之。",
+      "terms": [{ "start": -996, "end": -977, "events": ["zhaowang-south"] }]
+    },
+    {
+      "figure": "zhoumuwang",
+      "title": "周穆王",
+      "status": "formal",
+      "order": 6,
+      "note": "昭王之子。在位 55 年，西周最长。西征犬戎，东伐淮夷，巡游天下，鼎盛之君。",
+      "terms": [{ "start": -977, "end": -922 }]
+    },
+    {
+      "figure": "zhougongwang",
+      "title": "周共王",
+      "status": "formal",
+      "order": 7,
+      "note": "穆王之子。穆王在位太久，共王即位时年事颇高。国势开始由盛转衰。",
+      "terms": [{ "start": -922, "end": -900 }]
+    },
+    {
+      "figure": "zhouyiwang",
+      "title": "周懿王",
+      "status": "formal",
+      "order": 8,
+      "note": "共王之子。在位八年，国势渐衰，戎狄交侵。",
+      "terms": [{ "start": -900, "end": -892 }]
+    },
+    {
+      "figure": "zhouxiaowang",
+      "title": "周孝王",
+      "status": "formal",
+      "order": 9,
+      "note": "穆王之子、懿王之叔。西周唯一旁支继位。懿王死后太子年幼，辟方即位，六年死后还位于懿王之子。",
+      "terms": [{ "start": -892, "end": -886 }]
+    },
+    {
+      "figure": "zhouyiwang-yi",
+      "title": "周夷王",
+      "status": "formal",
+      "order": 10,
+      "note": "懿王之子、孝王侄。孝王死后还位。国势继续下滑，诸侯离心。",
+      "terms": [{ "start": -886, "end": -878 }]
+    },
+    {
+      "figure": "zhouliwang",
+      "title": "周厉王",
+      "status": "formal",
+      "order": 11,
+      "note": "夷王之子。任用荣夷公专利，压制言论。前 841 年国人暴动被逐，流亡彘地至死。",
+      "terms": [{ "start": -878, "end": -841, "events": ["people-rebellion"] }]
+    },
+    {
+      "figure": "zhouxuanwang",
+      "title": "周宣王",
+      "status": "formal",
+      "order": 12,
+      "note": "厉王之子。共和十四年结束后即位，号称中兴。东征西讨，晚年连续丧师。",
+      "terms": [{ "start": -828, "end": -782, "events": ["xuanwang-ascend"] }]
+    },
+    {
+      "figure": "zhouyouwang",
+      "title": "周幽王",
+      "status": "formal",
+      "order": 13,
+      "note": "宣王之子。宠幸褒姒，废申后与太子宜臼。前 771 年犬戎破镐京，幽王被杀，西周亡。",
+      "terms": [{ "start": -782, "end": -771, "events": ["zhou-falls"] }]
+    }
+  ],
+  "regencies": [
+    {
+      "figure": "zhougong",
+      "start": -1042,
+      "end": -1036,
+      "label": "摄政",
+      "note": "成王年幼继位，周公姬旦以王叔身份摄政七年。平定管蔡之乱，营建东都洛邑，制礼作乐。",
+      "fate": "前 1036 年归政成王。"
+    },
+    {
+      "figure": "zhaogongmu",
+      "start": -841,
+      "end": -828,
+      "label": "共和行政",
+      "note": "厉王被逐后，召穆公姬虎（召公奭后代，世袭召公爵位）与周公（后代世袭爵位）共同执政，厉王死后迎立太子姬静。是中国历史有确切纪年的起点。",
+      "fate": "前 828 年宣王即位，共和结束。"
+    }
+  ]
 }
