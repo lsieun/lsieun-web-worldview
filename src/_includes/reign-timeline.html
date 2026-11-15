@@ -9,16 +9,16 @@
 
     <ol class="rt-list">
         {%- for ruler in reignView.rulers %}
-        <li class="rt-ruler{% if ruler.status == 'interim' %} is-interim{% endif %}"
+        <li class="rt-ruler{% if ruler.status == 'honorary' %} is-honorary{% elif ruler.status == 'interim' %} is-interim{% endif %}"
             id="timeline-{{ ruler.id }}" data-reign-person="{{ ruler.id }}" tabindex="-1">
             <div class="rt-marker" aria-hidden="true">
-                {% if ruler.status == 'formal' %}<span>{{ ruler.order }}</span>{% else %}<span>◇</span>{% endif %}
+                {% if ruler.status == 'formal' %}<span>{{ ruler.order }}</span>{% elif ruler.status == 'honorary' %}<span>追</span>{% elif ruler.status == 'interim' %}<span>准</span>{% else %}<span>◇</span>{% endif %}
             </div>
             <article class="rt-card">
                 <header class="rt-header">
                     <div>
                         <p class="rt-kicker">
-                            {% if ruler.status == 'formal' %}第 {{ ruler.order }} 位皇帝{% else %}{{ reignView.dynasty.name }} · 政权过渡{% endif %}
+                            {% if ruler.status == 'formal' %}第 {{ ruler.order }} 位皇帝{% elif ruler.status == 'honorary' %}追尊皇帝 · 未实际在位{% elif ruler.status == 'interim' %}准皇帝 · 未成事实{% else %}{{ reignView.dynasty.name }} · 政权过渡{% endif %}
                         </p>
                         <h4 class="rt-name">{{ ruler.title }}<span>{{ ruler.name }}</span></h4>
                     </div>

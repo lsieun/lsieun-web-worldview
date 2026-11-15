@@ -1,0 +1,39 @@
+{
+  "type": "dynasty-reigns",
+  "dynasty": "qing",
+  "title": "清朝历代皇帝",
+  "href": "/history/qing-emperors.html",
+  "topicMeta": "帝王世系",
+  "summary": "从天命元年努尔哈赤建立后金，到宣统三年溥仪逊位，历 296 年、12 位正式皇帝 + 追尊成宗义皇帝多尔衮 + 准皇帝保庆帝溥儁。",
+  "figures": [
+    "qing-nurhachi",
+    "qing-hongtaiji",
+    "qing-dorgon",
+    "qing-shunzhi",
+    "qing-kangxi",
+    "qing-yongzheng",
+    "qing-qianlong",
+    "qing-jiaqing",
+    "qing-daoguang",
+    "qing-yi_xuan",
+    "qing-yi_cong",
+    "qing-xianfeng",
+    "qing-tongzhi",
+    "qing-zai_yi",
+    "qing-pujun",
+    "qing-guangxu",
+    "qing-zai_feng",
+    "qing-xuantong"
+  ],
+  "meta": {
+    "watermark": "清",
+    "subtitle": "从 1616 努尔哈赤建立后金，到 1912 溥仪逊位，历 296 年、12 位正式皇帝 + 1 位追尊 + 1 位准皇帝。",
+    "tags": [
+      "清朝",
+      "康乾盛世",
+      "九子夺嫡"
+    ],
+    "intro": "下方先呈现完整的血缘世系树——看清每位皇帝的父系来源与入继路径；继续向下是竖向在位纪年——按帝序依序展开每位皇帝的年段。两处视图点击可互相跳转定位。",
+    "note": "帝序采用『12 位正式皇帝』口径：努尔哈赤为后金创建者，皇太极 1636 年改国号为清，顺治入关后清朝方为全国性政权。多尔衮死后追尊成宗义皇帝，后被剥夺，图中以追尊标记呈现。溥儁为己亥建储中的保庆帝，未成事实，以准皇帝标记呈现。光绪、宣统均非先帝嫡传，而是以旁支入继。"
+  }
+}

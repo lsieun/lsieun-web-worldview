@@ -226,6 +226,12 @@
     border-color: var(--color-line-strong);
 }
 
+.rt-ruler.is-honorary .rt-marker span {
+    color: var(--color-muted);
+    border-style: dotted;
+    border-color: var(--color-line);
+}
+
 .rt-card {
     min-width: 0;
     padding: var(--space-md);
@@ -238,6 +244,12 @@
 
 .rt-ruler.is-interim .rt-card {
     border-top-color: var(--color-line-strong);
+}
+
+.rt-ruler.is-honorary .rt-card {
+    border-top-style: dotted;
+    border-top-color: var(--color-line);
+    opacity: 0.85;
 }
 
 .rt-ruler.is-target .rt-card {
@@ -473,6 +485,18 @@
     border-color: var(--color-line-strong);
 }
 
+.kh-legend-mark.is-honorary {
+    color: var(--color-muted);
+    border-style: dotted;
+    border-color: var(--color-line);
+}
+
+.kh-legend-mark.is-interim {
+    color: var(--color-muted);
+    border-style: dashed;
+    border-color: var(--color-line-strong);
+}
+
 .kh-legend-line {
     width: 28px;
     height: 1px;
@@ -589,6 +613,12 @@
     border-top-color: var(--color-line-strong);
 }
 
+.kh-node.is-honorary {
+    border-top-style: dotted;
+    border-top-color: var(--color-line);
+    opacity: 0.85;
+}
+
 .kh-node.is-kin {
     width: 176px;
     min-height: 126px;
@@ -642,6 +672,17 @@
     color: var(--color-muted);
     font-size: 0.625rem;
     border-color: var(--color-line-strong);
+    border-radius: var(--radius-sm);
+}
+
+.kh-order.is-honorary {
+    width: auto;
+    min-width: 32px;
+    padding: 0 6px;
+    color: var(--color-muted);
+    font-size: 0.625rem;
+    border-style: dotted;
+    border-color: var(--color-line);
     border-radius: var(--radius-sm);
 }
 

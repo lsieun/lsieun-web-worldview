@@ -1,6 +1,6 @@
 {%- macro renderNode(node) %}
 <li class="kh-branch">
-    <article class="kh-node{% if node.status == 'formal' %} is-emperor{% elif node.status == 'interim' %} is-interim{% else %} is-kin{% endif %}"
+    <article class="kh-node{% if node.status == 'formal' %} is-emperor{% elif node.status == 'honorary' %} is-honorary{% elif node.status == 'interim' %} is-interim{% else %} is-kin{% endif %}"
              id="tree-{{ node.id }}" data-tree-person="{{ node.id }}" data-parents="{{ node.parents | join(' ') }}"
              data-note="{{ node.note | escape }}" data-summary="{{ node.summary | escape }}"
              data-events="{{ node.tooltipEvents | join('||') | escape }}" data-node-href="{{ node.href }}"
@@ -8,8 +8,10 @@
         <div class="kh-node-top">
             {% if node.status == 'formal' %}
             <span class="kh-order" aria-label="第 {{ node.order }} 位皇帝">{{ node.order }}</span>
+            {% elif node.status == 'honorary' %}
+            <span class="kh-order is-honorary" aria-label="追尊皇帝">追尊</span>
             {% elif node.status == 'interim' %}
-            <span class="kh-order is-transition">过渡</span>
+            <span class="kh-order is-transition">准皇帝</span>
             {% else %}
             <span class="kh-order is-kin" aria-hidden="true">宗</span>
             {% endif %}
@@ -48,6 +50,8 @@
 
     <div class="kh-legend" aria-label="世系图例">
         <span><i class="kh-legend-mark is-emperor" aria-hidden="true">1</i>正式皇帝与帝序</span>
+        <span><i class="kh-legend-mark is-honorary" aria-hidden="true">追</i>追尊皇帝 · 未实际在位</span>
+        <span><i class="kh-legend-mark is-interim" aria-hidden="true">准</i>准皇帝 · 未成事实</span>
         <span><i class="kh-legend-mark is-kin" aria-hidden="true">宗</i>未即位的连接宗亲</span>
         <span><i class="kh-legend-line" aria-hidden="true"></i>父母与子女关系</span>
     </div>

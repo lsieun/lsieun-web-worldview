@@ -50,7 +50,7 @@ export class ReignViewBuilder extends ViewBuilder {
             rulerIds.add(ruler.figure);
 
             const status = ruler.status || "formal";
-            if (!["formal", "interim"].includes(status)) {
+            if (!["formal", "interim", "honorary"].includes(status)) {
                 throw new Error(`[world] ${source} 的 ${ruler.figure} 使用了未知 status「${status}」`);
             }
             if (status === "formal") {
@@ -60,6 +60,12 @@ export class ReignViewBuilder extends ViewBuilder {
                 if (orders.has(ruler.order)) throw new Error(`[world] ${source} 的帝序 ${ruler.order} 重复`);
                 orders.add(ruler.order);
                 formalCount += 1;
+            } else if (status === "honorary") {
+                /* 追尊人物不占帝序，但可以有 order 用于展示排序 */
+                if (ruler.order !== undefined && orders.has(ruler.order)) {
+                    throw new Error(`[world] ${source} 的帝序 ${ruler.order} 重复`);
+                }
+                if (ruler.order !== undefined) orders.add(ruler.order);
             } else if (ruler.order !== undefined) {
                 throw new Error(`[world] ${source} 的过渡人物 ${ruler.figure} 不应设置帝序`);
             }
