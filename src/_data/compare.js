@@ -112,11 +112,9 @@ export default function () {
     }
 
     /* ---------- 4. 导航 TOC（时间正序：从上到下是朝代/时期的起止顺序） ---------- */
-    // 左：中国朝代（去掉魏蜀吴三个子朝代，只保留三国父级）
+    // 左：中国朝代（全部 24 个都显示，不再过滤子朝代）
     //     锚点指向该朝代范围内**最晚**事件（因为时间轴是逆序，最晚事件在最上方）
-    const skipChina = new Set(["cao-wei", "shu-han", "eastern-wu", "xin"]); // 跳过子朝代 + 新朝并入两汉
     const chinaToc = Object.values(dynasties)
-        .filter((d) => !skipChina.has(d.id))
         .map((d) => {
             // 找范围内最晚的事件年份（year 最大）
             const rangeEvts = rows.filter((r) => r.year >= d.start && r.year <= d.end);
@@ -133,18 +131,24 @@ export default function () {
         .filter((t) => t.anchor)
         .sort((a, b) => a.start - b.start);
 
-    // 右：世界时期（同理，锚点指向范围内最晚事件）
+    // 右：世界时期（锚点指向该时期范围内最晚事件）
     const worldToc = Object.values(eras)
         .map((e) => {
             const rangeEvts = rows.filter((r) => r.year >= e.start && r.year <= e.end);
             const lastEvtYear = rangeEvts.length > 0 ? rangeEvts[rangeEvts.length - 1] : null;
+            // 优先用中国侧事件做锚点（模板里 id 总是存在）
+            const anchor = lastEvtYear
+                ? (lastEvtYear.china.length > 0
+                    ? `ev-china-${lastEvtYear.year}`
+                    : `ev-world-${lastEvtYear.year}`)
+                : null;
             return {
                 id: `world-${e.id}`,
                 kind: "world",
                 label: e.name,
                 start: e.start,
                 end: e.end,
-                anchor: lastEvtYear ? `ev-china-${lastEvtYear.year}` : null
+                anchor
             };
         })
         .filter((t) => t.anchor)

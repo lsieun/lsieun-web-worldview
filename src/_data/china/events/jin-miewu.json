@@ -1,10 +1,8 @@
 {
-  "title": "晋灭吴",
+  "id": "jin-miewu",
+  "title": "西晋灭吴，三国归一",
   "year": 280,
-  "era": "天纪四年",
-  "dynasty": "three-kingdoms",
-  "figures": [
-    "sunhao"
-  ],
-  "desc": "晋军六路伐吴，王濬楼船直下建业，孙皓出降，三国归晋。"
+  "dynasty": "western-jin",
+  "key": true,
+  "desc": "司马氏代魏后，经过十六年准备，晋武帝司马炎于 279 年下诏伐吴。280 年王濬楼船破石头城，孙皓出降，三国时代结束。"
 }
