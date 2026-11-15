@@ -1,0 +1,9 @@
+{
+  "title": "黄池之会",
+  "year": -482,
+  "desc": "吴王夫差北上争霸，与晋定公、鲁哀公等会于黄池。夫差强于晋人，先歃血为盟，夺得盟主之位。但就在夫差北上之际，越王勾践趁机伐吴，攻入吴都姑苏。夫差回师救亡，无力再战，被迫与越议和。",
+  "figures": ["wu-fuchai", "yue-goujian", "zhoujingwang-jing"],
+  "axis": true,
+  "key": true,
+  "category": "general"
+}

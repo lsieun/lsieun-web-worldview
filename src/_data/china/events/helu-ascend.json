@@ -1,0 +1,9 @@
+{
+  "title": "吴王阖闾即位",
+  "year": -514,
+  "desc": "公子光用专诸刺杀吴王僚自立，是为吴王阖闾。重用伍子胥、孙武整军经武。周敬王在位，周室已衰微到极点，无力干预。",
+  "figures": ["wu-helu", "zhoujingwang-jing"],
+  "axis": true,
+  "key": true,
+  "category": "general"
+}

@@ -1,11 +1,8 @@
 {
   "title": "晋文公即位",
   "year": -636,
-  "desc": "重耳在外流亡十九年，经秦穆公护送回国，即位为晋文公。即位后励精图治，赏罚分明，晋国国力迅速恢复。",
-  "figures": [
-    "jinwen-gong",
-    "qinmigong"
-  ],
+  "desc": "重耳在外流亡十九年，经秦穆公护送回国即位为晋文公。周襄王正遭遇王子带之乱，晋文公出兵勤王，助襄王回朝，杀王子带。周襄王赏赐晋国河内、阳樊之地，晋室由此亲密。",
+  "figures": ["jinwen-gong", "qinmigong", "zhouxiangwang"],
   "axis": true,
   "key": true,
   "category": "general"

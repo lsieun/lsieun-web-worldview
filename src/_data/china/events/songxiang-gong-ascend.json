@@ -1,10 +1,8 @@
 {
   "title": "宋襄公即位",
   "year": -650,
-  "desc": "宋襄公兹甫即位为君。齐桓公在世时，宋襄公曾受其庇护。齐桓公死后，宋襄公图谋继承霸主之位。",
-  "figures": [
-    "songxiang-gong"
-  ],
+  "desc": "宋襄公兹甫即位为君。周惠王在位，王室已依附齐桓公维持秩序。齐桓公在世时宋襄公曾受其庇护，桓公死后图谋继承霸主之位。",
+  "figures": ["songxiang-gong", "zhouhuiwang"],
   "axis": true,
   "category": "general"
 }

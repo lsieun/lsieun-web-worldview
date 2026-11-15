@@ -1,0 +1,10 @@
+{
+  "name": "姒勾践",
+  "en": "King Goujian of Yue",
+  "birth": -520,
+  "death": -465,
+  "region": "cn",
+  "dynasty": "chunqiu",
+  "summary": "越王勾践。与吴王阖闾战于槜李，伤阖闾致死。后被夫差败于夫椒，困于会稽，卑辞求和。归国后卧薪尝胆、十年生聚十年教训。前 473 年灭吴，渡淮北上称霸，成为春秋最后一位霸主。「有志者事竟成，破釜沉舟，百二秦关终属楚；苦心人天不负，卧薪尝胆，三千越甲可吞吴。」",
+  "milestones": ["goujian-ascend", "battle-of-fujiao", "goujian-surrender", "wu-falls"]
+}

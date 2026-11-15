@@ -1,0 +1,9 @@
+{
+  "title": "槜李之战",
+  "year": -496,
+  "desc": "越王勾践刚即位，吴王阖闾趁机伐越。两军战于槜李，勾践使敢死队冲击吴阵，大败吴军。阖闾被越大夫灵姑浮以戈击伤脚趾，退师途中伤重而死，遗命太子夫差必报此仇。周敬王无力介入吴越战争。",
+  "figures": ["wu-helu", "yue-goujian", "zhoujingwang-jing"],
+  "axis": true,
+  "key": true,
+  "category": "general"
+}

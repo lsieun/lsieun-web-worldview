@@ -1,0 +1,9 @@
+{
+  "title": "夫椒之战",
+  "year": -494,
+  "desc": "吴王夫差伐越报仇，两军战于夫椒，越军大败。越王勾践仅剩五千残兵退守会稽山，被吴军围困。勾践用范蠡、文种之计，派文种卑辞求和，夫差应允，条件是勾践夫妇入吴为奴。越国面临亡国之危。",
+  "figures": ["wu-fuchai", "yue-goujian", "zhoujingwang-jing"],
+  "axis": true,
+  "key": true,
+  "category": "general"
+}

@@ -1,0 +1,10 @@
+{
+  "name": "姬夫差",
+  "en": "King Fuchai of Wu",
+  "birth": -528,
+  "death": -473,
+  "region": "cn",
+  "dynasty": "chunqiu",
+  "summary": "吴王夫差。父阖闾被越王勾践所伤而死，夫差即位后励精图治，前 494 年夫椒之战大败越国。后北上争霸，黄池之会与晋争盟。但越王勾践卧薪尝胆，终灭吴国。",
+  "milestones": ["fuchai-ascend", "battle-of-fujiao", "huangchi-alliance", "wu-falls"]
+}

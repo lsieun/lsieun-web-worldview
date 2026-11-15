@@ -1,10 +1,8 @@
 {
   "title": "秦穆公称霸西戎",
   "year": -623,
-  "desc": "秦穆公采纳由余之策，吞并西戎十二国，拓地千里，周襄王派使者祝贺。秦穆公成为春秋五霸之一，称霸西戎。",
-  "figures": [
-    "qinmigong"
-  ],
+  "desc": "秦穆公采纳由余之策，吞并西戎十二国，拓地千里。周顷王派使者以金鼓祝贺，承认秦穆公西戎霸主地位。秦穆公成为春秋五霸之一。",
+  "figures": ["qinmigong", "zhouqingwang"],
   "axis": true,
   "key": true,
   "category": "general"

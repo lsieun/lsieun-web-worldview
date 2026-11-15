@@ -1,0 +1,9 @@
+{
+  "title": "柏举之战",
+  "year": -506,
+  "desc": "吴王阖闾率三万精兵，在伍子胥、孙武辅佐下千里奔袭楚境。五战五胜，直入楚都郢城，楚昭王出逃。周敬王无力救援楚国。吴国威震诸侯，成为春秋后期霸主。但次年秦出兵救楚，吴军退师。",
+  "figures": ["wu-helu", "zhoujingwang-jing"],
+  "axis": true,
+  "key": true,
+  "category": "general"
+}
