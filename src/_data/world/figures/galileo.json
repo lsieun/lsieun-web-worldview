@@ -3,8 +3,6 @@
   "en": "Galileo Galilei",
   "birth": 1564,
   "death": 1642,
-  "origin": "pisa",
-  "note": "意大利天文学家、物理学家。首创天文望远镜，发现木星卫星、太阳黑子。支持日心说，因《对话》一书被教会审判。",
   "milestones": [
     "galileo-telescope"
   ],

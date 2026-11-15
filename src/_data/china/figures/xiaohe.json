@@ -5,7 +5,10 @@
   "death": -193,
   "careerStart": -209,
   "careerApprox": true,
-  "activePlaces": ["peixian", "xianyang", "changan"],
   "summary": "辅佐刘邦起兵，入咸阳收秦图籍，楚汉相争时镇守关中，后任汉相国。",
-  "milestones": ["peixian-uprising", "xianyang-entry", "xiaohe-death"]
+  "milestones": [
+    "peixian-uprising",
+    "xianyang-entry",
+    "xiaohe-death"
+  ]
 }
