@@ -112,11 +112,12 @@ export default function () {
     }
 
     /* ---------- 4. 导航 TOC（时间正序：从上到下是朝代/时期的起止顺序） ---------- */
-    // 左：中国朝代（全部 24 个都显示，不再过滤子朝代）
-    //     锚点指向该朝代范围内**最晚**事件（因为时间轴是逆序，最晚事件在最上方）
+    // 左：中国朝代（按设计文档固定 21 个，排除三国三个子朝代）
+    //     锚点指向该朝代范围内**最晚**事件（时间轴是逆序，最晚事件在最上方）
+    const skipChina = new Set(["cao-wei", "shu-han", "eastern-wu"]);
     const chinaToc = Object.values(dynasties)
+        .filter((d) => !skipChina.has(d.id))
         .map((d) => {
-            // 找范围内最晚的事件年份（year 最大）
             const rangeEvts = rows.filter((r) => r.year >= d.start && r.year <= d.end);
             const lastEvtYear = rangeEvts.length > 0 ? rangeEvts[rangeEvts.length - 1] : null;
             return {

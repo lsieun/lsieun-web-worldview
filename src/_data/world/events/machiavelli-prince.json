@@ -2,6 +2,9 @@
   "title": "马基雅维利《君主论》出版",
   "year": 1532,
   "axis": true,
-  "figures": ["machiavelli"],
-  "note": "首次将政治权力与道德分离开来，现代政治学的奠基之作。"
+  "figures": [
+    "machiavelli"
+  ],
+  "note": "首次将政治权力与道德分离开来，现代政治学的奠基之作。",
+  "region": "意大利"
 }
