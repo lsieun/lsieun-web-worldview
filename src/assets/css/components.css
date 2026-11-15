@@ -726,6 +726,76 @@
     white-space: nowrap;
 }
 
+/* ---------- phase 分期 ---------- */
+.chr-phase-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.5rem;
+    padding-top: 0.25rem;
+}
+
+.chr-phase-chip {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.3rem;
+    padding: 0.15rem 0.5rem;
+    font-size: 0.68rem;
+    border: 1px solid var(--color-line-strong);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg-soft);
+    cursor: default;
+}
+
+.chr-phase-chip strong {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    font-size: 0.72rem;
+}
+
+.chr-phase-chip em {
+    font-family: var(--font-mono);
+    font-style: normal;
+    color: var(--color-muted);
+    font-size: 0.6rem;
+    letter-spacing: 0.04em;
+}
+
+.chr-phase-group {
+    padding: 0.4rem 0 0.2rem;
+    margin-top: 0.25rem;
+    border-top: 1px dashed var(--color-line);
+}
+
+.chr-phase-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.3rem 0.6rem;
+    padding: 0.15rem 0.25rem;
+}
+
+.chr-phase-name {
+    font-family: var(--font-serif);
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    color: var(--color-accent, #3b82f6);
+}
+
+.chr-phase-head.is-mixed .chr-phase-name {
+    color: var(--color-muted);
+    font-style: italic;
+    letter-spacing: 0.08em;
+}
+
+.chr-phase-years {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.06em;
+    color: var(--color-muted);
+}
+
 .chr-empty {
     padding: 0.45rem 0.2rem;
     font-size: 0.82rem;

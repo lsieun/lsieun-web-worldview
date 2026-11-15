@@ -58,8 +58,29 @@ export class DynastyRegistry {
                 title: view.title || view.meta?.title || view.id,
                 href: view.href || `/figures/${view.id}.html`,
                 meta: view.topicMeta || (view.type === "dynasty-reigns" ? "帝王世系" : "人物年龄"),
-                summary: view.summary || view.meta?.subtitle || ""
+                summary: view.summary || view.meta?.subtitle || "",
+                phase: view.phase || null
             });
+        }
+
+        /* ---------- topic 按 phase 分组 ---------- */
+        for (const dynasty of byId.values()) {
+            if (!dynasty.phases || dynasty.phases.length === 0) continue;
+            const topics = dynasty.topics;
+            const phaseIds = dynasty.phases.map((p) => p.id);
+            for (const t of topics) {
+                if (t.phase && !phaseIds.includes(t.phase)) {
+                    throw new Error(`[world] 朝代「${dynasty.id}」的 topic「${t.title}」phase「${t.phase}」不存在于 phases 中`);
+                }
+            }
+            const phaseMap = new Map(dynasty.phases.map((p) => [p.id, []]));
+            const unassigned = [];
+            for (const t of topics) {
+                if (t.phase && phaseMap.has(t.phase)) phaseMap.get(t.phase).push(t);
+                else unassigned.push(t);
+            }
+            dynasty.phases.forEach((p) => (p.topics = phaseMap.get(p.id)));
+            dynasty._unassignedTopics = unassigned;
         }
 
         const topicCount = all.reduce((total, dynasty) => total + dynasty.topics.length, 0);

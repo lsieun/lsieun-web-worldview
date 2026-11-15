@@ -49,6 +49,16 @@ layout: "default.html"
                     <h2 class="chr-name">{{ d.name }}</h2>
                     <span class="chr-years">{{ d.start | cnYear }} — {{ d.end | cnYear }}</span>
                     {% if d.summary %}<p class="chr-summary">{{ d.summary }}</p>{% endif %}
+                    {% if d.phases %}
+                    <div class="chr-phase-bar" aria-label="朝代分期">
+                        {%- for p in d.phases %}
+                        <span class="chr-phase-chip" title="{{ p.desc }}">
+                            <strong>{{ p.name }}</strong>
+                            <em>{{ p.start | cnYear }} — {{ p.end | cnYear }}</em>
+                        </span>
+                        {%- endfor %}
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="chr-group-body">
                     {%- for sg in (d.subgroups or []) %}
@@ -73,10 +83,57 @@ layout: "default.html"
                             </a>
                             {%- endif %}
                             {%- endfor %}
-                            <p class="chr-empty">专题待补</p>
+                            {% if sg.topics.length == 0 and not loop.first %}<p class="chr-empty">专题待补</p>{% endif %}
                         </div>
                     </div>
                     {%- endfor %}
+
+                    {%- if d.phases %}
+                    {# --- 有 phases：按 phase 分组渲染 --- #}
+                    {%- for p in d.phases %}
+                    <div class="chr-phase-group">
+                        <div class="chr-phase-head" title="{{ p.desc }}">
+                            <span class="chr-phase-name">{{ p.name }}</span>
+                            <span class="chr-phase-years">{{ p.start | cnYear }} — {{ p.end | cnYear }}</span>
+                        </div>
+                        <div class="chr-chips">
+                            {%- for t in (p.topics or []) %}
+                            <a class="chr-chip" href="{{ t.href }}">
+                                <span class="chr-chip-title">{{ t.title }}</span>
+                                {%- if t.meta %}<span class="chr-chip-meta">{{ t.meta }}</span>{% endif %}
+                            </a>
+                            {%- endfor %}
+                            {%- for entry in collections.historyEntries %}
+                            {%- if entry.data.dynasty == d.id and entry.data.phase == p.id %}
+                            <a class="chr-chip" href="{{ entry.url }}">
+                                <span class="chr-chip-title">{{ entry.data.title }}</span>
+                                {%- if entry.data.span %}<span class="chr-chip-meta">{{ entry.data.span }}</span>{% endif %}
+                            </a>
+                            {%- endif %}
+                            {%- endfor %}
+                            {% if p.topics.length == 0 %}<p class="chr-empty">专题待补</p>{% endif %}
+                        </div>
+                    </div>
+                    {%- endfor %}
+                    {# 未分配 phase 的专题 #}
+                    {%- if d._unassignedTopics and d._unassignedTopics.length > 0 %}
+                    <div class="chr-phase-group">
+                        <div class="chr-phase-head is-mixed">
+                            <span class="chr-phase-name">跨期专题</span>
+                        </div>
+                        <div class="chr-chips">
+                            {%- for t in d._unassignedTopics %}
+                            <a class="chr-chip" href="{{ t.href }}">
+                                <span class="chr-chip-title">{{ t.title }}</span>
+                                {%- if t.meta %}<span class="chr-chip-meta">{{ t.meta }}</span>{% endif %}
+                            </a>
+                            {%- endfor %}
+                        </div>
+                    </div>
+                    {%- endif %}
+
+                    {%- else %}
+                    {# --- 无 phases：原逻辑 --- #}
                     <div class="chr-chips">
                         {%- for t in d.topics %}
                         <a class="chr-chip" href="{{ t.href }}">
@@ -92,8 +149,9 @@ layout: "default.html"
                         </a>
                         {%- endif %}
                         {%- endfor %}
-                        <p class="chr-empty">专题待补</p>
+                        {% if d.topics.length == 0 %}<p class="chr-empty">专题待补</p>{% endif %}
                     </div>
+                    {%- endif %}
                 </div>
             </section>
             {%- endfor %}
