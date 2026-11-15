@@ -53,23 +53,34 @@ const EVENT_CATEGORIES = new Set([
 // 已知 dynasty（来自 _data/china/dynasties/）
 const DYNASTY_VALUES = new Set(); // 运行时从文件动态加载
 
+// 已知旧字段（deprecated）—— per-type 配置，出现在该类型文件中 → warn
+// 这些字段曾是早期数据模型的一部分，现已从 schema 移除（功能由新字段替代或不再使用）
+const DEPRECATED_FIELDS = {
+    figure: new Set(["tags", "activePlaces", "origin", "title", "note"]),
+    event:  new Set(["tags", "activePlaces", "origin", "era"]),
+};
+
 // Schema: 每个实体类的字段约束
 const SCHEMAS = {
     figure: {
         // 必填
         name:     { type: "string",  required: true,  minLen: 1, maxLen: 40 },
         summary:  { type: "string",  required: true,  minLen: 1, maxLen: 200 },
-        // 可选
+        // 可选（字段在 CrowdViewBuilder / WorldContext 中实际读取）
         en:       { type: "string",  required: false, maxLen: 60 },
         birth:    { type: "number",  required: false, desc: "年份，负数=公元前" },
         death:    { type: "number",  required: false, desc: "年份，负数=公元前" },
+        birthApprox: { type: "boolean", required: false, desc: "生年是否近似" },
+        deathApprox: { type: "boolean", required: false, desc: "卒年是否近似" },
+        careerStart: { type: "number",  required: false, desc: "起家年份" },
+        careerApprox:{ type: "boolean", required: false, desc: "起家年份是否近似" },
+        pinyin:   { type: "string",  required: false, desc: "拼音辅助标注" },
         region:   { type: "enum",    required: false, values: REGION_VALUES },
         dynasty:  { type: "enum",    required: false, values: DYNASTY_VALUES },
         parents:  { type: "array",   required: false, itemType: "string" },
         milestones: { type: "array", required: false, itemType: "string" },
         notes:    { type: "string",  required: false },
         source:   { type: "string",  required: false },
-        // 允许的自由扩展字段（schema 不校验内容，但不计入"多余"警告）
         _allowExtra: false,
     },
 
@@ -87,7 +98,6 @@ const SCHEMAS = {
         note:     { type: "string",  required: false, maxLen: 200 },
         figures:  { type: "array",   required: false, itemType: "string" },
         places:   { type: "array",   required: false, itemType: "string" },
-        era:      { type: "string",  required: false, desc: "所属时代（仅旧数据保留）" },
         seq:      { type: "number",  required: false },
         _allowExtra: false,
     },
@@ -192,6 +202,11 @@ function validateFile(filePath, type) {
         const rule = schema[field];
         if (!rule) continue; // 多余字段后面单独处理
 
+        // deprecated 字段 → warn（数据仍合法，但建议迁移）
+        if (rule.deprecated) {
+            report(rel, field, "warn", `deprecated: ${rule.desc || "旧字段待清理"}`);
+        }
+
         // 类型
         if (!typeCheck(value, rule.type)) {
             report(rel, field, "error", `类型应为 ${rule.type}，实际 ${Array.isArray(value) ? "array" : typeof value}`);
@@ -226,6 +241,7 @@ function validateFile(filePath, type) {
     // 3. 多余字段
     if (!schema._allowExtra) {
         const known = new Set([...Object.keys(schema), "id"]);
+        const deprecatedSet = DEPRECATED_FIELDS[type] || new Set();
         for (const field of Object.keys(data)) {
             if (!known.has(field)) {
                 // 自动修复候选：id 字段（应该删除，因为文件名就是 id）
@@ -233,14 +249,11 @@ function validateFile(filePath, type) {
                     fixes.id = undefined; // 标记删除
                     needsFix = true;
                     report(rel, field, "warn", `多余字段 "id"（文件名已提供，可自动删除）`);
-                } else if (field === "careerStart" || field === "careerApprox" ||
-                           field === "birthApprox" || field === "deathApprox" ||
-                           field === "activePlaces" || field === "title" ||
-                           field === "tags" || field === "origin") {
-                    // 已知旧字段，warn 但保留（需要人工评估是否迁移）
-                    report(rel, field, "warn", `旧字段待清理`);
+                } else if (deprecatedSet.has(field)) {
+                    // 已知旧字段，warn 提示清理
+                    report(rel, field, "warn", `旧字段 "${field}" 待清理（非 schema 字段）`);
                 } else {
-                    report(rel, field, "warn", `未知字段（检查是否拼写错误）`);
+                    report(rel, field, "warn", `未知字段 "${field}"（检查是否拼写错误）`);
                 }
             }
         }

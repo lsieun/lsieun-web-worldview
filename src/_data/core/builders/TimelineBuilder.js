@@ -41,7 +41,6 @@ export class TimelineBuilder extends ViewBuilder {
                 desc: event.desc || "",
                 axis: Boolean(event.axis),
                 key: Boolean(event.key),
-                era: event.era,
                 focus: ensureArray(event.figures, "", "figures").filter((figureId) => castIds.has(figureId))
             }));
 
