@@ -44,21 +44,25 @@ export default function () {
     const reignViews = {};
     const crowdViews = {};
     const familyViews = {};
+    const swimlanes = {};
 
     for (const view of Object.values(ctx.views)) {
-        const result = buildView(view, ctx);
         switch (view.type) {
+            case "event-swimlane":
+                /* 直接输出原始数据，不需要 Builder 加工 */
+                swimlanes[view.id] = view;
+                break;
             case "reign-crowd":
-                crowdViews[view.id] = result;
+                crowdViews[view.id] = buildView(view, ctx);
                 break;
             case "dynasty-reigns":
-                reignViews[view.id] = result;
+                reignViews[view.id] = buildView(view, ctx);
                 break;
             case "family-tree":
-                familyViews[view.id] = result;
+                familyViews[view.id] = buildView(view, ctx);
                 break;
             default:
-                timelines[view.id] = result;
+                timelines[view.id] = buildView(view, ctx);
         }
     }
 
@@ -74,6 +78,7 @@ export default function () {
         timelines,
         reignViews,
         crowdViews,
-        familyViews
+        familyViews,
+        swimlanes
     };
 }

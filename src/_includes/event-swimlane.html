@@ -1,0 +1,118 @@
+{#
+  横向泳道事件时间轴模板。
+  用法：{% set sw = world.swimlanes["chunqiu-swimlane"] %}
+       {% include "event-swimlane.html" %}
+  数据契约：
+    sw.range = { start, end }
+    sw.lanes = [{ id, name, en, color, axis? }]
+    sw.nodes = [{ lane, year, type, title, detail?, bubble?, target? }]
+  节点 type：
+    ascend     继位 — 小圆点 灰
+    hegemony   称霸 — 大圆点 金色 ⭐
+    battle     战役 — 中圆点 菱形 ◆
+    diplomacy  外交 — 小菱形
+    treaty     条约/会盟 — 小方块
+    response   周王回应 — 画细线连到 target 泳道
+    note       课本名篇气泡
+#}
+{% if sw and sw.lanes %}
+{% set span = sw.range.end - sw.range.start %}
+<link rel="stylesheet" href="/assets/css/event-swimlane.css">
+
+<section class="sw-page" data-sw-range-start="{{ sw.range.start }}" data-sw-range-end="{{ sw.range.end }}">
+    {# ===== Hero ===== #}
+    <section class="sw-hero">
+        <span class="watermark" aria-hidden="true">{{ sw.dynasty | default('史') }}</span>
+        <div class="container">
+            <p class="eyebrow">EVENT · SWIMLANE TIMELINE</p>
+            <h1 class="page-title">{{ sw.title | default('事件时间轴') }}</h1>
+            {% if sw.meta and sw.meta.subtitle %}
+            <p class="page-lead">{{ sw.meta.subtitle }}</p>
+            {% endif %}
+            <div class="page-meta">
+                <span>时间段 <strong>{{ sw.range.start | cnYear }} — {{ sw.range.end | cnYear }}</strong></span>
+                <span>{{ sw.lanes.length }} 条泳道</span>
+                <span>{{ sw.nodes.length }} 件大事</span>
+            </div>
+        </div>
+    </section>
+
+    {# ===== 图例 ===== #}
+    <section class="container">
+        <div class="sw-legend">
+            <span class="sw-legend-item"><span class="sw-dot sw-dot--hegemony"></span>称霸 ⭐</span>
+            <span class="sw-legend-item"><span class="sw-dot sw-dot--ascend"></span>继位</span>
+            <span class="sw-legend-item"><span class="sw-dot sw-dot--battle"></span>战役</span>
+            <span class="sw-legend-item"><span class="sw-dot sw-dot--diplomacy"></span>外交/会盟</span>
+            <span class="sw-legend-item"><span class="sw-bubble-mini"></span>课本名篇</span>
+            <span class="sw-legend-item"><span class="sw-line-mini"></span>周王回应</span>
+        </div>
+    </section>
+
+    {# ===== 泳道时间轴 ===== #}
+    <section class="container sw-scroll-wrap">
+        <div class="sw-scroll">
+            {# --- 年份刻度轴 --- #}
+            <div class="sw-year-axis">
+                <div class="sw-year-track">
+                    {% for t in sw.ticks %}
+                    {% set pct = ((t - sw.range.start) / span * 100) %}
+                    <div class="sw-year-tick" style="left: {{ pct }}%">
+                        <span class="sw-year-line"></span>
+                        <span class="sw-year-label">{{ t | cnYear }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            {# --- 每条泳道 --- #}
+            {% for lane in sw.lanes %}
+            {% set laneColor = lane.color | default('#64748b') %}
+            <div class="sw-lane sw-lane--{{ lane.id }}{% if lane.axis %} is-axis{% endif %}">
+                <div class="sw-lane-label" style="border-color: {{ laneColor }}">
+                    <span class="sw-lane-name">{{ lane.name }}</span>
+                    {% if lane.en %}<span class="sw-lane-en">{{ lane.en }}</span>{% endif %}
+                </div>
+                <div class="sw-lane-track" style="--lane-color: {{ laneColor }}">
+                    {# 泳道底色线 #}
+                    <div class="sw-lane-line" style="background: {{ laneColor }}"></div>
+                    {# 该泳道的所有节点 #}
+                    {% for n in sw.nodes %}
+                    {% if n.lane == lane.id %}
+                    {% set pct = ((n.year - sw.range.start) / span * 100) %}
+                    <div class="sw-node sw-node--{{ n.type }}"
+                         style="left: {{ pct }}%; --node-color: {{ laneColor }}"
+                         title="{{ n.title }} · {{ n.year | cnYear }}{% if n.detail %} — {{ n.detail }}{% endif %}">
+                        <span class="sw-node-dot"></span>
+                        <span class="sw-node-label">{{ n.title }}</span>
+                        <span class="sw-node-year">{{ n.year | cnYear }}</span>
+                        {% if n.bubble %}
+                        <span class="sw-node-bubble">{{ n.bubble }}</span>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    {# ===== 事件详情表 ===== #}
+    <section class="container sw-detail">
+        <h2 class="sw-detail-title">事件明细</h2>
+        <ol class="sw-detail-list">
+            {% for n in sw.nodes %}
+            {% set lane = sw.lanes | selectattr('id', 'equalto', n.lane) | first %}
+            <li class="sw-detail-item sw-detail--{{ n.type }}">
+                <span class="sw-detail-year">{{ n.year | cnYear }}</span>
+                <span class="sw-detail-lane" style="color: {{ lane.color }}">{{ lane.name }}</span>
+                <span class="sw-detail-title">{{ n.title }}</span>
+                {% if n.detail %}<span class="sw-detail-detail">— {{ n.detail }}</span>{% endif %}
+                {% if n.bubble %}<span class="sw-detail-bubble">[{{ n.bubble }}]</span>{% endif %}
+            </li>
+            {% endfor %}
+        </ol>
+    </section>
+</section>
+{% endif %}
