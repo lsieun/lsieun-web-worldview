@@ -1,0 +1,12 @@
+{
+  "title": "晋文公即位",
+  "year": -636,
+  "desc": "重耳在外流亡十九年，经秦穆公护送回国，即位为晋文公。即位后励精图治，赏罚分明，晋国国力迅速恢复。",
+  "figures": [
+    "jinwen-gong",
+    "qinmigong"
+  ],
+  "axis": true,
+  "key": true,
+  "category": "general"
+}

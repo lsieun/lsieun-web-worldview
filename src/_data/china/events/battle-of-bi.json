@@ -1,0 +1,11 @@
+{
+  "title": "邲之战",
+  "year": -597,
+  "desc": "晋楚争霸，两军战于邲。晋军将帅不和，楚庄王指挥楚军大败晋军，饮马黄河。次年进兵郑国，迫使郑襄公肉袒请降。楚庄王由此称霸中原，成为春秋五霸之一。",
+  "figures": [
+    "chuzhuang-wang"
+  ],
+  "axis": true,
+  "key": true,
+  "category": "general"
+}

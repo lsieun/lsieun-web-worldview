@@ -1,0 +1,60 @@
+{
+  "title": "春秋时间线",
+  "dynasty": "chunqiu",
+  "range": { "start": -720, "end": -580 },
+  "meta": {
+    "key": "chunqiu",
+    "watermark": "春",
+    "title": "春秋时间线",
+    "subtitle": "前 770 平王东迁 — 前 476 三家分晋，霸主迭起的三百年",
+    "tags": ["春秋五霸", "长勺之战", "曹刿论战"],
+    "intro": "纵向自上而下是时间轴。左侧竖轴标出霸主更迭、经典战役与会盟大事；右侧六位人物各一条生命线，走到大事那一年就落一个节点，写明当时的年龄（虚岁）。",
+    "lifelineHint": "圆点为在世时经历的大事，实心圆点是与本人直接相关的事件。悬停可看事件与年龄。下方另附年龄明细表。",
+    "tableIntro": "同一批大事逐行列成表格，便于横向比较同一年六人的年龄。点击人物列头可单独聚焦其一列，再次点击取消。",
+    "note": "春秋五霸取《史记索隐》说法：齐桓公、宋襄公、晋文公、秦穆公、楚庄王。另一种说法为齐桓、晋文、秦穆、吴王阖闾、越王勾践。年龄口径为<strong>虚岁</strong>（事件年份 − 出生年份 + 1）；「未生」表示尚未出生，「已故」表示事件发生时已去世。曹刿生卒年史无明载，此处取通行约年（前 710—前 640），仅作示意图参考。"
+  },
+  "groups": [
+    { "id": "lizhu", "name": "曹刿", "desc": "布衣论战，长勺破齐" },
+    { "id": "qi", "name": "齐", "desc": "齐桓公称霸" },
+    { "id": "song", "name": "宋", "desc": "宋襄公图霸" },
+    { "id": "jin", "name": "晋", "desc": "晋文公称霸" },
+    { "id": "qin", "name": "秦", "desc": "秦穆公称霸西戎" },
+    { "id": "chu", "name": "楚", "desc": "楚庄王问鼎" }
+  ],
+  "cast": [
+    { "figure": "cao-gui", "group": "lizhu", "role": "鲁人 · 长勺论战" },
+    { "figure": "qihuan-gong", "group": "qi", "role": "齐桓公 · 春秋首霸" },
+    { "figure": "songxiang-gong", "group": "song", "role": "宋襄公 · 泓水惨败" },
+    { "figure": "jinwen-gong", "group": "jin", "role": "晋文公 · 城濮称霸" },
+    { "figure": "qinmigong", "group": "qin", "role": "秦穆公 · 称霸西戎" },
+    { "figure": "chuzhuang-wang", "group": "chu", "role": "楚庄王 · 问鼎中原" }
+  ],
+  "events": [
+    "qihuan-gong-ascend",
+    "battle-of-changshao",
+    "songxiang-gong-ascend",
+    "qihuan-gong-kuaixia",
+    "battle-of-hong",
+    "jinwen-gong-ascend",
+    "battle-of-chengpu",
+    "battle-of-xiao",
+    "qinmigong-xi-rong",
+    "chuzhuang-wang-ascend",
+    "chuzhuang-wang-wending",
+    "battle-of-bi"
+  ],
+  "personalEvents": [
+    "qihuan-gong-ascend",
+    "qihuan-gong-kuaixia",
+    "songxiang-gong-ascend",
+    "battle-of-hong",
+    "jinwen-gong-ascend",
+    "battle-of-chengpu",
+    "battle-of-xiao",
+    "qinmigong-xi-rong",
+    "chuzhuang-wang-ascend",
+    "chuzhuang-wang-wending",
+    "battle-of-bi"
+  ],
+  "defaults": ["qihuan-gong", "jinwen-gong", "qinmigong", "chuzhuang-wang", "cao-gui", "songxiang-gong"]
+}

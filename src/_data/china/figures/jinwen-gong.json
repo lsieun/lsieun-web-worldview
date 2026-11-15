@@ -1,0 +1,10 @@
+{
+  "name": "姬重耳",
+  "en": "Duke Wen of Jin",
+  "birth": -697,
+  "death": -628,
+  "region": "cn",
+  "dynasty": "chunqiu",
+  "summary": "晋文公，春秋五霸之一。因骊姬之乱流亡列国十九年，前 636 年回国即位。城濮之战退避三舍击败楚国，践土之盟称霸中原。",
+  "milestones": ["jinwen-gong-ascend", "battle-of-chengpu"]
+}
