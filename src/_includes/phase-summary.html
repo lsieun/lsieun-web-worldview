@@ -1,0 +1,94 @@
+{#
+  朝代阶段汇总页：一个朝代所有 phases 的总览。
+  页面顶部是横向 phase 时间轴（彩条分段），下方每个 phase 一个区块，
+  展示 phase 名称、年代、概述，以及该阶段在位的皇帝（从 DynastyRegistry 预过滤）。
+  用法：{% set dynasty = world.dynasties["qing"] %}
+       {% include "phase-summary.html" %}
+#}
+{% if dynasty and dynasty.phases %}
+<link rel="stylesheet" href="/assets/css/phase-summary.css">
+
+<div class="phase-summary-page" data-phase-root>
+    {# ===== Hero ===== #}
+    <section class="ps-hero">
+        <span class="watermark" aria-hidden="true">{{ dynasty.name }}</span>
+        <div class="container">
+            <p class="eyebrow">DYNASTY · PHASES</p>
+            <h1 class="page-title">{{ dynasty.name }} · 各个阶段</h1>
+            <p class="page-lead">{{ dynasty.summary }}</p>
+            <div class="ps-hero-meta">
+                <span class="ps-hero-item">历时 <strong>{{ dynasty.end - dynasty.start + 1 }} 年</strong>（{{ dynasty.start | cnYear }} — {{ dynasty.end | cnYear }}）</span>
+                <span class="ps-hero-item">共 <strong>{{ dynasty.phases.length }} 个阶段</strong></span>
+            </div>
+        </div>
+    </section>
+
+    <section class="container">
+        {# ===== 横向 phase 时间轴 ===== #}
+        <div class="ps-timeline-wrap">
+            <div class="ps-timeline">
+                {% for p in dynasty.phases %}
+                {% set pct = ((p.start - dynasty.start) / (dynasty.end - dynasty.start) * 100) %}
+                {% set pct_w = ((p.end - p.start) / (dynasty.end - dynasty.start) * 100) %}
+                <div class="ps-tl-bar ps-tl-{{ p.id }}"
+                     style="left: {{ pct }}%; width: {{ pct_w }}%"
+                     title="{{ p.name }} · {{ p.start | cnYear }} — {{ p.end | cnYear }}">
+                    <span class="ps-tl-label">{{ p.name }}</span>
+                    <span class="ps-tl-years">{{ p.start | cnYear }}—{{ p.end | cnYear }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="ps-tl-axis">
+                <span>{{ dynasty.start | cnYear }}</span>
+                <span class="ps-tl-axis-end">{{ dynasty.end | cnYear }}</span>
+            </div>
+        </div>
+
+        {# ===== 各 phase 区块 ===== #}
+        <div class="ps-phases">
+            {% for p in dynasty.phases %}
+            <article class="ps-phase ps-phase-{{ p.id }}" id="phase-{{ p.id }}">
+                <header class="ps-phase-head">
+                    <span class="ps-phase-name">{{ p.name }}</span>
+                    <span class="ps-phase-years">{{ p.start | cnYear }} — {{ p.end | cnYear }}</span>
+                    {% set dur = p.end - p.start %}
+                    <span class="ps-phase-dur">· {{ dur }} 年</span>
+                </header>
+                {% if p.desc %}
+                <p class="ps-phase-desc">{{ p.desc }}</p>
+                {% endif %}
+
+                {% if p.rulers and p.rulers.length > 0 %}
+                <div class="ps-rulers">
+                    <h4 class="ps-rulers-title">本阶段在位</h4>
+                    <ul class="ps-rulers-list">
+                        {% for r in p.rulers %}
+                        {% set fig = world.figures[r.figure] %}
+                        <li class="ps-ruler ps-ruler-{{ r.status }}"{% if fig and fig.summary %} title="{{ fig.summary }}"{% endif %}>
+                            {% if r.order %}<span class="ps-ruler-order">第{{ r.order }}位</span>{% endif %}
+                            <span class="ps-ruler-title">{{ r.title }}</span>
+                            {% if fig %}<span class="ps-ruler-name">{{ fig.name }}</span>{% endif %}
+                            {% if r.terms %}
+                            <span class="ps-ruler-term">
+                                {% for t in r.terms %}{{ t.start | cnYear }}—{{ t.end | cnYear }}{% if not loop.last %} / {% endif %}{% endfor %}
+                            </span>
+                            {% endif %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                {% if p.notes %}
+                <ul class="ps-phase-notes">
+                    {% for n in p.notes %}
+                    <li>{{ n }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </article>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+{% endif %}

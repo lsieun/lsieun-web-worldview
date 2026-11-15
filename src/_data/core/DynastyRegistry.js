@@ -47,6 +47,7 @@ export class DynastyRegistry {
 
         const dynastyList = all.filter((dynasty) => !dynasty.parent)
             .sort((a, b) => a.order - b.order);
+        const dynastiesById = Object.fromEntries(all.map((d) => [d.id, d]));
 
         for (const view of Object.values(this.ctx.views)) {
             if (!view.dynasty) continue;
@@ -63,9 +64,22 @@ export class DynastyRegistry {
             });
         }
 
-        /* ---------- topic 按 phase 分组 ---------- */
+        /* ---------- topic 按 phase 分组 + phase 过滤 rulers + 自动挂 phase summary ---------- */
         for (const dynasty of byId.values()) {
             if (!dynasty.phases || dynasty.phases.length === 0) continue;
+
+            /* --- 先自动挂 phase summary 页（让它参与 phase 分组） --- */
+            const phaseSummaryHref = `/history/${dynasty.id}-phases.html`;
+            const hasExisting = dynasty.topics.some((t) => t.href === phaseSummaryHref);
+            if (!hasExisting) {
+                dynasty.topics.push({
+                    title: `${dynasty.name}各个阶段`,
+                    href: phaseSummaryHref,
+                    meta: "朝代分期",
+                    summary: dynasty.phases.map((p) => p.name).join(" / ")
+                });
+            }
+
             const topics = dynasty.topics;
             const phaseIds = dynasty.phases.map((p) => p.id);
             for (const t of topics) {
@@ -79,11 +93,22 @@ export class DynastyRegistry {
                 if (t.phase && phaseMap.has(t.phase)) phaseMap.get(t.phase).push(t);
                 else unassigned.push(t);
             }
-            dynasty.phases.forEach((p) => (p.topics = phaseMap.get(p.id)));
+            dynasty.phases.forEach((p) => {
+                p.topics = phaseMap.get(p.id);
+                /* --- 过滤属于该 phase 的在位皇帝 --- */
+                if (dynasty.rulers && dynasty.rulers.length > 0) {
+                    p.rulers = dynasty.rulers.filter((r) => {
+                        if (!r.terms || r.terms.length === 0) return false;
+                        const rStart = r.terms[0].start;
+                        const rEnd = r.terms[r.terms.length - 1].end;
+                        return rEnd >= p.start && rStart <= p.end;
+                    });
+                }
+            });
             dynasty._unassignedTopics = unassigned;
         }
 
         const topicCount = all.reduce((total, dynasty) => total + dynasty.topics.length, 0);
-        return { dynastyList, topicCount };
+        return { dynastyList, dynastiesById, topicCount };
     }
 }

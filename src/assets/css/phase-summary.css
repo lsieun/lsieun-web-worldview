@@ -1,0 +1,314 @@
+/* phase-summary.css — 朝代阶段汇总页 */
+
+.phase-summary-page .container {
+    max-width: 900px;
+}
+
+/* ---------- Hero ---------- */
+.ps-hero {
+    position: relative;
+    padding: 3.5rem 0 2.5rem;
+    border-bottom: 1px solid var(--color-line);
+    background: linear-gradient(180deg, var(--color-bg-soft) 0%, transparent 100%);
+    margin-bottom: 1.5rem;
+}
+
+.ps-hero .watermark {
+    position: absolute;
+    right: 2rem;
+    top: 2rem;
+    font-family: var(--font-serif);
+    font-size: 5rem;
+    font-weight: 700;
+    color: var(--color-line);
+    opacity: 0.25;
+    pointer-events: none;
+    user-select: none;
+}
+
+.ps-hero .eyebrow {
+    color: var(--color-muted);
+    letter-spacing: 0.24em;
+    font-size: 0.72rem;
+    font-family: var(--font-mono);
+    margin-bottom: 0.5rem;
+}
+
+.ps-hero .page-title {
+    font-family: var(--font-serif);
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.75rem;
+}
+
+.ps-hero .page-lead {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--color-muted-strong);
+    max-width: 640px;
+    margin-bottom: 1rem;
+}
+
+.ps-hero-meta {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.85rem;
+    color: var(--color-muted);
+}
+
+.ps-hero-item strong {
+    color: var(--color-text);
+    font-weight: 600;
+}
+
+/* ---------- 横向 phase 时间轴 ---------- */
+.ps-timeline-wrap {
+    padding: 1.5rem 0 1rem;
+    margin-bottom: 2rem;
+}
+
+.ps-timeline {
+    position: relative;
+    height: 48px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    display: flex;
+}
+
+.ps-tl-bar {
+    position: absolute;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 0.25rem;
+    cursor: default;
+    transition: opacity 0.2s;
+}
+
+.ps-tl-bar:hover {
+    opacity: 0.85;
+    z-index: 2;
+}
+
+.ps-tl-label {
+    font-family: var(--font-serif);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    line-height: 1.1;
+}
+
+.ps-tl-years {
+    font-family: var(--font-mono);
+    font-size: 0.52rem;
+    color: rgba(255,255,255,0.85);
+    margin-top: 2px;
+    letter-spacing: 0.03em;
+}
+
+/* phase 配色 */
+.ps-tl-chu     { background: linear-gradient(135deg, #1e40af, #3b82f6); }
+.ps-tl-sheng   { background: linear-gradient(135deg, #0d9488, #14b8a6); }
+.ps-tl-zhong   { background: linear-gradient(135deg, #b45309, #d97706); }
+.ps-tl-wan     { background: linear-gradient(135deg, #991b1b, #dc2626); }
+.ps-tl-jiang   { background: linear-gradient(135deg, #5b21b6, #7c3aed); }
+.ps-tl-bei     { background: linear-gradient(135deg, #1e40af, #2563eb); }
+.ps-tl-nan     { background: linear-gradient(135deg, #9d174d, #db2777); }
+.ps-tl-tong    { background: linear-gradient(135deg, #047857, #059669); }
+.ps-tl-luan    { background: linear-gradient(135deg, #991b1b, #b91c1c); }
+.ps-tl-chuang  { background: linear-gradient(135deg, #1e40af, #3b82f6); }
+.ps-tl-sheng-q { background: linear-gradient(135deg, #0d9488, #14b8a6); }
+.ps-tl-shuai   { background: linear-gradient(135deg, #991b1b, #dc2626); }
+.ps-tl-chu-m   { background: linear-gradient(135deg, #15803d, #22c55e); }
+.ps-tl-zhong-m { background: linear-gradient(135deg, #b45309, #d97706); }
+.ps-tl-wan-m   { background: linear-gradient(135deg, #991b1b, #dc2626); }
+
+.ps-tl-axis {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-muted);
+    margin-top: 0.4rem;
+    padding: 0 0.1rem;
+}
+
+/* ---------- Phase 区块 ---------- */
+.ps-phases {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.ps-phase {
+    padding: 1.5rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    background: var(--color-bg);
+    position: relative;
+}
+
+.ps-phase::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+
+/* phase 左边框配色（和 timeline 条一致） */
+.ps-phase-chu::before     { background: linear-gradient(180deg, #1e40af, #3b82f6); }
+.ps-phase-sheng::before   { background: linear-gradient(180deg, #0d9488, #14b8a6); }
+.ps-phase-zhong::before   { background: linear-gradient(180deg, #b45309, #d97706); }
+.ps-phase-wan::before     { background: linear-gradient(180deg, #991b1b, #dc2626); }
+.ps-phase-jiang::before   { background: linear-gradient(180deg, #5b21b6, #7c3aed); }
+.ps-phase-bei::before     { background: linear-gradient(180deg, #1e40af, #2563eb); }
+.ps-phase-nan::before     { background: linear-gradient(180deg, #9d174d, #db2777); }
+.ps-phase-tong::before    { background: linear-gradient(180deg, #047857, #059669); }
+.ps-phase-luan::before    { background: linear-gradient(180deg, #991b1b, #b91c1c); }
+.ps-phase-chuang::before  { background: linear-gradient(180deg, #1e40af, #3b82f6); }
+.ps-phase-sheng-q::before { background: linear-gradient(180deg, #0d9488, #14b8a6); }
+.ps-phase-shuai::before   { background: linear-gradient(180deg, #991b1b, #dc2626); }
+.ps-phase-chu-m::before   { background: linear-gradient(180deg, #15803d, #22c55e); }
+.ps-phase-zhong-m::before { background: linear-gradient(180deg, #b45309, #d97706); }
+.ps-phase-wan-m::before   { background: linear-gradient(180deg, #991b1b, #dc2626); }
+
+.ps-phase-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35rem 0.6rem;
+    margin-bottom: 0.6rem;
+}
+
+.ps-phase-name {
+    font-family: var(--font-serif);
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+}
+
+.ps-phase-years {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-muted);
+    letter-spacing: 0.05em;
+}
+
+.ps-phase-dur {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-muted);
+}
+
+.ps-phase-desc {
+    font-size: 0.92rem;
+    line-height: 1.75;
+    color: var(--color-muted-strong);
+    margin-bottom: 1rem;
+    padding-left: 0.25rem;
+    border-left: 2px solid var(--color-line);
+}
+
+/* ---------- 在位皇帝列表 ---------- */
+.ps-rulers {
+    margin-top: 0.5rem;
+}
+
+.ps-rulers-title {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    color: var(--color-muted);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.ps-rulers-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.ps-ruler {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4rem 0.6rem;
+    padding: 0.35rem 0.6rem;
+    border-radius: var(--radius-sm);
+    background: var(--color-bg-soft);
+    font-size: 0.85rem;
+    border-left: 2px solid transparent;
+}
+
+.ps-ruler-formal {
+    border-left-color: #3b82f6;
+}
+
+.ps-ruler-interim {
+    border-left-color: #d97706;
+    background: rgba(217, 119, 6, 0.06);
+}
+
+.ps-ruler-honorary {
+    border-left-color: #9ca3af;
+    background: rgba(156, 163, 175, 0.06);
+    opacity: 0.8;
+}
+
+.ps-ruler-order {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-muted);
+    background: var(--color-line);
+    padding: 0.05rem 0.4rem;
+    border-radius: var(--radius-sm);
+}
+
+.ps-ruler-title {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+}
+
+.ps-ruler-name {
+    color: var(--color-muted-strong);
+}
+
+.ps-ruler-en {
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    font-style: italic;
+}
+
+.ps-ruler-term {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--color-muted);
+    margin-left: auto;
+}
+
+/* ---------- notes ---------- */
+.ps-phase-notes {
+    margin-top: 0.75rem;
+    padding-left: 1.1rem;
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--color-muted-strong);
+}
+
+.ps-phase-notes li {
+    margin-bottom: 0.25rem;
+}

@@ -37,7 +37,7 @@ export default function () {
     const ctx = new EntityLoader().load();
 
     /* 2. 朝代主题索引 */
-    const { dynastyList, topicCount } = new DynastyRegistry(ctx).build();
+    const { dynastyList, dynastiesById, topicCount } = new DynastyRegistry(ctx).build();
 
     /* 3. 视图拼装（按 type 分派到 Builder） */
     const timelines = {};
@@ -69,6 +69,7 @@ export default function () {
         regions:    ctx.regions,
         views:      ctx.views,
         dynasties:  dynastyList,
+        dynastiesById,
         topicCount,
         timelines,
         reignViews,
