@@ -100,7 +100,7 @@
     padding: 6px 14px;
     border: 1px solid var(--color-line);
     border-radius: 999px;
-    background: transparent;
+    background: var(--color-surface);
     color: var(--color-ink);
     font-size: 14px;
     font-family: inherit;
@@ -108,25 +108,20 @@
     transition: all .15s ease;
 }
 .cmp-filter-chip:hover {
-    border-color: var(--color-accent);
-    color: var(--color-accent);
+    border-color: var(--color-celadon);
+    color: var(--color-celadon);
 }
 .cmp-filter-chip.is-active {
-    background: var(--color-accent);
-    border-color: var(--color-accent);
+    background: var(--color-celadon);
+    border-color: var(--color-celadon);
     color: #fff;
 }
 .cmp-filter-count {
     font-size: 11px;
-    opacity: .6;
+    opacity: .55;
     padding-left: 2px;
 }
-.cmp-filter-chip.is-active .cmp-filter-count { opacity: .7; }
-.cmp-filter-hint {
-    margin-left: auto;
-    font-size: 12px;
-    color: var(--color-muted);
-}
+.cmp-filter-chip.is-active .cmp-filter-count { opacity: .8; }
 
 /* ---------- 时间轴容器 ---------- */
 .cmp-timeline {
