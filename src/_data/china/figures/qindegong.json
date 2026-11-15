@@ -5,5 +5,8 @@
   "death": -676,
   "region": "cn",
   "dynasty": "qin",
-  "summary": "确立雍城为都。"
+  "summary": "确立雍城为都。",
+  "parents": [
+    "qinwugong"
+  ]
 }

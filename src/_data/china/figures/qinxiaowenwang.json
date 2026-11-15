@@ -5,5 +5,8 @@
   "death": -250,
   "region": "cn",
   "dynasty": "qin",
-  "summary": "在位仅一年。"
+  "summary": "在位仅一年。",
+  "parents": [
+    "qinzhaoxiangwang"
+  ]
 }

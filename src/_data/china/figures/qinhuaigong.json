@@ -5,5 +5,8 @@
   "death": -425,
   "region": "cn",
   "dynasty": "qin",
-  "summary": "在位四年被逼自杀。"
+  "summary": "在位四年被逼自杀。",
+  "parents": [
+    "qinligonggong"
+  ]
 }

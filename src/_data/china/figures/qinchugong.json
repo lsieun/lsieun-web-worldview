@@ -5,5 +5,8 @@
   "death": -698,
   "region": "cn",
   "dynasty": "qin",
-  "summary": "在位六年被废。"
+  "summary": "在位六年被废。",
+  "parents": [
+    "qinninggong"
+  ]
 }

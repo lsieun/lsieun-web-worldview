@@ -5,5 +5,8 @@
   "death": -664,
   "region": "cn",
   "dynasty": "qin",
-  "summary": "与晋争夺河西。"
+  "summary": "与晋争夺河西。",
+  "parents": [
+    "qindegong"
+  ]
 }

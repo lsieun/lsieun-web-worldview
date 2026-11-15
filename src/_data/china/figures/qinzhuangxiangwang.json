@@ -5,5 +5,8 @@
   "death": -247,
   "region": "cn",
   "dynasty": "qin",
-  "summary": "吕不韦运作归国即位，灭东周。"
+  "summary": "吕不韦运作归国即位，灭东周。",
+  "parents": [
+    "qinxiaowenwang"
+  ]
 }

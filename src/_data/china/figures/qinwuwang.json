@@ -5,5 +5,8 @@
   "death": -307,
   "region": "cn",
   "dynasty": "qin",
-  "summary": "举鼎绝膑而亡。"
+  "summary": "举鼎绝膑而亡。",
+  "parents": [
+    "qinhuiwenwang"
+  ]
 }

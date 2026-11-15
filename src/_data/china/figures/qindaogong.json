@@ -5,5 +5,8 @@
   "death": -477,
   "region": "cn",
   "dynasty": "qin",
-  "summary": "在位十四年。"
+  "summary": "在位十四年。",
+  "parents": [
+    "qinhuigong-a"
+  ]
 }

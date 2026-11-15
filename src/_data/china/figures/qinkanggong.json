@@ -5,5 +5,8 @@
   "death": -609,
   "region": "cn",
   "dynasty": "qin",
-  "summary": "穆公之子，与晋交恶。"
+  "summary": "穆公之子，与晋交恶。",
+  "parents": [
+    "qinmigong"
+  ]
 }

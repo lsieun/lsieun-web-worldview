@@ -5,5 +5,6 @@
   "death": -387,
   "region": "cn",
   "dynasty": "qin",
-  "summary": "战国初期秦君。"
+  "summary": "战国初期秦君。",
+  "parents": ["qinjiangong"]
 }

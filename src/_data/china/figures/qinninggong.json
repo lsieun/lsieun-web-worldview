@@ -5,5 +5,8 @@
   "death": -704,
   "region": "cn",
   "dynasty": "qin",
-  "summary": "迁都平阳，灭荡社戎。"
+  "summary": "迁都平阳，灭荡社戎。",
+  "parents": [
+    "qinwengong"
+  ]
 }

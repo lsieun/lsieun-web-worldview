@@ -5,5 +5,8 @@
   "death": -501,
   "region": "cn",
   "dynasty": "qin",
-  "summary": "吴国破楚时秦出兵救楚。"
+  "summary": "吴国破楚时秦出兵救楚。",
+  "parents": [
+    "qinjinggong"
+  ]
 }

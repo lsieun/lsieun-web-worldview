@@ -5,5 +5,8 @@
   "death": -207,
   "region": "cn",
   "dynasty": "qin",
-  "summary": "赵高李斯矫诏即位，前207年被杀。"
+  "summary": "赵高李斯矫诏即位，前207年被杀。",
+  "parents": [
+    "qinshihuang"
+  ]
 }

@@ -5,5 +5,8 @@
   "death": -491,
   "region": "cn",
   "dynasty": "qin",
-  "summary": "春秋末期的秦君，与战国秦惠文王非一人。"
+  "summary": "春秋末期的秦君，与战国秦惠文王非一人。",
+  "parents": [
+    "qinaigong"
+  ]
 }

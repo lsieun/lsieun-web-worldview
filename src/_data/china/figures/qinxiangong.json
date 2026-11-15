@@ -5,5 +5,8 @@
   "death": -362,
   "region": "cn",
   "dynasty": "qin",
-  "summary": "战国秦复兴之主，迁都栎阳，废除殉葬。"
+  "summary": "战国秦复兴之主，迁都栎阳，废除殉葬。",
+  "parents": [
+    "qinlinggong"
+  ]
 }

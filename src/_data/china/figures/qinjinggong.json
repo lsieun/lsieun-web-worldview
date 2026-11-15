@@ -5,5 +5,8 @@
   "death": -537,
   "region": "cn",
   "dynasty": "qin",
-  "summary": "秦公一号大墓主人。"
+  "summary": "秦公一号大墓主人。",
+  "parents": [
+    "qinhuangong"
+  ]
 }

@@ -5,5 +5,8 @@
   "death": -385,
   "region": "cn",
   "dynasty": "qin",
-  "summary": "两岁即位五岁被杀。"
+  "summary": "两岁即位五岁被杀。",
+  "parents": [
+    "qinhuigong-b"
+  ]
 }

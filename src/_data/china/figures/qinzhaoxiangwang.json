@@ -5,5 +5,8 @@
   "death": -251,
   "region": "cn",
   "dynasty": "qin",
-  "summary": "在位56年，伊阙、长平之战重创六国。"
+  "summary": "在位56年，伊阙、长平之战重创六国。",
+  "parents": [
+    "qinhuiwenwang"
+  ]
 }

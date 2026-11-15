@@ -5,5 +5,8 @@
   "death": -429,
   "region": "cn",
   "dynasty": "qin",
-  "summary": "击退义渠进犯。"
+  "summary": "击退义渠进犯。",
+  "parents": [
+    "qinligonggong"
+  ]
 }

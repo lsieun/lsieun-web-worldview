@@ -5,5 +5,8 @@
   "death": -338,
   "region": "cn",
   "dynasty": "qin",
-  "summary": "重用商鞅两次变法，迁都咸阳。"
+  "summary": "重用商鞅两次变法，迁都咸阳。",
+  "parents": [
+    "qinxiangong"
+  ]
 }

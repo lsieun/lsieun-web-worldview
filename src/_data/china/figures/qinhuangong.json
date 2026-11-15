@@ -5,5 +5,8 @@
   "death": -577,
   "region": "cn",
   "dynasty": "qin",
-  "summary": "与晋厉公会盟又背盟。"
+  "summary": "与晋厉公会盟又背盟。",
+  "parents": [
+    "qingonggong"
+  ]
 }

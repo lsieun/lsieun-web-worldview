@@ -5,5 +5,8 @@
   "death": -415,
   "region": "cn",
   "dynasty": "qin",
-  "summary": "设畤祭炎黄。"
+  "summary": "设畤祭炎黄。",
+  "parents": [
+    "qinhuaigong"
+  ]
 }

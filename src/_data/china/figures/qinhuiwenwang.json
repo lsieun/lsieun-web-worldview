@@ -5,5 +5,8 @@
   "death": -311,
   "region": "cn",
   "dynasty": "qin",
-  "summary": "杀商鞅而用其法，前325年称王。"
+  "summary": "杀商鞅而用其法，前325年称王。",
+  "parents": [
+    "qinxiaogong"
+  ]
 }

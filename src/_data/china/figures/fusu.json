@@ -5,5 +5,8 @@
   "death": -210,
   "region": "cn",
   "dynasty": "qin",
-  "summary": "始皇长子，扶苏直谏被谪北戍，后被矫诏赐死。"
+  "summary": "始皇长子，扶苏直谏被谪北戍，后被矫诏赐死。",
+  "parents": [
+    "qinshihuang"
+  ]
 }

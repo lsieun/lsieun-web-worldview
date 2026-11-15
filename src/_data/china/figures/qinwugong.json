@@ -5,5 +5,8 @@
   "death": -678,
   "region": "cn",
   "dynasty": "qin",
-  "summary": "迁都雍城，征服西戎。"
+  "summary": "迁都雍城，征服西戎。",
+  "parents": [
+    "qinninggong"
+  ]
 }

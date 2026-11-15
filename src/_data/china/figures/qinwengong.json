@@ -5,5 +5,8 @@
   "death": -716,
   "region": "cn",
   "dynasty": "qin",
-  "summary": "迁都汧渭之会，设史官纪事。"
+  "summary": "迁都汧渭之会，设史官纪事。",
+  "parents": [
+    "qinxianggong"
+  ]
 }

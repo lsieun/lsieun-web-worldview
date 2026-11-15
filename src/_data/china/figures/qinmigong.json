@@ -5,5 +5,8 @@
   "death": -621,
   "region": "cn",
   "dynasty": "qin",
-  "summary": "春秋五霸之一，称霸西戎。"
+  "summary": "春秋五霸之一，称霸西戎。",
+  "parents": [
+    "qindegong"
+  ]
 }

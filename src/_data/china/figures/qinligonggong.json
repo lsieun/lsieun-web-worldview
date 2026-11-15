@@ -5,5 +5,8 @@
   "death": -443,
   "region": "cn",
   "dynasty": "qin",
-  "summary": "对外扩张，伐大荔、绵诸戎。"
+  "summary": "对外扩张，伐大荔、绵诸戎。",
+  "parents": [
+    "qindaogong"
+  ]
 }
