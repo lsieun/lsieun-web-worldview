@@ -1,0 +1,24 @@
+{
+  "type": "dynasty-reigns",
+  "dynasty": "qin",
+  "title": "秦代诸王",
+  "href": "/history/qin-emperors.html",
+  "topicMeta": "帝王世系",
+  "summary": "从前 778 年襄公立国到前 206 年子婴出降，573 年三十三位秦王的兴亡。",
+  "figures": [
+    "qinxianggong","qinwengong","qinninggong","qinchugong","qinwugong","qindegong",
+    "qinxuangong","qinchenggong","qinmigong","qinkanggong","qingonggong","qinhuangong",
+    "qinjinggong","qinaigong","qinhuigong-a","qindaogong","qinligonggong","qinsaogong",
+    "qinhuaigong","qinlinggong","qinjiangong","qinhuigong-b","qinchuzi",
+    "qinxiangong","qinxiaogong","qinhuiwenwang","qinwuwang","qinzhaoxiangwang",
+    "qinxiaowenwang","qinzhuangxiangwang","qinshihuang","qiner-shi","ziying",
+    "shangyang","bailixi","baiqi","wangjian","mengtian","lisi","lubuwei","hanfei","fusu"
+  ],
+  "meta": {
+    "watermark": "秦",
+    "subtitle": "从西陲附庸到统一帝国：573 年三十三位秦王，从襄公立国到子婴出降。",
+    "tags": ["33 位君主", "春秋诸侯→战国称王→统一皇帝", "商鞅变法·长平之战·统一六国"],
+    "intro": "默认沿竖向时间线阅读：春秋诸侯 → 战国称王 → 统一皇帝。切换到世系树可追溯血脉传承，观察孝公商鞅变法、昭襄王长平之战、始皇统一六国如何连续推进。",
+    "note": "秦王朝代跨度 573 年（前 778 至前 206），覆盖诸侯、王、皇帝三种头衔。春秋时期称'公'，战国后期称'王'（前 325 秦惠文王称王），前 221 嬴政统一后改称'皇帝'。本页全部 33 位君主连续编号，不按头衔区分。年份负数对应公元前。"
+  }
+}

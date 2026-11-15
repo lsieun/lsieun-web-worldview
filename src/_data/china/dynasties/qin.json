@@ -1,8 +1,274 @@
 {
   "name": "秦",
   "en": "QIN",
-  "start": -221,
-  "end": -207,
+  "start": -778,
+  "end": -206,
   "order": 6,
-  "summary": "前 221 统一，书同文、车同轨，二世而亡。"
+  "summary": "前 778 年襄公立国，前 221 年嬴政统一六国称皇帝，前 206 年子婴出降。从诸侯到帝国，延续 573 年。",
+  "rulers": [
+    {
+      "figure": "qinxianggong",
+      "title": "秦襄公",
+      "status": "formal",
+      "order": 1,
+      "note": "平王东迁时派兵护送有功，被周平王封为诸侯，正式立国。此前秦为西陲附庸。",
+      "terms": [{ "start": -777, "end": -766, "events": ["xianggong-appointed"] }]
+    },
+    {
+      "figure": "qinwengong",
+      "title": "秦文公",
+      "status": "formal",
+      "order": 2,
+      "note": "迁都汧渭之会，设史官纪事，开启秦的建制时代。",
+      "terms": [{ "start": -765, "end": -716 }]
+    },
+    {
+      "figure": "qinninggong",
+      "title": "秦宁公",
+      "status": "formal",
+      "order": 3,
+      "note": "迁都平阳，灭荡社戎。",
+      "terms": [{ "start": -715, "end": -704 }]
+    },
+    {
+      "figure": "qinchugong",
+      "title": "秦出公",
+      "status": "formal",
+      "order": 4,
+      "note": "宁公幼子，在位期间被大臣所废。",
+      "terms": [{ "start": -703, "end": -698 }]
+    },
+    {
+      "figure": "qinwugong",
+      "title": "秦武公",
+      "status": "formal",
+      "order": 5,
+      "note": "迁都雍城，征服犬戎、冀戎，设县治。武功赫赫，为后世奠定版图。",
+      "terms": [{ "start": -697, "end": -678 }]
+    },
+    {
+      "figure": "qindegong",
+      "title": "秦德公",
+      "status": "formal",
+      "order": 6,
+      "note": "确立雍城为都，筑大郑宫。正式建都雍城。",
+      "terms": [{ "start": -677, "end": -676 }]
+    },
+    {
+      "figure": "qinxuangong",
+      "title": "秦宣公",
+      "status": "formal",
+      "order": 7,
+      "note": "与晋多次交战，开始争夺河西地。",
+      "terms": [{ "start": -675, "end": -664 }]
+    },
+    {
+      "figure": "qinchenggong",
+      "title": "秦成公",
+      "status": "formal",
+      "order": 8,
+      "note": "在位四年，国势平稳。",
+      "terms": [{ "start": -663, "end": -660 }]
+    },
+    {
+      "figure": "qinmigong",
+      "title": "秦穆公",
+      "status": "formal",
+      "order": 9,
+      "note": "春秋五霸之一。重用百里奚、蹇叔，拓地千里，称霸西戎。崤之战败于晋，但终成帝业根基。",
+      "terms": [{ "start": -659, "end": -621, "events": ["migong-bai-lixia", "xiaoshan-battle"] }]
+    },
+    {
+      "figure": "qinkanggong",
+      "title": "秦康公",
+      "status": "formal",
+      "order": 10,
+      "note": "穆公之子，在位期间与晋屡有战事。",
+      "terms": [{ "start": -620, "end": -609 }]
+    },
+    {
+      "figure": "qingonggong",
+      "title": "秦共公",
+      "status": "formal",
+      "order": 11,
+      "note": "在位五年，与晋仍有摩擦。",
+      "terms": [{ "start": -608, "end": -604 }]
+    },
+    {
+      "figure": "qinhuangong",
+      "title": "秦桓公",
+      "status": "formal",
+      "order": 12,
+      "note": "与晋厉公会盟于令狐，后又背盟，诸侯恶之。",
+      "terms": [{ "start": -603, "end": -577 }]
+    },
+    {
+      "figure": "qinjinggong",
+      "title": "秦景公",
+      "status": "formal",
+      "order": 13,
+      "note": "秦公一号大墓主人。在位期间秦国实力持续增强。",
+      "terms": [{ "start": -576, "end": -537 }]
+    },
+    {
+      "figure": "qinaigong",
+      "title": "秦哀公",
+      "status": "formal",
+      "order": 14,
+      "note": "吴国破楚都郢，秦出兵救楚，大败吴师。",
+      "terms": [{ "start": -536, "end": -501 }]
+    },
+    {
+      "figure": "qinhuigong-a",
+      "title": "秦惠公（春秋）",
+      "status": "formal",
+      "order": 15,
+      "note": "注意：与战国时秦惠文王不同。",
+      "terms": [{ "start": -500, "end": -491 }]
+    },
+    {
+      "figure": "qindaogong",
+      "title": "秦悼公",
+      "status": "formal",
+      "order": 16,
+      "note": "在位十四年，与吴、楚都有外交往来。",
+      "terms": [{ "start": -490, "end": -477 }]
+    },
+    {
+      "figure": "qinligonggong",
+      "title": "秦厉共公",
+      "status": "formal",
+      "order": 17,
+      "note": "在位三十四年。向东方诸侯扩张，伐大荔戎、绵诸戎。",
+      "terms": [{ "start": -476, "end": -443 }]
+    },
+    {
+      "figure": "qinsaogong",
+      "title": "秦躁公",
+      "status": "formal",
+      "order": 18,
+      "note": "西戎义渠来犯，击退之。",
+      "terms": [{ "start": -442, "end": -429 }]
+    },
+    {
+      "figure": "qinhuaigong",
+      "title": "秦怀公",
+      "status": "formal",
+      "order": 19,
+      "note": "在位仅四年，被大夫所逼自杀。",
+      "terms": [{ "start": -428, "end": -425 }]
+    },
+    {
+      "figure": "qinlinggong",
+      "title": "秦灵公",
+      "status": "formal",
+      "order": 20,
+      "note": "在吴阳设峙祭黄帝、炎帝。在位期间与魏多次交战。",
+      "terms": [{ "start": -424, "end": -415 }]
+    },
+    {
+      "figure": "qinjiangong",
+      "title": "秦简公",
+      "status": "formal",
+      "order": 21,
+      "note": "在位十五年，改革政治，允许官吏带剑，开井田。",
+      "terms": [{ "start": -414, "end": -400 }]
+    },
+    {
+      "figure": "qinhuigong-b",
+      "title": "秦惠公（战国初）",
+      "status": "formal",
+      "order": 22,
+      "note": "注意：与春秋秦惠公、秦惠文（带王）都不同。",
+      "terms": [{ "start": -399, "end": -387 }]
+    },
+    {
+      "figure": "qinchuzi",
+      "title": "秦出子",
+      "status": "formal",
+      "order": 23,
+      "note": "两岁即位，五岁被杀。",
+      "terms": [{ "start": -386, "end": -385 }]
+    },
+    {
+      "figure": "qinxiangong",
+      "title": "秦献公",
+      "status": "formal",
+      "order": 24,
+      "note": "战国秦复兴之主。迁都栎阳，废除殉葬，改革户籍。打退三晋，收复河西地。为商鞅变法铺路。",
+      "terms": [{ "start": -384, "end": -362, "events": ["xianggong-reform"] }]
+    },
+    {
+      "figure": "qinxiaogong",
+      "title": "秦孝公",
+      "status": "formal",
+      "order": 25,
+      "note": "重用商鞅，两次变法，秦国国力大增。迁都咸阳。战国七雄格局中秦已成头号强国。",
+      "terms": [{ "start": -361, "end": -338, "events": ["shangyang-reform"] }]
+    },
+    {
+      "figure": "qinhuiwenwang",
+      "title": "秦惠文王",
+      "status": "formal",
+      "order": 26,
+      "note": "杀商鞅而用其法。前 325 年称王，秦君始称'王'。北灭义渠，西取巴蜀，东出函谷。",
+      "terms": [{ "start": -337, "end": -311, "events": ["first-coalition"] }]
+    },
+    {
+      "figure": "qinwuwang",
+      "title": "秦武王",
+      "status": "formal",
+      "order": 27,
+      "note": "好勇力，前 307 年举鼎绝膑而亡。举鼎时问周天子九鼎轻重，有问鼎之意。",
+      "terms": [{ "start": -310, "end": -307 }]
+    },
+    {
+      "figure": "qinzhaoxiangwang",
+      "title": "秦昭襄王",
+      "status": "formal",
+      "order": 28,
+      "note": "在位五十六年，寿命最长的秦王。白起为将，伊阙之战斩首韩魏联军 24 万，长平之战坑杀赵卒 40 万。蚕食六国过半，为始皇统一铺平道路。",
+      "terms": [{ "start": -306, "end": -251, "events": ["battle-of-yique", "battle-of-changping", "lu-buwei"] }]
+    },
+    {
+      "figure": "qinxiaowenwang",
+      "title": "秦孝文王",
+      "status": "formal",
+      "order": 29,
+      "note": "在位仅一年，正式即位三天后卒。",
+      "terms": [{ "start": -250, "end": -250 }]
+    },
+    {
+      "figure": "qinzhuangxiangwang",
+      "title": "秦庄襄王",
+      "status": "formal",
+      "order": 30,
+      "note": "本名异人，在吕不韦运作下归国即位。灭东周，取韩、赵、魏大片土地。在位三年卒，传位嬴政。",
+      "terms": [{ "start": -249, "end": -247 }]
+    },
+    {
+      "figure": "qinshihuang",
+      "title": "秦始皇",
+      "status": "formal",
+      "order": 31,
+      "note": "十三岁即位，二十二岁亲政。前 230—前 221 年十年间灭六国，前 221 年称皇帝，为中国第一位皇帝。车同轨、书同文、统一度量衡、修筑长城。",
+      "terms": [{ "start": -246, "end": -210, "events": ["qin-unifies-six"] }]
+    },
+    {
+      "figure": "qiner-shi",
+      "title": "秦二世",
+      "status": "formal",
+      "order": 32,
+      "note": "始皇幼子。在赵高、李斯矫诏下即位。屠杀兄弟姐妹，朝政败坏。前 207 年被赵高所杀。",
+      "terms": [{ "start": -209, "end": -207 }]
+    },
+    {
+      "figure": "ziying",
+      "title": "子婴",
+      "status": "formal",
+      "order": 33,
+      "note": "秦宗室成员，在位仅四十六天。先设计杀赵高，后刘邦破武关，子婴系颈出降。秦亡。",
+      "terms": [{ "start": -207, "end": -206, "events": ["qin-falls"] }]
+    }
+  ]
 }
