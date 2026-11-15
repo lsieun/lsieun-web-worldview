@@ -2,7 +2,14 @@
  * lsieun-web-worldview — Eleventy 配置
  * 遵循 lsieun-web-auxiliary 契约：HTML-Only、本地自托管、扁平化路由、单一职责。
  */
+import { runSchemaValidation } from "./scripts/validate-schema.mjs";
+
 export default function (eleventyConfig) {
+    // 0. 数据层 schema 校验（构建前强制执行，有 error 则中断）
+    eleventyConfig.on("eleventy.before", async () => {
+        runSchemaValidation();
+    });
+
     // 1. 静态资源与本地字体直通映射
     eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
     eleventyConfig.addPassthroughCopy({ "src/favicon.svg": "favicon.svg" });
