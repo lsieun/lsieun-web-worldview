@@ -1,6 +1,9 @@
 {
   "year": -99,
-  "figures": ["sima-qian"],
+  "figures": [
+    "sima-qian"
+  ],
   "title": "李陵之祸",
-  "desc": "司马迁为李陵辩护触怒武帝，下狱受宫刑。"
+  "desc": "司马迁为李陵辩护触怒武帝，下狱受宫刑。",
+  "category": "general"
 }

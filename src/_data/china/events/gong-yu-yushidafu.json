@@ -1,6 +1,9 @@
 {
   "year": -44,
-  "figures": ["gong-yu"],
+  "figures": [
+    "gong-yu"
+  ],
   "title": "为御史大夫",
-  "desc": "贡禹元帝时迁御史大夫，屡言节俭，同年卒。"
+  "desc": "贡禹元帝时迁御史大夫，屡言节俭，同年卒。",
+  "category": "general"
 }

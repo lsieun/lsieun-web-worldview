@@ -1,6 +1,9 @@
 {
   "year": -71,
-  "figures": ["wei-xian"],
+  "figures": [
+    "wei-xian"
+  ],
   "title": "韦贤拜相",
-  "desc": "韦贤以《鲁诗》名家，宣帝时拜丞相，封扶阳侯。"
+  "desc": "韦贤以《鲁诗》名家，宣帝时拜丞相，封扶阳侯。",
+  "category": "art"
 }

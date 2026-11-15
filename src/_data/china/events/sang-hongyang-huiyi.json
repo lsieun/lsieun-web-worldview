@@ -1,6 +1,9 @@
 {
   "year": -81,
-  "figures": ["sang-hongyang"],
+  "figures": [
+    "sang-hongyang"
+  ],
   "title": "盐铁会议",
-  "desc": "郡国贤良文学与桑弘羊等辩盐铁、均输之利弊。"
+  "desc": "郡国贤良文学与桑弘羊等辩盐铁、均输之利弊。",
+  "category": "general"
 }

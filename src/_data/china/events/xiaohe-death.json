@@ -1,8 +1,13 @@
 {
   "year": -193,
   "era": "汉惠帝二年",
-  "figures": ["xiaohe"],
-  "places": ["changan"],
+  "figures": [
+    "xiaohe"
+  ],
+  "places": [
+    "changan"
+  ],
   "title": "萧何去世",
-  "desc": "萧何去世，谥文终侯，曹参继任相国"
+  "desc": "萧何去世，谥文终侯，曹参继任相国",
+  "category": "general"
 }

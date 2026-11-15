@@ -1,8 +1,11 @@
 {
   "year": -186,
   "era": "高后二年",
-  "figures": ["zhangliang"],
+  "figures": [
+    "zhangliang"
+  ],
   "places": [],
   "title": "张良去世",
-  "desc": "张良去世，谥文成侯"
+  "desc": "张良去世，谥文成侯",
+  "category": "general"
 }

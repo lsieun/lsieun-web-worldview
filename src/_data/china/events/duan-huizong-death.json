@@ -1,6 +1,9 @@
 {
   "year": -10,
-  "figures": ["duan-huizong"],
+  "figures": [
+    "duan-huizong"
+  ],
   "title": "卒于乌孙",
-  "desc": "段会宗再赴乌孙安辑，病卒于归途，西域诸国为之发丧。"
+  "desc": "段会宗再赴乌孙安辑，病卒于归途，西域诸国为之发丧。",
+  "category": "general"
 }

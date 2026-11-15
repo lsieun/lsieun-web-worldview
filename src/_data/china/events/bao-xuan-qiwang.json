@@ -1,6 +1,9 @@
 {
   "year": -3,
-  "figures": ["bao-xuan"],
+  "figures": [
+    "bao-xuan"
+  ],
   "title": "七亡七死",
-  "desc": "鲍宣上疏言民有七亡七死，直指外戚与酷吏之害。"
+  "desc": "鲍宣上疏言民有七亡七死，直指外戚与酷吏之害。",
+  "category": "general"
 }

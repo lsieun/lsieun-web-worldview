@@ -2,6 +2,11 @@
   "year": -194,
   "title": "修筑长安城",
   "desc": "惠帝时期多次征发劳力修筑长安城垣，首都的城市格局进一步成形。",
-  "figures": ["liuying-huidi"],
-  "places": ["changan"]
+  "figures": [
+    "liuying-huidi"
+  ],
+  "places": [
+    "changan"
+  ],
+  "category": "general"
 }

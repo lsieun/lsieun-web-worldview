@@ -1,6 +1,9 @@
 {
   "year": -154,
-  "figures": ["chaocuo"],
+  "figures": [
+    "chaocuo"
+  ],
   "title": "晁错被斩",
-  "desc": "吴楚七国以诛晁错为名起兵，景帝斩之于东市。"
+  "desc": "吴楚七国以诛晁错为名起兵，景帝斩之于东市。",
+  "category": "general"
 }

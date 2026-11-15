@@ -4,5 +4,6 @@
   "year": 2016,
   "key": true,
   "region": "英国",
-  "desc": "3 月 15 日 DeepMind 的 AlphaGo 以 4:1 战胜九段棋手李世石。此前普遍认为 AI 十年内不可能赢围棋职业棋手。"
+  "desc": "3 月 15 日 DeepMind 的 AlphaGo 以 4:1 战胜九段棋手李世石。此前普遍认为 AI 十年内不可能赢围棋职业棋手。",
+  "category": "science"
 }

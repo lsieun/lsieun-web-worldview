@@ -1,6 +1,9 @@
 {
   "year": -37,
-  "figures": ["jing-fang"],
+  "figures": [
+    "jing-fang"
+  ],
   "title": "京房弃市",
-  "desc": "京房倡考功课吏法，遭石显构陷，下狱弃市。"
+  "desc": "京房倡考功课吏法，遭石显构陷，下狱弃市。",
+  "category": "general"
 }

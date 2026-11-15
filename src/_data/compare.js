@@ -65,7 +65,8 @@ export default function () {
             title: ev.title,
             desc: ev.desc || ev.note || "",
             key: !!ev.key,
-            seq: ev.seq
+            seq: ev.seq,
+            category: ev.category || "general"
         });
     }
 
@@ -75,7 +76,8 @@ export default function () {
             region: ev.region || ev.era || "",
             desc: ev.desc || ev.note || "",
             key: !!ev.key,
-            seq: ev.seq
+            seq: ev.seq,
+            category: ev.category || "general"
         });
     }
 
@@ -160,37 +162,60 @@ export default function () {
     const EVENT_HEIGHT = 18;       // 每个事件的视觉高度
     const EVENT_MIN_GAP = 3;       // 两个事件之间最小间距
 
-    /* 同年份同 side 事件先合并成一条（用"；"连接） */
-    const mergedByKey = new Map();  // "china:-206" → [{title:"鸿门宴；秦朝灭亡...", key:true}]
+    /* 同年份同 side 事件先合并成一条（用"；"连接），并收集所有 category */
+    const mergedByKey = new Map();
 
     for (const row of rows) {
-        // 中国（同年份事件按 seq 排序，无 seq 排最后）
+        // 中国
         const chinaKey = `china:${row.year}`;
-        const chinaTitles = row.china.filter(ev => ev.key)
-            .sort((a, b) => (a.seq ?? 999) - (b.seq ?? 999))
-            .map(ev => ev.title);
+        const chinaItems = row.china.filter(ev => ev.key)
+            .sort((a, b) => (a.seq ?? 999) - (b.seq ?? 999));
+        const chinaTitles = chinaItems.map(ev => ev.title);
         if (chinaTitles.length > 0) {
+            const cats = [...new Set(chinaItems.map(ev => ev.category || "general"))];
             mergedByKey.set(chinaKey, {
                 kind: "event", side: "china",
                 year: row.year, yearLabel: row.yearLabel,
                 title: chinaTitles.join("；"),
-                key: true
+                key: true,
+                categories: cats
             });
         }
-        // 世界（同样按 seq 排序）
+        // 世界
         const worldKey = `world:${row.year}`;
         const worldItems = row.world.filter(ev => ev.key)
             .sort((a, b) => (a.seq ?? 999) - (b.seq ?? 999));
         const worldTitles = worldItems.map(ev => ev.title + (ev.region ? `(${ev.region})` : ""));
         if (worldTitles.length > 0) {
+            const cats = [...new Set(worldItems.map(ev => ev.category || "general"))];
             mergedByKey.set(worldKey, {
                 kind: "event", side: "world",
                 year: row.year, yearLabel: row.yearLabel,
                 title: worldTitles.join("；"),
-                key: true
+                key: true,
+                categories: cats
             });
         }
     }
+
+    // 输出 categories 统计（供前端筛选按钮用）
+    const CAT_LABELS = {
+        general: "通用",
+        treaty: "条约",
+        science: "科技",
+        art: "艺术"
+    };
+    const catCount = {};
+    for (const row of rows) {
+        for (const ev of [...row.china, ...row.world]) {
+            if (!ev.key) continue;
+            const c = ev.category || "general";
+            catCount[c] = (catCount[c] || 0) + 1;
+        }
+    }
+    const categories = Object.keys(catCount)
+        .sort((a, b) => ["general", "treaty", "science", "art"].indexOf(a) - ["general", "treaty", "science", "art"].indexOf(b))
+        .map((k) => ({ key: k, label: CAT_LABELS[k] || k, count: catCount[k] }));
 
     const allEvents = Array.from(mergedByKey.values())
         .sort((a, b) => a.year - b.year);
@@ -245,5 +270,5 @@ export default function () {
     const maxTickTop = Math.round((maxYear - minYear) * PX_PER_YEAR);
     const totalHeight = Math.max(maxEventBottom, maxTickTop) + 200;
 
-    return { stream, chinaToc, worldToc, minYear, maxYear, pxPerYear: PX_PER_YEAR, totalHeight, eventHeight: EVENT_HEIGHT };
+    return { stream, chinaToc, worldToc, categories, totalEvents: allEvents.length, minYear, maxYear, pxPerYear: PX_PER_YEAR, totalHeight, eventHeight: EVENT_HEIGHT };
 }

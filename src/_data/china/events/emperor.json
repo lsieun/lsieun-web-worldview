@@ -4,8 +4,13 @@
   "era": "汉五年",
   "axis": true,
   "key": true,
-  "figures": ["liubang"],
-  "places": ["changan"],
+  "figures": [
+    "liubang"
+  ],
+  "places": [
+    "changan"
+  ],
   "title": "刘邦称帝",
-  "desc": "即皇帝位于定陶汜水之阳，定都长安，汉朝建立"
+  "desc": "即皇帝位于定陶汜水之阳，定都长安，汉朝建立",
+  "category": "general"
 }

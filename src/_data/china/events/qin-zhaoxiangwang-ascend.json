@@ -2,8 +2,11 @@
   "title": "秦昭襄王即位",
   "year": -306,
   "desc": "秦武王举鼎绝膑而死，其弟嬴稷被赵武灵王从燕国迎回，立为秦昭襄王，在位五十六年，大幅扩张秦版图。",
-  "figures": ["tianwen"],
+  "figures": [
+    "tianwen"
+  ],
   "axis": true,
   "key": true,
-  "era": "战国"
+  "era": "战国",
+  "category": "general"
 }

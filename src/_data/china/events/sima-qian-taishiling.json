@@ -1,6 +1,9 @@
 {
   "year": -108,
-  "figures": ["sima-qian"],
+  "figures": [
+    "sima-qian"
+  ],
   "title": "继任太史令",
-  "desc": "司马迁承父司马谈之职，任太史令，得读石室金匮之书。"
+  "desc": "司马迁承父司马谈之职，任太史令，得读石室金匮之书。",
+  "category": "general"
 }

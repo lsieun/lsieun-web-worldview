@@ -1,6 +1,9 @@
 {
   "year": -121,
-  "figures": ["huo-qubing"],
+  "figures": [
+    "huo-qubing"
+  ],
   "title": "河西之战",
-  "desc": "霍去病出陇西击匈奴，过焉支山，收河西走廊。"
+  "desc": "霍去病出陇西击匈奴，过焉支山，收河西走廊。",
+  "category": "general"
 }

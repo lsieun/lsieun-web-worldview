@@ -2,6 +2,9 @@
   "title": "田单复齐",
   "year": -279,
   "desc": "齐将田单在即墨以火牛阵破燕军，收复七十余城，迎齐襄王归临淄。同年，孟尝君田文卒于薛。",
-  "figures": ["tianwen"],
-  "era": "战国"
+  "figures": [
+    "tianwen"
+  ],
+  "era": "战国",
+  "category": "general"
 }

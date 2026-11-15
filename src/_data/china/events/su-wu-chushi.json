@@ -1,6 +1,9 @@
 {
   "year": -100,
-  "figures": ["su-wu"],
+  "figures": [
+    "su-wu"
+  ],
   "title": "出使匈奴",
-  "desc": "苏武以中郎将持节送匈奴使还，因事变被扣。"
+  "desc": "苏武以中郎将持节送匈奴使还，因事变被扣。",
+  "category": "general"
 }

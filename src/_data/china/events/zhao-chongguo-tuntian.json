@@ -1,6 +1,9 @@
 {
   "year": -61,
-  "figures": ["zhao-chongguo"],
+  "figures": [
+    "zhao-chongguo"
+  ],
   "title": "湟中屯田",
-  "desc": "赵充国上屯田奏，留兵屯湟中，以逸待劳平羌。"
+  "desc": "赵充国上屯田奏，留兵屯湟中，以逸待劳平羌。",
+  "category": "general"
 }

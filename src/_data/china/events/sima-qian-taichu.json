@@ -1,6 +1,9 @@
 {
   "year": -104,
-  "figures": ["sima-qian"],
+  "figures": [
+    "sima-qian"
+  ],
   "title": "太初历",
-  "desc": "司马迁与落下闳等改定历法，行《太初历》，以正月为岁首。"
+  "desc": "司马迁与落下闳等改定历法，行《太初历》，以正月为岁首。",
+  "category": "general"
 }

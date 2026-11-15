@@ -2,6 +2,9 @@
   "title": "楚国迁都寿春",
   "year": -253,
   "desc": "楚考烈王自陈迁都寿春（今安徽寿县），以避秦锋。春申君黄歇为相，实主其事。",
-  "figures": ["huangxie"],
-  "era": "战国"
+  "figures": [
+    "huangxie"
+  ],
+  "era": "战国",
+  "category": "general"
 }

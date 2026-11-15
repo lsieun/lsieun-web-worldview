@@ -1,6 +1,9 @@
 {
   "year": 3,
-  "figures": ["bao-xuan"],
+  "figures": [
+    "bao-xuan"
+  ],
   "title": "鲍宣被杀",
-  "desc": "鲍宣因事下狱，死于狱中，一说为王莽所害。"
+  "desc": "鲍宣因事下狱，死于狱中，一说为王莽所害。",
+  "category": "general"
 }

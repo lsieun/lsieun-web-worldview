@@ -24,6 +24,22 @@ layout: "default.html"
     </div>
 </section>
 
+{# ========== 第二部分：主题筛选 ========== #}
+<section class="cmp-filter-bar" id="cmpFilterBar" aria-label="主题筛选">
+    <div class="container cmp-container">
+        <span class="cmp-filter-label">主题筛选：</span>
+        <button class="cmp-filter-chip is-active" data-cat="all">全部 <span class="cmp-filter-count">{{ compare.totalEvents }}</span></button>
+        {%- for cat in compare.categories %}
+        <button class="cmp-filter-chip" data-cat="{{ cat.key }}">
+            {{ cat.label }} <span class="cmp-filter-count">{{ cat.count }}</span>
+        </button>
+        {%- endfor %}
+        <span class="cmp-filter-hint">
+            显示与当前主题相关的事件，时间刻度和导航不受影响
+        </span>
+    </div>
+</section>
+
 {# 左浮动导航：中国朝代（时间正序） #}
 <nav class="cmp-toc cmp-toc--left" aria-label="中国朝代导航">
     <div class="cmp-toc-header">🇨🇳 中国 · 朝代（时间正序）</div>
@@ -56,7 +72,7 @@ layout: "default.html"
             {%- for item in compare.stream %}
 
             {%- if item.kind == "tick" %}
-            {# ========== 刻度：极简结构，只有 label 可选 ========== #}
+            {# ========== 刻度 ========== #}
             <div class="cmp-tick cmp-tick--{% if item.major %}major{% elif item.mid %}mid{% else %}minor{% endif %}"
                  id="{{ item.id }}" data-cmp-block="{{ item.id }}"
                  style="top: {{ item.displayTop }}px">
@@ -66,17 +82,20 @@ layout: "default.html"
             </div>
 
             {%- else %}
-            {# ========== 独立事件 ========== #}
+            {# ========== 事件（带 categories 数组） ========== #}
+            {%- set cats = item.categories | join(" ") %}
             {%- if item.side == "china" %}
-            {# 中国：标题在左，年份在右（靠近蓝竖线） #}
-            <div class="cmp-event cmp-event--china" id="ev-china-{{ item.year }}" data-cmp-block="ev-{{ item.side }}-{{ item.year }}"
+            <div class="cmp-event cmp-event--china" id="ev-china-{{ item.year }}"
+                 data-cmp-block="ev-{{ item.side }}-{{ item.year }}"
+                 data-cats="{{ cats }}"
                  style="top: {{ item.displayTop }}px">
                 <span class="cmp-event-body">{{ item.title }}</span>
                 <span class="cmp-event-year">{{ item.yearLabel }}</span>
             </div>
             {%- else %}
-            {# 世界：年份在左（靠近红竖线），标题+region在右 #}
-            <div class="cmp-event cmp-event--world" id="ev-world-{{ item.year }}" data-cmp-block="ev-{{ item.side }}-{{ item.year }}"
+            <div class="cmp-event cmp-event--world" id="ev-world-{{ item.year }}"
+                 data-cmp-block="ev-{{ item.side }}-{{ item.year }}"
+                 data-cats="{{ cats }}"
                  style="top: {{ item.displayTop }}px">
                 <span class="cmp-event-year">{{ item.year }}</span>
                 <span class="cmp-event-body">{{ item.title }}</span>
@@ -90,7 +109,7 @@ layout: "default.html"
     </div>
 </section>
 
-{# 回到顶部（圆形浮动按钮） #}
+{# 回到顶部 #}
 <button class="cmp-back-top" id="cmpBackTop" aria-label="回到顶部" hidden>
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
 </button>
@@ -98,20 +117,55 @@ layout: "default.html"
 <script src="/assets/js/compare-floating-toc.js"></script>
 <script>
 (function () {
+    /* ---------- 1. 回到顶部 ---------- */
     var btn = document.getElementById("cmpBackTop");
-    if (!btn) return;
-    var THRESHOLD = 400;
+    if (btn) {
+        var THRESHOLD = 400;
+        window.addEventListener("scroll", function () {
+            btn.hidden = window.scrollY <= THRESHOLD;
+        }, { passive: true });
+        btn.addEventListener("click", function () {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+    }
 
-    window.addEventListener("scroll", function () {
-        if (window.scrollY > THRESHOLD) {
-            btn.hidden = false;
-        } else {
-            btn.hidden = true;
-        }
-    }, { passive: true });
+    /* ---------- 2. 主题筛选 ---------- */
+    var FILTER_KEY = "compare-filter-cat";
+    var bar = document.getElementById("cmpFilterBar");
+    if (!bar) return;
 
-    btn.addEventListener("click", function () {
-        window.scrollTo({ top: 0, behavior: "smooth" });
+    var chips = bar.querySelectorAll(".cmp-filter-chip");
+    var events = document.querySelectorAll(".cmp-event");
+
+    // 恢复上次选择（或默认 all）
+    var saved = localStorage.getItem(FILTER_KEY) || "all";
+    applyFilter(saved);
+
+    chips.forEach(function (chip) {
+        chip.addEventListener("click", function () {
+            var cat = this.getAttribute("data-cat");
+            localStorage.setItem(FILTER_KEY, cat);
+            applyFilter(cat);
+        });
     });
+
+    function applyFilter(cat) {
+        // 更新按钮 active
+        chips.forEach(function (c) {
+            c.classList.toggle("is-active", c.getAttribute("data-cat") === cat);
+        });
+        // 过滤事件
+        events.forEach(function (ev) {
+            if (cat === "all") {
+                ev.style.display = "";
+                ev.setAttribute("data-cmp-hidden", "false");
+            } else {
+                var cats = (ev.getAttribute("data-cats") || "").split(" ");
+                var match = cats.indexOf(cat) !== -1;
+                ev.style.display = match ? "" : "none";
+                ev.setAttribute("data-cmp-hidden", match ? "false" : "true");
+            }
+        });
+    }
 })();
 </script>

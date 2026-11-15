@@ -1,6 +1,9 @@
 {
   "year": -7,
-  "figures": ["kong-guang"],
+  "figures": [
+    "kong-guang"
+  ],
   "title": "孔光拜相",
-  "desc": "翟方进死后，孔光代为丞相，封博山侯。"
+  "desc": "翟方进死后，孔光代为丞相，封博山侯。",
+  "category": "general"
 }

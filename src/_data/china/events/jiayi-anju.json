@@ -1,6 +1,9 @@
 {
   "year": -174,
-  "figures": ["jiayi"],
+  "figures": [
+    "jiayi"
+  ],
   "title": "治安策",
-  "desc": "贾谊上疏陈政事，言诸侯王坐大与匈奴之患。"
+  "desc": "贾谊上疏陈政事，言诸侯王坐大与匈奴之患。",
+  "category": "general"
 }

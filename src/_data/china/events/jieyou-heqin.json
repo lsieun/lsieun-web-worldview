@@ -1,6 +1,9 @@
 {
   "year": -101,
-  "figures": ["jieyou"],
+  "figures": [
+    "jieyou"
+  ],
   "title": "和亲乌孙",
-  "desc": "太初四年，解忧公主以宗室女嫁乌孙昆莫，此后五十年留居西域。"
+  "desc": "太初四年，解忧公主以宗室女嫁乌孙昆莫，此后五十年留居西域。",
+  "category": "general"
 }

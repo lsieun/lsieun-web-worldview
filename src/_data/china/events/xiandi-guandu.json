@@ -5,7 +5,11 @@
   "era": "建安五年",
   "axis": true,
   "key": true,
-  "figures": ["caocao", "yuanshao"],
+  "figures": [
+    "caocao",
+    "yuanshao"
+  ],
   "desc": "曹操与袁绍在官渡决战，乌巢焚粮，曹操以少胜多，奠定统一北方基础。",
-  "dynasty": "eastern-han"
+  "dynasty": "eastern-han",
+  "category": "general"
 }
