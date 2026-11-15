@@ -50,6 +50,19 @@
 .cmp-toc-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .cmp-toc-years { font-variant-numeric: tabular-nums; font-size: 0.68rem; opacity: 0.6; }
 
+.cmp-toc-header {
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+    padding: 4px 8px 6px;
+    border-bottom: 1px solid var(--color-line);
+    margin-bottom: 4px;
+    text-align: center;
+}
+.cmp-toc--right .cmp-toc-header { direction: rtl; }
+
 /* ---------- 容器 ---------- */
 .cmp-container {
     max-width: 1040px;
@@ -268,6 +281,37 @@
     opacity: 0.7;
 }
 
+/* ---------- 回到顶部（圆形浮动按钮） ---------- */
+.cmp-back-top {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-surface-raised);
+    color: var(--color-ink-soft);
+    border: 1px solid var(--color-line-strong);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 200;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.cmp-back-top[hidden] { display: none; }
+.cmp-back-top:hover {
+    transform: translateY(-2px) scale(1.05);
+    background: var(--color-ink);
+    color: var(--color-surface-raised);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+.cmp-back-top:active {
+    transform: translateY(0) scale(0.98);
+}
+
 /* ---------- 响应式 ---------- */
 @media (max-width: 1280px) {
     .cmp-toc { display: none; }
@@ -275,4 +319,5 @@
 }
 @media (max-width: 720px) {
     .cmp-event--china::after, .cmp-event--world::before { display: none; }
+    .cmp-back-top { right: 16px; bottom: 16px; width: 40px; height: 40px; }
 }

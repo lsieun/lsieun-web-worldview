@@ -1,0 +1,19 @@
+{
+  "type": "timeline",
+  "era": "industrial",
+  "title": "拿破仑帝国：从土伦到圣赫勒拿",
+  "range": { "start": 1769, "end": 1821 },
+  "href": "/world-history/napoleon.html",
+  "topicMeta": "法兰西第一帝国",
+  "summary": "1769 年生于科西嘉岛，1799 年雾月政变掌权，1804 年加冕为法兰西皇帝。奥斯特里茨、耶拿大捷威震欧洲，俄罗斯之败由盛转衰。1815 年滑铁卢，流放圣赫勒拿岛至死。",
+  "meta": {
+    "watermark": "拿",
+    "subtitle": "1769 — 1821 ｜ 拿破仑·波拿巴",
+    "note": "内容待补：核心人物（拿破仑、塔列朗、若尔当、贝尔纳多特等）、关键战役（土伦、奥斯特里茨、耶拿-奥尔施泰特、莱比锡、滑铁卢）、《拿破仑法典》与拿破仑战争。"
+  },
+  "groups": [],
+  "cast": [],
+  "events": [],
+  "personalEvents": [],
+  "defaults": []
+}

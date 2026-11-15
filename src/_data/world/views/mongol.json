@@ -1,0 +1,19 @@
+{
+  "type": "timeline",
+  "era": "middle-ages",
+  "title": "蒙古帝国：成吉思汗的世界",
+  "range": { "start": 1206, "end": 1368 },
+  "href": "/world-history/mongol.html",
+  "topicMeta": "横跨欧亚",
+  "summary": "1206 年铁木真统一蒙古各部，被尊为成吉思汗。此后数十年，蒙古铁骑席卷欧亚，建立了人类历史上领土连续面积最大的帝国。1368 年元朝覆亡，四大汗国各自延续或消亡。",
+  "meta": {
+    "watermark": "蒙",
+    "subtitle": "1206 — 1368 ｜ 成吉思汗 · 蒙古四大汗国",
+    "note": "内容待补：核心人物（成吉思汗、窝阔台、忽必烈、拔都、旭烈兀等）、关键战役（统一蒙古、蒙古西征、灭金、灭宋）、帝国分裂与元朝。"
+  },
+  "groups": [],
+  "cast": [],
+  "events": [],
+  "personalEvents": [],
+  "defaults": []
+}

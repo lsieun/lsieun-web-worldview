@@ -1,7 +1,7 @@
 ---
 # @formatter:off
 title: "中外对比"
-description: "同一条时间轴，左边中国，右边世界。"
+description: "同一条时间轴，左边中国，右边世界。时间逆序，从 2026 往回追溯。"
 layout: "default.html"
 # @formatter:on
 ---
@@ -14,8 +14,8 @@ layout: "default.html"
         <p class="eyebrow">03 · COMPARE</p>
         <h1 class="page-title">中外对比</h1>
         <p class="page-lead">
-            一条线贯穿五千年。左边是中国，右边是世界。看看当朱元璋建明朝的时候，哥伦布还没出生；
-            当伽利略用望远镜看月球的时候，努尔哈赤正在统一女真。
+            时间逆序：最上面是 2026 年，往下是 2000 年、1950 年，一直向前追溯。
+            左边中国，右边世界，同一水平线上的两条事件，就是那个时代两个文明各自发生的事。
         </p>
         <div class="page-meta">
             <span>范围 <strong>{{ compare.minYear | cnYear }} — {{ compare.maxYear | cnYear }}</strong></span>
@@ -24,33 +24,33 @@ layout: "default.html"
     </div>
 </section>
 
-{# 左浮动导航：中国朝代 #}
+{# 左浮动导航：中国朝代（时间正序） #}
 <nav class="cmp-toc cmp-toc--left" aria-label="中国朝代导航">
+    <div class="cmp-toc-header">🇨🇳 中国 · 朝代（时间正序）</div>
     {%- for t in compare.chinaToc %}
     <a href="#{{ t.anchor }}" data-cmp-toc="{{ t.anchor }}"
        title="{{ t.label }} {{ t.start | cnYear }} — {{ t.end | cnYear }}">
-        <span class="cmp-toc-flag">🇨🇳</span>
         <span class="cmp-toc-name">{{ t.label }}</span>
         <span class="cmp-toc-years">{{ t.start | cnYear }}</span>
     </a>
     {%- endfor %}
 </nav>
 
-{# 右浮动导航：世界时期 #}
+{# 右浮动导航：世界时期（时间正序） #}
 <nav class="cmp-toc cmp-toc--right" aria-label="世界时期导航">
+    <div class="cmp-toc-header">世界 · 时期（时间正序） 🌍</div>
     {%- for t in compare.worldToc %}
     <a href="#{{ t.anchor }}" data-cmp-toc="{{ t.anchor }}"
        title="{{ t.label }} {{ t.start }} — {{ t.end }}">
         <span class="cmp-toc-name">{{ t.label }}</span>
         <span class="cmp-toc-years">{{ t.start }}</span>
-        <span class="cmp-toc-flag">🌍</span>
     </a>
     {%- endfor %}
 </nav>
 
 <section class="section cmp-section">
     <div class="container cmp-container">
-        {# 时间轴容器 #}
+        {# 时间轴容器（逆序：2026 在顶部） #}
         <div class="cmp-timeline" data-cmp-root style="height: {{ compare.totalHeight }}px">
 
             {%- for item in compare.stream %}
@@ -69,14 +69,14 @@ layout: "default.html"
             {# ========== 独立事件 ========== #}
             {%- if item.side == "china" %}
             {# 中国：标题在左，年份在右（靠近蓝竖线） #}
-            <div class="cmp-event cmp-event--china" data-cmp-block="ev-{{ item.side }}-{{ item.year }}"
+            <div class="cmp-event cmp-event--china" id="ev-china-{{ item.year }}" data-cmp-block="ev-{{ item.side }}-{{ item.year }}"
                  style="top: {{ item.displayTop }}px">
                 <span class="cmp-event-body">{{ item.title }}</span>
                 <span class="cmp-event-year">{{ item.yearLabel }}</span>
             </div>
             {%- else %}
             {# 世界：年份在左（靠近红竖线），标题+region在右 #}
-            <div class="cmp-event cmp-event--world" data-cmp-block="ev-{{ item.side }}-{{ item.year }}"
+            <div class="cmp-event cmp-event--world" id="ev-world-{{ item.year }}" data-cmp-block="ev-{{ item.side }}-{{ item.year }}"
                  style="top: {{ item.displayTop }}px">
                 <span class="cmp-event-year">{{ item.year }}</span>
                 <span class="cmp-event-body">{{ item.title }}</span>
@@ -90,4 +90,28 @@ layout: "default.html"
     </div>
 </section>
 
+{# 回到顶部（圆形浮动按钮） #}
+<button class="cmp-back-top" id="cmpBackTop" aria-label="回到顶部" hidden>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
 <script src="/assets/js/compare-floating-toc.js"></script>
+<script>
+(function () {
+    var btn = document.getElementById("cmpBackTop");
+    if (!btn) return;
+    var THRESHOLD = 400;
+
+    window.addEventListener("scroll", function () {
+        if (window.scrollY > THRESHOLD) {
+            btn.hidden = false;
+        } else {
+            btn.hidden = true;
+        }
+    }, { passive: true });
+
+    btn.addEventListener("click", function () {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+})();
+</script>

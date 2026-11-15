@@ -1,0 +1,19 @@
+{
+  "type": "timeline",
+  "era": "classical",
+  "title": "罗马帝国：从奥古斯都到君士坦丁堡",
+  "range": { "start": -27, "end": 1453 },
+  "href": "/world-history/roman-empire.html",
+  "topicMeta": "两千年帝国",
+  "summary": "前 27 年屋大维成为奥古斯都，罗马共和国转为帝国。西罗马于 476 年陷落，东罗马（拜占庭）延续至 1453 年君士坦丁堡被土耳其人攻陷。",
+  "meta": {
+    "watermark": "罗",
+    "subtitle": "前 27 — 1453 ｜ 罗马帝国 · 西罗马 · 东罗马",
+    "note": "内容待补：帝系（屋大维、五贤帝、戴克里先、君士坦丁等）、关键事件（凯撒遇刺、帝国分裂、西罗马灭亡、君士坦丁堡陷落）。"
+  },
+  "groups": [],
+  "cast": [],
+  "events": [],
+  "personalEvents": [],
+  "defaults": []
+}

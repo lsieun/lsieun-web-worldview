@@ -111,38 +111,40 @@ export default function () {
         });
     }
 
-    /* ---------- 4. 导航 TOC ---------- */
+    /* ---------- 4. 导航 TOC（时间正序：从上到下是朝代/时期的起止顺序） ---------- */
     // 左：中国朝代（去掉魏蜀吴三个子朝代，只保留三国父级）
-    //     只保留有事件的朝代 → 锚点指向该朝代范围内最早事件的 year row
+    //     锚点指向该朝代范围内**最晚**事件（因为时间轴是逆序，最晚事件在最上方）
     const skipChina = new Set(["cao-wei", "shu-han", "eastern-wu", "xin"]); // 跳过子朝代 + 新朝并入两汉
     const chinaToc = Object.values(dynasties)
         .filter((d) => !skipChina.has(d.id))
         .map((d) => {
-            // 找范围内最早的事件年份
-            const firstEvtYear = rows.find((r) => r.year >= d.start && r.year <= d.end);
+            // 找范围内最晚的事件年份（year 最大）
+            const rangeEvts = rows.filter((r) => r.year >= d.start && r.year <= d.end);
+            const lastEvtYear = rangeEvts.length > 0 ? rangeEvts[rangeEvts.length - 1] : null;
             return {
                 id: `china-${d.id}`,
                 kind: "china",
                 label: d.name,
                 start: d.start,
                 end: d.end,
-                anchor: firstEvtYear ? firstEvtYear.id : (d.start >= minYear ? `yr-${Math.max(d.start, minYear)}` : null)
+                anchor: lastEvtYear ? `ev-china-${lastEvtYear.year}` : null
             };
         })
         .filter((t) => t.anchor)
         .sort((a, b) => a.start - b.start);
 
-    // 右：世界时期
+    // 右：世界时期（同理，锚点指向范围内最晚事件）
     const worldToc = Object.values(eras)
         .map((e) => {
-            const firstEvtYear = rows.find((r) => r.year >= e.start && r.year <= e.end);
+            const rangeEvts = rows.filter((r) => r.year >= e.start && r.year <= e.end);
+            const lastEvtYear = rangeEvts.length > 0 ? rangeEvts[rangeEvts.length - 1] : null;
             return {
                 id: `world-${e.id}`,
                 kind: "world",
                 label: e.name,
                 start: e.start,
                 end: e.end,
-                anchor: firstEvtYear ? firstEvtYear.id : (e.start >= minYear ? `yr-${Math.max(e.start, minYear)}` : null)
+                anchor: lastEvtYear ? `ev-china-${lastEvtYear.year}` : null
             };
         })
         .filter((t) => t.anchor)
@@ -204,15 +206,18 @@ export default function () {
         ti++;
     }
 
+    // 时间逆序：2026 在顶部，往回追溯
+    stream.reverse();
+
     // tick: 精确 top
     // event: idealTop = 年份位置，displayTop 做堆叠调整
     for (const item of stream) {
-        item.idealTop = Math.round((item.year - minYear) * PX_PER_YEAR);
+        item.idealTop = Math.round((maxYear - item.year) * PX_PER_YEAR);
     }
 
-    // 堆叠调整：只和 idealTop 邻近的事件比较
-    // 避免公元前大量事件的堆叠影响公元后的事件
-    // 策略：维护两个 side 的 bottom 列表，新事件只和 idealTop < 自己的最近事件比较
+    // 堆叠调整：stream 现在也是逆序处理（2026 先 → -356 后），
+    // 所以 event 处理时 idealTop 递增（2026→0, 2020→72, ...），
+    // 维护 bottom 列表的逻辑与正序完全一致。
     const chinaStack = [];  // [{idealTop, bottom}]
     const worldStack = [];
 
@@ -221,9 +226,7 @@ export default function () {
             item.displayTop = item.idealTop;
             continue;
         }
-        // event: 找同 side 中 idealTop < 自己的最后一个
         const stack = item.side === "china" ? chinaStack : worldStack;
-        // 移除所有 idealTop >= 当前事件的（它们在后面处理）
         while (stack.length > 0 && stack[stack.length-1].idealTop >= item.idealTop) {
             stack.pop();
         }
