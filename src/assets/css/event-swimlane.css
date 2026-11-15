@@ -1,7 +1,7 @@
-/* event-swimlane.css — 横向泳道事件时间轴 */
+/* event-swimlane.css — 纵向泳道事件时间轴（从上往下年份，从左往右泳道） */
 
 .sw-page .container {
-    max-width: 1400px;
+    max-width: 1600px;
 }
 
 /* ---------- Hero ---------- */
@@ -59,6 +59,7 @@
     margin-bottom: 1rem;
     font-size: 0.75rem;
     color: var(--color-muted);
+    padding-left: 1rem;
 }
 
 .sw-legend-item {
@@ -72,6 +73,7 @@
     height: 10px;
     border-radius: 50%;
     display: inline-block;
+    flex-shrink: 0;
 }
 
 .sw-dot--hegemony {
@@ -82,8 +84,9 @@
 }
 
 .sw-dot--ascend { background: #64748b; }
-.sw-dot--battle { background: #ef4444; border-radius: 2px; transform: rotate(45deg); }
-.sw-dot--diplomacy { background: #8b5cf6; width: 8px; height: 8px; }
+.sw-dot--battle { background: #ef4444; width: 10px; height: 10px; border-radius: 2px; transform: rotate(45deg); }
+.sw-dot--diplomacy { background: #8b5cf6; width: 9px; height: 9px; border-radius: 2px; transform: rotate(45deg); }
+.sw-dot--response { background: #94a3b8; border: 2px dashed #64748b; }
 
 .sw-bubble-mini {
     display: inline-block;
@@ -105,14 +108,7 @@
     background: #fcd34d;
 }
 
-.sw-line-mini {
-    display: inline-block;
-    width: 14px;
-    height: 2px;
-    background: repeating-linear-gradient(90deg, #64748b 0, #64748b 3px, transparent 3px, transparent 6px);
-}
-
-/* ---------- 横向滚动容器 ---------- */
+/* ---------- 纵向滚动容器 ---------- */
 .sw-scroll-wrap {
     overflow-x: auto;
     overflow-y: hidden;
@@ -137,174 +133,232 @@
 
 .sw-scroll {
     display: flex;
-    flex-direction: column;
-    min-width: 1200px;
-    padding: 1rem 0 2rem;
+    flex-direction: row;
+    min-width: 1400px;
     position: relative;
+    padding: 0.5rem 0 1rem;
 }
 
-/* ---------- 年份刻度轴 ---------- */
-.sw-year-axis {
+/* ---------- 泳道列 ---------- */
+.sw-col {
     flex-shrink: 0;
-    height: 36px;
     position: relative;
-    margin-bottom: 0.25rem;
-}
-
-.sw-year-track {
-    position: absolute;
-    left: 120px;
-    right: 0;
-    top: 0;
-    bottom: 0;
-}
-
-.sw-year-tick {
-    position: absolute;
-    top: 0;
-    transform: translateX(-50%);
+    width: 160px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    border-right: 1px solid var(--color-line);
 }
 
-.sw-year-line {
-    width: 1px;
-    height: 8px;
-    background: var(--color-line);
+.sw-col--years {
+    width: 90px;
+    border-right: 2px solid var(--color-line);
 }
 
-.sw-year-label {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    color: var(--color-muted);
-    margin-top: 2px;
-    white-space: nowrap;
+.sw-col:last-child {
+    border-right: none;
 }
 
-/* ---------- 泳道行 ---------- */
-.sw-lane {
-    display: flex;
+.sw-col.is-axis {
+    width: 180px;
+    background: rgba(148, 163, 184, 0.03);
+}
+
+.sw-col-label {
     flex-shrink: 0;
-    height: 88px;
-    position: relative;
-}
-
-.sw-lane.is-axis {
-    height: 100px;
-}
-
-.sw-lane-label {
-    flex-shrink: 0;
-    width: 120px;
+    height: 56px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: flex-end;
-    padding-right: 0.75rem;
-    border-right: 3px solid var(--lane-color);
-    font-family: var(--font-serif);
+    align-items: center;
     gap: 0;
+    border-bottom: 3px solid var(--lane-color, #64748b);
+    padding-bottom: 0.4rem;
 }
 
-.sw-lane-name {
-    font-size: 1rem;
+.sw-col--years .sw-col-label {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-muted);
+    letter-spacing: 0.12em;
+    border-bottom-width: 3px;
+    border-bottom-style: solid;
+    border-bottom-color: var(--color-line);
+}
+
+.sw-col-name {
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
     font-weight: 700;
-    letter-spacing: 0.16em;
-    color: var(--color-text);
+    letter-spacing: 0.2em;
 }
 
-.sw-lane-en {
+.sw-col-en {
     font-family: var(--font-mono);
     font-size: 0.55rem;
     color: var(--color-muted);
     letter-spacing: 0.1em;
 }
 
-.sw-lane-track {
-    flex: 1;
+.sw-col-track {
     position: relative;
-    min-width: calc(100% - 120px);
+    flex: 1;
+    min-height: 560px;
 }
 
-.sw-lane-line {
+.sw-col-line {
     position: absolute;
-    left: 0;
-    right: 0;
-    top: 50%;
-    height: 2px;
-    opacity: 0.15;
-    transform: translateY(-50%);
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    opacity: 0.2;
+    transform: translateX(-50%);
 }
 
-/* ---------- 节点 ---------- */
-.sw-node {
+/* ---------- 年份刻度 ---------- */
+.sw-year-tick {
     position: absolute;
-    top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 2px;
+}
+
+.sw-year-tick .sw-year-line {
+    width: 10px;
+    height: 1px;
+    background: var(--color-line);
+}
+
+.sw-year-label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--color-muted);
+    white-space: nowrap;
+    letter-spacing: 0.03em;
+    margin-top: 1px;
+}
+
+/* ---------- 节点 ---------- */
+.sw-node {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
     z-index: 1;
     cursor: default;
-    transition: transform 0.15s;
+    padding: 4px 2px;
 }
 
 .sw-node:hover {
-    transform: translate(-50%, -50%) scale(1.08);
     z-index: 10;
+    transform: translate(-50%, -50%) scale(1.06);
+}
+
+.sw-node-year {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--color-muted);
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+    background: var(--color-bg);
+    padding: 0 3px;
+    border-radius: 2px;
 }
 
 .sw-node-dot {
     display: block;
     border-radius: 50%;
     background: var(--node-color, #64748b);
-    border: 2px solid #fff;
+    border: 2px solid var(--color-bg);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
-/* 各类型视觉 */
-.sw-node--hegemony .sw-node-dot {
-    width: 18px;
-    height: 18px;
-    background: linear-gradient(135deg, #fbbf24, #f59e0b);
-    border: 2px solid #fff;
-    box-shadow: 0 0 10px rgba(251, 191, 36, 0.7), 0 2px 6px rgba(0, 0, 0, 0.2);
-    position: relative;
+.sw-node-label {
+    font-size: 0.72rem;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    color: var(--color-text);
+    white-space: nowrap;
+    padding: 1px 5px;
+    background: var(--color-bg);
+    border-radius: 2px;
+    line-height: 1.2;
+    text-align: center;
+    max-width: 150px;
 }
 
+/* 称霸 — 金色大圆点 + 发光 */
+.sw-node--hegemony .sw-node-dot {
+    width: 20px;
+    height: 20px;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    border: 3px solid var(--color-bg);
+    box-shadow: 0 0 12px rgba(251, 191, 36, 0.75), 0 2px 6px rgba(0, 0, 0, 0.25);
+    border-radius: 50%;
+}
+
+.sw-node--hegemony .sw-node-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--color-text);
+    background: rgba(251, 191, 36, 0.18);
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.04em;
+}
+
+.sw-node--hegemony .sw-node-year {
+    font-weight: 700;
+    color: #b45309;
+}
+
+/* 继位 — 灰小圆点 */
 .sw-node--ascend .sw-node-dot {
     width: 10px;
     height: 10px;
     background: #64748b;
 }
 
+/* 战役 — 红菱形 */
 .sw-node--battle .sw-node-dot {
     width: 12px;
     height: 12px;
     border-radius: 2px;
     background: #ef4444;
     transform: rotate(45deg);
-    border: 2px solid #fff;
 }
 
+/* 外交 — 紫菱形 */
 .sw-node--diplomacy .sw-node-dot {
     width: 11px;
     height: 11px;
     border-radius: 2px;
     background: #8b5cf6;
     transform: rotate(45deg);
-    border: 2px solid #fff;
 }
 
+/* 周王回应 — 虚点 + 虚线边框 */
 .sw-node--response .sw-node-dot {
-    width: 8px;
-    height: 8px;
-    background: #64748b;
-    border: 2px dashed #94a3b8;
+    width: 10px;
+    height: 10px;
+    background: #94a3b8;
+    border: 2px dashed #475569;
+    border-radius: 50%;
 }
 
+.sw-node--response .sw-node-label {
+    font-size: 0.7rem;
+    color: var(--color-muted-strong);
+    font-style: italic;
+}
+
+/* 条约 */
 .sw-node--treaty .sw-node-dot {
     width: 10px;
     height: 10px;
@@ -312,49 +366,13 @@
     background: #06b6d4;
 }
 
-/* 标签 */
-.sw-node-label {
-    font-size: 0.72rem;
-    font-family: var(--font-serif);
-    font-weight: 600;
-    color: var(--color-text);
-    white-space: nowrap;
-    padding: 1px 4px;
-    background: var(--color-bg);
-    border-radius: 2px;
-    line-height: 1.2;
-}
-
-.sw-node-year {
-    font-size: 0.58rem;
-    font-family: var(--font-mono);
-    color: var(--color-muted);
-    white-space: nowrap;
-    letter-spacing: 0.03em;
-}
-
-.sw-node--hegemony .sw-node-label {
-    color: var(--color-text);
-    font-weight: 700;
-    background: rgba(251, 191, 36, 0.15);
-    border-radius: 3px;
-    padding: 2px 6px;
-    font-size: 0.78rem;
-}
-
-/* 争霸节点标签上浮 */
-.sw-node--hegemony .sw-node-label,
-.sw-node--hegemony .sw-node-year {
-    transform: translateY(-2px);
-}
-
-/* 气泡 */
+/* 课本名篇气泡 💬 */
 .sw-node-bubble {
     position: absolute;
-    top: -4px;
-    right: -4px;
-    transform: translate(100%, -50%);
-    font-size: 0.62rem;
+    top: 0;
+    right: -6px;
+    transform: translate(100%, -30%);
+    font-size: 0.6rem;
     padding: 1px 6px;
     background: #fcd34d;
     color: #78350f;
@@ -362,10 +380,9 @@
     border-radius: 10px;
     white-space: nowrap;
     font-family: var(--font-serif);
-    letter-spacing: 0.04em;
+    letter-spacing: 0.03em;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
     z-index: 2;
-    cursor: default;
 }
 
 .sw-node-bubble::after {
@@ -379,22 +396,29 @@
     background: #fcd34d;
 }
 
-/* 课本名篇气泡特别样式 */
-.sw-node[data-bubble] .sw-node-label {
-    border-bottom: 2px dashed #fcd34d;
-}
+/* 横向列的边框色继承 */
+.sw-col--zhou { border-right-color: #94a3b8; }
+.sw-col--qi   { border-right-color: #3b82f6; }
+.sw-col--lu   { border-right-color: #22c55e; }
+.sw-col--jin  { border-right-color: #8b5cf6; }
+.sw-col--qin  { border-right-color: #f59e0b; }
+.sw-col--chu  { border-right-color: #ef4444; }
+.sw-col--wu   { border-right-color: #06b6d4; }
+.sw-col--yue  { border-right-color: #ec4899; }
 
 /* ---------- 事件明细表 ---------- */
 .sw-detail {
-    max-width: 900px;
+    max-width: 1200px;
     margin-top: 2rem;
     padding-top: 1.5rem;
     border-top: 1px solid var(--color-line);
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 .sw-detail-title {
     font-family: var(--font-serif);
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     font-weight: 700;
     margin-bottom: 1rem;
     letter-spacing: 0.1em;
@@ -406,22 +430,27 @@
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
+    gap: 0.3rem;
 }
 
 .sw-detail-item {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: 0.4rem 0.7rem;
+    gap: 0.35rem 0.7rem;
     padding: 0.35rem 0.6rem;
     border-radius: var(--radius-sm);
     font-size: 0.88rem;
-    border-left: 3px solid var(--lane-color, #64748b);
+    border-left: 3px solid #64748b;
 }
 
 .sw-detail-item:hover {
     background: var(--color-bg-soft);
+}
+
+.sw-detail--hegemony {
+    border-left-width: 4px !important;
+    background: rgba(251, 191, 36, 0.06);
 }
 
 .sw-detail-year {
@@ -457,11 +486,3 @@
     padding: 0 5px;
     border-radius: 3px;
 }
-
-/* 各类型左边框 */
-.sw-detail--hegemony { border-left-color: #f59e0b !important; font-weight: 600; }
-.sw-detail--ascend   { border-left-color: #64748b !important; }
-.sw-detail--battle   { border-left-color: #ef4444 !important; }
-.sw-detail--diplomacy{ border-left-color: #8b5cf6 !important; }
-.sw-detail--response { border-left-color: #94a3b8 !important; border-left-style: dashed; }
-.sw-detail--treaty   { border-left-color: #06b6d4 !important; }
