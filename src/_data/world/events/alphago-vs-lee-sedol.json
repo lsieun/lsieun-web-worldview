@@ -1,8 +1,8 @@
 {
   "id": "alphago-vs-lee-sedol",
-  "title": "AlphaGo 击败围棋世界冠军李世石",
+  "title": "AlphaGo 击败李世石 4:1",
   "year": 2016,
   "key": true,
   "region": "英国",
-  "desc": "3 月 15 日，DeepMind 的 AlphaGo 以 4:1 战胜九段棋手李世石。围棋空间复杂度远超国际象棋，此前普遍认为 AI 十年内不可能赢职业棋手。一个时代的判断基准彻底改写。"
+  "desc": "3 月 15 日 DeepMind 的 AlphaGo 以 4:1 战胜九段棋手李世石。此前普遍认为 AI 十年内不可能赢围棋职业棋手。"
 }

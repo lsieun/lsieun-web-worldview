@@ -1,8 +1,8 @@
 {
   "id": "alexnet-imagenet",
-  "title": "AlexNet 赢得 ImageNet 竞赛，深度学习革命启动",
+  "title": "AlexNet 赢得 ImageNet 竞赛",
   "year": 2012,
   "key": true,
   "region": "美国",
-  "desc": "亚历克斯·克里泽夫斯基在 ImageNet 图像识别竞赛中使用卷积神经网络 AlexNet，top-5 错误率降至 15.3%（前一年最好成绩 25%）。GPU 训练 + 深度网络架构，深度学习时代不可逆转。"
+  "desc": "亚历克斯·克里泽夫斯基使用卷积神经网络 AlexNet 参赛，top-5 错误率降至 15.3%（前一年最好 25%）。GPU 训练 + 深度网络架构推动深度学习爆发。"
 }
